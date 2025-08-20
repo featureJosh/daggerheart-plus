@@ -1,0 +1,20 @@
+<section
+    class='tab {{tabs.potentialAdversaries.cssClass}} {{tabs.potentialAdversaries.id}}'
+    data-tab='{{tabs.potentialAdversaries.id}}'
+    data-group='{{tabs.potentialAdversaries.group}}'
+>    
+    <div class="action-section">
+        {{#each document.system.potentialAdversaries as |category categoryId|}}
+            {{> 'daggerheart.inventory-items'
+            title=category.label
+            type='adversary'
+            isGlassy=true
+            isActor=true
+            categoryAdversary=categoryId
+            hideControls=true
+            collection=category.adversaries
+            hideResources=true
+            }}
+        {{/each}}
+    </div>
+</section>

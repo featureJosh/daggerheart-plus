@@ -1,0 +1,423 @@
+.daggerheart-plus.sheet.environment .environment-header-sheet {
+  padding: 1rem;
+  background: var(--dhp-surface);
+  border-bottom: 2px solid var(--dhp-border);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  align-self: center;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .profile:hover {
+  transform: scale(1.05);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .actor-name input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--dhp-primary);
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--dhp-background);
+  border-radius: 8px;
+  border: 1px solid var(--dhp-border);
+  margin-top: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 80px;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: var(--dhp-background);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  min-width: 120px;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-number .status-value p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-number .status-label h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--dhp-text-light);
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 80px;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .status-value {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .status-value p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .bar-input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  padding: 0.25rem;
+  font-weight: bold;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .bar-label {
+  color: var(--dhp-text-light);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .progress-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--dhp-border);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-border);
+  border-radius: 3px;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .progress-bar::-webkit-progress-value {
+  background: var(--dhp-info);
+  border-radius: 3px;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .status-bar .status-label h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--dhp-text-light);
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--dhp-background);
+  border-radius: 8px;
+  border: 1px solid var(--dhp-border);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--dhp-text);
+  font-size: 0.9rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .input-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .level-button {
+  background: var(--dhp-accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .level-button:hover {
+  background: var(--dhp-secondary);
+  transform: scale(1.1);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .level-button.glow {
+  animation: pulse 2s infinite;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .level-div .level-value {
+  width: 50px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  padding: 0.25rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .environment-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid var(--dhp-border);
+  margin-top: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .environment-navigation button {
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--dhp-text);
+}
+
+.daggerheart-plus.sheet.environment .environment-header-sheet .environment-navigation button:hover {
+  background: var(--dhp-accent);
+  color: white;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet {
+  padding: 1rem;
+  background: var(--dhp-surface);
+  border-right: 1px solid var(--dhp-border);
+  min-width: 200px;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .portrait {
+  position: relative;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .portrait img {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border: 2px solid var(--dhp-border);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .portrait img:hover {
+  transform: scale(1.05);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .info-section {
+  margin-bottom: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .resources-section {
+  margin-bottom: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-bar {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--dhp-background);
+  border-radius: 8px;
+  border: 1px solid var(--dhp-border);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-value {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-value p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .bar-input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  padding: 0.25rem;
+  font-weight: bold;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .bar-label {
+  color: var(--dhp-text-light);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--dhp-border);
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-border);
+  border-radius: 4px;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .progress-bar::-webkit-progress-value {
+  background: var(--dhp-info);
+  border-radius: 4px;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-label h4 {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--dhp-text-light);
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-section {
+  margin-bottom: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: var(--dhp-background);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-number .status-value p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .status-number .status-label h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--dhp-text-light);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .shortcut-items-section {
+  margin-top: 1rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--dhp-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .items-sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .items-sidebar-list .item {
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .items-sidebar-list .item:hover {
+  box-shadow: 0 2px 4px var(--dhp-shadow);
+  transform: translateX(2px);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .items-sidebar-list .item img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .experience-list {
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .experience-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .experience-value {
+  background: var(--dhp-success);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: bold;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .experience-row span {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .controls a {
+  color: var(--dhp-text-light);
+  transition: color 0.2s ease;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .controls a:hover {
+  color: var(--dhp-primary);
+}

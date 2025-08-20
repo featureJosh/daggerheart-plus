@@ -1,0 +1,59 @@
+<section class='tab {{tabs.details.cssClass}} {{tabs.details.id}}' data-tab='{{tabs.details.id}}'
+    data-group='{{tabs.details.group}}'>
+    <div class="partner-section">
+        <div class="title">
+            <side-line-div  class="invert"></side-line-div>
+            <h3>{{localize "DAGGERHEART.GENERAL.partner"}}</h3>
+            <side-line-div></side-line-div>
+        </div>
+        {{#if document.system.partner}}
+        <ul class="items-list">
+            {{> 'daggerheart.inventory-item'
+            item=document.system.partner
+            type='companion'
+            hideTags=true
+            hideDescription=true
+            isActor=true
+            hideTooltip=true
+            }}
+        </ul>
+        {{else}}
+        <span class="partner-placeholder">{{localize "DAGGERHEART.ACTORS.Companion.noPartner"}}</span>
+        {{/if}}
+    </div>
+    <div class="attack-section">
+        <div class="title">
+            <side-line-div  class="invert"></side-line-div>
+            <h3>{{localize "DAGGERHEART.GENERAL.attack"}}</h3>
+            <side-line-div></side-line-div>
+        </div>
+        <ul class="items-list">
+            {{> 'daggerheart.inventory-item'
+            item=document.system.attack
+            type='action'
+            hideTags=true
+            hideDescription=true
+            hideTooltip=true
+            }}
+        </ul>
+    </div>
+    <div class="experience-list">
+        <div class="title">
+            <side-line-div  class="invert"></side-line-div>
+            <h3>{{localize "DAGGERHEART.GENERAL.experience.plural"}}</h3>
+            <side-line-div></side-line-div>
+        </div>
+        {{#each source.system.experiences as |experience id|}}
+        <div class="experience-row" data-tooltip-text="{{experience.description}}">
+            <div class="experience-value">
+                +{{experience.value}}
+            </div>
+            <span class="experience-name">{{experience.name}}</span>
+            <div class="controls">
+                <a data-action="sendExpToChat" data-type="experience" data-id="{{id}}">
+                    <i class="fa-regular fa-message"></i></a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</section>

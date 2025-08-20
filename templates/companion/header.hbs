@@ -1,0 +1,61 @@
+<header class="companion-header-sheet">
+    <img class="profile" src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+    <h1 class='actor-name'>
+        <input
+            type='text'
+            name='name'
+            value='{{document.name}}'
+            placeholder='{{localize "DAGGERHEART.GENERAL.actorName"}}'
+        />
+    </h1>
+    <div class="status-section">
+        <div class="status-number">
+            <div class='status-value'>
+                <p>{{document.system.evasion}}</p>
+            </div>
+            <div class="status-label">
+                <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
+            </div>
+        </div>
+        <div class="status-bar">
+            <div class='status-value'>
+                <p><input class="bar-input" name="system.resources.stress.value" value="{{document.system.resources.stress.value}}" min="0" max='{{document.system.resources.stress.max}}' type="number"></p>
+                <p>/</p>
+                <p class="bar-label">{{document.system.resources.stress.max}}</p>
+            </div>
+            <progress
+                class='progress-bar stress-color'
+                value='{{document.system.resources.stress.value}}'
+                max='{{document.system.resources.stress.max}}'
+            ></progress>
+            <div class="status-label">
+                <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
+            </div>
+        </div>
+        <div class='level-div'>
+            <h3 class='label'>
+                {{localize 'DAGGERHEART.GENERAL.level'}}
+                <div class="input-section">
+                    {{#if document.system.levelData.canLevelUp}}
+                        <button
+                            type="button"
+                            class="level-button glow" data-tooltip="{{localize "DAGGERHEART.ACTORS.Character.levelUp"}}"
+                            data-action="levelManagement"
+                        >
+                            <i class="fa-solid fa-angles-up"></i>
+                        </button>
+                    {{/if}}
+                    <span {{#unless document.system.partner}}data-tooltip="{{localize "DAGGERHEART.UI.Tooltip.companionPartnerLevelBlock"}}"{{/unless}}>
+                        <input type="text" data-dtype="Number" class="level-value" value={{document.system.levelData.level.changed}} {{#if document.system.needsCharacterSetup}}disabled{{/if}} {{disabled (not document.system.partner)}} />
+                    </span>
+                </div>
+            </h3>
+        </div>
+    </div>
+    <div class="companion-navigation">
+        {{> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
+        <button type="button" data-action="openSettings" data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}">
+            <i class="fa-solid fa-wrench"></i>
+        </button>
+    </div>
+</header>
