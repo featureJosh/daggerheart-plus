@@ -1,109 +1,55 @@
 <aside class="character-sidebar-sheet">
-    <div class="portrait {{#if isDeath}}death-roll{{/if}}">
-        <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
-        {{#if document.system.class.subclass.system.spellcastingTrait}}
-            <div class="icons-list">
-                <span class="spellcast-icon {{#if isDeath}}no-label{{/if}}">
-                    <span class="spellcast-label">
-                        {{localize "DAGGERHEART.ITEMS.Subclass.spellcastingTrait"}}: 
-                        {{localize (concat 'DAGGERHEART.CONFIG.Traits.' document.system.class.subclass.system.spellcastingTrait '.short')}}
-                    </span>
-                    <i class="fa-solid fa-wand-sparkles"></i>
-                </span>
+    {{#if isDeath}}
+        <div class="death-warning">
+            <a class="death-roll-btn" data-tooltip="DAGGERHEART.UI.Tooltip.makeDeathMove" data-action="makeDeathMove">
+                <i class="fa-solid fa-skull death-save"></i>
+                <span>Death Save</span>
+            </a>
+        </div>
+    {{/if}}
+    <div class="advancement-section">
+        <div class="section-title">
+            <i class="fa-solid fa-star"></i>
+            <h3>Advancement</h3>
+        </div>
+        <div class="advancement-grid">
+            <div class="advancement-item">
+                <div class="advancement-value">{{document.system.levelData.level.changed}}</div>
+                <div class="advancement-label">Level</div>
             </div>
-        {{/if}}
-        <a class="death-roll-btn" data-tooltip="DAGGERHEART.UI.Tooltip.makeDeathMove" {{#if
-            isDeath}}data-action="makeDeathMove" {{/if}}><i class="fa-solid fa-skull death-save"></i></a>
+            <div class="advancement-item">
+                <div class="advancement-value">{{document.system.proficiency}}</div>
+                <div class="advancement-label">Prof.</div>
+            </div>
+            <div class="advancement-item advancement-highlight">
+                <div class="advancement-value">{{document.system.armor.system.armorValue}}</div>
+                <div class="advancement-label">Armor</div>
+            </div>
+            <div class="advancement-item advancement-highlight">
+                <div class="advancement-value">{{document.system.evasion}}</div>
+                <div class="advancement-label">Evasion</div>
+            </div>
+        </div>
     </div>
-    <div class="info-section">
-        <div class="resources-section">
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.hitPoints.value" min="0" max='{{document.system.resources.hitPoints.max}}'
-                            value="{{document.system.resources.hitPoints.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.hitPoints.max}}</p>
-                </div>
-                <progress
-                    class='progress-bar'
-                    max='{{document.system.resources.hitPoints.max}}'
-                    value='{{document.system.resources.hitPoints.value}}'
-                ></progress>
-                <div class="status-label">
-                    <h4>{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</h4>
-                </div>
-
+        <div class="thresholds-section">
+            <div class="section-title">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Threshold</h3>
             </div>
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.stress.value" min="0" max='{{document.system.resources.stress.max}}'
-                            value="{{document.system.resources.stress.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.stress.max}}</p>
+            <div class="threshold-grid">
+                <div class="threshold-item minor">
+                    <div class="threshold-marker">1</div>
+                    <div class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.minor"}}</div>
                 </div>
-                <progress
-                    class='progress-bar stress-color'
-                    value='{{document.system.resources.stress.value}}'
-                    min="0"
-                    max='{{document.system.resources.stress.max}}'
-                ></progress>
-                <div class="status-label">
-                    <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
+                <div class="threshold-item major">
+                    <div class="threshold-marker">{{document.system.damageThresholds.major}}</div>
+                    <div class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</div>
+                </div>
+                <div class="threshold-item severe">
+                    <div class="threshold-marker">{{document.system.damageThresholds.severe}}</div>
+                    <div class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</div>
                 </div>
             </div>
-        </div>
-        <div class="status-section">
-            <div class="status-number">
-                <div class='status-value'>
-                    <p>{{document.system.evasion}}</p>
-                </div>
-                <div class="status-label">
-                    <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
-                </div>
-            </div>
-
-            {{#if document.system.armor.system.marks}}
-                <div class="status-bar armor-slots">
-                    <div class='status-value'>
-                        <p><input class="bar-input armor-marks-input" value="{{document.system.armor.system.marks.value}}" type="number"></p>
-                        <p>/</p>
-                        <p class="bar-label">{{document.system.armorScore}}</p>
-                    </div>
-                    <progress
-                        class='progress-bar stress-color'
-                        value='{{document.system.armor.system.marks.value}}'
-                        max='{{document.system.armorScore}}'
-                    ></progress>
-                    <div class="status-label">
-                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
-                    </div>
-                </div>
-            {{else}}
-                <div class="status-number armor-slots">
-                    <div class='status-value'>
-                        <p>-</p>
-                    </div>
-                    <div class="status-label">
-                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
-                    </div>
-                </div>
-            {{/if}}
-
-            <div class="status-number">
-                <div class='status-value'>
-                    <p>{{document.system.proficiency}}</p>
-                </div>
-                <div class="status-label">
-                    <h4>{{localize "DAGGERHEART.GENERAL.proficiency"}}</h4>
-                </div>
-            </div>
-        </div>
-        <div class="threshold-section">
-            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.minor"}}</h4>
-            <h4 class="threshold-value">{{document.system.damageThresholds.major}}</h4>
-            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</h4>
-            <h4 class="threshold-value">{{document.system.damageThresholds.severe}}</h4>
-            <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</h4>
         </div>
     </div>
 

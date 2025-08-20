@@ -1,17 +1,49 @@
 <header class="character-header-sheet">
-    <line-div></line-div>
-    <div class="name-row">
-        <h1 class='actor-name'>
-            <input
-                type='text'
-                name='name'
-                value='{{document.name}}'
-                placeholder='Actor Name'
-            />
-        </h1>
-
-        <div class='level-div'>
-            <h3 class='label'>
+    <div class="character-hero-section">
+        <div class="character-portrait-main">
+            <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+            {{#if document.system.class.subclass.system.spellcastingTrait}}
+                <div class="spellcast-overlay">
+                    <i class="fa-solid fa-wand-sparkles"></i>
+                </div>
+            {{/if}}
+        </div>
+        
+        <div class="character-identity">
+            <h1 class='character-name'>
+                <input
+                    type='text'
+                    name='name'
+                    value='{{document.name}}'
+                    placeholder='Character Name'
+                />
+            </h1>
+            
+            <div class="character-title">
+                {{#if document.system.class.value}}
+                    <span data-action="editDoc" data-item-uuid="{{document.system.class.value.uuid}}">{{document.system.class.value.name}}</span>
+                {{else}}
+                    <span class="missing-header-feature" data-action="openPack" data-key="classes">{{localize 'TYPES.Item.class'}}</span>
+                {{/if}}
+                {{#if document.system.class.subclass}}
+                    <span class="subclass-name" data-action="editDoc" data-item-uuid="{{document.system.class.subclass.uuid}}">{{document.system.class.subclass.name}}</span>
+                {{/if}}
+            </div>
+            
+            <div class="character-heritage">
+                {{#if document.system.ancestry}}
+                    <span data-action="editDoc" data-item-uuid="{{document.system.ancestry.uuid}}">{{document.system.ancestry.name}}</span>
+                {{else}}
+                    <span class="missing-header-feature" data-action="openPack" data-key="ancestries">{{localize 'TYPES.Item.ancestry'}}</span>
+                {{/if}}
+                {{#if document.system.community}}
+                    <span data-action="editDoc" data-item-uuid="{{document.system.community.uuid}}">{{document.system.community.name}}</span>
+                {{else}}
+                    <span class="missing-header-feature" data-action="openPack" data-key="communities">{{localize 'TYPES.Item.community'}}</span>
+                {{/if}}
+            </div>
+            
+            <div class='character-level'>
                 {{#if (or document.system.needsCharacterSetup document.system.levelData.canLevelUp)}}
                     <button
                         type="button"
@@ -21,80 +53,68 @@
                         <i class="fa-solid fa-angles-up"></i>
                     </button>
                 {{/if}}
-                {{localize 'DAGGERHEART.GENERAL.level'}}
+                <span class="level-label">{{localize 'DAGGERHEART.GENERAL.level'}}</span>
                 <input type="text" data-dtype="Number" class="level-value" value={{#if document.system.needsCharacterSetup}}0{{else}}{{document.system.levelData.level.changed}}{{/if}} {{#if document.system.needsCharacterSetup}}disabled{{/if}} />
-            </h3>
+            </div>
         </div>
     </div>
-    <div class="character-details">
-        <div>
-            {{#if document.system.class.value}}
-                <span data-action="editDoc" data-item-uuid="{{document.system.class.value.uuid}}">{{document.system.class.value.name}}</span>
+    {{#if document.system.multiclass.value}}
+        <div class="multiclass-section">
+            <div class="multiclass-label">Multiclass:</div>
+            {{#if document.system.multiclass.value}}
+                <span data-action="editDoc"data-item-uuid="{{document.system.multiclass.value.uuid}}">{{document.system.multiclass.value.name}}</span>
             {{else}}
-                <span class="missing-header-feature" data-action="openPack" data-key="classes">{{localize 'TYPES.Item.class'}}</span>
+                <span data-action="openPack" data-key="classes">{{localize 'DAGGERHEART.GENERAL.multiclass'}}</span>
             {{/if}}
-            <span class="dot">•</span>
-            {{#if document.system.class.subclass}}
-                <span data-action="editDoc" data-item-uuid="{{document.system.class.subclass.uuid}}">{{document.system.class.subclass.name}}</span>
+            {{#if document.system.multiclass.subclass}}
+                <span data-action="editDoc" data-item-uuid="{{document.system.multiclass.subclass.uuid}}">{{document.system.multiclass.subclass.name}}</span>
             {{else}}
                 <span class="missing-header-feature" data-action="openPack" data-key="subclasses">{{localize 'TYPES.Item.subclass'}}</span>
             {{/if}}
-            <span class="dot">•</span>
-            {{#if document.system.community}}
-                <span data-action="editDoc" data-item-uuid="{{document.system.community.uuid}}">{{document.system.community.name}}</span>
-            {{else}}
-                <span class="missing-header-feature" data-action="openPack" data-key="communities">{{localize 'TYPES.Item.community'}}</span>
-            {{/if}}
-            <span class="dot">•</span>
-            {{#if document.system.ancestry}}
-                <span data-action="editDoc" data-item-uuid="{{document.system.ancestry.uuid}}">{{document.system.ancestry.name}}</span>
-            {{else}}
-                <span class="missing-header-feature" data-action="openPack" data-key="ancestries">{{localize 'TYPES.Item.ancestry'}}</span>
-            {{/if}}
         </div>
+    {{/if}}
 
-        {{#if document.system.multiclass.value}}
-            <div class="multiclass">
-                {{#if document.system.multiclass.value}}
-                    <span data-action="editDoc"data-item-uuid="{{document.system.multiclass.value.uuid}}">{{document.system.multiclass.value.name}}</span>
-                {{else}}
-                    <span data-action="openPack" data-key="classes">{{localize 'DAGGERHEART.GENERAL.multiclass'}}</span>
-                {{/if}}
-                <span class="dot">•</span>
-                {{#if document.system.multiclass.subclass}}
-                    <span data-action="editDoc" data-item-uuid="{{document.system.multiclass.subclass.uuid}}">{{document.system.multiclass.subclass.name}}</span>
-                {{else}}
-                    <span class="missing-header-feature" data-action="openPack" data-key="subclasses">{{localize 'TYPES.Item.subclass'}}</span>
-                {{/if}}
+    <div class="character-stats-row">
+        <div class="primary-stats">
+            <div class="stat-group hit-points">
+                <div class="stat-value">{{document.system.resources.hitPoints.value}} / {{document.system.resources.hitPoints.max}}</div>
+                <div class="stat-label">{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</div>
             </div>
-        {{/if}}
-
-
-    </div>
-
-    <div class="character-row">
-        <div class="hope-section">
-            <h4>{{localize "DAGGERHEART.GENERAL.hope"}}</h4>
-            {{#times document.system.resources.hope.max}}
-                <span class='hope-value' data-action='toggleHope' data-value="{{add this 1}}">
-                    {{#if (gte ../document.system.resources.hope.value (add this 1))}}
-                        <i class='fa-solid fa-diamond'></i>
-                    {{else}}
-                        <i class='fa-regular fa-circle'></i>
-                    {{/if}}
-                </span>
-            {{/times}}
+            <div class="stat-group stress">
+                <div class="stat-value">{{document.system.resources.stress.value}} / {{document.system.resources.stress.max}}</div>
+                <div class="stat-label">{{localize "DAGGERHEART.GENERAL.stress"}}</div>
+            </div>
+            <div class="stat-group hope">
+                <div class="hope-diamonds">
+                    {{#times document.system.resources.hope.max}}
+                        <span class='hope-value' data-action='toggleHope' data-value="{{add this 1}}">
+                            {{#if (gte ../document.system.resources.hope.value (add this 1))}}
+                                <i class='fa-solid fa-diamond'></i>
+                            {{else}}
+                                <i class='fa-regular fa-circle'></i>
+                            {{/if}}
+                        </span>
+                    {{/times}}
+                </div>
+                <div class="stat-label">{{localize "DAGGERHEART.GENERAL.hope"}}</div>
+            </div>
+            <div class="stat-group armor">
+                <div class="stat-value">{{#if document.system.armor.system.marks}}{{document.system.armor.system.marks.value}} / {{document.system.armorScore}}{{else}}-{{/if}}</div>
+                <div class="stat-label">{{localize "DAGGERHEART.GENERAL.armorSlots"}}</div>
+            </div>
         </div>
+        
         {{#if document.system.class.value}}
             <div class="domains-section">
                 {{#each document.system.domainData as |data|}}
-                    <div class="domain">
+                    <div class="domain-badge">
                         <img src="{{data.src}}" alt="" data-tooltip="{{data.label}}" />
                     </div>
                 {{/each}}
             </div>
         {{/if}}
-        <div class="downtime-section">
+        
+        <div class="utility-actions">
             <button type="button" data-action="useDowntime" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
                 <i class="fa-solid fa-utensils"></i>
             </button>
@@ -104,22 +124,30 @@
         </div>
     </div>
 
-    <div class="character-traits">
+    <div class="character-attributes">
         {{#each this.attributes as |attribute key|}} 
-            <div class="trait" data-tooltip="<b>{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.name') }}:</b><br>{{#each attribute.verbs}}{{this}}<br>{{/each}}" data-action="rollAttribute" data-attribute="{{key}}" data-value="{{attribute.value}}">
-                <div class="trait-name"> 
-                    <span>{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.short')}}</span>
+            <div class="attribute-badge" data-tooltip="<b>{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.name') }}:</b><br>{{#each attribute.verbs}}{{this}}<br>{{/each}}" data-action="rollAttribute" data-attribute="{{key}}" data-value="{{attribute.value}}">
+                <div class="attribute-icon">
+                    {{#if (eq key 'agility')}}<i class="fa-solid fa-person-running"></i>{{/if}}
+                    {{#if (eq key 'strength')}}<i class="fa-solid fa-dumbbell"></i>{{/if}}
+                    {{#if (eq key 'finesse')}}<i class="fa-solid fa-hand-sparkles"></i>{{/if}}
+                    {{#if (eq key 'instinct')}}<i class="fa-solid fa-eye"></i>{{/if}}
+                    {{#if (eq key 'presence')}}<i class="fa-solid fa-heart"></i>{{/if}}
+                    {{#if (eq key 'knowledge')}}<i class="fa-solid fa-brain"></i>{{/if}}
+                </div>
+                <div class="attribute-value">
+                    {{#if (gt attribute.value 0)}}
+                        +{{attribute.value}}
+                    {{else}}
+                        {{attribute.value}}
+                    {{/if}}
+                </div>
+                <div class="attribute-name">{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.short')}}</div>
+                <div class="attribute-tier">
                     {{#if attribute.tierMarked}}
                         <i class='fa-solid fa-circle'></i>
                     {{else}}
                         <i class='fa-regular fa-circle'></i>
-                    {{/if}}
-                </div>
-                <div class="trait-value">
-                    {{#if (gt attribute.value 0)}}
-                        <span>+{{attribute.value}}</span>
-                    {{else}}
-                        <span>{{attribute.value}}</span>
                     {{/if}}
                 </div>
             </div>
