@@ -1,0 +1,11 @@
+<div class="floating-sidebar-nav">
+    {{#each sections as |section|}}
+        <button type="button" 
+                class="nav-button {{#if (eq ../currentSection section.key)}}active{{/if}}" 
+                data-section="{{section.key}}" 
+                data-tooltip="{{section.label}}">
+            <i class="{{section.icon}}"></i>
+        </button>
+    {{/each}}
+</div>
+

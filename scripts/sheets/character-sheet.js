@@ -1,3 +1,5 @@
+import { FloatingSheetNavigation } from '../applications/floating-sheet-navigation.js';
+
 export function createDaggerheartPlusCharacterSheet() {
   const BaseCharacterSheet = game.system.api?.applications?.sheets?.actors?.Character || foundry.applications.sheets.ActorSheetV2;
   
@@ -39,8 +41,74 @@ export function createDaggerheartPlusCharacterSheet() {
       }
     };
 
+    constructor(options = {}) {
+      super(options);
+      this.currentSection = 'features';
+      this.floatingNav = null;
+    }
+
     get title() {
       return `${this.document.name} [DH+]`;
+    }
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+      await this._createFloatingNavigation();
+      this._showSection(this.currentSection);
+    }
+
+    async _createFloatingNavigation() {
+      if (this.floatingNav) {
+        await this.floatingNav.close();
+      }
+      
+      this.floatingNav = new FloatingSheetNavigation(this);
+      await this.floatingNav.render(true);
+    }
+
+    _switchToSection(sectionName) {
+      if (this.currentSection === sectionName) return;
+      
+      this.currentSection = sectionName;
+      this._showSection(sectionName);
+      
+      if (this.floatingNav) {
+        this.floatingNav.setActiveSection(sectionName);
+      }
+    }
+
+    _showSection(sectionName) {
+      const allSections = ['features', 'loadout', 'inventory', 'biography', 'effects'];
+      const bodyElement = this.element.querySelector('.sheet-body');
+      
+      if (!bodyElement) return;
+
+      allSections.forEach(section => {
+        const sectionElement = bodyElement.querySelector(`[data-tab="${section}"]`) || 
+                              bodyElement.querySelector(`.${section}-content`) ||
+                              bodyElement.querySelector(`#${section}`);
+        
+        if (sectionElement) {
+          sectionElement.style.display = section === sectionName ? 'block' : 'none';
+        }
+      });
+
+      const activeContent = bodyElement.querySelector(`[data-tab="${sectionName}"]`) || 
+                           bodyElement.querySelector(`.${sectionName}-content`) ||
+                           bodyElement.querySelector(`#${sectionName}`);
+      
+      if (activeContent) {
+        activeContent.style.display = 'block';
+      }
+    }
+
+    async close(options = {}) {
+      if (this.floatingNav) {
+        await this.floatingNav.close();
+        this.floatingNav = null;
+      }
+      
+      return super.close(options);
     }
   };
 }

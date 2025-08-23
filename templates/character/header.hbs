@@ -154,9 +154,29 @@
         {{/each}}
     </div>
 
-    {{#> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs' showSettings=showSettings }}
-        {{#if ../showSettings}}
-            <button type="button" data-action="openSettings" data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"><i class="fa-solid fa-wrench"></i></button>
-        {{/if}}
-    {{/'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
+    <div class="floating-nav-container">
+        <nav class="floating-sidebar-nav">
+            <button type="button" class="nav-button" data-section="features" data-tooltip="Features">
+                <i class="fa-solid fa-star"></i>
+            </button>
+            <button type="button" class="nav-button" data-section="loadout" data-tooltip="Loadout">
+                <i class="fa-solid fa-shield-halved"></i>
+            </button>
+            <button type="button" class="nav-button" data-section="inventory" data-tooltip="Inventory">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+            <button type="button" class="nav-button" data-section="biography" data-tooltip="Biography">
+                <i class="fa-solid fa-user"></i>
+            </button>
+            <button type="button" class="nav-button" data-section="effects" data-tooltip="Effects">
+                <i class="fa-solid fa-sparkles"></i>
+            </button>
+            {{#if ../showSettings}}
+                <div class="nav-divider"></div>
+                <button type="button" class="nav-button settings-button" data-action="openSettings" data-tooltip="Settings">
+                    <i class="fa-solid fa-wrench"></i>
+                </button>
+            {{/if}}
+        </nav>
+    </div>
 </header>
