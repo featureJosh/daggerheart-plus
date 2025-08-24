@@ -1,7 +1,4 @@
-.daggerheart-plus.sheet.character {
-  min-width: 850px;
-  min-height: 800px;
-}
+
 
 .daggerheart-plus.sheet.character form {
   display: grid;
@@ -56,6 +53,7 @@
 .daggerheart-plus.sheet.character .character-header-modern .header-top-portrait img {
   width: 140px;
   height: 100%;
+  object-fit: cover;
   border-radius: 8px;
   border: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);

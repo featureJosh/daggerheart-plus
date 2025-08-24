@@ -1,11 +1,16 @@
+import { CounterUI } from './applications/counter-ui.js';
+import { TokenCounterUI } from './applications/token-counter-ui.js';
+
 const MODULE_ID = 'daggerheart-plus';
 const SYSTEM_ID = 'daggerheart';
 
 Hooks.once('init', () => {
   console.log('Daggerheart Plus | Initializing module');
+  
+
 });
 
-Hooks.once('ready', () => {
+Hooks.once('ready', async () => {
   console.log('Daggerheart Plus | Module ready - creating enhanced sheets');
   
   const documentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
@@ -138,6 +143,36 @@ Hooks.once('ready', () => {
   
   console.log('Daggerheart Plus | Enhanced sheets registered successfully');
   
+  setTimeout(async () => {
+    const fearTracker = new CounterUI();
+    await fearTracker.initialize();
+    
+    const tokenCounter = new TokenCounterUI();
+    await tokenCounter.initialize();
+    
+    window.daggerheartPlus = {
+      fearTracker,
+      tokenCounter
+    };
+    
+    console.log('Daggerheart Plus | Counter systems initialized');
+    
+    try {
+      const currentAppearance = game.settings.get('daggerheart', 'Appearance');
+      if (currentAppearance && currentAppearance.displayFear !== 'hide') {
+        console.log('Daggerheart Plus | Hiding system fear tracker');
+        const newAppearance = { ...currentAppearance, displayFear: 'hide' };
+        await game.settings.set('daggerheart', 'Appearance', newAppearance);
+        console.log('Daggerheart Plus | System fear tracker hidden');
+        if (game.user.isGM) {
+          ui.notifications.info('Daggerheart Plus | System fear tracker hidden - using custom tracker instead');
+        }
+      }
+    } catch (error) {
+      console.warn('Daggerheart Plus | Could not hide system fear tracker:', error);
+    }
+  }, 1000);
+  
   if (game.user.isGM) {
     ui.notifications.info('Daggerheart Plus module loaded successfully!');
   }
@@ -146,6 +181,39 @@ Hooks.once('ready', () => {
 Hooks.on('renderActorSheet', (app, html, data) => {
   if (app.constructor.name.startsWith('DaggerheartPlus')) {
     console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
+  }
+});
+
+let originalFearDisplay = null;
+
+Hooks.once('ready', async () => {
+  try {
+    const currentAppearance = game.settings.get('daggerheart', 'Appearance');
+    if (currentAppearance && currentAppearance.displayFear) {
+      originalFearDisplay = currentAppearance.displayFear;
+      console.log('Daggerheart Plus | Stored original fear display setting:', originalFearDisplay);
+    }
+  } catch (error) {
+    console.warn('Daggerheart Plus | Could not store original fear display setting:', error);
+  }
+});
+
+Hooks.once('disable', async () => {
+  if (originalFearDisplay && originalFearDisplay !== 'hide') {
+    try {
+      console.log('Daggerheart Plus | Restoring original fear display setting:', originalFearDisplay);
+      const currentAppearance = game.settings.get('daggerheart', 'Appearance');
+      if (currentAppearance) {
+        const newAppearance = { ...currentAppearance, displayFear: originalFearDisplay };
+        await game.settings.set('daggerheart', 'Appearance', newAppearance);
+        console.log('Daggerheart Plus | Original fear display setting restored');
+        if (game.user.isGM) {
+          ui.notifications.info(`Daggerheart Plus | Fear display setting restored to: ${originalFearDisplay}`);
+        }
+      }
+    } catch (error) {
+      console.warn('Daggerheart Plus | Could not restore original fear display setting:', error);
+    }
   }
 });
 
