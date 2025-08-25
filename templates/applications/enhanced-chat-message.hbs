@@ -1,0 +1,138 @@
+<li class="chat-message message flexcol duality {{rollOutcome}}" data-message-id="{{messageId}}">
+  <header class="message-header flexrow">
+    <div class="message-header-main">
+      <img class="actor-img" src="{{actorImg}}" alt="{{actorName}}">
+      <div class="message-sub-header-container">
+        <h4 class="actor-name">{{actorName}}</h4>
+        {{#if rollType}}
+        <span class="roll-type-indicator {{rollOutcome}}">{{rollType}}</span>
+        {{/if}}
+      </div>
+    </div>
+    <div class="message-header-metadata">
+      <span class="message-metadata">
+        <time class="message-timestamp">{{timestamp}}</time>
+        {{#if showDelete}}
+        <a aria-label="Delete" class="message-delete" data-action="deleteMessage">
+          <i class="fa-solid fa-trash"></i>
+        </a>
+        {{/if}}
+      </span>
+    </div>
+  </header>
+
+  <div class="message-content">
+    <div class="chat-roll">
+      <div class="roll-part-header">
+        <span class="roll-title">{{rollTitle}}</span>
+      </div>
+
+      <div class="roll-part roll-section">
+        <div class="roll-part-content">
+          <div class="roll-result-container">
+            <span class="roll-result-value {{rollOutcome}}">{{rollResult}}</span>
+            <span class="roll-result-desc">
+              <span class="result-description {{rollOutcome}}">{{rollDescription}}</span>
+            </span>
+          </div>
+
+          {{#if rollEffects}}
+          <div class="roll-effects">
+            {{#each rollEffects}}
+            <p class="roll-effect {{type}}-effect">{{text}}</p>
+            {{/each}}
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="dice-roll expanded" data-action="expandRoll">
+          <div class="roll-part-header">
+            <div>
+              <span class="formula-toggle">Formula</span>
+            </div>
+          </div>
+
+          <div class="roll-part-content dice-result">
+            <div class="dice-tooltip">
+              {{#if isDuality}}
+              <div class="reroll-instruction">
+                <i class="fas fa-info-circle"></i> 
+                Click on the Hope/Fear dice to reroll.
+              </div>
+              {{/if}}
+
+              <div class="wrapper">
+                <div class="roll-dice">
+                  {{#if hopeDie}}
+                  <div class="roll-die hope-die-container">
+                    <label class="die-label hope-flavor">Hope</label>
+                    <div class="dice d12 color-hope reroll-button {{#if isDuality}}clickable-die{{/if}}" 
+                         data-die-index="0" 
+                         data-type="hope" 
+                         data-flavor="Hope"
+                         data-tooltip="{{#if isDuality}}Reroll Hope{{/if}}">
+                      {{hopeDie.result}}
+                      {{#if hopeDie.rerolled}}
+                      <span class="dice-rerolled">
+                        <i class="fas fa-redo"></i>
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{/if}}
+
+                  {{#if fearDie}}
+                  <div class="roll-die fear-die-container has-plus">
+                    <label class="die-label fear-flavor">Fear</label>
+                    <div class="dice d12 color-fear reroll-button {{#if isDuality}}clickable-die{{/if}}" 
+                         data-die-index="1" 
+                         data-type="fear" 
+                         data-flavor="Fear"
+                         data-tooltip="{{#if isDuality}}Reroll Fear{{/if}}">
+                      {{fearDie.result}}
+                      {{#if fearDie.rerolled}}
+                      <span class="dice-rerolled">
+                        <i class="fas fa-redo"></i>
+                      </span>
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{/if}}
+
+                  {{#if modifierDice}}
+                  {{#each modifierDice}}
+                  <div class="roll-die modifier-die-container">
+                    <label class="die-label">{{label}}</label>
+                    <div class="dice {{dieType}} {{colorClass}}">
+                      {{result}}
+                    </div>
+                  </div>
+                  {{/each}}
+                  {{/if}}
+                </div>
+              </div>
+
+              <div class="roll-formula">{{rollFormula}}</div>
+
+              {{#if rollDifficulty}}
+              <div class="roll-difficulty {{#if isSuccess}}success{{else}}failure{{/if}}">
+                Target: {{rollDifficulty}}
+              </div>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{#if showRollButtons}}
+      <div class="roll-buttons">
+        {{#each rollButtons}}
+        <button class="roll-action-button {{class}}" data-action="{{action}}" {{#if disabled}}disabled{{/if}}>
+          <i class="{{icon}}"></i> {{label}}
+        </button>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</li>

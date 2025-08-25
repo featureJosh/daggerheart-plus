@@ -1,72 +1,88 @@
 export class CounterUI {
     constructor() {
         this.element = null;
-        this.refreshInterval = null;
         this.lastKnownValue = 0;
     }
 
     async initialize() {
-        console.log('Fear Tracker | Initializing...');
+        console.log('DH+ Fear Tracker | Initializing...');
         
-        Hooks.on('settingChange', (moduleId, key, value) => {
-            if (moduleId === 'daggerheart' && key === 'ResourcesFear') {
-                console.log('Fear Tracker | Setting changed:', value);
-                this.updateDisplay();
-            }
-        });
-
-        // Also listen for any game setting changes as a backup
-        Hooks.on('updateSetting', (setting, value) => {
+        Hooks.on('updateSetting', (setting) => {
             if (setting.key === 'ResourcesFear' && setting.namespace === 'daggerheart') {
-                console.log('Fear Tracker | UpdateSetting hook:', value);
                 this.updateDisplay();
             }
         });
-
-        // Try rendering immediately and on ready
-        setTimeout(() => this.render(), 1000);
-        Hooks.once('ready', () => {
-            console.log('Fear Tracker | Ready hook triggered');
-            this.render();
+        
+        if (game.socket) {
+            console.log('DH+ Fear Tracker | Setting up socket listener for module.daggerheart-plus');
+            game.socket.on('module.daggerheart-plus', (data) => {
+                console.log('DH+ Fear Tracker | Received socket event:', data);
+                if (data.action === 'fearChanged') {
+                    console.log('DH+ Fear Tracker | Processing fear change:', data);
+                    this.updateDisplay();
+                    this.triggerChangeAnimation(data.increased);
+                }
+            });
             
-            // Start periodic display refresh to ensure sync
-            this.startPeriodicRefresh();
-        });
+            console.log('DH+ Fear Tracker | Testing socket by emitting test event');
+            setTimeout(() => {
+                game.socket.emit('module.daggerheart-plus', {
+                    action: 'fearChanged',
+                    value: 999,
+                    increased: true
+                });
+                console.log('DH+ Fear Tracker | Test event emitted');
+            }, 2000);
+        } else {
+            console.warn('DH+ Fear Tracker | No game.socket available');
+        }
     }
 
     get fearValue() {
         try {
             return game.settings.get('daggerheart', 'ResourcesFear') || 0;
         } catch (error) {
-            console.warn('Fear Tracker | Error getting fear value:', error);
+            console.warn('DH+ Fear Tracker | Error getting fear value:', error);
             return 0;
         }
     }
 
+    get maxFear() {
+        try {
+            return game.settings.get('daggerheart', 'Homebrew')?.maxFear || 12;
+        } catch (error) {
+            return 12;
+        }
+    }
+
     get canModify() {
-        return game.user.isGM || game.user.hasRole('ASSISTANT');
+        return game.user.isGM;
     }
 
     async render() {
-        console.log('Fear Tracker | Attempting to render...');
+        console.log('DH+ Fear Tracker | Rendering...');
         
         if (this.element) {
-            console.log('Fear Tracker | Removing existing element');
+            console.log('DH+ Fear Tracker | Removing existing element');
             this.element.remove();
         }
 
         const hotbar = document.querySelector('#ui-bottom #hotbar') || document.querySelector('#hotbar');
-        console.log('Fear Tracker | Hotbar found:', !!hotbar);
+        console.log('DH+ Fear Tracker | Hotbar found:', !!hotbar);
         
         if (!hotbar) {
-            console.log('Fear Tracker | Hotbar not found, retrying in 1s');
+            console.log('DH+ Fear Tracker | Hotbar not found, retrying in 1s');
             setTimeout(() => this.render(), 1000);
             return;
         }
 
-        const container = document.createElement('div');
-        container.id = 'counters-wrapper';
-        container.className = 'counters-wrapper';
+        let container = document.querySelector('#counters-wrapper');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'counters-wrapper';
+            container.className = 'counters-wrapper';
+            hotbar.parentNode.insertBefore(container, hotbar);
+        }
         
         this.element = document.createElement('div');
         this.element.id = 'counter-ui';
@@ -85,14 +101,11 @@ export class CounterUI {
         `;
 
         container.appendChild(this.element);
-        hotbar.parentNode.insertBefore(container, hotbar);
         
-        console.log('Fear Tracker | Element created and inserted. Current fear value:', this.fearValue);
-        console.log('Fear Tracker | Can modify:', this.canModify);
+        console.log('DH+ Fear Tracker | Element created. Current fear value:', this.fearValue);
+        console.log('DH+ Fear Tracker | Can modify:', this.canModify);
         
-        // Initialize the last known value for periodic checking
         this.lastKnownValue = this.fearValue;
-
         this.setupEventListeners();
     }
 
@@ -113,73 +126,142 @@ export class CounterUI {
     }
 
     async changeFear(amount) {
+        console.log('DH+ Fear Tracker | changeFear called with amount:', amount);
         const currentValue = this.fearValue;
-        const newValue = Math.max(0, Math.min(12, currentValue + amount));
+        const newValue = Math.max(0, Math.min(this.maxFear, currentValue + amount));
         
-        console.log(`Fear Tracker | Changing fear from ${currentValue} to ${newValue}`);
+        console.log('DH+ Fear Tracker | Fear values:', { currentValue, newValue, maxFear: this.maxFear });
+        
+        if (currentValue === newValue) return;
         
         try {
-            if (ui.resources && typeof ui.resources.updateFear === 'function') {
-                await ui.resources.updateFear(newValue);
-            } else if (game.system?.api?.applications?.ui?.DhFearTracker) {
-                const FearTracker = game.system.api.applications.ui.DhFearTracker;
-                const tracker = new FearTracker();
-                await tracker.updateFear(newValue);
-            } else {
-                await game.settings.set('daggerheart', 'ResourcesFear', newValue);
-            }
-            
-            // Force update display immediately
-            setTimeout(() => this.updateDisplay(), 100);
-            
+            console.log('DH+ Fear Tracker | Forcing use of our emitAsGM method');
+            await this.emitAsGM('DhGMUpdateFear', newValue);
         } catch (error) {
-            console.error('Fear Tracker | Error updating fear:', error);
-            await game.settings.set('daggerheart', 'ResourcesFear', newValue);
-            // Force update display even on error
-            setTimeout(() => this.updateDisplay(), 100);
+            console.error('DH+ Fear Tracker | Error updating fear:', error);
+        }
+    }
+
+    async emitAsGM(eventName, update) {
+        console.log('DH+ Fear Tracker | emitAsGM called:', { eventName, update, isGM: game.user.isGM });
+        
+        if (!game.user.isGM) {
+            console.log('DH+ Fear Tracker | Non-GM, sending socket event');
+            return await game.socket.emit('module.daggerheart-plus', {
+                action: 'fearChanged',
+                value: update,
+                increased: update > this.lastKnownValue
+            });
+        } else {
+            console.log('DH+ Fear Tracker | GM, updating setting and broadcasting');
+            await game.settings.set('daggerheart', 'ResourcesFear', update);
+            console.log('DH+ Fear Tracker | About to emit socket event');
+            try {
+                game.socket.emit('module.daggerheart-plus', {
+                    action: 'fearChanged',
+                    value: update,
+                    increased: update > this.lastKnownValue
+                });
+                console.log('DH+ Fear Tracker | Socket event emitted successfully');
+            } catch (error) {
+                console.error('DH+ Fear Tracker | Error emitting socket event:', error);
+            }
+            return update;
         }
     }
 
     updateDisplay() {
         if (!this.element) {
-            console.log('Fear Tracker | updateDisplay: No element found');
+            console.log('DH+ Fear Tracker | updateDisplay: No element found');
             return;
         }
         
         const valueElement = this.element.querySelector('.counter-value');
         const newValue = this.fearValue;
+        const oldValue = this.lastKnownValue;
         
-        console.log('Fear Tracker | updateDisplay: Updating to', newValue);
+        console.log('DH+ Fear Tracker | updateDisplay: Updating to', newValue);
         
         if (valueElement) {
             valueElement.textContent = newValue;
-            console.log('Fear Tracker | Display updated successfully');
+            
+            if (newValue !== oldValue) {
+                this.triggerChangeAnimation(newValue > oldValue);
+            }
+            
+            this.lastKnownValue = newValue;
+            console.log('DH+ Fear Tracker | Display updated successfully');
         } else {
-            console.log('Fear Tracker | updateDisplay: No value element found');
+            console.warn('DH+ Fear Tracker | Value element not found, re-rendering');
+            this.render();
         }
     }
 
-    startPeriodicRefresh() {
-        // Check for changes every 2 seconds as a backup
-        this.refreshInterval = setInterval(() => {
-            const currentValue = this.fearValue;
-            if (currentValue !== this.lastKnownValue) {
-                console.log(`Fear Tracker | Periodic check: value changed from ${this.lastKnownValue} to ${currentValue}`);
-                this.lastKnownValue = currentValue;
-                this.updateDisplay();
-            }
-        }, 2000);
+    triggerChangeAnimation(isIncrease) {
+        if (!this.element) return;
+        
+        const container = this.element;
+        const valueElement = this.element.querySelector('.counter-value');
+        
+        container.classList.remove('fear-changed');
+        valueElement.classList.remove('fear-value-flash');
+        
+        setTimeout(() => {
+            container.classList.add('fear-changed');
+            valueElement.classList.add('fear-value-flash');
+            
+            this.createParticleEffect(isIncrease);
+            
+            setTimeout(() => {
+                container.classList.remove('fear-changed');
+                valueElement.classList.remove('fear-value-flash');
+            }, 800);
+        }, 10);
+    }
+
+    createParticleEffect(isIncrease) {
+        if (!this.element) return;
+        
+        const container = this.element;
+        const rect = container.getBoundingClientRect();
+        
+        for (let i = 0; i < 3; i++) {
+            const particle = document.createElement('div');
+            particle.innerHTML = isIncrease ? '☠️' : '💨';
+            particle.style.position = 'fixed';
+            particle.style.left = `${rect.left + rect.width / 2}px`;
+            particle.style.top = `${rect.top + rect.height / 2}px`;
+            particle.style.fontSize = '1.2em';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '10001';
+            particle.className = isIncrease ? 'skull-particle' : 'smoke-particle';
+            
+            const angle = (Math.PI * 2 / 3) * i + (isIncrease ? 0 : Math.PI);
+            const distance = 60 + Math.random() * 40;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, isIncrease ? 2000 : 3000);
+        }
     }
 
     dispose() {
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
-            this.refreshInterval = null;
-        }
-        
         if (this.element) {
             this.element.remove();
             this.element = null;
+        }
+        
+        if (game.socket) {
+            game.socket.off('module.daggerheart-plus');
         }
     }
 }

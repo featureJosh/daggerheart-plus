@@ -10,6 +10,7 @@ export class TokenCounterUI {
         this.armorSlots = { current: 0, max: 0 };
         this.characterStress = { current: 0, max: 0 };
         this.actorType = null;
+
     }
 
     async initialize() {
@@ -25,17 +26,25 @@ export class TokenCounterUI {
 
         Hooks.on('updateActor', (actor, changes) => {
             if (this.selectedToken && this.selectedToken.actor.id === actor.id) {
-                this.updateFromToken(this.selectedToken);
-                this.render();
+                console.log('Token Counter | Actor updated, refreshing display');
+                setTimeout(() => {
+                    this.updateFromToken(this.selectedToken);
+                    this.render();
+                }, 50);
             }
         });
 
         Hooks.on('updateToken', (token, changes) => {
             if (this.selectedToken && this.selectedToken.id === token.id) {
-                this.updateFromToken(this.selectedToken);
-                this.render();
+                console.log('Token Counter | Token updated, refreshing display');
+                setTimeout(() => {
+                    this.updateFromToken(this.selectedToken);
+                    this.render();
+                }, 50);
             }
         });
+
+
 
         if (canvas.tokens.controlled.length > 0) {
             this.setSelectedToken(canvas.tokens.controlled[0]);
@@ -241,6 +250,8 @@ export class TokenCounterUI {
             await actor.update({ [updatePath]: newValue });
         }
     }
+
+
 
     show() {
         if (!this.element) {

@@ -108,6 +108,7 @@
         inset 0 0 20px rgba(59, 117, 194, 0.1);
     overflow: hidden;
     position: relative;
+    order: 3;
 }
 
 .fear-tracker::before {
@@ -215,6 +216,7 @@
 
 #token-hp-counter {
     margin-right: 0.5em;
+    order: 1;
 }
 
 #token-hp-counter .counter-value {
@@ -223,10 +225,20 @@
 
 #token-hope-counter {
     margin-left: 0.5em;
+    order: 2;
 }
 
 #token-hope-counter .counter-value {
     min-width: 60px;
+}
+
+#token-armor-slots-counter {
+    order: 4;
+}
+
+#token-stress-counter,
+#token-character-stress-counter {
+    order: 5;
 }
 
 @keyframes triangleFloat {
@@ -383,6 +395,8 @@
 .smoke-particle {
     animation: smokeFloat 3s ease-out forwards;
 }
+
+
 
 .faded-ui {
     opacity: 0.9;

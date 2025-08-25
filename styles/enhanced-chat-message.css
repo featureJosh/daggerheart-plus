@@ -1,0 +1,617 @@
+@import url('./base.css');
+
+.chat-message.duality {
+  --text-color: #efe6d8;
+  --bg-color: rgba(24, 22, 46, 0.4);
+  
+  margin: 8px 6px;
+  padding: 0.75em 1em;
+  font-size: 13px;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  color: var(--text-color);
+  background: rgba(11, 10, 19, 0.84);
+  border: 1px solid #6d6795;
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.chat-message.duality.hope {
+  --text-color: #f3c267;
+  --bg-color: rgba(243, 194, 103, 0.4);
+  
+  background: linear-gradient(135deg, 
+    rgba(96, 69, 20, 0.8) 0%, 
+    rgb(206, 134, 41) 100%);
+  border: 1px solid rgba(243, 194, 103, 0.8);
+  box-shadow: 0 2px 8px rgba(243, 194, 103, 0.3);
+}
+
+.chat-message.duality.hope.whisper {
+  background: linear-gradient(135deg, 
+    rgba(96, 69, 20, 0.8) 0%, 
+    rgb(206, 134, 41) 100%);
+  border: 1px solid rgba(243, 194, 103, 0.7);
+}
+
+.chat-message.duality.fear {
+  --text-color: #8f87ee;
+  --bg-color: rgba(143, 135, 238, 0.4);
+  
+  background: linear-gradient(135deg, 
+    rgba(30, 24, 77, 0.8) 0%, 
+    rgba(63, 81, 181, 0.6) 100%);
+  border: 1px solid rgba(63, 81, 181, 0.8);
+  box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3);
+}
+
+.chat-message.duality.fear.whisper {
+  background: linear-gradient(135deg, 
+    rgba(30, 24, 77, 0.7) 0%, 
+    rgba(63, 81, 181, 0.5) 100%);
+  border: 1px solid rgba(63, 81, 181, 0.7);
+}
+
+.chat-message.duality.critical {
+  --text-color: #a778b1;
+  --bg-color: rgba(167, 120, 177, 0.4);
+  
+  background: linear-gradient(135deg, 
+    rgba(67, 0, 112, 0.8) 0%, 
+    rgba(167, 120, 177, 0.6) 100%);
+  border: 1px solid rgba(167, 120, 177, 0.8);
+  box-shadow: 0 2px 8px rgba(167, 120, 177, 0.3);
+}
+
+.message-header {
+  line-height: 20px;
+  color: var(--text-color);
+  font-weight: 300;
+  font-size: var(--font-size-12, 12px);
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-header-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.actor-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--text-color);
+  object-fit: cover;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.message-sub-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actor-name {
+  margin: 0;
+  color: #4fb3d9;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.roll-type-indicator {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.roll-type-indicator.hope {
+  background: rgba(243, 194, 103, 0.2);
+  color: #f3c267;
+  border: 1px solid rgba(243, 194, 103, 0.5);
+}
+
+.roll-type-indicator.fear {
+  background: rgba(143, 135, 238, 0.2);
+  color: #8f87ee;
+  border: 1px solid rgba(143, 135, 238, 0.5);
+}
+
+.roll-type-indicator.critical {
+  background: rgba(167, 120, 177, 0.2);
+  color: #a778b1;
+  border: 1px solid rgba(167, 120, 177, 0.5);
+}
+
+.message-header-metadata {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.message-timestamp {
+  font-size: 10px;
+  opacity: 0.7;
+  color: var(--text-color);
+}
+
+.message-delete {
+  color: #d04747;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.message-delete:hover {
+  opacity: 1;
+  background: rgba(208, 71, 71, 0.2);
+  transform: scale(1.1);
+}
+
+.chat-roll {
+  font-size: var(--font-size-12, 12px);
+  padding: 0 10px;
+}
+
+.roll-part-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  color: var(--text-color);
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.roll-part-header span,
+.roll-part-header .formula-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: capitalize;
+  padding: 0 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.roll-part-header:before,
+.roll-part-header:after {
+  content: ' ';
+  height: 1px;
+}
+
+.roll-part-header:before {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--text-color) 100%);
+}
+
+.roll-part-header:after {
+  background: linear-gradient(90deg, var(--text-color) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.roll-part-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.roll-result-container {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  color: var(--text-color);
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  line-height: 0.75;
+  gap: 10px;
+}
+
+.roll-result-value {
+  font-size: 28px;
+  text-shadow: 0 0 8px currentColor;
+}
+
+.roll-result-value.hope {
+  color: #f3c267;
+  text-shadow: 0 0 12px rgba(243, 194, 103, 0.8);
+}
+
+.roll-result-value.fear {
+  color: #8f87ee;
+  text-shadow: 0 0 12px rgba(143, 135, 238, 0.8);
+}
+
+.roll-result-value.critical {
+  color: #a778b1;
+  text-shadow: 0 0 12px rgba(167, 120, 177, 0.8);
+}
+
+.roll-result-desc {
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.result-description.hope {
+  color: #f3c267;
+}
+
+.result-description.fear {
+  color: #8f87ee;
+}
+
+.result-description.critical {
+  color: #a778b1;
+}
+
+.roll-effects {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.roll-effect {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #6c6a85;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.roll-effect.hope-effect {
+  color: #f3c267;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(243, 194, 103, 0.6);
+  background: rgba(243, 194, 103, 0.1);
+  border: 1px solid rgba(243, 194, 103, 0.3);
+}
+
+.roll-effect.fear-effect {
+  color: #8f87ee;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(143, 135, 238, 0.6);
+  background: rgba(143, 135, 238, 0.1);
+  border: 1px solid rgba(143, 135, 238, 0.3);
+}
+
+.dice-tooltip {
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reroll-instruction {
+  font-size: 0.9em;
+  color: #6c6a85;
+  font-style: italic;
+  margin-bottom: 12px;
+  text-align: center;
+  padding: 6px 12px;
+  background: rgba(243, 194, 103, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(243, 194, 103, 0.3);
+}
+
+.reroll-instruction i {
+  margin-right: 6px;
+  color: #f3c267;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roll-dice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  flex-wrap: wrap;
+}
+
+.roll-die {
+  display: grid;
+  grid-template-areas:
+    '. a a'
+    'c b b';
+  gap: 6px;
+  align-items: center;
+  position: relative;
+}
+
+.roll-die.has-plus:before {
+  content: '+';
+  font-size: 20px;
+  grid-area: c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  color: var(--text-color);
+  font-weight: 700;
+}
+
+.die-label {
+  text-align: center;
+  grid-area: a;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.die-label.hope-flavor {
+  color: #f3c267;
+  text-shadow: 0 0 6px rgba(243, 194, 103, 0.6);
+}
+
+.die-label.fear-flavor {
+  color: #8f87ee;
+  text-shadow: 0 0 6px rgba(143, 135, 238, 0.6);
+}
+
+.dice {
+  position: relative;
+  height: 2.5rem;
+  aspect-ratio: 1;
+  font-size: 1.2rem;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 2px black;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: b;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+
+.dice:before {
+  content: ' ';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  mask: var(--svg-die) no-repeat center;
+  mask-size: contain;
+  background: linear-gradient(139.01deg, #efe6d8 3.51%, #372e1f 96.49%);
+}
+
+.dice.d4:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d4.svg');
+}
+.dice.d6:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d6.svg');
+}
+.dice.d8:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d8.svg');
+}
+.dice.d10:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d10.svg');
+}
+.dice.d12:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d12.svg');
+}
+.dice.d20:before {
+  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d20.svg');
+}
+
+.dice.color-hope:before {
+  background: linear-gradient(139.01deg, #f3c267 3.51%, #4c3407 96.49%);
+}
+
+.dice.color-fear:before {
+  background: linear-gradient(151.21deg, #352ab2 7.21%, #18162e 92.79%);
+}
+
+.dice.color-adv:before {
+  background: linear-gradient(139.01deg, #40a640 3.51%, #011b01 96.49%);
+}
+
+.dice.color-dis:before {
+  background: linear-gradient(139.01deg, #e54e4e 3.51%, #3c0000 82.19%);
+}
+
+.clickable-die {
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.clickable-die:hover {
+  transform: scale(1.2) rotate(8deg);
+  filter: brightness(1.3) saturate(1.4);
+}
+
+.clickable-die:active {
+  transform: scale(1.1) rotate(4deg);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.clickable-die.hope-die:hover {
+  filter: brightness(1.4) saturate(1.5) 
+          drop-shadow(0 0 12px rgba(243, 194, 103, 1));
+}
+
+.clickable-die.fear-die:hover {
+  filter: brightness(1.4) saturate(1.5) 
+          drop-shadow(0 0 12px rgba(143, 135, 238, 1));
+}
+
+.clickable-die.rerolling {
+  cursor: wait;
+  opacity: 0.7;
+  animation: rerollingPulse 0.5s ease-in-out infinite;
+}
+
+.clickable-die.rerolled {
+  animation: diceReroll 1s ease-out;
+}
+
+.dice-rerolled {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 10px;
+  z-index: 2;
+  color: #f3c267;
+  filter: drop-shadow(0 0 3px black);
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roll-formula {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-radius: 6px;
+  padding: 8px 14px;
+  width: fit-content;
+  margin: 8px auto 0;
+  white-space: nowrap;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.roll-difficulty {
+  background-color: rgba(64, 166, 64, 0.2);
+  color: #40a640;
+  border: 1px solid #40a640;
+  border-radius: 6px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  margin-top: 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 4px rgba(64, 166, 64, 0.2);
+}
+
+.roll-difficulty.failure {
+  background-color: rgba(229, 78, 78, 0.2);
+  color: #e54e4e;
+  border-color: #e54e4e;
+}
+
+.dice-roll[data-action="expandRoll"] .formula-toggle:before,
+.dice-roll[data-action="expandRoll"] .formula-toggle:after {
+  content: '\f078';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.dice-roll.expanded[data-action="expandRoll"] .formula-toggle:before,
+.dice-roll.expanded[data-action="expandRoll"] .formula-toggle:after {
+  transform: rotate(180deg);
+}
+
+.roll-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.roll-action-button {
+  flex: 1;
+  padding: 10px 16px;
+  background: rgba(24, 22, 46, 0.6);
+  border: 1px solid rgba(243, 194, 103, 0.5);
+  border-radius: 8px;
+  color: #f3c267;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.roll-action-button:hover {
+  background: rgba(243, 194, 103, 0.1);
+  border-color: #f3c267;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(243, 194, 103, 0.3);
+}
+
+.roll-action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@keyframes rerollingPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes diceReroll {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  25% {
+    transform: rotateY(90deg) scale(1.1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.2);
+  }
+  75% {
+    transform: rotateY(270deg) scale(1.1);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1);
+  }
+}

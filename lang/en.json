@@ -50,6 +50,10 @@
   "DHP.Use": "Use",
   "DHP.Disabled": "Disabled",
   "DHP.Active": "Active",
-  "DHP.ComingSoon": "Coming soon..."
+  "DHP.ComingSoon": "Coming soon...",
+  "DHP.Settings.ExperimentalFeatures.Name": "Experimental Features",
+  "DHP.Settings.ExperimentalFeatures.Hint": "Enable experimental features that are still in development. These features may not work properly and are provided for testing purposes only.",
+  "DHP.Settings.ExperimentalFeatures.FearTracker.Name": "Fear Tracker (Non-Functional)",
+  "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "⚠️ EXPERIMENTAL: This feature is currently non-functional due to fundamental issues with the Daggerheart system's socket implementation. Enabling this will show a fear tracker UI that cannot synchronize across clients."
 }
 
