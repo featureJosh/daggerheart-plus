@@ -767,6 +767,119 @@
   transform: scale(1.1);
 }
 
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  align-items: center;
+  margin-bottom: 1em;
+  flex: 1;
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group > label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--dhp-text-light);
+  margin-bottom: 0.25em;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .resource-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group input {
+  width: 40px;
+  font-size: 16px;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid var(--dhp-border);
+  border-radius: 0.5em;
+  padding: 0.2em;
+  color: var(--dhp-text);
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-text {
+  color: var(--dhp-text-light);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  text-align: center;
+  line-height: 1.1;
+  margin: 0;
+  padding: 0 2px;
+  width: 35px;
+  height: auto;
+  word-break: break-all;
+  white-space: normal;
+  display: inline-block;
+  margin: 0 0.25em;
+  margin-bottom: 1.33em;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable:hover {
+  color: var(--dhp-primary);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable:active {
+  transform: scale(0.95);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display {
+  background: url('../../assets/DH-Arrow.png') no-repeat center center !important;
+  background-size: contain !important;
+  border: none !important;
+  width: 50px !important;
+  height: 50px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: white !important;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display:hover,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display:hover {
+  transform: scale(1.05);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display:active,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display:active {
+  transform: scale(0.98);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .trait-effects {
+  color: var(--dhp-text-light);
+  font-size: 0.75em;
+  text-decoration: none;
+  margin-top: 0.25em;
+}
+
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(230, 168, 0, 0.7); }
   70% { box-shadow: 0 0 0 15px rgba(230, 168, 0, 0); }

@@ -54,6 +54,18 @@
   "DHP.Settings.ExperimentalFeatures.Name": "Experimental Features",
   "DHP.Settings.ExperimentalFeatures.Hint": "Enable experimental features that are still in development. These features may not work properly and are provided for testing purposes only.",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Name": "Enable Fear Tracker",
-  "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "Enables a fear tracker UI that displays above the hotbar. The tracker integrates with the Daggerheart system to show and modify the current fear level."
+  "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "Enables a fear tracker UI that displays above the hotbar. The tracker integrates with the Daggerheart system to show and modify the current fear level.",
+  "Domain Abilities": "Domain Abilities",
+  "ITEM.TypeDomain": "Domain",
+  "ITEM.TypeClass": "Class",
+  "ITEM.TypeSubclass": "Subclass", 
+  "ITEM.TypeCommunity": "Community",
+  "ITEM.TypeAncestry": "Ancestry",
+  "DAGGERHEART.GENERAL.DamageThresholds.title": "Damage Thresholds",
+  "DAGGERHEART.GENERAL.DamageThresholds.mark1HP": "1HP",
+  "DAGGERHEART.GENERAL.DamageThresholds.mark2HP": "2HP",
+  "DAGGERHEART.GENERAL.DamageThresholds.mark3HP": "3HP",
+  "DAGGERHEART.GENERAL.DamageThresholds.major": "Major",
+  "DAGGERHEART.GENERAL.DamageThresholds.severe": "Severe"
 }
 
