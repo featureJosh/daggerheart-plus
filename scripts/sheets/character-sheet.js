@@ -1,6 +1,4 @@
 import { FloatingSheetNavigation } from '../applications/floating-sheet-navigation.js';
-import DomainAbilitySidebar from '../applications/domain-ability-sidebar.js';
-import HeaderLoadoutBar from '../applications/header-loadout-bar.js';
 
 export function createDaggerheartPlusCharacterSheet() {
   const BaseCharacterSheet = game.system.api?.applications?.sheets?.actors?.Character || foundry.applications.sheets.ActorSheetV2;
@@ -47,8 +45,6 @@ export function createDaggerheartPlusCharacterSheet() {
       super(options);
       this.currentSection = 'features';
       this.floatingNav = null;
-      this.domainSidebar = null;
-      this.headerLoadout = null;
     }
 
     get title() {
@@ -59,14 +55,6 @@ export function createDaggerheartPlusCharacterSheet() {
       await super._onRender(context, options);
       await this._createFloatingNavigation();
       this._showSection(this.currentSection);
-      
-      if (game.settings.get('daggerheart-plus', 'enableDomainSidebar')) {
-        this._renderDomainSidebar();
-      }
-      
-      if (game.settings.get('daggerheart-plus', 'enableHeaderLoadout')) {
-        this._renderHeaderLoadout();
-      }
     }
 
     async _createFloatingNavigation() {
@@ -76,24 +64,6 @@ export function createDaggerheartPlusCharacterSheet() {
       
       this.floatingNav = new FloatingSheetNavigation(this);
       await this.floatingNav.render(true);
-    }
-
-    _renderDomainSidebar() {
-      if (this.domainSidebar) {
-        this.domainSidebar.close();
-      }
-      
-      this.domainSidebar = new DomainAbilitySidebar(this.actor);
-      this.domainSidebar.render(true);
-    }
-
-    _renderHeaderLoadout() {
-      if (this.headerLoadout) {
-        this.headerLoadout.close();
-      }
-      
-      this.headerLoadout = new HeaderLoadoutBar(this.actor);
-      this.headerLoadout.render(true);
     }
 
     _switchToSection(sectionName) {
@@ -136,16 +106,6 @@ export function createDaggerheartPlusCharacterSheet() {
       if (this.floatingNav) {
         await this.floatingNav.close();
         this.floatingNav = null;
-      }
-      
-      if (this.domainSidebar) {
-        await this.domainSidebar.close();
-        this.domainSidebar = null;
-      }
-      
-      if (this.headerLoadout) {
-        await this.headerLoadout.close();
-        this.headerLoadout = null;
       }
       
       return super.close(options);

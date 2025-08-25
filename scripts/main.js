@@ -27,34 +27,6 @@ Hooks.once('init', () => {
       }
     }
   });
-
-  game.settings.register(MODULE_ID, 'enableDomainSidebar', {
-    name: 'Enable Domain Ability Sidebar',
-    hint: 'Show the domain ability sidebar for quick access to character abilities',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true
-  });
-
-  game.settings.register(MODULE_ID, 'enableHeaderLoadout', {
-    name: 'Enable Header Loadout Bar',
-    hint: 'Show the header loadout bar displaying key character items',
-    scope: 'client',
-    config: true,
-    type: Boolean,
-    default: true
-  });
-
-  game.settings.register(MODULE_ID, 'sidebarPreviewDelay', {
-    name: 'Sidebar Preview Delay (ms)',
-    hint: 'How long to wait before showing preview cards (350ms recommended)',
-    scope: 'client',
-    config: true,
-    type: Number,
-    range: { min: 100, max: 1000, step: 50 },
-    default: 350
-  });
   
   console.log('Daggerheart Plus | Module settings registered');
 });

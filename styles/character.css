@@ -846,7 +846,7 @@
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display {
-  background: url('../../assets/DH-Arrow.png') no-repeat center center !important;
+  background: url('assets/containers/DH-Arrow.png') no-repeat center center !important;
   background-size: contain !important;
   border: none !important;
   width: 50px !important;
