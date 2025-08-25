@@ -68,10 +68,6 @@ export class TokenCounterUI {
 
         const actor = token.actor;
         
-        if (actor.prepareData) {
-            actor.prepareData();
-        }
-        
         const system = actor.system;
         this.actorType = actor.type;
 
@@ -109,6 +105,11 @@ export class TokenCounterUI {
                 max: system.resources.stress.max
             };
         }
+
+        const rightContainer = document.querySelector('#token-counters-right');
+        if (rightContainer) {
+            this.createRightCounters(rightContainer);
+        }
     }
 
     async render() {
@@ -124,16 +125,12 @@ export class TokenCounterUI {
             if (this.actorType === 'character') {
                 const hopeCounter = this.createCounter('hope', this.hope, 'Hope');
                 container.appendChild(hopeCounter);
-
-                const armorCounter = this.createCounter('armor-slots', this.armorSlots, 'Armor');
-                container.appendChild(armorCounter);
-
-                const characterStressCounter = this.createCounter('character-stress', this.characterStress, 'Stress');
-                container.appendChild(characterStressCounter);
-            } else if (this.actorType === 'adversary' || this.actorType === 'companion') {
-                const stressCounter = this.createCounter('stress', this.stress, 'Stress');
-                container.appendChild(stressCounter);
             }
+        }
+
+        const rightContainer = document.querySelector('#token-counters-right');
+        if (rightContainer) {
+            this.createRightCounters(rightContainer);
         }
 
         this.activateListeners();
@@ -260,12 +257,33 @@ export class TokenCounterUI {
         if (this.element) {
             this.element.style.display = 'flex';
         }
+        
+        const leftContainer = document.querySelector('#token-counters-left');
+        const rightContainer = document.querySelector('#token-counters-right');
+        
+        if (leftContainer) {
+            leftContainer.style.display = 'flex';
+        }
+        if (rightContainer) {
+            rightContainer.style.display = 'flex';
+        }
     }
 
     hide() {
         if (this.element) {
             this.element.style.display = 'none';
         }
+        
+        const leftContainer = document.querySelector('#token-counters-left');
+        const rightContainer = document.querySelector('#token-counters-right');
+        
+        if (leftContainer) {
+            leftContainer.style.display = 'none';
+        }
+        if (rightContainer) {
+            rightContainer.style.display = 'none';
+        }
+        
         this.selectedToken = null;
     }
 
@@ -281,12 +299,50 @@ export class TokenCounterUI {
             hotbar.parentNode.insertBefore(wrapper, hotbar);
         }
 
+        let leftContainer = document.querySelector('#token-counters-left');
+        if (!leftContainer) {
+            leftContainer = document.createElement('div');
+            leftContainer.id = 'token-counters-left';
+            leftContainer.className = 'token-counters-left';
+            leftContainer.style.display = 'none';
+            wrapper.insertBefore(leftContainer, wrapper.firstChild);
+        }
+
+        let rightContainer = document.querySelector('#token-counters-right');
+        if (!rightContainer) {
+            rightContainer = document.createElement('div');
+            rightContainer.id = 'token-counters-right';
+            rightContainer.className = 'token-counters-right';
+            rightContainer.style.display = 'none';
+            wrapper.appendChild(rightContainer);
+        }
+
         this.element = document.createElement('div');
         this.element.id = 'token-counters-container';
         this.element.className = 'token-counters-container';
         this.element.style.display = 'none';
 
-        wrapper.appendChild(this.element);
+        leftContainer.appendChild(this.element);
+    }
+
+    createRightCounters(rightContainer) {
+        if (!this.selectedToken || !this.canModify()) {
+            rightContainer.innerHTML = '';
+            return;
+        }
+
+        rightContainer.innerHTML = '';
+
+        if (this.actorType === 'character') {
+            const characterStressCounter = this.createCounter('character-stress', this.characterStress, 'Stress');
+            rightContainer.appendChild(characterStressCounter);
+
+            const armorCounter = this.createCounter('armor-slots', this.armorSlots, 'Armor');
+            rightContainer.appendChild(armorCounter);
+        } else if (this.actorType === 'adversary' || this.actorType === 'companion') {
+            const stressCounter = this.createCounter('stress', this.stress, 'Stress');
+            rightContainer.appendChild(stressCounter);
+        }
     }
 
     canModify() {

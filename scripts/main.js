@@ -13,17 +13,15 @@ Hooks.once('init', () => {
     return;
   }
   
-  game.settings.register(MODULE_ID, 'experimentalFeatures', {
-    name: 'DHP.Settings.ExperimentalFeatures.Name',
-    hint: 'DHP.Settings.ExperimentalFeatures.Hint',
+  game.settings.register(MODULE_ID, 'enableFearTracker', {
+    name: 'DHP.Settings.ExperimentalFeatures.FearTracker.Name',
+    hint: 'DHP.Settings.ExperimentalFeatures.FearTracker.Hint',
     scope: 'world',
     config: true,
-    type: Object,
-    default: {
-      fearTracker: false
-    },
+    type: Boolean,
+    default: false,
     onChange: value => {
-      console.log('Daggerheart Plus | Experimental features setting changed:', value);
+      console.log('Daggerheart Plus | Fear tracker setting changed:', value);
       if (window.daggerheartPlus?.manageFearTracker) {
         window.daggerheartPlus.manageFearTracker();
       }
@@ -184,11 +182,10 @@ Hooks.once('ready', async () => {
   
   async function manageFearTracker() {
     try {
-      const experimentalFeatures = game.settings.get(MODULE_ID, 'experimentalFeatures');
-      const useFearTracker = experimentalFeatures?.fearTracker || false;
+      const useFearTracker = game.settings.get(MODULE_ID, 'enableFearTracker');
       
       if (useFearTracker) {
-        console.log('Daggerheart Plus | Experimental fear tracker enabled (NOTE: This feature is non-functional)');
+        console.log('Daggerheart Plus | Fear tracker enabled');
         
         if (!window.daggerheartPlus.fearTracker) {
           window.daggerheartPlus.fearTracker = new CounterUI();
@@ -202,7 +199,7 @@ Hooks.once('ready', async () => {
         }
       }
     } catch (error) {
-      console.error('Daggerheart Plus | Error managing experimental fear tracker:', error);
+      console.error('Daggerheart Plus | Error managing fear tracker:', error);
     }
   }
   
@@ -211,7 +208,7 @@ Hooks.once('ready', async () => {
   await manageFearTracker();
   
   Hooks.on('updateSetting', async (setting) => {
-    if (setting.key === 'experimentalFeatures' && setting.namespace === MODULE_ID) {
+    if (setting.key === 'enableFearTracker' && setting.namespace === MODULE_ID) {
       await manageFearTracker();
     }
   });

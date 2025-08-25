@@ -1,10 +1,15 @@
 <header class="character-header-modern">
     <div class="header-main-section">
         <div class="header-top-portrait">
-            <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+            <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img" class="{{#if isDeath}}death-tint{{/if}}">
             {{#if document.system.class.subclass.system.spellcastingTrait}}
                 <div class="spellcast-indicator">
                     <i class="fa-solid fa-wand-sparkles"></i>
+                </div>
+            {{/if}}
+            {{#if isDeath}}
+                <div class="death-overlay" data-tooltip="DAGGERHEART.UI.Tooltip.makeDeathMove" data-action="makeDeathMove">
+                    <i class="fa-solid fa-skull"></i>
                 </div>
             {{/if}}
         </div>

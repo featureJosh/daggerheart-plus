@@ -7,34 +7,36 @@ export class CounterUI {
     async initialize() {
         console.log('DH+ Fear Tracker | Initializing...');
         
+        this.lastKnownValue = this.fearValue;
+        
         Hooks.on('updateSetting', (setting) => {
             if (setting.key === 'ResourcesFear' && setting.namespace === 'daggerheart') {
+                console.log('DH+ Fear Tracker | Setting updated, refreshing display');
                 this.updateDisplay();
             }
         });
         
+        Hooks.on('DhGMUpdate', (data) => {
+            if (data.action === 'UpdateFear') {
+                console.log('DH+ Fear Tracker | Fear updated via DhGMUpdate:', data.update);
+                this.updateDisplay();
+                this.triggerChangeAnimation(data.update > this.lastKnownValue);
+            }
+        });
+        
         if (game.socket) {
-            console.log('DH+ Fear Tracker | Setting up socket listener for module.daggerheart-plus');
-            game.socket.on('module.daggerheart-plus', (data) => {
-                console.log('DH+ Fear Tracker | Received socket event:', data);
-                if (data.action === 'fearChanged') {
-                    console.log('DH+ Fear Tracker | Processing fear change:', data);
+            game.socket.on('system.daggerheart', (data) => {
+                console.log('DH+ Fear Tracker | Received Daggerheart system event:', data);
+                if (data.action === 'DhpFearUpdate' || data.action === 'UpdateFear') {
                     this.updateDisplay();
-                    this.triggerChangeAnimation(data.increased);
+                    if (data.value !== undefined) {
+                        this.triggerChangeAnimation(data.value > this.lastKnownValue);
+                    }
+                } else if (data.action === 'RequestFearUpdate' && game.user.isGM) {
+                    console.log('DH+ Fear Tracker | Processing fear update request from user:', data.userId);
+                    this.updateFear(data.value);
                 }
             });
-            
-            console.log('DH+ Fear Tracker | Testing socket by emitting test event');
-            setTimeout(() => {
-                game.socket.emit('module.daggerheart-plus', {
-                    action: 'fearChanged',
-                    value: 999,
-                    increased: true
-                });
-                console.log('DH+ Fear Tracker | Test event emitted');
-            }, 2000);
-        } else {
-            console.warn('DH+ Fear Tracker | No game.socket available');
         }
     }
 
@@ -84,15 +86,17 @@ export class CounterUI {
             hotbar.parentNode.insertBefore(container, hotbar);
         }
         
+        const currentFear = this.fearValue;
+        
         this.element = document.createElement('div');
         this.element.id = 'counter-ui';
-        this.element.className = 'faded-ui counter-ui fear-tracker';
+        this.element.className = 'faded-ui counter-ui fear-tracker fear-center';
         this.element.innerHTML = `
             <button type="button" class="counter-minus" title="Decrease" ${!this.canModify ? 'style="display:none"' : ''}>
                 <i class="fas fa-minus"></i>
             </button>
             <div class="counter-display">
-                <div class="counter-value">${this.fearValue}</div>
+                <div class="counter-value">${currentFear}</div>
                 <div class="counter-label">Fear</div>
             </div>
             <button type="button" class="counter-plus" title="Increase" ${!this.canModify ? 'style="display:none"' : ''}>
@@ -102,10 +106,10 @@ export class CounterUI {
 
         container.appendChild(this.element);
         
-        console.log('DH+ Fear Tracker | Element created. Current fear value:', this.fearValue);
+        console.log('DH+ Fear Tracker | Element created. Current fear value:', currentFear);
         console.log('DH+ Fear Tracker | Can modify:', this.canModify);
         
-        this.lastKnownValue = this.fearValue;
+        this.lastKnownValue = currentFear;
         this.setupEventListeners();
     }
 
@@ -135,38 +139,42 @@ export class CounterUI {
         if (currentValue === newValue) return;
         
         try {
-            console.log('DH+ Fear Tracker | Forcing use of our emitAsGM method');
-            await this.emitAsGM('DhGMUpdateFear', newValue);
+            await this.updateFear(newValue);
         } catch (error) {
             console.error('DH+ Fear Tracker | Error updating fear:', error);
         }
     }
 
-    async emitAsGM(eventName, update) {
-        console.log('DH+ Fear Tracker | emitAsGM called:', { eventName, update, isGM: game.user.isGM });
+    async updateFear(newValue) {
+        console.log('DH+ Fear Tracker | updateFear called with value:', newValue);
         
         if (!game.user.isGM) {
-            console.log('DH+ Fear Tracker | Non-GM, sending socket event');
-            return await game.socket.emit('module.daggerheart-plus', {
-                action: 'fearChanged',
-                value: update,
-                increased: update > this.lastKnownValue
+            console.log('DH+ Fear Tracker | Non-GM, requesting fear update via socket');
+            return await game.socket.emit('system.daggerheart', {
+                action: 'RequestFearUpdate',
+                value: newValue,
+                userId: game.user.id
             });
         } else {
-            console.log('DH+ Fear Tracker | GM, updating setting and broadcasting');
-            await game.settings.set('daggerheart', 'ResourcesFear', update);
-            console.log('DH+ Fear Tracker | About to emit socket event');
-            try {
-                game.socket.emit('module.daggerheart-plus', {
-                    action: 'fearChanged',
-                    value: update,
-                    increased: update > this.lastKnownValue
+            console.log('DH+ Fear Tracker | GM, updating fear setting');
+            const oldValue = this.fearValue;
+            await game.settings.set('daggerheart', 'ResourcesFear', newValue);
+            
+            Hooks.callAll('DhGMUpdate', {
+                action: 'UpdateFear',
+                update: newValue,
+                previous: oldValue
+            });
+            
+            if (game.socket) {
+                game.socket.emit('system.daggerheart', {
+                    action: 'DhpFearUpdate',
+                    value: newValue,
+                    previous: oldValue
                 });
-                console.log('DH+ Fear Tracker | Socket event emitted successfully');
-            } catch (error) {
-                console.error('DH+ Fear Tracker | Error emitting socket event:', error);
             }
-            return update;
+            
+            return newValue;
         }
     }
 
@@ -180,12 +188,12 @@ export class CounterUI {
         const newValue = this.fearValue;
         const oldValue = this.lastKnownValue;
         
-        console.log('DH+ Fear Tracker | updateDisplay: Updating to', newValue);
+        console.log('DH+ Fear Tracker | updateDisplay: Updating from', oldValue, 'to', newValue);
         
         if (valueElement) {
             valueElement.textContent = newValue;
             
-            if (newValue !== oldValue) {
+            if (newValue !== oldValue && oldValue !== 0) {
                 this.triggerChangeAnimation(newValue > oldValue);
             }
             
@@ -225,21 +233,28 @@ export class CounterUI {
         const container = this.element;
         const rect = container.getBoundingClientRect();
         
-        for (let i = 0; i < 3; i++) {
+        const icon = 'fa-skull';
+        
+        for (let i = 0; i < 6; i++) {
             const particle = document.createElement('div');
-            particle.innerHTML = isIncrease ? '☠️' : '💨';
+            particle.innerHTML = `<i class="fas ${icon}"></i>`;
             particle.style.position = 'fixed';
-            particle.style.left = `${rect.left + rect.width / 2}px`;
-            particle.style.top = `${rect.top + rect.height / 2}px`;
-            particle.style.fontSize = '1.2em';
+            
+            const randomStartX = rect.left + Math.random() * rect.width;
+            const randomStartY = rect.top + Math.random() * rect.height;
+            particle.style.left = `${randomStartX}px`;
+            particle.style.top = `${randomStartY}px`;
+            
+            particle.style.fontSize = (1.0 + Math.random() * 0.4) + 'em';
+            particle.style.color = `hsl(${200 + Math.random() * 60}, 70%, 60%)`;
             particle.style.pointerEvents = 'none';
             particle.style.zIndex = '10001';
             particle.className = isIncrease ? 'skull-particle' : 'smoke-particle';
             
-            const angle = (Math.PI * 2 / 3) * i + (isIncrease ? 0 : Math.PI);
-            const distance = 60 + Math.random() * 40;
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
+            const randomAngle = Math.random() * Math.PI * 2;
+            const randomDistance = 70 + Math.random() * 80;
+            const tx = Math.cos(randomAngle) * randomDistance;
+            const ty = Math.sin(randomAngle) * randomDistance;
             
             particle.style.setProperty('--tx', `${tx}px`);
             particle.style.setProperty('--ty', `${ty}px`);
@@ -261,7 +276,7 @@ export class CounterUI {
         }
         
         if (game.socket) {
-            game.socket.off('module.daggerheart-plus');
+            game.socket.off('system.daggerheart');
         }
     }
 }
