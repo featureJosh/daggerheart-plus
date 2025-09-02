@@ -241,7 +241,7 @@ Hooks.once("ready", async () => {
         const root = this.element;
         if (!root) return;
         const items = root.querySelectorAll(
-          ".character-sidebar-sheet .loadout-section .inventory-item"
+          ".character-sidebar-sheet .loadout-section .inventory-item, .character-sidebar-sheet .equipment-section .inventory-item"
         );
         if (!items?.length) return;
 
@@ -266,6 +266,11 @@ Hooks.once("ready", async () => {
           el.style.setProperty("background-size", "cover", "important");
           el.style.setProperty("background-position", "center", "important");
           el.style.setProperty("background-repeat", "no-repeat", "important");
+
+          // Ensure cards are usable in the sidebar
+          try {
+            el.setAttribute("data-action", "useItem");
+          } catch (_) {}
         });
       } catch (_) {
         /* noop */

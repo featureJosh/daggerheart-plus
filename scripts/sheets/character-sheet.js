@@ -160,11 +160,15 @@ export function createDaggerheartPlusCharacterSheet() {
       return new Promise((resolve) => {
         const poll = () => {
           try {
-            const count =
+            const countLoadout =
               this.element?.querySelectorAll?.(
                 ".character-sidebar-sheet .loadout-section .inventory-item"
               )?.length || 0;
-            if (count > 0) return resolve();
+            const countEquip =
+              this.element?.querySelectorAll?.(
+                ".character-sidebar-sheet .equipment-section .inventory-item"
+              )?.length || 0;
+            if (countLoadout + countEquip > 0) return resolve();
           } catch {}
           setTimeout(poll, 50);
         };
@@ -199,6 +203,9 @@ export function createDaggerheartPlusCharacterSheet() {
           'a, button, input, select, textarea, [contenteditable="true"]'
         );
         if (interactive) return; // let native behavior occur
+
+        // If the card advertises a data-action, let system handlers run
+        if (itemCard.hasAttribute("data-action")) return;
 
         // Prefer a dedicated roll trigger if present
         const rollTrigger = itemCard.querySelector(
@@ -261,10 +268,14 @@ export function createDaggerheartPlusCharacterSheet() {
     _applySidebarLoadoutBackgrounds() {
       const root = this.element;
       if (!root) return;
-      const list = root.querySelector(
-        ".character-sidebar-sheet .loadout-section .items-sidebar-list"
-      );
-      if (!list) return;
+      const selectors = [
+        ".character-sidebar-sheet .loadout-section .items-sidebar-list",
+        ".character-sidebar-sheet .equipment-section .items-sidebar-list",
+      ];
+      const lists = selectors
+        .map((sel) => root.querySelector(sel))
+        .filter((el) => !!el);
+      if (!lists.length) return;
 
       const apply = (el) => {
         const item = el.closest?.(".inventory-item") || el;
@@ -310,11 +321,19 @@ export function createDaggerheartPlusCharacterSheet() {
           );
         }
 
+        // Ensure cards are usable: mark them as actionable
+        try {
+          item.setAttribute("data-action", "useItem");
+        } catch {}
         item.dataset.bgApplied = "1";
       };
 
-      list.querySelectorAll(".inventory-item").forEach(apply);
+      // Initial paint for both sections
+      lists.forEach((list) =>
+        list.querySelectorAll(".inventory-item").forEach(apply)
+      );
 
+      // Observe both lists for dynamic changes
       try {
         if (this._loadoutObserver) this._loadoutObserver.disconnect();
         this._loadoutObserver = new MutationObserver((mutations) => {
@@ -334,9 +353,13 @@ export function createDaggerheartPlusCharacterSheet() {
             });
           }
           if (needsUpdate)
-            list.querySelectorAll(".inventory-item").forEach(apply);
+            lists.forEach((list) =>
+              list.querySelectorAll(".inventory-item").forEach(apply)
+            );
         });
-        this._loadoutObserver.observe(list, { childList: true, subtree: true });
+        lists.forEach((list) =>
+          this._loadoutObserver.observe(list, { childList: true, subtree: true })
+        );
       } catch (e) {
         /* ignore */
       }

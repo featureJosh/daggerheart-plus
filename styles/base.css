@@ -6,6 +6,11 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
   display: none !important;
 }
 
+body.theme-dark .application.daggerheart {
+  background: #1e1e2ae5;
+  backdrop-filter: blur(5px);
+}
+
 .daggerheart-plus.sheet {
   --dhp-primary: #f3c267;
   --dhp-secondary: #cc9900;
