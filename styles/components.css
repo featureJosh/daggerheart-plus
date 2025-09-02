@@ -101,6 +101,14 @@ body.theme-dark.application .window-content {
   margin-bottom: 1rem;
 }
 
+.daggerheart-plus.sheet .items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  width: 100%;
+}
+
 .daggerheart-plus.sheet .loadout-item {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
@@ -175,7 +183,7 @@ body.theme-dark.application .window-content {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
-  padding: 0.75rem;
+  padding: 0.35rem 0.75em;
   transition: all 0.2s ease;
   cursor: pointer;
   text-align: center;

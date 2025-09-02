@@ -37,7 +37,7 @@
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
-  background-image: url("https://i.imgur.com/r57d6py.png");
+  background-image: url("../assets/backgrounds/domain-pattern.png");
   background-repeat: repeat;
   background-size: contain;
 }
@@ -379,7 +379,7 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet {
   padding: var(--dh-space-md);
-  background: url("https://i.imgur.com/GXS9vLv.png");
+  background: url("../assets/backgrounds/sidebar-bg.png");
   background-position: left;
   background-size: cover;
   border-right: 2px solid var(--dhp-primary);
