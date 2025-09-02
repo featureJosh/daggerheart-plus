@@ -57,7 +57,6 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
 }
 
 .daggerheart-plus.sheet .window-content {
-  background-color: var(--dhp-background);
   padding: 0;
   overflow: hidden;
   color: var(--dhp-text);
