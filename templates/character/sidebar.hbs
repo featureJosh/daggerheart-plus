@@ -1,6 +1,6 @@
 <aside class="character-sidebar-sheet">
 
-    <div class="info-section">
+    <div>
         <div class="resources-section">
             <div class="status-bar">
                 <div class='status-value'>
@@ -64,18 +64,13 @@
                     <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
                 </div>
             </div>
-        </div>
-        <div class="status-section">
-            <div class="status-number">
-                <div class='status-value'>
-                    <p>{{document.system.evasion}}</p>
-                </div>
-                <div class="status-label">
-                    <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
-                </div>
+        </div class="information-section">
+        <div class="title">
+                <!--<side-line-div class="invert"></side-line-div>-->
+                <h3>{{localize "DAGGERHEART.GENERAL.information"}}</h3>
+                <!--<side-line-div></side-line-div>-->
             </div>
-
-            {{#if (or document.system.resources.armor.max document.system.armorScore)}}
+                    {{#if (or document.system.resources.armor.max document.system.armorScore)}}
                 <div class="status-bar armor-slots">
                     <div class='status-value'>
                         <p>
@@ -106,6 +101,7 @@
                         <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
                     </div>
                 </div>
+
             {{else}}
                 <div class="status-number armor-slots">
                     <div class='status-value'>
@@ -116,6 +112,16 @@
                     </div>
                 </div>
             {{/if}}
+
+        <div class="status-section">
+            <div class="status-number">
+                <div class='status-value'>
+                    <p>{{document.system.evasion}}</p>
+                </div>
+                <div class="status-label">
+                    <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
+                </div>
+            </div>
 
             <div class="status-number">
                 <div class='status-value'>

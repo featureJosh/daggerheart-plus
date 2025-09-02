@@ -158,6 +158,7 @@
     margin-bottom: 0.25rem;
     font-family: 'Cinzel Decorative', serif;
     backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .character-classes {
@@ -1150,15 +1151,23 @@
   gap: 0.6rem;
 }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar {
-  display: flex;
-  flex-direction: column;
+  --qs-bar-height: 30px;
+  display: grid;
+  grid-template-rows: auto var(--qs-bar-height);
   align-items: stretch;
-  gap: 0.35rem;
-  padding: 0.5rem 0.6rem;
+  gap: 0.4rem;
+  padding: 0.6rem;
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .information-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-label { order: -1; }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-label h4 {
   margin: 0;
@@ -1171,37 +1180,42 @@
   padding: 0;
 }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value {
+  grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
+  z-index: 2;
+  width: 100%;
 }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value p { color: var(--dhp-text); font-weight: 800; }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value p { margin: 0; }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .bar-input,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .bar-input {
-  width: 56px;
   text-align: center;
-  font-weight: 800;
-  font-size: 1.15rem;
   color: var(--dhp-text);
   background: transparent;
   border: none;
-  border-bottom: 2px solid var(--dhp-border);
   border-radius: 0;
-  padding: 0.1rem 0.2rem;
+  padding: 0;
+  width: 15px;
+  margin-top: -3px;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .bar-label { color: var(--dhp-text-light); }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .bar-label { color: var(--dhp-text); font-weight: 700; }
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar {
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--dhp-border);
-  -webkit-appearance: none;
-  appearance: none;
+    grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
+    width: 100%;
+    height: var(--qs-bar-height);
+    border-radius: 6px;
+    background: var(--dhp-border);
+    -webkit-appearance: none;
+    appearance: none;
+    z-index: 1;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-bar { background: var(--dhp-border); border-radius: 999px; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-value { background: var(--dhp-primary); border-radius: 999px; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-moz-progress-bar { background: var(--dhp-primary); border-radius: 999px; }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-bar { background: var(--dhp-border); border-radius: 6px; }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-value { background: var(--dhp-primary); border-radius: 6px; }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-moz-progress-bar { background: var(--dhp-primary); border-radius: 6px; }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-webkit-progress-value,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-moz-progress-bar { background: var(--dhp-danger); }
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color::-webkit-progress-value,
