@@ -158,31 +158,37 @@ export class TokenCounterUI {
     activateListeners() {
         if (!this.element) return;
 
-        const buttons = this.element.querySelectorAll('.counter-minus, .counter-plus');
-        buttons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.handleButtonClick(e);
-            });
-        });
+        const rightContainer = document.querySelector('#token-counters-right');
+        const containers = [this.element, rightContainer].filter(Boolean);
 
-        const displays = this.element.querySelectorAll('.counter-display');
-        displays.forEach(display => {
-            display.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const counter = display.closest('.token-counter');
-                const type = counter.querySelector('[data-type]').dataset.type;
-                this.modifyResource(type, 1);
+        // Attach listeners for both left and right containers
+        containers.forEach(container => {
+            const buttons = container.querySelectorAll('.counter-minus, .counter-plus');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.handleButtonClick(e);
+                });
             });
 
-            display.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const counter = display.closest('.token-counter');
-                const type = counter.querySelector('[data-type]').dataset.type;
-                this.modifyResource(type, -1);
+            const displays = container.querySelectorAll('.counter-display');
+            displays.forEach(display => {
+                display.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const counter = display.closest('.token-counter');
+                    const type = counter.querySelector('[data-type]').dataset.type;
+                    this.modifyResource(type, 1);
+                });
+
+                display.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const counter = display.closest('.token-counter');
+                    const type = counter.querySelector('[data-type]').dataset.type;
+                    this.modifyResource(type, -1);
+                });
             });
         });
     }
