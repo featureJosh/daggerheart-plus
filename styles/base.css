@@ -7,7 +7,7 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
 }
 
 body.theme-dark .application.daggerheart {
-  background: #1e1e2ae5;
+  background: #1e1e2a99;
   backdrop-filter: blur(5px);
 }
 
@@ -98,7 +98,7 @@ body.theme-dark .application.daggerheart {
 
 .daggerheart-plus.sheet .sheet-tabs {
   background: none;
-  border-bottom: 2px solid var(--dhp-primary);
+  border-bottom: none;
   padding: 0;
   margin: 0;
   display: flex;

@@ -1,7 +1,45 @@
+.daggerheart-plus.sheet.adversary form {
+  position: relative;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar body";
+  height: 100%;
+  background: var(--dhp-background);
+  overflow: visible;
+}
+
+/* Allow outside-positioned tabs to be visible beyond content bounds */
+.daggerheart-plus.sheet.adversary .window-content {
+  overflow: visible;
+}
+
+.daggerheart-plus.sheet.adversary .sheet-header {
+  grid-area: header;
+}
+
+.daggerheart-plus.sheet.adversary .sheet-sidebar {
+  grid-area: sidebar;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.daggerheart-plus.sheet.adversary .sheet-body {
+  grid-area: body;
+}
+
 .daggerheart-plus.sheet.adversary .adversary-header-sheet {
-  padding: 1rem;
-  background: var(--dhp-surface);
-  border-bottom: 2px solid var(--dhp-border);
+  padding: 0.75rem;
+  padding-top: var(--header-height);
+  border-bottom: 2px solid var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
+  background-image: url("https://i.imgur.com/r57d6py.png");
+  background-repeat: repeat;
+  background-size: contain;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-header-sheet .profile {
@@ -18,13 +56,55 @@
 }
 
 .daggerheart-plus.sheet.adversary .adversary-header-sheet .actor-name input {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--dhp-primary);
   border: none;
   background: transparent;
   width: 100%;
   text-align: center;
+  margin-bottom: 0.25rem;
+  font-family: "Cinzel Decorative", serif;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
+
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .tags {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .tags .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  color: var(--dhp-text-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .adversary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+  color: var(--dhp-text-light);
+  margin-top: 0.5rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-header-sheet .status-section {
@@ -243,9 +323,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 1rem;
-  border-top: 1px solid var(--dhp-border);
-  margin-top: 1rem;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -269,44 +346,257 @@
   color: white;
 }
 
+/* Style the tabs injected by the system partial inside the header */
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  nav.tabs
+  .item.control {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--dhp-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  nav.tabs
+  .item.control:hover {
+  background: rgba(230, 168, 0, 0.1);
+  color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  nav.tabs
+  .item.control.active {
+  border-bottom-color: var(--dhp-primary);
+  color: var(--dhp-primary);
+  font-weight: 700;
+}
+
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet {
-  padding: 1rem;
-  background: var(--dhp-surface);
-  border-right: 1px solid var(--dhp-border);
-  min-width: 200px;
+  padding: var(--dh-space-md);
+  background: url("https://i.imgur.com/GXS9vLv.png");
+  background-position: left;
+  background-size: cover;
+  border-right: 2px solid var(--dhp-primary);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dhp-primary) transparent;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet::-webkit-scrollbar {
+  width: 6px;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet::-webkit-scrollbar-thumb {
+  background: var(--dhp-primary);
+  border-radius: 3px;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet::-webkit-scrollbar-thumb:hover {
+  background: var(--dhp-accent);
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait {
   position: relative;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait img {
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
   border-radius: 8px;
+  border: 2px solid var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
   cursor: pointer;
-  transition: transform 0.2s ease;
-  border: 2px solid var(--dhp-border);
+  transition: all 0.3s ease;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait img:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 12px var(--dhp-shadow);
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .portrait
+  .death-roll-btn {
+  position: absolute;
+  top: -4px;
+  right: calc(50% - 70px);
+  background: var(--dhp-danger);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px var(--dhp-shadow);
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .info-section {
   margin-bottom: 1rem;
 }
 
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .information-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Quick stats: match character grid + overlay bars */
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .resources-section {
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-bar {
-  margin-bottom: 1rem;
+  --qs-bar-height: 30px;
+  display: grid;
+  grid-template-rows: auto var(--qs-bar-height);
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  border-radius: 8px;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .status-label {
+  order: -1;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .status-label
+  h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dhp-text-light);
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .status-value {
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  z-index: 2;
+  width: 100%;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .status-value
+  p {
+  color: var(--dh-color-gold-light);
+  font-weight: 600;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .bar-input,
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-number
+  .bar-input {
+  text-align: center;
+  color: var(--dh-color-off-white);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  width: 15px;
+  margin-top: -1px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-bar
+  .bar-label {
+  color: var(--dhp-text);
+  font-weight: 700;
+}
+
+/* Progress track + fill */
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar {
+  grid-area: 2 / 1 / 3 / 2;
+  width: 100%;
+  height: var(--qs-bar-height);
+  border-radius: 6px;
+  background: var(--dhp-border);
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 1;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-border);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .progress-bar::-webkit-progress-value {
+  background: var(--dhp-accent);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .progress-bar::-moz-progress-bar {
+  background: var(--dhp-accent);
+  border-radius: 6px;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .resources-section {
+  margin-bottom: 0.5rem;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-bar {
+  margin-bottom: 0.5rem;
   padding: 0.75rem;
-  background: var(--dhp-background);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   border: 1px solid var(--dhp-border);
 }
@@ -315,7 +605,6 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  margin-bottom: 0.5rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-value p {
@@ -334,14 +623,6 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .bar-label {
   color: var(--dhp-text-light);
-}
-
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar {
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--dhp-border);
-  margin-bottom: 0.5rem;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -366,17 +647,22 @@
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-section {
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  background: var(--dhp-background);
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  border-radius: 8px;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -385,8 +671,9 @@
   .status-value
   p {
   margin: 0;
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--dhp-text);
 }
 
 .daggerheart-plus.sheet.adversary
@@ -396,20 +683,27 @@
   h4 {
   margin: 0;
   font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--dhp-text-light);
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
 }
 
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .shortcut-items-section {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
+  width: 100%;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3 {
@@ -417,13 +711,16 @@
   font-size: 0.9rem;
   color: var(--dhp-primary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  font-weight: bold;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .items-sidebar-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  min-width: 0;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -432,7 +729,7 @@
   .item {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   display: flex;
@@ -446,8 +743,8 @@
   .adversary-sidebar-sheet
   .items-sidebar-list
   .item:hover {
-  box-shadow: 0 2px 4px var(--dhp-shadow);
-  transform: translateX(2px);
+  background: rgba(230, 168, 0, 0.15);
+  border-color: var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet.adversary
@@ -472,21 +769,40 @@
   padding: 0.5rem;
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .experience-row:hover {
+  background: rgba(230, 168, 0, 0.15);
+  border-color: var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-value {
   background: var(--dhp-success);
   color: white;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: bold;
+  box-shadow: 0 2px 4px var(--dhp-shadow);
+  transition: all 0.3s ease;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .experience-row:hover
+  .experience-value {
+  background: var(--dhp-primary);
+  transform: scale(1.05);
 }
 
 .daggerheart-plus.sheet.adversary
@@ -495,13 +811,156 @@
   span {
   flex: 1;
   font-size: 0.8rem;
+  color: var(--dhp-text);
+  transition: color 0.3s ease;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .experience-row:hover
+  span {
+  color: var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .controls a {
   color: var(--dhp-text-light);
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  padding: 0.25rem;
+  border-radius: 4px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .controls a:hover {
   color: var(--dhp-primary);
+  background: rgba(230, 168, 0, 0.1);
+  transform: scale(1.1);
+}
+
+/* Damage thresholds: compact pill display */
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .threshold-values {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .threshold-text {
+  color: var(--dhp-text-light);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  text-align: center;
+  line-height: 1.1;
+  margin: 0;
+  padding: 0 2px;
+  width: 35px;
+  height: auto;
+  word-break: normal;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 0 0.25em;
+  margin-bottom: 1.33em;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-clickable:hover {
+  color: var(--dhp-primary);
+  opacity: 1;
+  transform: scale(1.1);
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-clickable:active {
+  transform: scale(0.95);
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-values
+  .resource-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0.25em;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-value-display {
+  background: url("assets/containers/DH-Arrow.png") no-repeat center center !important;
+  background-size: contain !important;
+  border: none !important;
+  width: 35px !important;
+  height: 35px !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: white !important;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-value-display:hover {
+  transform: scale(1.05);
+}
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .threshold-value-display:active {
+  transform: scale(0.98);
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .trait-effects {
+  color: var(--dhp-text-light);
+  font-size: 0.75em;
+  text-decoration: none;
+  margin-top: 0.25em;
+}
+
+/* Reaction button */
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .reaction-section
+  button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--dhp-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .reaction-section
+  button:hover {
+  background: var(--dhp-warning);
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
 }

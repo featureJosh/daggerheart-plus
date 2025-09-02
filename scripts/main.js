@@ -288,6 +288,30 @@ Hooks.once("ready", async () => {
       },
     };
 
+    static PARTS = {
+      ...super.PARTS,
+      sidebar: {
+        id: "sidebar",
+        template: "modules/daggerheart-plus/templates/adversary/sidebar.hbs",
+      },
+      header: {
+        id: "header",
+        template: "modules/daggerheart-plus/templates/adversary/header.hbs",
+      },
+      features: {
+        id: "features",
+        template: "modules/daggerheart-plus/templates/adversary/features.hbs",
+      },
+      effects: {
+        id: "effects",
+        template: "modules/daggerheart-plus/templates/adversary/effects.hbs",
+      },
+      notes: {
+        id: "notes",
+        template: "modules/daggerheart-plus/templates/adversary/notes.hbs",
+      },
+    };
+
     get title() {
       return `${this.document.name} [DH+]`;
     }

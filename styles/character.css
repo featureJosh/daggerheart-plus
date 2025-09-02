@@ -480,11 +480,7 @@
   background-position: center;
   background-repeat: no-repeat;
   transition: all 0.3s ease;
-  min-height: 80px;
-  min-width: 80px;
   position: relative;
-  max-height: 80px;
-  max-width: 80px;
 }
 
 .daggerheart-plus.sheet.character
@@ -556,13 +552,11 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .attribute-tier {
-  position: absolute;
-  top: -4px;
-  right: -4px;
   color: var(--dhp-accent);
   font-size: 0.7rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   z-index: 3;
+  margin-top: 0.5em;
 }
 
 .daggerheart-plus.sheet.character fieldset {
@@ -581,6 +575,10 @@
 }
 
 .daggerheart-plus.sheet.character fieldset.glassy legend {
+  background-color: transparent;
+}
+
+.daggerheart-plus.sheet.character fieldset.glassy {
   background-color: transparent;
 }
 
@@ -744,7 +742,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: var(--dhp-surface);
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 4px;
   margin-bottom: 0.25rem;
@@ -1466,7 +1464,7 @@
   align-items: stretch;
   gap: 0.4rem;
   padding: 0.6rem;
-  background: var(--dhp-surface);
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
@@ -1503,6 +1501,7 @@
   background: transparent !important;
   border: none !important;
   padding: 0;
+  text-align: center;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
@@ -1559,6 +1558,9 @@
   font-weight: 700;
 }
 
+/* Progress Bar (base element)
+   - This is the TRACK (empty portion) for Firefox and general styling.
+   - Track color: var(--dhp-border) */
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar {
   grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
   width: 100%;
@@ -1572,18 +1574,21 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-webkit-progress-bar {
-  background: var(--dhp-accent);
+  /* WebKit TRACK (empty portion): should match base track color */
+  background: var(--dhp-border);
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-webkit-progress-value {
+  /* WebKit FILLED portion */
   background: var(--dhp-accent);
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-moz-progress-bar {
+  /* Firefox FILLED portion */
   background: var(--dhp-accent);
   border-radius: 6px;
 }
@@ -1593,6 +1598,7 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar.stress-color::-moz-progress-bar {
+  /* Variant: filled color for Stress */
   background: var(--dhp-accent);
 }
 .daggerheart-plus.sheet.character
@@ -1601,6 +1607,7 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar.armor-color::-moz-progress-bar {
+  /* Variant: filled color for Armor */
   background: var(--dhp-accent);
 }
 
@@ -1617,7 +1624,7 @@
   justify-content: center;
   gap: 0.35rem;
   padding: 0.6rem;
-  background: var(--dhp-surface);
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }

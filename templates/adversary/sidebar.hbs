@@ -1,10 +1,10 @@
 <aside class="adversary-sidebar-sheet">
     <div class="portrait {{#if (and source.system.resources.hitPoints.max (gte source.system.resources.hitPoints.value source.system.resources.hitPoints.max))}}death-roll{{/if}}">
         <img src="{{source.img}}" alt="{{source.name}}" data-action='editImage' data-edit="img">
-        <a class="death-roll-btn"><i class="fa-solid fa-skull death-save"></i></a>
+        <!--<a class="death-roll-btn"><i class="fa-solid fa-skull death-save"></i></a>-->
     </div>
 
-    <div class="info-section">
+    <div class="information-section">
         <div class="resources-section">
             <div class="status-bar">
                 <div class='status-value'>
@@ -36,11 +36,11 @@
         </div>
         <div class="status-section">
             <div class="status-number">
-                <div class='status-value armor-slots'>
+                <div class='status-value'>
                     {{#if source.system.difficulty}}
-                    <p>{{source.system.difficulty}}</p>
+                        <p>{{source.system.difficulty}}</p>
                     {{else}}
-                    <p>-</p>
+                        <p>-</p>
                     {{/if}}
                 </div>
                 <div class="status-label">
@@ -48,11 +48,11 @@
                 </div>
             </div>
             <div class="status-number">
-                <div class='status-value armor-slots'>
+                <div class='status-value'>
                     {{#if source.system.attack.roll.bonus includeZero=true}}
-                    <p>{{numberFormat source.system.attack.roll.bonus sign=true}}</p>
+                        <p>{{numberFormat source.system.attack.roll.bonus sign=true}}</p>
                     {{else}}
-                    <p>-</p>
+                        <p>-</p>
                     {{/if}}
                 </div>
                 <div class="status-label">
@@ -61,12 +61,36 @@
             </div>
         </div>
         <div class="status-section">
-            <div class="threshold-section">
-                <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.minor"}}</h4>
-                <h4 class="threshold-value">{{document.system.damageThresholds.major}}</h4>
-                <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</h4>
-                <h4 class="threshold-value">{{document.system.damageThresholds.severe}}</h4>
-                <h4 class="threshold-label">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</h4>
+            <div class="threshold-values">
+                <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="1">
+                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark1HP"}}
+                </span>
+                <div class="resource-group">
+                    <div class="attribute-value-display threshold-value-display"
+                        data-field="system.damageThresholds.major"
+                        data-label="Major Threshold"
+                        data-has-modifiers="true"
+                        data-min="0">
+                        {{document.system.damageThresholds.major}}
+                    </div>
+                    <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>
+                </div>
+                <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2">
+                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
+                </span>
+                <div class="resource-group">
+                    <div class="attribute-value-display threshold-value-display"
+                        data-field="system.damageThresholds.severe"
+                        data-label="Severe Threshold"
+                        data-has-modifiers="true"
+                        data-min="0">
+                        {{document.system.damageThresholds.severe}}
+                    </div>
+                    <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>
+                </div>
+                <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3">
+                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
+                </span>
             </div>
         </div>
     </div>
