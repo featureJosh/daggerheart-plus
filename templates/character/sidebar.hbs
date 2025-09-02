@@ -74,7 +74,7 @@
         </div>
 
         <!-- START OF ARMOR AREA -->
-            {{#if (or document.system.resources.armor.max document.system.armorScore)}}
+            {{#if document.system.resources.armor.max}}
                 <div class="status-bar armor-slots">
                     <div class='status-value'>
                         <p>
@@ -85,7 +85,7 @@
                                 inputmode="numeric"
                                 pattern="[0-9]*"
                                 min="0"
-                                max='{{or document.system.resources.armor.max document.system.armorScore}}'
+                                max='{{document.system.resources.armor.max}}'
                                 value="{{document.system.resources.armor.value}}"
                                 type="number"
                                 aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
@@ -93,28 +93,60 @@
                             />
                         </p>
                         <p>/</p>
-                        <p class="bar-label">{{or document.system.resources.armor.max document.system.armorScore}}</p>
+                        <p class="bar-label">{{document.system.resources.armor.max}}</p>
                     </div>
                     <progress
                         class='progress-bar armor-color'
                         value='{{document.system.resources.armor.value}}'
-                        max='{{or document.system.resources.armor.max document.system.armorScore}}'
+                        max='{{document.system.resources.armor.max}}'
                         aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
                     ></progress>
                     <div class="status-label">
                         <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
                     </div>
                 </div>
-
             {{else}}
-                <div class="status-number armor-slots">
-                    <div class='status-value'>
-                        <p>-</p>
+                {{#if document.system.armorScore}}
+                    <div class="status-bar armor-slots">
+                        <div class='status-value'>
+                            <p>
+                                <input
+                                    class="bar-input armor-marks-input"
+                                    name="system.resources.armor.value"
+                                    data-dtype="Number"
+                                    inputmode="numeric"
+                                    pattern="[0-9]*"
+                                    min="0"
+                                    max='{{document.system.armorScore}}'
+                                    value="{{document.system.resources.armor.value}}"
+                                    type="number"
+                                    aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
+                                    title='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
+                                />
+                            </p>
+                            <p>/</p>
+                            <p class="bar-label">{{document.system.armorScore}}</p>
+                        </div>
+                        <progress
+                            class='progress-bar armor-color'
+                            value='{{document.system.resources.armor.value}}'
+                            max='{{document.system.armorScore}}'
+                            aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
+                        ></progress>
+                        <div class="status-label">
+                            <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
+                        </div>
                     </div>
-                    <div class="status-label">
-                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
+                {{else}}
+                    <div class="status-number armor-slots">
+                        <div class='status-value'>
+                            <p>-</p>
+                        </div>
+                        <div class="status-label">
+                            <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
+                        </div>
                     </div>
-                </div>
+                {{/if}}
             {{/if}}
 
         <div class="status-section">

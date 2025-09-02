@@ -26,12 +26,25 @@ export class TokenCounterUI {
 
         Hooks.on('updateActor', (actor, changes) => {
             if (this.selectedToken && this.selectedToken.actor.id === actor.id) {
-                console.log('Token Counter | Actor updated, refreshing display');
+                try { console.log('Token Counter | Actor updated, refreshing display', { changes }); } catch {}
                 setTimeout(() => {
                     this.updateFromToken(this.selectedToken);
                     this.render();
                 }, 50);
             }
+        });
+
+        // Refresh when the equipped armor item changes
+        Hooks.on('updateItem', (item, changes) => {
+            try {
+                const parentId = item?.parent?.id || item?.actor?.id;
+                if (!this.selectedToken || parentId !== this.selectedToken.actor.id) return;
+                if (item.type !== 'armor') return;
+                setTimeout(() => {
+                    this.updateFromToken(this.selectedToken);
+                    this.render();
+                }, 25);
+            } catch {}
         });
 
         Hooks.on('updateToken', (token, changes) => {
@@ -78,31 +91,27 @@ export class TokenCounterUI {
 
         if (this.actorType === 'character') {
             this.hope = {
-                current: system.resources.hope.value,
-                max: system.resources.hope.max
+                current: Number(system.resources.hope.value) || 0,
+                max: Number(system.resources.hope.max) || 0
             };
 
             this.characterStress = {
-                current: system.resources.stress.value,
-                max: system.resources.stress.max
+                current: Number(system.resources.stress.value) || 0,
+                max: Number(system.resources.stress.max) || 0
             };
 
-            this.armorSlots = {
-                current: system.resources.armor?.value ?? 0,
-                max: system.resources.armor?.max ?? system.armorScore ?? 0
-            };
-            
-            console.log('Token Counter | Armor data:', {
-                armor: system.resources.armor,
-                current: this.armorSlots.current,
-                max: this.armorSlots.max,
-                actorArmor: actor.armor,
-                armorScore: system.armorScore
-            });
+            // Armor is stored on the equipped armor item (marks.value),
+            // and max comes from actor.system.armorScore.
+            const armorItem = actor.items?.find?.(i => i.type === 'armor' && i.system?.equipped);
+            const armorMarks = Number(armorItem?.system?.marks?.value ?? 0) || 0;
+            const armorMax = Number(system.armorScore ?? armorItem?.system?.baseScore ?? 0) || 0;
+            this.armorSlots = { current: armorMarks, max: armorMax };
+
+            try { console.log('Token Counter | Armor data:', { armorItem, armorMarks, armorMax, armorScore: system.armorScore }); } catch {}
         } else if (this.actorType === 'adversary' || this.actorType === 'companion') {
             this.stress = {
-                current: system.resources.stress.value,
-                max: system.resources.stress.max
+                current: Number(system.resources.stress.value) || 0,
+                max: Number(system.resources.stress.max) || 0
             };
         }
 
@@ -232,16 +241,12 @@ export class TokenCounterUI {
                 maxValue = this.characterStress.max;
                 break;
             case 'armor-slots':
-                updatePath = 'system.resources.armor.value';
-                currentValue = this.armorSlots.current;
-                maxValue = this.armorSlots.max;
-                console.log('Token Counter | Modifying armor:', {
-                    type,
-                    currentValue,
-                    maxValue,
-                    amount,
-                    updatePath
-                });
+                // Update the equipped armor item's marks value, not the actor resource.
+                const armorItem = actor.items?.find?.(i => i.type === 'armor' && i.system?.equipped);
+                currentValue = Number(this.armorSlots.current) || Number(armorItem?.system?.marks?.value ?? 0) || 0;
+                maxValue = Number(this.armorSlots.max) || Number(actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0) || 0;
+                console.log('Token Counter | Modifying armor:', { type, currentValue, maxValue, amount, itemId: armorItem?.id });
+                if (!armorItem) return; // No equipped armor; nothing to update
                 break;
             default:
                 return;
@@ -250,7 +255,33 @@ export class TokenCounterUI {
         const newValue = Math.max(0, Math.min(currentValue + amount, maxValue));
         
         if (newValue !== currentValue) {
-            await actor.update({ [updatePath]: newValue });
+            if (type === 'armor-slots') {
+                // Persist to the armor item
+                const armorItem = actor.items?.find?.(i => i.type === 'armor' && i.system?.equipped);
+                if (!armorItem) return;
+                await armorItem.update({ 'system.marks.value': newValue });
+            } else {
+                await actor.update({ [updatePath]: newValue });
+            }
+            // Optimistically update local state for snappier UI; hooks will reconcile
+            switch (type) {
+                case 'armor-slots':
+                    this.armorSlots.current = newValue;
+                    break;
+                case 'character-stress':
+                    this.characterStress.current = newValue;
+                    break;
+                case 'stress':
+                    this.stress.current = newValue;
+                    break;
+                case 'hope':
+                    this.hope.current = newValue;
+                    break;
+                case 'hp':
+                    this.hp.current = newValue;
+                    break;
+            }
+            this.render();
         }
     }
 
