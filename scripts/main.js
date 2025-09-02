@@ -28,6 +28,27 @@ Hooks.once('init', () => {
     }
   });
 
+  // Default DH+ sheet size (global)
+  game.settings.register(MODULE_ID, 'defaultSheetWidth', {
+    name: 'DHP.Settings.SheetSize.Width.Name',
+    hint: 'DHP.Settings.SheetSize.Width.Hint',
+    scope: 'world',
+    config: true,
+    type: Number,
+    default: 900,
+    range: { min: 400, max: 2000, step: 10 }
+  });
+
+  game.settings.register(MODULE_ID, 'defaultSheetHeight', {
+    name: 'DHP.Settings.SheetSize.Height.Name',
+    hint: 'DHP.Settings.SheetSize.Height.Hint',
+    scope: 'world',
+    config: true,
+    type: Number,
+    default: 800,
+    range: { min: 300, max: 1600, step: 10 }
+  });
+
   console.log('Daggerheart Plus | Module settings registered');
 });
 
@@ -44,10 +65,39 @@ Hooks.once('ready', async () => {
     return;
   }
 
+  const getDefaultSheetSize = () => ({
+    width: Number(game.settings.get(MODULE_ID, 'defaultSheetWidth') ?? 900),
+    height: Number(game.settings.get(MODULE_ID, 'defaultSheetHeight') ?? 800)
+  });
+
+  const applyDefaultSizeToApp = (app) => {
+    try {
+      if (!app) return;
+      const { width, height } = getDefaultSheetSize();
+      if (typeof app.setPosition === 'function') {
+        app.setPosition({ width, height });
+      } else if (app.position) {
+        app.position.width = width;
+        app.position.height = height;
+        if (typeof app.render === 'function') app.render(false);
+      } else if (app.element) {
+        // Last resort style application
+        app.element.style.width = `${width}px`;
+        app.element.style.height = `${height}px`;
+      }
+    } catch (e) {
+      console.warn('Daggerheart Plus | Failed to apply default size to app', app, e);
+    }
+  };
+
   const DaggerheartPlusCharacterSheet = class extends systemAPI.Character {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
-      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus']
+      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus'],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        ...getDefaultSheetSize()
+      }
     };
 
     static PARTS = {
@@ -197,7 +247,11 @@ Hooks.once('ready', async () => {
   const DaggerheartPlusAdversarySheet = class extends systemAPI.Adversary {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
-      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus']
+      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus'],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        ...getDefaultSheetSize()
+      }
     };
 
     get title() {
@@ -208,7 +262,11 @@ Hooks.once('ready', async () => {
   const DaggerheartPlusCompanionSheet = class extends systemAPI.Companion {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
-      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus']
+      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus'],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        ...getDefaultSheetSize()
+      }
     };
 
     get title() {
@@ -219,7 +277,11 @@ Hooks.once('ready', async () => {
   const DaggerheartPlusEnvironmentSheet = class extends systemAPI.Environment {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
-      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus']
+      classes: [...(super.DEFAULT_OPTIONS.classes || []), 'daggerheart-plus'],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        ...getDefaultSheetSize()
+      }
     };
 
     get title() {
@@ -315,8 +377,22 @@ Hooks.once('ready', async () => {
   await manageFearTracker();
 
   Hooks.on('updateSetting', async (setting) => {
-    if (setting.key === 'enableFearTracker' && setting.namespace === MODULE_ID) {
+    if (setting.namespace !== MODULE_ID) return;
+
+    if (setting.key === 'enableFearTracker') {
       await manageFearTracker();
+      return;
+    }
+
+    if (setting.key === 'defaultSheetWidth' || setting.key === 'defaultSheetHeight') {
+      const { width, height } = getDefaultSheetSize();
+      // Apply to any open DH+ sheets immediately
+      for (const app of Object.values(ui.windows)) {
+        if (app?.constructor?.name?.startsWith?.('DaggerheartPlus')) {
+          applyDefaultSizeToApp(app);
+        }
+      }
+      if (game.user.isGM) ui.notifications.info(`DH+ sheet size set to ${width}x${height}.`);
     }
   });
 

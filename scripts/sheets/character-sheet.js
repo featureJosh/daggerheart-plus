@@ -1,4 +1,5 @@
 import { FloatingSheetNavigation } from '../applications/floating-sheet-navigation.js';
+const MODULE_ID = 'daggerheart-plus';
 
 export function createDaggerheartPlusCharacterSheet() {
   const BaseCharacterSheet = game.system.api?.applications?.sheets?.actors?.Character || foundry.applications.sheets.ActorSheetV2;
@@ -6,7 +7,12 @@ export function createDaggerheartPlusCharacterSheet() {
   return class DaggerheartPlusCharacterSheet extends BaseCharacterSheet {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
-      classes: [...(super.DEFAULT_OPTIONS.classes || ['sheet', 'actor']), 'daggerheart-plus']
+      classes: [...(super.DEFAULT_OPTIONS.classes || ['sheet', 'actor']), 'daggerheart-plus'],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        width: Number(game.settings?.get?.(MODULE_ID, 'defaultSheetWidth') ?? 900),
+        height: Number(game.settings?.get?.(MODULE_ID, 'defaultSheetHeight') ?? 800)
+      }
     };
 
     static PARTS = {

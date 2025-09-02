@@ -485,21 +485,22 @@
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet {
-  padding: var(--dh-space-md);
-  background: var(--dhp-gradient);
-  border-right: 2px solid var(--dhp-primary);
-  box-shadow: 4px 0 8px var(--dhp-shadow);
-  backdrop-filter: blur(4px);
-  display: flex;
-  flex-direction: column;
-  gap: var(--dh-space-lg);
-  overflow-y: auto;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 100%;
-  scrollbar-width: thin;
-  scrollbar-color: var(--dhp-primary) transparent;
+    padding: var(--dh-space-md);
+    background: url('https://i.imgur.com/GXS9vLv.png');
+    background-position: left;
+    background-size: cover;
+    border-right: 2px solid var(--dhp-primary);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--dh-space-lg);
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dhp-primary) transparent;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar {
@@ -569,7 +570,6 @@
   border-radius: var(--dh-radius-lg);
   padding: var(--dh-space-md);
   border: 1px solid var(--dhp-border);
-  box-shadow: 0 2px 4px var(--dhp-shadow);
   transition: all 0.3s ease;
   border: none;
   width: 100%;
@@ -582,7 +582,6 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section:hover,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section:hover {
   border-color: var(--dhp-primary);
-  box-shadow: 0 4px 8px var(--dhp-shadow);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .title {
@@ -1123,4 +1122,107 @@
 /* Wrapper produced by ApplicationV2 for the part; ensure it doesn't affect layout */
 .daggerheart-plus.sheet.character .tabs-right {
   position: static;
+}
+
+/* === DH+ Character Sidebar: Quick Resource + Status UI === */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .info-section { width: 100%; }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .resources-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .bar-input {
+  width: 44px;
+  text-align: center;
+  border: 1px solid var(--dhp-border);
+  border-radius: 6px;
+  padding: 0.25rem 0.35rem;
+  font-weight: 700;
+  background: var(--dhp-surface);
+  color: var(--dhp-text);
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .bar-label { color: var(--dhp-text-light); }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--dhp-border);
+  margin-bottom: 0.25rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-border);
+  border-radius: 4px;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-value {
+  background: var(--dhp-warning);
+  border-radius: 4px;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-moz-progress-bar {
+  background: var(--dhp-warning);
+  border-radius: 4px;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-webkit-progress-value,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-moz-progress-bar { background: var(--dhp-danger); }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color::-webkit-progress-value,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color::-moz-progress-bar { background: var(--dhp-accent); }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-label h4 {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--dhp-text-light);
+  text-align: center;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem;
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .status-value p {
+  margin: 0;
+  font-weight: 700;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .status-label h4 {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--dhp-text-light);
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-section {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.5rem;
+  row-gap: 0.25rem;
+  align-items: center;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-section .threshold-label {
+  font-size: 0.75rem;
+  color: var(--dhp-text-light);
+  text-transform: uppercase;
+  margin: 0;
+}
+.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-section .threshold-value {
+  font-weight: 700;
+  margin: 0;
 }

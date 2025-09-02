@@ -55,11 +55,17 @@
   "DHP.Settings.ExperimentalFeatures.Hint": "Enable experimental features that are still in development. These features may not work properly and are provided for testing purposes only.",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Name": "Enable Fear Tracker",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "Enables a fear tracker UI that displays above the hotbar. The tracker integrates with the Daggerheart system to show and modify the current fear level.",
+  "DHP.Settings.SheetSize.Width.Name": "Default DH+ Sheet Width (px)",
+  "DHP.Settings.SheetSize.Width.Hint": "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
+  "DHP.Settings.SheetSize.Height.Name": "Default DH+ Sheet Height (px)",
+  "DHP.Settings.SheetSize.Height.Hint": "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
   "DAGGERHEART": {
     "GENERAL": {
       "actorName": "Actor Name",
       "evasion": "Evasion",
       "stress": "Stress",
+      "proficiency": "Proficiency",
+      "armorSlots": "Armor Slots",
       "level": "Level",
       "HitPoints": {
         "short": "HP"
