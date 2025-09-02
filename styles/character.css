@@ -473,13 +473,15 @@
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet {
-  padding: 0.75rem;
+  padding: var(--dh-space-md);
   background: var(--dhp-gradient);
   border-right: 2px solid var(--dhp-primary);
   box-shadow: 4px 0 8px var(--dhp-shadow);
+  border-radius: 0 var(--dh-radius-lg) var(--dh-radius-lg) 0;
+  backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--dh-space-lg);
   overflow-y: auto;
   height: 100%;
   width: 100%;
@@ -544,7 +546,7 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .shortcut-items-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--dh-space-lg);
   width: 100%;
   min-width: 0;
 }
@@ -552,6 +554,12 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--dh-radius-lg);
+  padding: var(--dh-space-md);
+  border: 1px solid var(--dhp-border);
+  box-shadow: 0 2px 4px var(--dhp-shadow);
+  transition: all 0.3s ease;
   border: none;
   width: 100%;
   box-sizing: border-box;
@@ -563,6 +571,7 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section:hover,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section:hover {
   border-color: var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .title {
