@@ -42,7 +42,7 @@
 }
 
 .floating-sheet-nav .nav-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -79,8 +79,13 @@
 }
 
 @keyframes pulse-icon {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -96,11 +101,10 @@
     flex-direction: row;
     padding: var(--dh-space-sm, 0.5rem);
   }
-  
+
   .floating-sheet-nav .nav-button {
     width: 36px;
     height: 36px;
     font-size: 0.9rem;
   }
 }
-

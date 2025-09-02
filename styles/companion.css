@@ -37,7 +37,10 @@
   border: 1px solid var(--dhp-border);
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-section .status-item {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-section
+  .status-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,13 +59,21 @@
   min-width: 120px;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-number .status-value p {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-number
+  .status-value
+  p {
   margin: 0;
   font-weight: bold;
   font-size: 1.1rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-number .status-label h4 {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-number
+  .status-label
+  h4 {
   margin: 0;
   font-size: 0.7rem;
   color: var(--dhp-text-light);
@@ -77,19 +88,29 @@
   min-width: 200px;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .status-value {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value {
   display: flex;
   align-items: center;
   gap: 0.25rem;
   margin-bottom: 0.5rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .status-value p {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value
+  p {
   margin: 0;
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .bar-input {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .bar-input {
   width: 50px;
   text-align: center;
   border: 1px solid var(--dhp-border);
@@ -98,11 +119,17 @@
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .bar-label {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .bar-label {
   color: var(--dhp-text-light);
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .progress-bar {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .progress-bar {
   width: 100%;
   height: 8px;
   border-radius: 4px;
@@ -110,17 +137,27 @@
   margin-bottom: 0.5rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .progress-bar::-webkit-progress-bar {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .progress-bar::-webkit-progress-bar {
   background: var(--dhp-border);
   border-radius: 4px;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .progress-bar::-webkit-progress-value {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .progress-bar::-webkit-progress-value {
   background: var(--dhp-success);
   border-radius: 4px;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-bar .status-label h4 {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-label
+  h4 {
   margin: 0;
   font-size: 0.8rem;
   color: var(--dhp-text-light);
@@ -147,13 +184,19 @@
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .level-div .input-section {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .level-div
+  .input-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .level-div .level-button {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .level-div
+  .level-button {
   background: var(--dhp-accent);
   color: white;
   border: none;
@@ -169,16 +212,25 @@
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .level-div .level-button:hover {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .level-div
+  .level-button:hover {
   background: var(--dhp-secondary);
   transform: scale(1.1);
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .level-div .level-button.glow {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .level-div
+  .level-button.glow {
   animation: pulse 2s infinite;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .level-div .level-value {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .level-div
+  .level-value {
   width: 60px;
   text-align: center;
   font-size: 1.2rem;
@@ -189,7 +241,9 @@
   background: var(--dhp-surface);
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .companion-navigation {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .companion-navigation {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1rem;
@@ -200,7 +254,10 @@
   justify-content: center;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .companion-navigation button {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .companion-navigation
+  button {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 4px;
@@ -211,7 +268,10 @@
   font-weight: 500;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .companion-navigation button:hover {
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .companion-navigation
+  button:hover {
   background: var(--dhp-accent);
   color: white;
   transform: translateY(-2px);
@@ -292,12 +352,16 @@
   margin-bottom: 0.5rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .progress-bar::-webkit-progress-bar {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .progress-bar::-webkit-progress-bar {
   background: var(--dhp-border);
   border-radius: 4px;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .progress-bar::-webkit-progress-value {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .progress-bar::-webkit-progress-value {
   background: var(--dhp-success);
   border-radius: 4px;
 }
@@ -323,19 +387,29 @@
   margin-bottom: 0.5rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .status-number .status-value p {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .status-number
+  .status-value
+  p {
   margin: 0;
   font-weight: bold;
   font-size: 1.1rem;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .status-number .status-label h4 {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .status-number
+  .status-label
+  h4 {
   margin: 0;
   font-size: 0.7rem;
   color: var(--dhp-text-light);
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .shortcut-items-section {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .shortcut-items-section {
   margin-top: 1rem;
 }
 
@@ -360,7 +434,10 @@
   margin: 0;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .items-sidebar-list .item {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .items-sidebar-list
+  .item {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 4px;
@@ -373,12 +450,19 @@
   cursor: pointer;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .items-sidebar-list .item:hover {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .items-sidebar-list
+  .item:hover {
   box-shadow: 0 2px 4px var(--dhp-shadow);
   transform: translateX(2px);
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .items-sidebar-list .item img {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .items-sidebar-list
+  .item
+  img {
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -413,7 +497,10 @@
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-row span {
+.daggerheart-plus.sheet.companion
+  .companion-sidebar-sheet
+  .experience-row
+  span {
   flex: 1;
   font-size: 0.8rem;
 }

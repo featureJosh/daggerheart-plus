@@ -1,35 +1,41 @@
-export class FloatingSheetNavigation extends foundry.applications.api.ApplicationV2 {
+export class FloatingSheetNavigation extends foundry.applications.api
+  .ApplicationV2 {
   static DEFAULT_OPTIONS = {
-    id: 'floating-sheet-navigation-{id}',
-    tag: 'nav',
+    id: "floating-sheet-navigation-{id}",
+    tag: "nav",
     window: {
       frame: false,
-      positioned: false
+      positioned: false,
     },
     position: {
-      width: 'auto',
-      height: 'auto'
+      width: "auto",
+      height: "auto",
     },
-    classes: ['floating-sheet-nav']
+    classes: ["floating-sheet-nav"],
   };
 
   static PARTS = {
     navigation: {
-      template: 'modules/daggerheart-plus/templates/applications/floating-sheet-navigation.hbs'
-    }
+      template:
+        "modules/daggerheart-plus/templates/applications/floating-sheet-navigation.hbs",
+    },
   };
 
   constructor(sheet) {
     super();
     this.sheet = sheet;
     this.actor = sheet.actor;
-    this.currentSection = 'features';
+    this.currentSection = "features";
     this.sections = [
-      { key: 'features', label: 'Features', icon: 'fa-solid fa-star' },
-      { key: 'loadout', label: 'Loadout', icon: 'fa-solid fa-shield-halved' },
-      { key: 'inventory', label: 'Inventory', icon: 'fa-solid fa-bag-shopping' },
-      { key: 'biography', label: 'Biography', icon: 'fa-solid fa-user' },
-      { key: 'effects', label: 'Effects', icon: 'fa-solid fa-sparkles' }
+      { key: "features", label: "Features", icon: "fa-solid fa-star" },
+      { key: "loadout", label: "Loadout", icon: "fa-solid fa-shield-halved" },
+      {
+        key: "inventory",
+        label: "Inventory",
+        icon: "fa-solid fa-bag-shopping",
+      },
+      { key: "biography", label: "Biography", icon: "fa-solid fa-user" },
+      { key: "effects", label: "Effects", icon: "fa-solid fa-sparkles" },
     ];
   }
 
@@ -41,7 +47,7 @@ export class FloatingSheetNavigation extends foundry.applications.api.Applicatio
     return {
       sections: this.sections,
       currentSection: this.currentSection,
-      actor: this.actor
+      actor: this.actor,
     };
   }
 
@@ -60,31 +66,33 @@ export class FloatingSheetNavigation extends foundry.applications.api.Applicatio
     const sheetRect = sheetElement.getBoundingClientRect();
     const navElement = this.element;
 
-    navElement.style.position = 'fixed';
+    navElement.style.position = "fixed";
     navElement.style.right = `${window.innerWidth - sheetRect.right + 20}px`;
-    navElement.style.top = `${sheetRect.top + (sheetRect.height / 2)}px`;
-    navElement.style.transform = 'translateY(-50%)';
-    navElement.style.zIndex = '1000';
+    navElement.style.top = `${sheetRect.top + sheetRect.height / 2}px`;
+    navElement.style.transform = "translateY(-50%)";
+    navElement.style.zIndex = "1000";
   }
 
   _attachEventListeners() {
-    const navButtons = this.element.querySelectorAll('.nav-button[data-section]');
-    
-    navButtons.forEach(button => {
-      button.addEventListener('click', (event) => {
+    const navButtons = this.element.querySelectorAll(
+      ".nav-button[data-section]"
+    );
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
         event.preventDefault();
         const section = button.dataset.section;
         this._switchToSection(section);
       });
     });
 
-    window.addEventListener('resize', () => this._positionNavigation());
-    
+    window.addEventListener("resize", () => this._positionNavigation());
+
     if (this.sheet.element) {
       const observer = new MutationObserver(() => this._positionNavigation());
-      observer.observe(this.sheet.element, { 
-        attributes: true, 
-        attributeFilter: ['style'] 
+      observer.observe(this.sheet.element, {
+        attributes: true,
+        attributeFilter: ["style"],
       });
       this._observer = observer;
     }
@@ -92,22 +100,24 @@ export class FloatingSheetNavigation extends foundry.applications.api.Applicatio
 
   _switchToSection(sectionName) {
     if (this.currentSection === sectionName) return;
-    
+
     this.currentSection = sectionName;
-    
+
     if (this.sheet._switchToSection) {
       this.sheet._switchToSection(sectionName);
     }
-    
+
     this._updateActiveButton();
   }
 
   _updateActiveButton() {
-    const navButtons = this.element.querySelectorAll('.nav-button[data-section]');
-    
-    navButtons.forEach(button => {
+    const navButtons = this.element.querySelectorAll(
+      ".nav-button[data-section]"
+    );
+
+    navButtons.forEach((button) => {
       const isActive = button.dataset.section === this.currentSection;
-      button.classList.toggle('active', isActive);
+      button.classList.toggle("active", isActive);
     });
   }
 
@@ -121,10 +131,9 @@ export class FloatingSheetNavigation extends foundry.applications.api.Applicatio
       this._observer.disconnect();
       this._observer = null;
     }
-    
-    window.removeEventListener('resize', () => this._positionNavigation());
-    
+
+    window.removeEventListener("resize", () => this._positionNavigation());
+
     return super.close(options);
   }
 }
-

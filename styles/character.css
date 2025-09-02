@@ -1,6 +1,5 @@
-
 .roll-mode-select {
-    padding: 0;
+  padding: 0;
 }
 
 .daggerheart-plus.sheet .resource-group {
@@ -46,30 +45,37 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern {
-    padding: 0.75rem;
-    padding-top: var(--header-height);
-    border-bottom: 2px solid var(--dhp-primary);
-    box-shadow: 0 4px 8px var(--dhp-shadow);
-    background-image: url('https://i.imgur.com/r57d6py.png');
-    background-repeat: repeat;
-    background-size: contain;
+  padding: 0.75rem;
+  padding-top: var(--header-height);
+  border-bottom: 2px solid var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
+  background-image: url("https://i.imgur.com/r57d6py.png");
+  background-repeat: repeat;
+  background-size: contain;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .header-main-section {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-main-section {
   display: flex;
   align-items: stretch;
   gap: 1rem;
   margin-bottom: 0.75rem;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .header-top-portrait {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-top-portrait {
   position: relative;
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .header-top-portrait img {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-top-portrait
+  img {
   width: 140px;
   height: 100%;
   object-fit: cover;
@@ -80,12 +86,17 @@
   transition: all 0.3s ease;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .header-top-portrait img:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-top-portrait
+  img:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 12px var(--dhp-shadow);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .spellcast-indicator {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .spellcast-indicator {
   position: absolute;
   top: -4px;
   right: -4px;
@@ -101,7 +112,10 @@
   box-shadow: 0 2px 4px var(--dhp-shadow);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .header-top-portrait .death-tint {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-top-portrait
+  .death-tint {
   filter: sepia(100%) saturate(300%) hue-rotate(-40deg) brightness(0.3);
 }
 
@@ -124,7 +138,9 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .death-overlay:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .death-overlay:hover {
   background: rgba(139, 0, 0, 1);
   transform: translate(-50%, -50%) scale(1.1);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
@@ -148,36 +164,51 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-name input {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--dhp-primary);
-    border: none;
-    background: transparent;
-    width: 100%;
-    margin-bottom: 0.25rem;
-    font-family: 'Cinzel Decorative', serif;
-    backdrop-filter: blur(0);
-    -webkit-backdrop-filter: blur(0);
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-name
+  input {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--dhp-primary);
+  border: none;
+  background: transparent;
+  width: 100%;
+  margin-bottom: 0.25rem;
+  font-family: "Cinzel Decorative", serif;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .character-classes {
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--dhp-accent);
   margin-bottom: 0.25rem;
   text-transform: uppercase;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-classes .class-name,
-.daggerheart-plus.sheet.character .character-header-modern .character-classes .multiclass-name {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-classes
+  .class-name,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-classes
+  .multiclass-name {
   color: var(--dhp-accent);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-classes .subclass-name,
-.daggerheart-plus.sheet.character .character-header-modern .character-classes .multiclass-subclass {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-classes
+  .subclass-name,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-classes
+  .multiclass-subclass {
   color: var(--dhp-text-light);
   margin-left: 0.25rem;
   cursor: pointer;
@@ -189,18 +220,29 @@
   color: var(--dhp-text-light);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-heritage span {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-heritage
+  span {
   margin-right: 0.5rem;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-heritage span:hover,
-.daggerheart-plus.sheet.character .character-header-modern .character-classes span:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-heritage
+  span:hover,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-classes
+  span:hover {
   color: var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .character-level-section {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .character-level-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -257,7 +299,9 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .missing-class:hover,
-.daggerheart-plus.sheet.character .character-header-modern .missing-heritage:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .missing-heritage:hover {
   color: var(--dhp-accent);
 }
 
@@ -284,9 +328,13 @@
   filter: brightness(0) invert(1);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .domain-icon img:hover {
-    transform: scale(1.1);
-    filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(748%) hue-rotate(-15deg) brightness(107%) contrast(93%);
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .domain-icon
+  img:hover {
+  transform: scale(1.1);
+  filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(748%)
+    hue-rotate(-15deg) brightness(107%) contrast(93%);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .quick-actions {
@@ -295,23 +343,34 @@
 }
 
 .daggerheart-plus.sheet.character .item-buttons {
-    grid-column: span 3;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+  grid-column: span 3;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.daggerheart-plus.sheet.character .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible) .inventory-item-header, .application.daggerheart.dh-style .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible) .inventory-item-content {
+.daggerheart-plus.sheet.character
+  .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible)
+  .inventory-item-header,
+.application.daggerheart.dh-style
+  .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible)
+  .inventory-item-content {
   background: transparent;
 }
 
-.daggerheart-plus.sheet.character .inventory-item .inventory-item-content.extensible .invetory-description {
+.daggerheart-plus.sheet.character
+  .inventory-item
+  .inventory-item-content.extensible
+  .invetory-description {
   overflow: hidden;
   margin-top: 1em;
   text-align: left;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .quick-actions button {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .quick-actions
+  button {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 6px;
@@ -322,7 +381,10 @@
   font-size: 1rem;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .quick-actions button:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .quick-actions
+  button:hover {
   background: var(--dhp-accent);
   border-color: var(--dhp-primary);
   color: var(--dhp-background);
@@ -336,15 +398,15 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .core-stats {
-    display: flex;
-    gap: 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--dhp-border);
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--dhp-border);
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .stat-item {
@@ -395,14 +457,18 @@
   margin-bottom: 0.5rem;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container {
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin: .5em 0em;
+  margin: 0.5em 0em;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container:hover {
   transform: translateY(-2px) scale(1.02);
 }
 
@@ -419,7 +485,10 @@
   max-width: 80px;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container:hover .attribute-bg {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container:hover
+  .attribute-bg {
   border-color: var(--dhp-primary);
 }
 
@@ -447,19 +516,25 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container:hover .attribute-icon {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container:hover
+  .attribute-icon {
   color: var(--dhp-accent);
   transform: scale(1.1);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .attribute-value {
-	font-size: 1.75rem;
-	font-weight: bold;
-	color: var(--dhp-text-light);
-	/* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); */
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: var(--dhp-text-light);
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); */
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container:hover .attribute-value {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container:hover
+  .attribute-value {
   color: var(--dhp-accent);
 }
 
@@ -471,7 +546,10 @@
   line-height: 1.1;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container:hover .attribute-name {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container:hover
+  .attribute-name {
   color: var(--dhp-primary);
 }
 
@@ -486,58 +564,61 @@
 }
 
 .daggerheart-plus.sheet.character fieldset {
-    align-items: center;
-    margin-top: 5px;
-    border-radius: 6px;
-    border-color: light-dark(#18162e, #f3c267);
-    border: none
+  align-items: center;
+  margin-top: 5px;
+  border-radius: 6px;
+  border-color: light-dark(#18162e, #f3c267);
+  border: none;
 }
 
 .daggerheart-plus.sheet.character fieldset legend {
-    font-family: 'Montserrat', sans-serif;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: light-dark(#18162e, #f3c267);
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: light-dark(#18162e, #f3c267);
 }
 
 .daggerheart-plus.sheet.character .tab.features .features-sections {
-    padding-top: 1em;
+  padding-top: 1em;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet {
-    padding: var(--dh-space-md);
-    padding-top: var(--header-height);
-    background: url('https://i.imgur.com/GXS9vLv.png');
-    background-position: left;
-    background-size: cover;
-    border-right: 2px solid var(--dhp-primary);
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    overflow-y: auto;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
-    scrollbar-width: thin;
-    scrollbar-color: var(--dhp-primary) transparent;
+  padding: var(--dh-space-md);
+  padding-top: var(--header-height);
+  background: url("https://i.imgur.com/GXS9vLv.png");
+  background-position: left;
+  background-size: cover;
+  border-right: 2px solid var(--dhp-primary);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dhp-primary) transparent;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar {
   width: 6px;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar-track {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar-thumb {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet::-webkit-scrollbar-thumb {
   background: var(--dhp-primary);
   border-radius: 3px;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar-thumb:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet::-webkit-scrollbar-thumb:hover {
   background: var(--dhp-accent);
 }
 
@@ -566,7 +647,9 @@
   box-sizing: border-box;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .death-roll-btn:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .death-roll-btn:hover {
   background: var(--dhp-warning);
   transform: scale(1.05);
   box-shadow: 0 4px 8px var(--dhp-shadow);
@@ -576,7 +659,9 @@
   font-size: 1.2rem;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .shortcut-items-section {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .shortcut-items-section {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -589,17 +674,23 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section {
   border-radius: var(--dh-radius-lg);
-  padding: .5em 0em;
+  padding: 0.5em 0em;
   transition: all 0.3s ease;
   border: none;
   width: 100%;
   box-sizing: border-box;
-  min-width: 0; 
+  min-width: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section:hover,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section:hover,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section:hover,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section:hover,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .experience-section:hover {
   border-color: var(--dhp-primary);
 }
 
@@ -632,7 +723,10 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .items-sidebar-list .item {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .items-sidebar-list
+  .item {
   display: none;
 }
 
@@ -653,7 +747,9 @@
   overflow: hidden;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .experience-row:hover {
   background: rgba(230, 168, 0, 0.15);
   border-color: var(--dhp-primary);
   transform: translateX(2px);
@@ -676,12 +772,18 @@
   flex-shrink: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row:hover .experience-value {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .experience-row:hover
+  .experience-value {
   background: var(--dhp-primary);
   transform: scale(1.1);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row span {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .experience-row
+  span {
   flex: 1;
   font-size: 0.8rem;
   color: var(--dhp-text);
@@ -692,7 +794,10 @@
   white-space: nowrap;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row:hover span {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .experience-row:hover
+  span {
   color: var(--dhp-primary);
 }
 
@@ -730,14 +835,19 @@
   word-break: break-word;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item:hover {
   background: rgba(230, 168, 0, 0.15);
   border-color: var(--dhp-primary);
   transform: none;
   box-shadow: none;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-img {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-img {
   border-radius: 4px;
   border: 1px solid var(--dhp-border);
   transition: all 0.3s ease;
@@ -745,11 +855,17 @@
   margin: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item:hover .item-img {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item:hover
+  .item-img {
   border-color: var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-label-wrapper {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-label-wrapper {
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -758,7 +874,10 @@
   gap: 0.25rem;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-label {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-label {
   min-width: 0;
   overflow: hidden;
   display: flex;
@@ -766,7 +885,10 @@
   gap: 0.25rem;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-name {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-name {
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--dhp-text);
@@ -778,7 +900,10 @@
   line-height: 1.2;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-labels {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-labels {
   font-size: 0.75rem;
   color: var(--dhp-text-light);
   overflow: hidden;
@@ -788,7 +913,11 @@
   line-height: 1.2;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-labels .label {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .item-labels
+  .label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -796,7 +925,10 @@
   line-height: 1.2;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .controls {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .controls {
   display: flex;
   gap: 0.25rem;
   flex-shrink: 0;
@@ -804,7 +936,11 @@
   margin-left: auto;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .controls a {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .controls
+  a {
   padding: 0.25rem;
   border-radius: 4px;
   transition: all 0.3s ease;
@@ -817,7 +953,11 @@
   color: var(--dhp-text-light);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .controls a:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .controls
+  a:hover {
   color: var(--dhp-primary);
   background: rgba(230, 168, 0, 0.1);
   transform: scale(1.1);
@@ -825,16 +965,22 @@
 
 /* --- Sidebar Loadout: Card Style -------------------------------------------------- */
 /* Scope tightly to only affect the Loadout section in the character sidebar */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .items-sidebar-list {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .items-sidebar-list {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item {
   position: relative !important;
-  padding: 0 !important;                  /* content overlays handle padding */
-  height: 72px !important;                /* compact default height */
+  padding: 0 !important; /* content overlays handle padding */
+  height: 72px !important; /* compact default height */
   border-radius: 10px !important;
   overflow: hidden !important;
   /* expects url(...) stored in --sidebar-card-bg */
@@ -844,30 +990,46 @@
   background-repeat: no-repeat !important;
   border: 1px solid var(--dhp-border) !important;
   box-shadow: 0 1px 2px var(--dhp-shadow) !important;
-  transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease, border-color 180ms ease !important;
+  transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease,
+    border-color 180ms ease !important;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item:hover {
   height: 86px !important; /* expand on hover */
   border-color: var(--dhp-primary) !important;
 }
 
 /* Hide the inline item image; use it as a background instead */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-img {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-img {
   opacity: 0 !important;
   position: absolute !important;
   pointer-events: none !important;
 }
 
 /* Collapse the original portrait container but keep roll-img usable */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .img-portait {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .img-portait {
   width: 0 !important;
   height: 0 !important;
   overflow: hidden !important; /* collapse original container */
 }
 
 /* Ensure the header shows the background (and doesn’t paint over it) */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .inventory-item-header {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .inventory-item-header {
   background: transparent !important;
   background-image: var(--sidebar-card-bg) !important;
   background-size: cover !important;
@@ -876,39 +1038,62 @@
 }
 
 /* Optional: show the roll d20 near controls (hidden if not desired) */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .img-portait .roll-img {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .img-portait
+  .roll-img {
   position: absolute;
   top: 6px;
   right: 40px; /* leave room for .controls bubble */
   width: 22px;
   height: 22px;
   z-index: 2;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
   cursor: pointer;
 }
 
 /* Soft vignette and a bottom gradient band for text readability */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item::before {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(100% 120% at 50% 50%, transparent 40%, rgba(0,0,0,0.35) 100%);
+  background: radial-gradient(
+    100% 120% at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
   pointer-events: none;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item::after {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item::after {
   content: "";
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 44px;
-  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
   pointer-events: none;
 }
 
 /* Text overlay sits on top of gradients */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-label {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-label {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -916,23 +1101,40 @@
   z-index: 1;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-name {
-    color: var(--dhp-primary);
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-    text-align: left;
-    margin: 0;
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-name {
+  color: var(--dhp-primary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  text-align: left;
+  margin: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-labels,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-labels .label {
-  color: rgba(255,255,255,0.85);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-labels,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-labels
+  .label {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Controls overlay in the top-right corner */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .controls {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -940,8 +1142,8 @@
   align-items: center;
   gap: 0.25rem;
   z-index: 2;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border-radius: 999px;
@@ -952,19 +1154,33 @@
   transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item:hover .controls {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item:hover
+  .controls {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls a {
-  color: rgba(255,255,255,0.9);
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .controls
+  a {
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls a:hover {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .controls
+  a:hover {
   color: #fff;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group {
@@ -977,20 +1193,29 @@
   text-align: center;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group > label {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .threshold-group
+  > label {
   font-size: 12px;
   text-transform: uppercase;
   color: var(--dhp-text-light);
   margin-bottom: 0.25em;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .resource-group {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .threshold-group
+  .resource-group {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group input {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .threshold-group
+  input {
   width: 40px;
   font-size: 16px;
   font-weight: 700;
@@ -1002,14 +1227,20 @@
   text-align: center;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-values {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
   justify-content: center;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-text {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-text {
   color: var(--dhp-text-light);
   font-size: 0.75em;
   text-transform: uppercase;
@@ -1027,25 +1258,42 @@
   margin-bottom: 1.33em;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-clickable {
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-clickable:hover {
   color: var(--dhp-primary);
   opacity: 1;
   transform: scale(1.1);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable:active {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-clickable:active {
   transform: scale(0.95);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display,
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display {
-  background: url('assets/containers/DH-Arrow.png') no-repeat center center !important;
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-group
+  .threshold-value-display,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-values
+  .threshold-value-display {
+  background: url("assets/containers/DH-Arrow.png") no-repeat center center !important;
   background-size: contain !important;
   border: none !important;
   width: 35px !important;
@@ -1062,17 +1310,36 @@
   justify-content: center;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display:hover,
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display:hover {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-group
+  .threshold-value-display:hover,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-values
+  .threshold-value-display:hover {
   transform: scale(1.05);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display:active,
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display:active {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-group
+  .threshold-value-display:active,
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .threshold-values
+  .threshold-value-display:active {
   transform: scale(0.98);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .core-stats .trait-effects {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .core-stats
+  .trait-effects {
   color: var(--dhp-text-light);
   font-size: 0.75em;
   text-decoration: none;
@@ -1080,12 +1347,16 @@
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(230, 168, 0, 0.7); }
-  70% { box-shadow: 0 0 0 15px rgba(230, 168, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(230, 168, 0, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(230, 168, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(230, 168, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(230, 168, 0, 0);
+  }
 }
-
-
 
 /* Right-side tabs navigation */
 .daggerheart-plus.sheet.character nav.tabs {
@@ -1122,7 +1393,9 @@
   box-shadow: 0 1px 2px var(--dhp-shadow);
   padding-inline-end: 12px;
   justify-content: end;
-  margin-inline-start: calc((var(--tab-full-width) - var(--tab-inactive-width)) * -1);
+  margin-inline-start: calc(
+    (var(--tab-full-width) - var(--tab-inactive-width)) * -1
+  );
 }
 
 .daggerheart-plus.sheet.character nav.tabs > .item i {
@@ -1144,7 +1417,10 @@
 }
 
 /* === Sidebar Quick Stats: refreshed look === */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .info-section { width: 100%; margin-bottom: var(--dh-space-md); }
+.daggerheart-plus.sheet.character .character-sidebar-sheet .info-section {
+  width: 100%;
+  margin-bottom: var(--dh-space-md);
+}
 .daggerheart-plus.sheet.character .character-sidebar-sheet .resources-section {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1164,18 +1440,28 @@
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
   padding-bottom: 1em;
-  border-bottom: 1px solid var(--dhp-primary)
-
+  border-bottom: 1px solid var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .information-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .information-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-label { order: -1; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-label h4 {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-label {
+  order: -1;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-label
+  h4 {
   margin: 0;
   font-size: 0.7rem;
   letter-spacing: 0.05em;
@@ -1185,7 +1471,10 @@
   border: none !important;
   padding: 0;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value {
   grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
   display: flex;
   align-items: center;
@@ -1194,10 +1483,29 @@
   z-index: 2;
   width: 100%;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value p { color: var(--dhp-text); font-weight: 800; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .status-value p { margin: 0; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .bar-input,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .bar-input {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value
+  p {
+  color: var(--dhp-text);
+  font-weight: 800;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value
+  p {
+  margin: 0;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .bar-input,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-number
+  .bar-input {
   text-align: center;
   color: var(--dhp-text);
   background: transparent;
@@ -1205,27 +1513,60 @@
   border-radius: 0;
   padding: 0;
   width: 15px;
-  margin-top: -3px;
+  margin-top: -1px;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-bar .bar-label { color: var(--dhp-text); font-weight: 700; }
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .bar-label {
+  color: var(--dhp-text);
+  font-weight: 700;
+}
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar {
-    grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
-    width: 100%;
-    height: var(--qs-bar-height);
-    border-radius: 6px;
-    background: var(--dhp-border);
-    -webkit-appearance: none;
-    appearance: none;
-    z-index: 1;
+  grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
+  width: 100%;
+  height: var(--qs-bar-height);
+  border-radius: 6px;
+  background: var(--dhp-border);
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 1;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-bar { background: var(--dhp-border); border-radius: 6px; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-webkit-progress-value { background: var(--dhp-primary); border-radius: 6px; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar::-moz-progress-bar { background: var(--dhp-primary); border-radius: 6px; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-webkit-progress-value,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color::-moz-progress-bar { background: var(--dhp-danger); }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color::-webkit-progress-value,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color::-moz-progress-bar { background: var(--dhp-accent); }
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-primary);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar::-webkit-progress-value {
+  background: var(--dhp-primary);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar::-moz-progress-bar {
+  background: var(--dhp-primary);
+  border-radius: 6px;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.stress-color::-webkit-progress-value,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.stress-color::-moz-progress-bar {
+  background: var(--dhp-primary);
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.armor-color::-webkit-progress-value,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.armor-color::-moz-progress-bar {
+  background: var(--dhp-primary);
+}
 
 /* Metrics (Evasion / Armor Slots / Proficiency) */
 .daggerheart-plus.sheet.character .character-sidebar-sheet .status-section {
@@ -1244,8 +1585,17 @@
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .status-label { order: -1; }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .status-label h4 {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-number
+  .status-label {
+  order: -1;
+}
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-number
+  .status-label
+  h4 {
   margin: 0;
   font-size: 0.7rem;
   letter-spacing: 0.05em;
@@ -1255,7 +1605,11 @@
   border: none !important;
   padding: 0;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .status-number .status-value p {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-number
+  .status-value
+  p {
   margin: 0;
   font-weight: 800;
   font-size: 1.1rem;

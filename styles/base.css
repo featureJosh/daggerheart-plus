@@ -20,8 +20,13 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
   --dhp-warning: #ff9800;
   --dhp-danger: #f44336;
   --dhp-info: #2196f3;
-  --dhp-gradient: linear-gradient(135deg, #1a1a25 0%, #2a2a35 50%, #1a1a25 100%);
-  
+  --dhp-gradient: linear-gradient(
+    135deg,
+    #1a1a25 0%,
+    #2a2a35 50%,
+    #1a1a25 100%
+  );
+
   --dh-color-dark-blue: #0a0f21;
   --dh-color-purple: #1e184d;
   --dh-color-purple-light: #38227b;
@@ -31,13 +36,13 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
   --dh-color-off-white: #f2f3f4;
   --dh-color-off-black: #1c1c1c;
   --dh-border-purple: #6d6795;
-  
+
   --dh-space-xs: 0.25rem;
   --dh-space-sm: 0.5rem;
   --dh-space-md: 0.75rem;
   --dh-space-lg: 1rem;
   --dh-space-xl: 1.5rem;
-  
+
   --dh-radius-md: 6px;
   --dh-radius-lg: 8px;
   --dh-radius-xl: 10px;
@@ -47,7 +52,7 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
   border: none;
 }
 
-.daggerheart-plus.sheet input[type='number']{
+.daggerheart-plus.sheet input[type="number"] {
   backdrop-filter: blur(0);
   -webkit-backdrop-filter: blur(0);
 }

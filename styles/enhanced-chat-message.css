@@ -1,13 +1,14 @@
-@import url('./base.css');
+@import url("./base.css");
 
 .chat-message.duality {
   --text-color: #efe6d8;
   --bg-color: rgba(24, 22, 46, 0.4);
-  
+
   margin: 8px 6px;
   padding: 0.75em 1em;
   font-size: 13px;
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
   font-weight: 400;
   letter-spacing: 0.3px;
   line-height: 1.4;
@@ -22,46 +23,56 @@
 .chat-message.duality.hope {
   --text-color: #f3c267;
   --bg-color: rgba(243, 194, 103, 0.4);
-  
-  background: linear-gradient(135deg, 
-    rgba(96, 69, 20, 0.8) 0%, 
-    rgb(206, 134, 41) 100%);
+
+  background: linear-gradient(
+    135deg,
+    rgba(96, 69, 20, 0.8) 0%,
+    rgb(206, 134, 41) 100%
+  );
   border: 1px solid rgba(243, 194, 103, 0.8);
   box-shadow: 0 2px 8px rgba(243, 194, 103, 0.3);
 }
 
 .chat-message.duality.hope.whisper {
-  background: linear-gradient(135deg, 
-    rgba(96, 69, 20, 0.8) 0%, 
-    rgb(206, 134, 41) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(96, 69, 20, 0.8) 0%,
+    rgb(206, 134, 41) 100%
+  );
   border: 1px solid rgba(243, 194, 103, 0.7);
 }
 
 .chat-message.duality.fear {
   --text-color: #8f87ee;
   --bg-color: rgba(143, 135, 238, 0.4);
-  
-  background: linear-gradient(135deg, 
-    rgba(30, 24, 77, 0.8) 0%, 
-    rgba(63, 81, 181, 0.6) 100%);
+
+  background: linear-gradient(
+    135deg,
+    rgba(30, 24, 77, 0.8) 0%,
+    rgba(63, 81, 181, 0.6) 100%
+  );
   border: 1px solid rgba(63, 81, 181, 0.8);
   box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3);
 }
 
 .chat-message.duality.fear.whisper {
-  background: linear-gradient(135deg, 
-    rgba(30, 24, 77, 0.7) 0%, 
-    rgba(63, 81, 181, 0.5) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(30, 24, 77, 0.7) 0%,
+    rgba(63, 81, 181, 0.5) 100%
+  );
   border: 1px solid rgba(63, 81, 181, 0.7);
 }
 
 .chat-message.duality.critical {
   --text-color: #a778b1;
   --bg-color: rgba(167, 120, 177, 0.4);
-  
-  background: linear-gradient(135deg, 
-    rgba(67, 0, 112, 0.8) 0%, 
-    rgba(167, 120, 177, 0.6) 100%);
+
+  background: linear-gradient(
+    135deg,
+    rgba(67, 0, 112, 0.8) 0%,
+    rgba(167, 120, 177, 0.6) 100%
+  );
   border: 1px solid rgba(167, 120, 177, 0.8);
   box-shadow: 0 2px 8px rgba(167, 120, 177, 0.3);
 }
@@ -182,23 +193,31 @@
   gap: 5px;
   text-transform: capitalize;
   padding: 0 10px;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 14px;
   color: var(--text-color);
 }
 
 .roll-part-header:before,
 .roll-part-header:after {
-  content: ' ';
+  content: " ";
   height: 1px;
 }
 
 .roll-part-header:before {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--text-color) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    var(--text-color) 100%
+  );
 }
 
 .roll-part-header:after {
-  background: linear-gradient(90deg, var(--text-color) 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--text-color) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .roll-part-content {
@@ -214,7 +233,7 @@
   align-items: baseline;
   color: var(--text-color);
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   line-height: 0.75;
   gap: 10px;
 }
@@ -265,7 +284,7 @@
 }
 
 .roll-effect {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -330,22 +349,22 @@
   justify-content: center;
   gap: 15px;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   flex-wrap: wrap;
 }
 
 .roll-die {
   display: grid;
   grid-template-areas:
-    '. a a'
-    'c b b';
+    ". a a"
+    "c b b";
   gap: 6px;
   align-items: center;
   position: relative;
 }
 
 .roll-die.has-plus:before {
-  content: '+';
+  content: "+";
   font-size: 20px;
   grid-area: c;
   display: flex;
@@ -393,7 +412,7 @@
 }
 
 .dice:before {
-  content: ' ';
+  content: " ";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -404,22 +423,22 @@
 }
 
 .dice.d4:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d4.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d4.svg");
 }
 .dice.d6:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d6.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d6.svg");
 }
 .dice.d8:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d8.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d8.svg");
 }
 .dice.d10:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d10.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d10.svg");
 }
 .dice.d12:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d12.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d12.svg");
 }
 .dice.d20:before {
-  --svg-die: url('/modules/daggerheart-plus/assets/icons/dice/default/d20.svg');
+  --svg-die: url("/modules/daggerheart-plus/assets/icons/dice/default/d20.svg");
 }
 
 .dice.color-hope:before {
@@ -455,13 +474,13 @@
 }
 
 .clickable-die.hope-die:hover {
-  filter: brightness(1.4) saturate(1.5) 
-          drop-shadow(0 0 12px rgba(243, 194, 103, 1));
+  filter: brightness(1.4) saturate(1.5)
+    drop-shadow(0 0 12px rgba(243, 194, 103, 1));
 }
 
 .clickable-die.fear-die:hover {
-  filter: brightness(1.4) saturate(1.5) 
-          drop-shadow(0 0 12px rgba(143, 135, 238, 1));
+  filter: brightness(1.4) saturate(1.5)
+    drop-shadow(0 0 12px rgba(143, 135, 238, 1));
 }
 
 .clickable-die.rerolling {
@@ -499,7 +518,7 @@
   width: fit-content;
   margin: 8px auto 0;
   white-space: nowrap;
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 14px;
   letter-spacing: 0.5px;
@@ -514,7 +533,7 @@
   border-radius: 6px;
   padding: 6px 12px;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.8px;
@@ -533,8 +552,8 @@
 
 .dice-roll[data-action="expandRoll"] .formula-toggle:before,
 .dice-roll[data-action="expandRoll"] .formula-toggle:after {
-  content: '\f078';
-  font-family: 'Font Awesome 6 Free';
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
   font-weight: 900;
   color: var(--text-color);
   transition: all 0.3s ease;
@@ -560,7 +579,7 @@
   border: 1px solid rgba(243, 194, 103, 0.5);
   border-radius: 8px;
   color: #f3c267;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -588,7 +607,8 @@
 }
 
 @keyframes rerollingPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
     transform: scale(1);
   }

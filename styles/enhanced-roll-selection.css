@@ -1,4 +1,4 @@
-@import url('./base.css');
+@import url("./base.css");
 
 .application.daggerheart.dialog.dh-style.views.roll-selection {
   --dh-golden: #f3c267;
@@ -11,14 +11,15 @@
   --dh-beige: #efe6d8;
   --dh-green: #40a640;
   --dh-red: #e54e4e;
-  
+
   background: rgba(11, 10, 19, 0.85);
   border: 1px solid #6d6795;
   backdrop-filter: blur(8px);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   color: var(--dh-beige);
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
   font-weight: 400;
   letter-spacing: 0.3px;
 }
@@ -42,7 +43,7 @@
   align-items: center;
   gap: 12px;
   color: var(--dh-golden);
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 24px;
   font-weight: 700;
   text-shadow: 0 0 8px rgba(243, 194, 103, 0.6);
@@ -87,7 +88,11 @@
   justify-content: center;
   align-items: center;
   padding: 20px 0;
-  background: linear-gradient(135deg, rgba(24, 22, 46, 0.3) 0%, rgba(243, 194, 103, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(24, 22, 46, 0.3) 0%,
+    rgba(243, 194, 103, 0.1) 100%
+  );
   border-radius: 10px;
   border: 1px solid rgba(243, 194, 103, 0.3);
 }
@@ -103,24 +108,40 @@
 }
 
 .dice-option.hope-dice {
-  background: linear-gradient(135deg, rgba(243, 194, 103, 0.1) 0%, rgba(243, 194, 103, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(243, 194, 103, 0.1) 0%,
+    rgba(243, 194, 103, 0.05) 100%
+  );
   border: 2px solid rgba(243, 194, 103, 0.3);
 }
 
 .dice-option.hope-dice:hover {
-  background: linear-gradient(135deg, rgba(243, 194, 103, 0.2) 0%, rgba(243, 194, 103, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(243, 194, 103, 0.2) 0%,
+    rgba(243, 194, 103, 0.1) 100%
+  );
   border-color: rgba(243, 194, 103, 0.6);
   box-shadow: 0 0 20px rgba(243, 194, 103, 0.4);
   transform: translateY(-3px);
 }
 
 .dice-option.fear-dice {
-  background: linear-gradient(135deg, rgba(143, 135, 238, 0.1) 0%, rgba(143, 135, 238, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(143, 135, 238, 0.1) 0%,
+    rgba(143, 135, 238, 0.05) 100%
+  );
   border: 2px solid rgba(143, 135, 238, 0.3);
 }
 
 .dice-option.fear-dice:hover {
-  background: linear-gradient(135deg, rgba(143, 135, 238, 0.2) 0%, rgba(143, 135, 238, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(143, 135, 238, 0.2) 0%,
+    rgba(143, 135, 238, 0.1) 100%
+  );
   border-color: rgba(143, 135, 238, 0.6);
   box-shadow: 0 0 20px rgba(143, 135, 238, 0.4);
   transform: translateY(-3px);
@@ -135,11 +156,13 @@
 }
 
 .dice-icon.hope {
-  filter: brightness(1.2) saturate(1.3) drop-shadow(0 0 8px rgba(243, 194, 103, 0.6));
+  filter: brightness(1.2) saturate(1.3)
+    drop-shadow(0 0 8px rgba(243, 194, 103, 0.6));
 }
 
 .dice-icon.fear {
-  filter: brightness(1.1) saturate(1.2) drop-shadow(0 0 8px rgba(143, 135, 238, 0.6));
+  filter: brightness(1.1) saturate(1.2)
+    drop-shadow(0 0 8px rgba(143, 135, 238, 0.6));
 }
 
 .dice-select {
@@ -149,13 +172,14 @@
   flex-direction: column;
 }
 
-.hope-die-select, .fear-die-select {
+.hope-die-select,
+.fear-die-select {
   background: rgba(11, 10, 19, 0.8);
   border: 2px solid rgba(243, 194, 103, 0.5);
   border-radius: 6px;
   color: var(--dh-beige);
   padding: 10px 14px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.4px;
@@ -166,7 +190,8 @@
   border-color: rgba(143, 135, 238, 0.5);
 }
 
-.hope-die-select:focus, .fear-die-select:focus {
+.hope-die-select:focus,
+.fear-die-select:focus {
   outline: none;
   border-color: var(--dh-golden);
   box-shadow: 0 0 12px rgba(243, 194, 103, 0.6);
@@ -177,8 +202,9 @@
   box-shadow: 0 0 12px rgba(143, 135, 238, 0.6);
 }
 
-.hope-label, .fear-label {
-  font-family: 'Cinzel', serif;
+.hope-label,
+.fear-label {
+  font-family: "Cinzel", serif;
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
@@ -205,25 +231,29 @@
   border: 1px solid rgba(239, 230, 216, 0.2);
 }
 
-.advantage-section, .disadvantage-section {
+.advantage-section,
+.disadvantage-section {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.advantage-section label, .disadvantage-section label {
+.advantage-section label,
+.disadvantage-section label {
   font-weight: 600;
   color: var(--dh-beige);
   font-size: 14px;
 }
 
-.advantage-chips, .disadvantage-chips {
+.advantage-chips,
+.disadvantage-chips {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.advantage-chip, .disadvantage-chip {
+.advantage-chip,
+.disadvantage-chip {
   display: flex;
   align-items: center;
   padding: 6px 12px;
@@ -292,7 +322,7 @@
   border: 2px solid rgba(243, 194, 103, 0.5);
   border-radius: 6px;
   color: var(--dh-beige);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding: 10px 14px;
   font-size: 16px;
   font-weight: 600;
@@ -321,7 +351,7 @@
   border: 2px solid rgba(239, 230, 216, 0.3);
   border-radius: 6px;
   color: var(--dh-beige);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding: 10px 15px;
   font-size: 14px;
   font-weight: 500;
@@ -336,13 +366,14 @@
   box-shadow: 0 0 8px rgba(243, 194, 103, 0.4);
 }
 
-.cancel-button, .roll-button {
+.cancel-button,
+.roll-button {
   flex: 1;
   padding: 12px 20px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
@@ -386,7 +417,8 @@
 }
 
 @keyframes diceGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 8px rgba(243, 194, 103, 0.6));
   }
   50% {
@@ -395,7 +427,8 @@
 }
 
 @keyframes fearDiceGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: drop-shadow(0 0 8px rgba(143, 135, 238, 0.6));
   }
   50% {
