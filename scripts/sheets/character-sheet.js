@@ -97,6 +97,7 @@ export function createDaggerheartPlusCharacterSheet() {
 
       this._bindSidebarLoadoutCardClicks();
       this._applySidebarLoadoutBackgrounds();
+      this._bindEquipmentHoverIntent();
       try {
         if (game.user?.isGM) this._debugSidebarLoadoutBackgrounds();
       } catch {}
@@ -343,10 +344,15 @@ export function createDaggerheartPlusCharacterSheet() {
               if (n.nodeType === Node.ELEMENT_NODE) {
                 if (n.matches?.(".inventory-item")) {
                   apply(n);
+                  // Bind hover intent if this is in equipment section
+                  if (n.closest?.(".equipment-section"))
+                    this._bindEquipmentHoverIntent(n);
                   needsUpdate = true;
                 } else
                   n.querySelectorAll?.(".inventory-item").forEach((it) => {
                     apply(it);
+                    if (it.closest?.(".equipment-section"))
+                      this._bindEquipmentHoverIntent(it);
                     needsUpdate = true;
                   });
               }
@@ -365,6 +371,61 @@ export function createDaggerheartPlusCharacterSheet() {
       }
     }
 
+    /**
+     * Add a small hover-intent delay to Equipment sidebar cards so they
+     * only expand after the cursor rests on them for ~350ms.
+     * If an element is provided, bind just that item; otherwise bind all.
+     */
+    _bindEquipmentHoverIntent(element) {
+      const root = this.element;
+      if (!root) return;
+      const list = root.querySelector(
+        ".character-sidebar-sheet .equipment-section .items-sidebar-list"
+      );
+      if (!list) return;
+
+      const bind = (item) => {
+        if (!item || item._hoverIntentBound) return;
+        item._hoverIntentBound = true;
+        const enter = () => {
+          try { clearTimeout(item._hoverTO); } catch {}
+          item._hoverTO = setTimeout(() => {
+            item.classList.add("is-hovered");
+          }, 350);
+        };
+        const leave = () => {
+          try { clearTimeout(item._hoverTO); } catch {}
+          item.classList.remove("is-hovered");
+        };
+        item.addEventListener("mouseenter", enter);
+        item.addEventListener("mouseleave", leave);
+        item.addEventListener("pointerdown", leave);
+      };
+
+      if (element) bind(element);
+      else list.querySelectorAll(".inventory-item").forEach(bind);
+
+      // Observe for dynamically added items in equipment list only
+      try {
+        if (!this._equipHoverObserver) {
+          this._equipHoverObserver = new MutationObserver((mutations) => {
+            for (const m of mutations) {
+              m.addedNodes.forEach((n) => {
+                if (n.nodeType === Node.ELEMENT_NODE) {
+                  if (n.matches?.(".inventory-item")) bind(n);
+                  n.querySelectorAll?.(".inventory-item").forEach(bind);
+                }
+              });
+            }
+          });
+          this._equipHoverObserver.observe(list, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      } catch {}
+    }
+
     async close(options = {}) {
       if (this.floatingNav) {
         await this.floatingNav.close();
@@ -375,6 +436,10 @@ export function createDaggerheartPlusCharacterSheet() {
           this._loadoutObserver.disconnect();
         } catch {}
         this._loadoutObserver = null;
+      }
+      if (this._equipHoverObserver) {
+        try { this._equipHoverObserver.disconnect(); } catch {}
+        this._equipHoverObserver = null;
       }
 
       return super.close(options);

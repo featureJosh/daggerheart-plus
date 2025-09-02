@@ -1023,6 +1023,8 @@
   box-shadow: 0 1px 2px var(--dhp-shadow) !important;
   transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease,
     border-color 180ms ease !important;
+  /* No delay by default; collapse immediately when leaving */
+  transition-delay: 0ms, 0ms, 0ms, 0ms !important;
 }
 
 .daggerheart-plus.sheet.character
@@ -1031,6 +1033,8 @@
   .inventory-item:hover {
   height: 85px !important; /* expand on hover */
   border-color: var(--dhp-primary) !important;
+  /* Delay only the height transition (3rd in the list above) */
+  transition-delay: 0ms, 0ms, 350ms, 0ms !important;
 }
 
 /* Hide the inline item image; use it as a background instead */
@@ -1704,13 +1708,27 @@
   box-shadow: 0 1px 2px var(--dhp-shadow) !important;
   transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease,
     border-color 180ms ease !important;
+  /* No delay by default; collapse immediately when leaving */
+  transition-delay: 0ms, 0ms, 0ms, 0ms !important;
 }
 
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .equipment-section
   .inventory-item:hover {
+  /* Expand on hover but only after a short intent delay */
   height: 86px !important; /* expand on hover */
+  border-color: var(--dhp-primary) !important;
+  /* Delay only the height transition (index 3rd in the list above) */
+  transition-delay: 0ms, 0ms, 350ms, 0ms !important;
+}
+
+/* Expand only when hover intent is confirmed via JS */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item.is-hovered {
+  height: 86px !important;
   border-color: var(--dhp-primary) !important;
 }
 
@@ -1893,6 +1911,11 @@
   .character-sidebar-sheet
   .equipment-section
   .inventory-item:hover
+  .controls,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item.is-hovered
   .controls {
   opacity: 1;
   transform: translateY(0);
