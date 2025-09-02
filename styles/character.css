@@ -3,6 +3,12 @@
     padding: 0;
 }
 
+.daggerheart-plus.sheet .resource-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .daggerheart-plus.sheet.character form {
   position: relative;
   display: grid;
@@ -40,11 +46,13 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern {
-  padding: 0.75rem;
-  padding-top: var(--header-height);
-  background: var(--dhp-gradient);
-  border-bottom: 2px solid var(--dhp-primary);
-  box-shadow: 0 4px 8px var(--dhp-shadow);
+    padding: 0.75rem;
+    padding-top: var(--header-height);
+    border-bottom: 2px solid var(--dhp-primary);
+    box-shadow: 0 4px 8px var(--dhp-shadow);
+    background-image: url('https://i.imgur.com/r57d6py.png');
+    background-repeat: repeat;
+    background-size: contain;
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .header-main-section {
@@ -141,14 +149,15 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .character-name input {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--dhp-primary);
-  border: none;
-  background: transparent;
-  width: 100%;
-  margin-bottom: 0.25rem;
-  font-family: 'Cinzel Decorative', serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--dhp-primary);
+    border: none;
+    background: transparent;
+    width: 100%;
+    margin-bottom: 0.25rem;
+    font-family: 'Cinzel Decorative', serif;
+    backdrop-filter: blur(0);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .character-classes {
@@ -326,12 +335,15 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .core-stats {
-  display: flex;
-  gap: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--dhp-border);
+    display: flex;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--dhp-border);
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .stat-item {
@@ -477,7 +489,6 @@
   background: var(--dhp-gradient);
   border-right: 2px solid var(--dhp-primary);
   box-shadow: 4px 0 8px var(--dhp-shadow);
-  border-radius: 0 var(--dh-radius-lg) var(--dh-radius-lg) 0;
   backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
@@ -888,10 +899,12 @@
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-name {
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    color: var(--dhp-primary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    text-align: left;
+    margin: 0;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-labels,
@@ -971,15 +984,14 @@
   text-align: center;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-text {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-text {
   color: var(--dhp-text-light);
   font-size: 0.75em;
   text-transform: uppercase;
@@ -990,36 +1002,36 @@
   padding: 0 2px;
   width: 35px;
   height: auto;
-  word-break: break-all;
-  white-space: normal;
+  word-break: normal;
+  white-space: nowrap;
   display: inline-block;
   margin: 0 0.25em;
   margin-bottom: 1.33em;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable {
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable:hover {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable:hover {
   color: var(--dhp-primary);
   opacity: 1;
   transform: scale(1.1);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-clickable:active {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-clickable:active {
   transform: scale(0.95);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display,
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display {
   background: url('assets/containers/DH-Arrow.png') no-repeat center center !important;
   background-size: contain !important;
   border: none !important;
-  width: 50px !important;
-  height: 50px !important;
+  width: 35px !important;
+  height: 35px !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   color: white !important;
@@ -1032,17 +1044,17 @@
   justify-content: center;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display:hover,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display:hover {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display:hover,
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display:hover {
   transform: scale(1.05);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .threshold-value-display:active,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-values .threshold-value-display:active {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-group .threshold-value-display:active,
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .threshold-values .threshold-value-display:active {
   transform: scale(0.98);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group .trait-effects {
+.daggerheart-plus.sheet.character .character-header-modern .core-stats .trait-effects {
   color: var(--dhp-text-light);
   font-size: 0.75em;
   text-decoration: none;

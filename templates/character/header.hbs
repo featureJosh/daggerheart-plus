@@ -97,13 +97,36 @@
 
             <div class="stats-row">
                 <div class="core-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">{{document.system.resources.hitPoints.value}}/{{document.system.resources.hitPoints.max}}</div>
-                        <div class="stat-label">HP</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">{{document.system.resources.stress.value}}/{{document.system.resources.stress.max}}</div>
-                        <div class="stat-label">Stress</div>
+                    <div class="threshold-values">
+                        <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="1">
+                            {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark1HP"}}
+                        </span>
+                        <div class="resource-group">
+                            <div class="attribute-value-display threshold-value-display"
+                                data-field="system.damageThresholds.major" 
+                                data-label="Major Threshold"
+                                data-has-modifiers="true" 
+                                data-min="0">
+                                {{document.system.damageThresholds.major}}
+                            </div>
+                            <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>
+                        </div>
+                        <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2">
+                            {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
+                        </span>
+                        <div class="resource-group">
+                            <div class="attribute-value-display threshold-value-display"
+                                data-field="system.damageThresholds.severe" 
+                                data-label="Severe Threshold"
+                                data-has-modifiers="true" 
+                                data-min="0">
+                                {{document.system.damageThresholds.severe}}
+                            </div>
+                            <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>
+                        </div>
+                        <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3">
+                            {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
+                        </span>
                     </div>
                     <div class="stat-item hope-stat">
                         <div class="hope-diamonds">
@@ -118,10 +141,6 @@
                             {{/times}}
                         </div>
                         <div class="stat-label">Hope</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">{{#if document.system.armor.system.marks}}{{document.system.armor.system.marks.value}}/{{document.system.armorScore}}{{else}}-{{/if}}</div>
-                        <div class="stat-label">Armor</div>
                     </div>
                 </div>
             </div>
