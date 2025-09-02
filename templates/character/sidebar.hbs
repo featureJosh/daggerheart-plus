@@ -1,7 +1,14 @@
 <aside class="character-sidebar-sheet">
 
-    <div>
-        <div class="resources-section">
+    <div class="top-info-container">
+        <div class="title">
+            <!--<side-line-div class="invert"></side-line-div>-->
+            <h3>{{localize "DAGGERHEART.GENERAL.information"}}</h3>
+            <!--<side-line-div></side-line-div>-->
+        </div>
+
+        <div class="information-section">
+            <div class="resources-section">
             <div class="status-bar">
                 <div class='status-value'>
                     <p>
@@ -64,13 +71,10 @@
                     <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
                 </div>
             </div>
-        </div class="information-section">
-        <div class="title">
-                <!--<side-line-div class="invert"></side-line-div>-->
-                <h3>{{localize "DAGGERHEART.GENERAL.information"}}</h3>
-                <!--<side-line-div></side-line-div>-->
-            </div>
-                    {{#if (or document.system.resources.armor.max document.system.armorScore)}}
+        </div>
+
+        <!-- START OF ARMOR AREA -->
+            {{#if (or document.system.resources.armor.max document.system.armorScore)}}
                 <div class="status-bar armor-slots">
                     <div class='status-value'>
                         <p>
@@ -132,6 +136,8 @@
                 </div>
             </div>
         </div>
+        </div>
+
     </div>
 
 

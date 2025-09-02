@@ -514,7 +514,7 @@
     backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
-    gap: var(--dh-space-lg);
+    gap: 0;
     overflow-y: auto;
     height: 100%;
     width: 100%;
@@ -579,9 +579,10 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .shortcut-items-section {
   display: flex;
   flex-direction: column;
-  gap: var(--dh-space-lg);
+  gap: 0;
   width: 100%;
   min-width: 0;
+  scrollbar-width: none;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section,
@@ -594,7 +595,6 @@
   width: 100%;
   box-sizing: border-box;
   min-width: 0; 
-  overflow: hidden;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section:hover,
@@ -1160,6 +1160,12 @@
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--dhp-primary)
+
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .information-section {
