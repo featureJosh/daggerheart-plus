@@ -1,7 +1,7 @@
 {
   "id": "daggerheart-plus",
   "title": "Daggerheart Plus - Enhanced Sheets",
-  "description": "A module that replaces the default Daggerheart system character sheets with enhanced versions.",
+  "description": "A module that improves upon the default Daggerheart system UI/UX",
   "version": "1.0.0",
   "compatibility": {
     "minimum": "13",
