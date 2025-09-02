@@ -175,15 +175,14 @@ body.theme-dark .application .window-content, body.theme-dark.application .windo
 }
 
 .daggerheart-plus.sheet .inventory-item:hover {
-  box-shadow: 0 4px 8px var(--dhp-shadow);
-  transform: translateY(-2px);
+  box-shadow: none;
+  border: 1px solid var(--dhp-primary);
+  background: rgba(230, 168, 0, 0.15);
 }
 
 .daggerheart-plus.sheet .inventory-item img {
-  width: 48px;
-  height: 48px;
+
   border-radius: 4px;
-  margin-bottom: 0.5rem;
 }
 
 .daggerheart-plus.sheet .inventory-item h5 {

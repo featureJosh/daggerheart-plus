@@ -1,15 +1,24 @@
 
+.roll-mode-select {
+    padding: 0;
+}
 
 .daggerheart-plus.sheet.character form {
+  position: relative;
   display: grid;
   grid-template-columns: 300px 1fr;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     "header header"
-    "sidebar tabs"
     "sidebar body";
   height: 100%;
   background: var(--dhp-background);
+  overflow: visible;
+}
+
+/* Allow outside-positioned tabs to be visible beyond content bounds */
+.daggerheart-plus.sheet.character .window-content {
+  overflow: visible;
 }
 
 .daggerheart-plus.sheet.character .sheet-header {
@@ -24,9 +33,7 @@
   overflow: hidden;
 }
 
-.daggerheart-plus.sheet.character .sheet-tabs {
-  grid-area: tabs;
-}
+/* Removed separate grid slot for tabs; they are absolutely positioned */
 
 .daggerheart-plus.sheet.character .sheet-body {
   grid-area: body;
@@ -268,13 +275,30 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .domain-icon img:hover {
-  transform: scale(1.1);
-  filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(748%) hue-rotate(10deg) brightness(107%) contrast(93%);
+    transform: scale(1.1);
+    filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(748%) hue-rotate(-15deg) brightness(107%) contrast(93%);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .quick-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.daggerheart-plus.sheet.character .item-buttons {
+    grid-column: span 3;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.daggerheart-plus.sheet.character .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible) .inventory-item-header, .application.daggerheart.dh-style .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible) .inventory-item-content {
+  background: transparent;
+}
+
+.daggerheart-plus.sheet.character .inventory-item .inventory-item-content.extensible .invetory-description {
+  overflow: hidden;
+  margin-top: 1em;
+  text-align: left;
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .quick-actions button {
@@ -528,14 +552,10 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.75rem;
-  border: 1px solid var(--dhp-border);
-  transition: all 0.3s ease;
+  border: none;
   width: 100%;
   box-sizing: border-box;
-  min-width: 0;
+  min-width: 0; 
   overflow: hidden;
 }
 
@@ -543,7 +563,6 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section:hover,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section:hover {
   border-color: var(--dhp-primary);
-  box-shadow: 0 2px 4px var(--dhp-shadow);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .title {
@@ -552,8 +571,8 @@
   justify-content: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
-  border-bottom: 1px solid var(--dhp-primary);
-  padding-bottom: 0.5rem;
+  /*border-bottom: 1px solid var(--dhp-primary);*/
+  /*padding-bottom: 0.5rem;*/
   width: 100%;
   min-width: 0;
 }
@@ -676,17 +695,16 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item:hover {
   background: rgba(230, 168, 0, 0.15);
   border-color: var(--dhp-primary);
-  transform: translateX(2px);
-  box-shadow: 0 2px 4px var(--dhp-shadow);
+  transform: none;
+  box-shadow: none;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item .item-img {
-  width: 28px;
-  height: 28px;
   border-radius: 4px;
   border: 1px solid var(--dhp-border);
   transition: all 0.3s ease;
   flex-shrink: 0;
+  margin: 0;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item:hover .item-img {
@@ -765,6 +783,148 @@
   color: var(--dhp-primary);
   background: rgba(230, 168, 0, 0.1);
   transform: scale(1.1);
+}
+
+/* --- Sidebar Loadout: Card Style -------------------------------------------------- */
+/* Scope tightly to only affect the Loadout section in the character sidebar */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .items-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item {
+  position: relative !important;
+  padding: 0 !important;                  /* content overlays handle padding */
+  height: 72px !important;                /* compact default height */
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  /* expects url(...) stored in --sidebar-card-bg */
+  background: var(--sidebar-card-bg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid var(--dhp-border) !important;
+  box-shadow: 0 1px 2px var(--dhp-shadow) !important;
+  transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease, border-color 180ms ease !important;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item:hover {
+  height: 86px !important; /* expand on hover */
+  border-color: var(--dhp-primary) !important;
+}
+
+/* Hide the inline item image; use it as a background instead */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-img {
+  opacity: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+}
+
+/* Collapse the original portrait container but keep roll-img usable */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .img-portait {
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important; /* collapse original container */
+}
+
+/* Ensure the header shows the background (and doesn’t paint over it) */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .inventory-item-header {
+  background: transparent !important;
+  background-image: var(--sidebar-card-bg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Optional: show the roll d20 near controls (hidden if not desired) */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .img-portait .roll-img {
+  position: absolute;
+  top: 6px;
+  right: 40px; /* leave room for .controls bubble */
+  width: 22px;
+  height: 22px;
+  z-index: 2;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+  cursor: pointer;
+}
+
+/* Soft vignette and a bottom gradient band for text readability */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(100% 120% at 50% 50%, transparent 40%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 44px;
+  background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0));
+  pointer-events: none;
+}
+
+/* Text overlay sits on top of gradients */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-label {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.6rem;
+  z-index: 1;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-name {
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-labels,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .item-labels .label {
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Controls overlay in the top-right corner */
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  z-index: 2;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-radius: 999px;
+  padding: 2px;
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none; /* avoid accidental clicks when hidden */
+  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item:hover .controls {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls a {
+  color: rgba(255,255,255,0.9);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section .inventory-item .controls a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.15);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group {
@@ -888,3 +1048,58 @@
 
 
 
+/* Right-side tabs navigation */
+.daggerheart-plus.sheet.character nav.tabs {
+  --tab-full-width: 44px;
+  --tab-inactive-width: 38px;
+  --icon-size: 16px;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: none;
+  z-index: 1;
+}
+
+.daggerheart-plus.sheet.character nav.tabs.tabs-right {
+  contain: content;
+  align-items: flex-start;
+}
+
+.daggerheart-plus.sheet.character nav.tabs > .item {
+  width: var(--tab-full-width);
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--dhp-surface);
+  color: var(--dhp-accent);
+  border: 1px solid transparent;
+  border-radius: 0 8px 8px 0;
+  transition: all 200ms ease;
+  box-shadow: 0 1px 2px var(--dhp-shadow);
+  padding-inline-end: 12px;
+  justify-content: end;
+  margin-inline-start: calc((var(--tab-full-width) - var(--tab-inactive-width)) * -1);
+}
+
+.daggerheart-plus.sheet.character nav.tabs > .item i {
+  font-size: var(--icon-size);
+}
+
+.daggerheart-plus.sheet.character nav.tabs > .item.active,
+.daggerheart-plus.sheet.character nav.tabs > .item:hover {
+  border-color: var(--dhp-primary);
+  color: var(--dhp-primary);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--dhp-primary) 40%, transparent);
+  margin: 0;
+}
+
+/* Position the tabs column nicely in the grid area */
+/* Wrapper produced by ApplicationV2 for the part; ensure it doesn't affect layout */
+.daggerheart-plus.sheet.character .tabs-right {
+  position: static;
+}

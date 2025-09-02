@@ -54,6 +54,19 @@
                         {{/if}}
                     </div>
                 </div>
+
+                {{#if document.system.class.value}}
+                        <div class="domains-display">
+                            {{#each document.system.domainData as |data|}}
+                                <div class="domain-icon">
+                                    <img src="{{data.src}}" alt="" data-tooltip="{{data.label}}" />
+                                </div>
+                            {{/each}}
+                        </div>
+                {{/if}}
+                
+                <div class="character-details">
+
                 
                 <div class="quick-actions">
                     <button type="button" data-action="useDowntime" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
@@ -63,17 +76,6 @@
                         <i class="fa-solid fa-bed"></i>
                     </button>
                 </div>
-                
-                <div class="character-details">
-                    {{#if document.system.class.value}}
-                        <div class="domains-display">
-                            {{#each document.system.domainData as |data|}}
-                                <div class="domain-icon">
-                                    <img src="{{data.src}}" alt="" data-tooltip="{{data.label}}" />
-                                </div>
-                            {{/each}}
-                        </div>
-                    {{/if}}
                     
                     <div class="character-level-section">
                         {{#if (or document.system.needsCharacterSetup document.system.levelData.canLevelUp)}}
@@ -161,4 +163,7 @@
             <button type="button" data-action="openSettings" data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"><i class="fa-solid fa-wrench"></i></button>
         {{/if}}
     {{/'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
+
+    <!-- Placeholder for DH+ right-side tabs part -->
+    <div data-application-part="tabs"></div>
 </header>
