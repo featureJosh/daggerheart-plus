@@ -589,7 +589,7 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section {
   border-radius: var(--dh-radius-lg);
-  padding: var(--dh-space-md);
+  padding: .5em 0em;
   transition: all 0.3s ease;
   border: none;
   width: 100%;
