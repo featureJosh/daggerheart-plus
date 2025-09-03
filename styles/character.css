@@ -607,6 +607,7 @@
   max-width: 100%;
   scrollbar-width: thin;
   scrollbar-color: var(--dhp-primary) transparent;
+  border-radius: 10px 0px 0px 10px;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar {
@@ -730,13 +731,46 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character
+/*.daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .items-sidebar-list
   .item {
   display: none;
+} BEFORE SIDEBAR CHANGE*/
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .items-sidebar-list
+  .item {
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .items-sidebar-list
+  .item:hover {
+  background: rgba(230, 168, 0, 0.15);
+  border-color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .items-sidebar-list
+  .item
+  img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row {
   display: flex;
   align-items: center;
@@ -832,7 +866,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: var(--dhp-surface);
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 4px;
   margin-bottom: 0.25rem;
@@ -840,6 +874,54 @@
   cursor: pointer;
   word-wrap: break-word;
   word-break: break-word;
+}
+
+/* Cross‑browser parity for Equipment rows: use a 3‑column grid so
+   the text column can shrink consistently (minmax(0,1fr)) and apply
+   ellipsis the same in Chrome and Firefox. Scoped to the sidebar
+   equipment section only to avoid affecting other views. */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) max-content;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .item-label-wrapper,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .item-label {
+  min-width: 0;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .item-name,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .item-labels {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .daggerheart-plus.sheet.character
@@ -1681,262 +1763,31 @@
 }
 /* === DH+ Character Sidebar: Quick Resource + Status UI === */
 /* --- Sidebar Equipment: Card Style (match Loadout) ----------------------- */
-.daggerheart-plus.sheet.character
+/*.daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .equipment-section
   .items-sidebar-list {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-}
+}*/
 
-.daggerheart-plus.sheet.character
+*.daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .equipment-section
-  .inventory-item {
-  position: relative !important;
-  padding: 0 !important; /* content overlays handle padding */
-  height: 55px !important; /* compact default height */
-  border-radius: 10px !important;
-  overflow: hidden !important;
-  /* expects url(...) stored in --sidebar-card-bg */
-  background: var(--sidebar-card-bg) !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  border: 1px solid var(--dhp-border) !important;
-  box-shadow: 0 1px 2px var(--dhp-shadow) !important;
-  transition: transform 180ms ease, box-shadow 180ms ease, height 180ms ease,
-    border-color 180ms ease !important;
-  /* No delay by default; collapse immediately when leaving */
-  transition-delay: 0ms, 0ms, 0ms, 0ms !important;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item:hover {
-  /* Expand on hover but only after a short intent delay */
-  height: 86px !important; /* expand on hover */
-  border-color: var(--dhp-primary) !important;
-  /* Delay only the height transition (index 3rd in the list above) */
-  transition-delay: 0ms, 0ms, 350ms, 0ms !important;
-}
-
-/* Expand only when hover intent is confirmed via JS */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item.is-hovered {
-  height: 86px !important;
-  border-color: var(--dhp-primary) !important;
-}
-
-/* Hide inline item image; use it as background instead */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-img {
-  opacity: 0 !important;
-  position: absolute !important;
-  pointer-events: none !important;
-}
-
-/* Collapse the original portrait container but keep roll-img usable */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .img-portait {
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important; /* collapse original container */
-}
-
-/* Ensure the header shows the background and stays transparent */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .inventory-item-header {
-  background: transparent !important;
-  background-image: var(--sidebar-card-bg) !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
-
-/* Optional: show the roll d20 near controls */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .img-portait
-  .roll-img {
-  position: absolute;
-  top: 6px;
-  right: 40px; /* leave room for .controls bubble */
-  width: 22px;
-  height: 22px;
-  z-index: 2;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-  cursor: pointer;
-}
-
-/* Soft vignette and a bottom gradient band for text readability */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    100% 120% at 50% 50%,
-    transparent 40%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-  pointer-events: none;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* Pitch black at bottom, ~50% at 50%, 0% by 70% */
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0) 70%
-  );
-  pointer-events: none;
-}
-
-/* Text overlay sits on top of gradients */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-label {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.4rem 0.6rem;
-  z-index: 1;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-name {
-  color: var(--dhp-primary);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  text-align: left;
+  .items-sidebar-list {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  /* Improve readability over busy images */
-  display: inline-block;
-  max-width: 100%;
-  /* padding: 2px 7px;
-  margin-left: -7px;*/
-  border-radius: 6px;
-  /*background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.72) 0%,
-    rgba(0, 0, 0, 0.68) 8%,
-    rgba(0, 0, 0, 0.6) 16%,
-    rgba(0, 0, 0, 0.48) 28%,
-    rgba(0, 0, 0, 0.34) 44%,
-    rgba(0, 0, 0, 0.22) 60%,
-    rgba(0, 0, 0, 0.12) 74%,
-    rgba(0, 0, 0, 0.06) 86%,
-    rgba(0, 0, 0, 0) 96%
-  );
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);*/
+  width: 100%;
+  min-width: 0;
 }
 
 .daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
   .inventory-item
-  .item-labels,
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-labels
-  .label {
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* Controls overlay in the top-right corner */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .controls {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-radius: 999px;
-  padding: 2px;
-  opacity: 0;
-  transform: translateY(-2px);
-  pointer-events: none; /* avoid accidental clicks when hidden */
-  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item:hover
-  .controls,
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item.is-hovered
-  .controls {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .controls
-  a {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .controls
-  a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  .inventory-item-header
+  .item-label
+  .item-name {
+  font-size: 14px;
+  text-align: left;
 }
