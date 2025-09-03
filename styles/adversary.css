@@ -133,7 +133,7 @@
   justify-content: space-between;
   padding: 0.5rem;
   background: var(--dhp-background);
-  border-radius: 4px;
+  border-radius: 5px;
   margin-bottom: 0.5rem;
   min-width: 120px;
 }
@@ -194,7 +194,7 @@
   width: 40px;
   text-align: center;
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 0.25rem;
   font-weight: bold;
 }
@@ -313,7 +313,7 @@
   font-size: 1rem;
   font-weight: bold;
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 0.25rem;
 }
 
@@ -331,7 +331,7 @@
   button {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -641,7 +641,7 @@
   width: 50px;
   text-align: center;
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 5px;
   padding: 0.25rem;
   font-weight: bold;
 }
@@ -654,14 +654,14 @@
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-bar {
   background: var(--dhp-border);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-value {
   background: var(--dhp-warning);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-label h4 {
@@ -778,7 +778,7 @@
   img {
   width: 24px;
   height: 24px;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-list {
@@ -855,7 +855,7 @@
   transition: all 0.3s ease;
   font-size: 0.9rem;
   padding: 0.25rem;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .controls a:hover {
