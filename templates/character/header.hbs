@@ -12,6 +12,14 @@
                     <i class="fa-solid fa-skull"></i>
                 </div>
             {{/if}}
+            <div class="quick-actions">
+                <button type="button" data-action="useDowntime" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
+                    <i class="fa-solid fa-utensils"></i>
+                </button>
+                <button type="button" data-action="useDowntime" data-type="longRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.longRest.title"}}">
+                    <i class="fa-solid fa-bed"></i>
+                </button>
+            </div>
         </div>
         
         <div class="header-top-column">
@@ -55,7 +63,9 @@
                     </div>
                 </div>
 
-                {{#if document.system.class.value}}
+                <div class="character-details">
+                
+                    {{#if document.system.class.value}}
                         <div class="domains-display">
                             {{#each document.system.domainData as |data|}}
                                 <div class="domain-icon">
@@ -63,20 +73,8 @@
                                 </div>
                             {{/each}}
                         </div>
-                {{/if}}
-                
-                <div class="character-details">
+                    {{/if}}
 
-                
-                <div class="quick-actions">
-                    <button type="button" data-action="useDowntime" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
-                        <i class="fa-solid fa-utensils"></i>
-                    </button>
-                    <button type="button" data-action="useDowntime" data-type="longRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.longRest.title"}}">
-                        <i class="fa-solid fa-bed"></i>
-                    </button>
-                </div>
-                    
                     <div class="character-level-section">
                         {{#if (or document.system.needsCharacterSetup document.system.levelData.canLevelUp)}}
                             <button
@@ -109,7 +107,7 @@
                                 data-min="0">
                                 {{document.system.damageThresholds.major}}
                             </div>
-                            <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>
+                            <!--<a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>-->
                         </div>
                         <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2">
                             {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
@@ -122,7 +120,7 @@
                                 data-min="0">
                                 {{document.system.damageThresholds.severe}}
                             </div>
-                            <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>
+                             <!--<a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>-->
                         </div>
                         <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3">
                             {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}

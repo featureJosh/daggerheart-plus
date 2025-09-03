@@ -73,7 +73,7 @@
                             data-min="0">
                             {{document.system.damageThresholds.major}}
                         </div>
-                        <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>
+                         <!--<a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.major"}}</a>-->
                     </div>
                     <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2">
                         {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
@@ -86,7 +86,7 @@
                             data-min="0">
                             {{document.system.damageThresholds.severe}}
                         </div>
-                        <a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>
+                         <!--<a class="trait-effects">{{localize "DAGGERHEART.GENERAL.DamageThresholds.severe"}}</a>-->
                     </div>
                     <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3">
                         {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
@@ -97,9 +97,9 @@
     <div class="shortcut-items-section">
         <div class="attack-section">
             <div class="title">
-                <side-line-div class="invert"></side-line-div>
+                <!-- <side-line-div class="invert"></side-line-div>-->
                 <h3>{{localize "DAGGERHEART.GENERAL.attack"}}</h3>
-                <side-line-div></side-line-div>
+                <!-- <side-line-div></side-line-div>-->
             </div>
             <ul class="items-sidebar-list">
                 {{> 'daggerheart.inventory-item'
@@ -115,9 +115,9 @@
         </div>
         <div class="experience-section">
             <div class="title">
-                <side-line-div class="invert"></side-line-div>
+                <!-- <side-line-div class="invert"></side-line-div>-->
                 <h3>{{localize "DAGGERHEART.GENERAL.experience.plural"}}</h3>
-                <side-line-div></side-line-div>
+                <!-- <side-line-div></side-line-div>-->
             </div>
             <div class="experience-list">
                 {{#each source.system.experiences as |experience id|}}
@@ -135,7 +135,7 @@
                 {{/each}}
             </div>
         </div>
-        <line-div></line-div>
+         <!-- <line-div></line-div>-->
         <div class="reaction-section">
             <button type="button" data-action="reactionRoll">{{localize "DAGGERHEART.GENERAL.Roll.reaction"}}</button>
         </div>

@@ -394,6 +394,7 @@
   max-width: 100%;
   scrollbar-width: thin;
   scrollbar-color: var(--dhp-primary) transparent;
+  border-radius: 10px 0px 0px 10px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet::-webkit-scrollbar {
@@ -416,6 +417,12 @@
   background: var(--dhp-accent);
 }
 
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .attack-section,
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-section,
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .reaction-section {
+  margin-top: 1em;
+}
+
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait {
   position: relative;
   text-align: center;
@@ -424,6 +431,24 @@
   display: flex;
   justify-content: center;
   align-content: center;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .inventory-item {
+  width: auto;
+  box-sizing: unset;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  word-wrap: break-word;
+  word-break: break-word;
+  justify-content: center;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait img {
@@ -862,7 +887,6 @@
   white-space: nowrap;
   display: inline-block;
   margin: 0 0.25em;
-  margin-bottom: 1.33em;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -901,8 +925,8 @@
   background: url("assets/containers/DH-Arrow.png") no-repeat center center !important;
   background-size: contain !important;
   border: none !important;
-  width: 35px !important;
-  height: 35px !important;
+  width: 45px !important;
+  height: 45px !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   color: white !important;

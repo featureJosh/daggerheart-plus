@@ -51,6 +51,27 @@ Hooks.once("init", () => {
     range: { min: 300, max: 1600, step: 10 },
   });
 
+  // Default DH+ Adversary sheet size (specific)
+  game.settings.register(MODULE_ID, "adversarySheetWidth", {
+    name: "DHP.Settings.SheetSize.Adversary.Width.Name",
+    hint: "DHP.Settings.SheetSize.Adversary.Width.Hint",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 630,
+    range: { min: 400, max: 2000, step: 10 },
+  });
+
+  game.settings.register(MODULE_ID, "adversarySheetHeight", {
+    name: "DHP.Settings.SheetSize.Adversary.Height.Name",
+    hint: "DHP.Settings.SheetSize.Adversary.Height.Hint",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 820,
+    range: { min: 300, max: 1600, step: 10 },
+  });
+
   console.log("Daggerheart Plus | Module settings registered");
 });
 
@@ -70,10 +91,15 @@ Hooks.once("ready", async () => {
     height: Number(game.settings.get(MODULE_ID, "defaultSheetHeight") ?? 800),
   });
 
-  const applyDefaultSizeToApp = (app) => {
+  const getDefaultAdversarySheetSize = () => ({
+    width: Number(game.settings.get(MODULE_ID, "adversarySheetWidth") ?? 630),
+    height: Number(game.settings.get(MODULE_ID, "adversarySheetHeight") ?? 820),
+  });
+
+  const applyDefaultSizeToApp = (app, sizeOverride) => {
     try {
       if (!app) return;
-      const { width, height } = getDefaultSheetSize();
+      const { width, height } = sizeOverride ?? getDefaultSheetSize();
       if (typeof app.setPosition === "function") {
         app.setPosition({ width, height });
       } else if (app.position) {
@@ -202,7 +228,7 @@ Hooks.once("ready", async () => {
       // Ensure correct initial section
       this._showSection(this.tabGroups.primary);
 
-      // Apply background images to sidebar loadout items (simple, no observers)
+      // Apply background images to sidebar loadout items only
       this._applySidebarLoadoutBackgrounds();
     }
 
@@ -241,7 +267,7 @@ Hooks.once("ready", async () => {
         const root = this.element;
         if (!root) return;
         const items = root.querySelectorAll(
-          ".character-sidebar-sheet .loadout-section .inventory-item, .character-sidebar-sheet .equipment-section .inventory-item"
+          ".character-sidebar-sheet .loadout-section .inventory-item"
         );
         if (!items?.length) return;
 
@@ -284,7 +310,7 @@ Hooks.once("ready", async () => {
       classes: [...(super.DEFAULT_OPTIONS.classes || []), "daggerheart-plus"],
       position: {
         ...(super.DEFAULT_OPTIONS?.position || {}),
-        ...getDefaultSheetSize(),
+        ...getDefaultAdversarySheetSize(),
       },
     };
 
@@ -444,19 +470,25 @@ Hooks.once("ready", async () => {
       return;
     }
 
-    if (
-      setting.key === "defaultSheetWidth" ||
-      setting.key === "defaultSheetHeight"
-    ) {
-      const { width, height } = getDefaultSheetSize();
-      // Apply to any open DH+ sheets immediately
+    if (setting.key === "defaultSheetWidth" || setting.key === "defaultSheetHeight") {
+      const size = getDefaultSheetSize();
       for (const app of Object.values(ui.windows)) {
-        if (app?.constructor?.name?.startsWith?.("DaggerheartPlus")) {
-          applyDefaultSizeToApp(app);
+        if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") &&
+            !(app?.constructor?.name?.includes?.("Adversary"))) {
+          applyDefaultSizeToApp(app, size);
         }
       }
-      if (game.user.isGM)
-        ui.notifications.info(`DH+ sheet size set to ${width}x${height}.`);
+      if (game.user.isGM) ui.notifications.info(`DH+ sheet size set to ${size.width}x${size.height}.`);
+    }
+
+    if (setting.key === "adversarySheetWidth" || setting.key === "adversarySheetHeight") {
+      const size = getDefaultAdversarySheetSize();
+      for (const app of Object.values(ui.windows)) {
+        if (app?.constructor?.name === "DaggerheartPlusAdversarySheet") {
+          applyDefaultSizeToApp(app, size);
+        }
+      }
+      if (game.user.isGM) ui.notifications.info(`DH+ adversary sheet size set to ${size.width}x${size.height}.`);
     }
   });
 

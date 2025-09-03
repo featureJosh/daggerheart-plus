@@ -115,6 +115,19 @@
 .daggerheart-plus.sheet.character
   .character-header-modern
   .header-top-portrait
+  .quick-actions {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .header-top-portrait
   .death-tint {
   filter: sepia(100%) saturate(300%) hue-rotate(-40deg) brightness(0.3);
 }
@@ -151,6 +164,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  justify-content: space-between;
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .header-top-row {
@@ -160,8 +174,11 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .character-info {
+  display: flex;
   flex: 1;
   min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .daggerheart-plus.sheet.character
@@ -342,7 +359,7 @@
   gap: 0.5rem;
 }
 
-.daggerheart-plus.sheet.character .item-buttons {
+.daggerheart-plus.sheet .item-buttons {
   grid-column: span 3;
   display: flex;
   gap: 1em;
@@ -351,7 +368,7 @@
   align-items: center;
 }
 
-.daggerheart-plus.sheet.character
+.daggerheart-plus.sheet
   .inventory-item:not(.single-img):hover:has(.inventory-item-content.extensible)
   .inventory-item-header,
 .application.daggerheart.dh-style
@@ -360,7 +377,7 @@
   background: transparent;
 }
 
-.daggerheart-plus.sheet.character
+.daggerheart-plus.sheet
   .inventory-item
   .inventory-item-content.extensible
   .invetory-description {
@@ -559,7 +576,7 @@
   margin-top: 0.5em;
 }
 
-.daggerheart-plus.sheet.character fieldset {
+.daggerheart-plus.sheet fieldset {
   align-items: center;
   margin-top: 5px;
   border-radius: 6px;
@@ -567,25 +584,26 @@
   border: none;
 }
 
-.daggerheart-plus.sheet.character fieldset legend {
+.daggerheart-plus.sheet fieldset legend {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-weight: 600;
   color: light-dark(#18162e, #f3c267);
 }
 
-.daggerheart-plus.sheet.character fieldset.glassy legend {
+.daggerheart-plus.sheet fieldset.glassy legend {
   background-color: transparent;
 }
 
-.daggerheart-plus.sheet.character fieldset.glassy {
+.daggerheart-plus.sheet fieldset.glassy {
   background-color: transparent;
 }
 
-.daggerheart-plus.sheet.character .tab.features .features-sections,
-.daggerheart-plus.sheet.character .tab.effects .effects-sections,
-.daggerheart-plus.sheet.character .tab.biography .items-section,
-.daggerheart-plus.sheet.character .search-section {
+.daggerheart-plus.sheet .tab.features .features-sections,
+.daggerheart-plus.sheet .tab.features .features-section,
+.daggerheart-plus.sheet .tab.effects .effects-sections,
+.daggerheart-plus.sheet .tab.biography .items-section,
+.daggerheart-plus.sheet .search-section {
   padding-top: 1em;
 }
 
@@ -858,17 +876,15 @@
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .inventory-item {
-  width: 100%;
-  box-sizing: border-box;
-  min-width: 0;
+  width: auto;
+  box-sizing: unset;
   overflow: hidden;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0rem;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
-  border-radius: 4px;
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -876,58 +892,7 @@
   word-break: break-word;
 }
 
-/* Cross‑browser parity for Equipment rows: use a 3‑column grid so
-   the text column can shrink consistently (minmax(0,1fr)) and apply
-   ellipsis the same in Chrome and Firefox. Scoped to the sidebar
-   equipment section only to avoid affecting other views. */
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) max-content;
-  align-items: center;
-  column-gap: 0.5rem;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-label-wrapper,
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .inventory-item-header,
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-label {
-  min-width: 0;
-}
-
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-name,
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .inventory-item
-  .item-labels {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.daggerheart-plus.sheet.character
-  .inventory-item
-  .inventory-item-header
-  .item-label {
+.daggerheart-plus.sheet .inventory-item .inventory-item-header .item-label {
   flex: 1;
   font-family: "Montserrat", sans-serif;
   align-self: center;
@@ -1043,10 +1008,11 @@
   .inventory-item
   .controls {
   display: flex;
-  gap: 0.25rem;
+  gap: 0;
   flex-shrink: 0;
   align-items: center;
   margin-left: auto;
+  flex-wrap: wrap;
 }
 
 .daggerheart-plus.sheet.character
@@ -1147,6 +1113,13 @@
   .loadout-section
   .inventory-item
   .inventory-item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  flex-wrap: wrap;
+  flex-direction: row;
   background: transparent !important;
   background-image: var(--sidebar-card-bg) !important;
   background-size: cover !important;
@@ -1389,7 +1362,6 @@
   white-space: nowrap;
   display: inline-block;
   margin: 0 0.25em;
-  margin-bottom: 1.33em;
 }
 
 .daggerheart-plus.sheet.character
@@ -1430,8 +1402,8 @@
   background: url("assets/containers/DH-Arrow.png") no-repeat center center !important;
   background-size: contain !important;
   border: none !important;
-  width: 35px !important;
-  height: 35px !important;
+  width: 45px !important;
+  height: 45px !important;
   font-size: 18px !important;
   font-weight: 700 !important;
   color: white !important;
@@ -1783,7 +1755,7 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character
+.daggerheart-plus.sheet
   .inventory-item
   .inventory-item-header
   .item-label

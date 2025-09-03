@@ -6,7 +6,7 @@ body.daggerheart-plus-active .daggerheart.sheet.item {
   display: none !important;
 }
 
-body.theme-dark .application.daggerheart {
+body.theme-dark .application.daggerheart.sheet {
   background: #1e1e2a99;
   backdrop-filter: blur(5px);
 }
@@ -166,7 +166,6 @@ body.theme-dark .application.daggerheart {
   border: 1px solid var(--dhp-border);
   color: var(--dhp-text);
   border-radius: 6px;
-  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }

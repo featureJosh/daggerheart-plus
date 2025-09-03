@@ -59,6 +59,10 @@
   "DHP.Settings.SheetSize.Width.Hint": "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
   "DHP.Settings.SheetSize.Height.Name": "Default DH+ Sheet Height (px)",
   "DHP.Settings.SheetSize.Height.Hint": "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
+  "DHP.Settings.SheetSize.Adversary.Width.Name": "Default DH+ Adversary Width (px)",
+  "DHP.Settings.SheetSize.Adversary.Width.Hint": "Default width applied to DH+ Adversary sheets.",
+  "DHP.Settings.SheetSize.Adversary.Height.Name": "Default DH+ Adversary Height (px)",
+  "DHP.Settings.SheetSize.Adversary.Height.Hint": "Default height applied to DH+ Adversary sheets.",
   "DAGGERHEART": {
     "GENERAL": {
       "actorName": "Actor Name",
