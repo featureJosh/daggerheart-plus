@@ -104,7 +104,7 @@ body.theme-dark.application .window-content {
 .daggerheart-plus.sheet .items-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0;
   align-items: center;
   width: 100%;
 }
@@ -179,20 +179,43 @@ body.theme-dark.application .window-content {
   margin-bottom: 1rem;
 }
 
+.daggerheart-plus.sheet
+  .inventory-item
+  .inventory-item-header
+  .item-label
+  .item-tags
+  .tag {
+  padding: 3px 5px;
+  background: light-dark(#22222215, #efe6d815);
+  border: 1px solid light-dark(#222, #efe6d8);
+  border-radius: 5px;
+}
+
 .daggerheart-plus.sheet .inventory-item {
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0.35rem 0.75em;
   transition: all 0.2s ease;
   cursor: pointer;
   text-align: center;
+  margin: 0;
+  border-bottom-color: var(--dhp-surface);
 }
 
 .daggerheart-plus.sheet .inventory-item:hover {
   box-shadow: none;
-  border: 1px solid var(--dhp-primary);
+  border-color: var(--dhp-primary);
   background: rgba(230, 168, 0, 0.15);
+  border-bottom: 1px solid var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet .items-list .inventory-item:last-of-type:hover {
+  border-bottom: 1px solid var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet .items-list .inventory-item:first-of-type:hover {
+  border-bottom: 1px solid var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet .inventory-item img {

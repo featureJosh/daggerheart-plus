@@ -576,9 +576,26 @@
   margin-top: 0.5em;
 }
 
+.daggerheart-plus.sheet .tab.inventory .items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  overflow-y: auto;
+  mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  padding: 20px 0;
+  scrollbar-width: thin;
+  scrollbar-color: light-dark(#18162e, #f3c267) transparent;
+}
+
 .daggerheart-plus.sheet fieldset {
   align-items: center;
-  margin-top: 5px;
+  margin-top: 0px;
   border-radius: 6px;
   border-color: light-dark(#18162e, #f3c267);
   border: none;
@@ -588,7 +605,13 @@
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   font-weight: 600;
-  color: light-dark(#18162e, #f3c267);
+  color: light-dark(#f3c267, #18162e);
+  width: 100%;
+  background: var(--dhp-primary) !important;
+  border-radius: 5px;
+  padding: 0.25em 0.5em;
+  margin: 0;
+  border: 1px solid var(--dhp-secondary);
 }
 
 .daggerheart-plus.sheet fieldset.glassy legend {
@@ -886,6 +909,17 @@
   cursor: pointer;
   word-wrap: break-word;
   word-break: break-word;
+}
+
+.daggerheart-plus.sheet .items-list .inventory-item:first-of-type {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.daggerheart-plus.sheet .items-list .inventory-item:last-of-type {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom: 1px solid var(--dhp-border);
 }
 
 .daggerheart-plus.sheet .inventory-item .inventory-item-header .item-label {
@@ -1763,9 +1797,67 @@
 .daggerheart-plus.sheet .tab.inventory .currency-section {
   display: flex;
   gap: 10px;
-  padding: 0.5em 1em;
+  padding: 0.45em 1em;
   background: var(--dhp-surface);
   border: 1px solid var(--dhp-border);
   border-radius: 10px;
-  margin-top: 1em;
+}
+
+.daggerheart-plus.sheet a.filter-button,
+.daggerheart-plus.sheet a[data-tooltip="Compendium Browser"] {
+  color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet .tab.inventory .search-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 0.33em;
+}
+
+.daggerheart-plus.sheet .tab.inventory .search-section .search-bar input {
+  border-radius: 50px;
+  font-family: "Montserrat", sans-serif;
+  background: var(--dhp-surface);
+  border: 1px solid var(--dhp-border);
+  outline: 2px solid transparent;
+  transition: all 0.3s ease;
+  padding: 0 20px;
+  color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet .tab.inventory .search-section .search-bar {
+  position: relative;
+  color: light-dark(#18162e50, #efe6d850);
+  width: 100%;
+}
+
+.daggerheart-plus.sheet
+  .tab.inventory
+  .search-section
+  .search-bar
+  input::placeholder {
+  color: var(--dhp-border);
+}
+
+.application.daggerheart.dh-style
+  .inventory-item
+  .inventory-item-content.extensible.extended {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+.application.daggerheart.dh-style
+  .inventory-item
+  .inventory-item-content.extensible.extended:not(:empty) {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+.application.daggerheart.dh-style
+  .inventory-item
+  .inventory-item-content.extensible {
+  display: grid;
+  grid-template-rows: 0;
+  transition: grid-template-rows 0.3s ease-in-out;
 }
