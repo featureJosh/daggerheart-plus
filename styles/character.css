@@ -1854,3 +1854,8 @@
   grid-template-rows: 0;
   transition: grid-template-rows 0.3s ease-in-out;
 }
+
+.daggerheart-plus.sheet button.btn-toggle-view {
+  background: transparent;
+  border: none;
+}
