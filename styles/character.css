@@ -1849,13 +1849,6 @@
 
 .application.daggerheart.dh-style
   .inventory-item
-  .inventory-item-content.extensible.extended:not(:empty) {
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.3s ease-in-out;
-}
-
-.application.daggerheart.dh-style
-  .inventory-item
   .inventory-item-content.extensible {
   display: grid;
   grid-template-rows: 0;
