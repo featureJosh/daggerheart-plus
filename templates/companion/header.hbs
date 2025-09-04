@@ -1,5 +1,7 @@
 <header class="companion-header-sheet">
-    <img class="profile" src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+    <div class="portrait">
+        <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+    </div>
     <h1 class='actor-name'>
         <input
             type='text'
@@ -8,7 +10,7 @@
             placeholder='{{localize "DAGGERHEART.GENERAL.actorName"}}'
         />
     </h1>
-    <div class="status-section">
+    <div class="statuses-section">
         <div class="status-number">
             <div class='status-value'>
                 <p>{{document.system.evasion}}</p>
@@ -19,14 +21,30 @@
         </div>
         <div class="status-bar">
             <div class='status-value'>
-                <p><input class="bar-input" name="system.resources.stress.value" value="{{document.system.resources.stress.value}}" min="0" max='{{document.system.resources.stress.max}}' type="number"></p>
+                <p>
+                    <input
+                        class="bar-input"
+                        name="system.resources.stress.value"
+                        data-dtype="Number"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        value="{{document.system.resources.stress.value}}"
+                        min="0"
+                        max='{{document.system.resources.stress.max}}'
+                        type="number"
+                        aria-label='{{localize "DAGGERHEART.GENERAL.stress"}}'
+                        title='{{localize "DAGGERHEART.GENERAL.stress"}}'
+                    />
+                </p>
                 <p>/</p>
                 <p class="bar-label">{{document.system.resources.stress.max}}</p>
             </div>
             <progress
                 class='progress-bar stress-color'
                 value='{{document.system.resources.stress.value}}'
+                min="0"
                 max='{{document.system.resources.stress.max}}'
+                aria-label='{{localize "DAGGERHEART.GENERAL.stress"}}'
             ></progress>
             <div class="status-label">
                 <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>

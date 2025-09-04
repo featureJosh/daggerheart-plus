@@ -4,32 +4,51 @@
   border-bottom: 2px solid var(--dhp-border);
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .profile {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+/* Portrait styling (match adversary sidebar look) */
+.daggerheart-plus.sheet.companion .companion-header-sheet .portrait {
+  position: relative;
+  text-align: center;
+  margin-bottom: 0.75rem;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .profile:hover {
-  transform: scale(1.1);
+.daggerheart-plus.sheet.companion .companion-header-sheet .portrait img {
+  width: 100%;
+  max-width: 300px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.daggerheart-plus.sheet.companion .companion-header-sheet .portrait img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px var(--dhp-shadow);
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .actor-name input {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--dhp-primary);
   border: none;
   background: transparent;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
+  text-align: center;
+  font-family: "Cinzel Decorative", serif;
 }
 
-.daggerheart-plus.sheet.companion .companion-header-sheet .status-section {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+.daggerheart-plus.sheet.companion .companion-header-sheet .status-section,
+.daggerheart-plus.sheet.companion .companion-header-sheet .status-sections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
   margin-bottom: 1rem;
   padding: 1rem;
   background: var(--dhp-background);
@@ -39,23 +58,29 @@
 
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
-  .status-section
+  .status-section,
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-sections
   .status-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.35rem;
   min-width: 80px;
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .status-number {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  background: var(--dhp-background);
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  border-radius: 8px;
   min-width: 120px;
 }
 
@@ -76,81 +101,30 @@
   h4 {
   margin: 0;
   font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--dhp-text-light);
 }
 
+/* Status bars (match character sidebar overlay layout) */
 .daggerheart-plus.sheet.companion .companion-header-sheet .status-bar {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background: var(--dhp-background);
-  border-radius: 8px;
+  --qs-bar-height: 30px;
+  display: grid;
+  grid-template-rows: auto var(--qs-bar-height);
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
+  border-radius: 8px;
   min-width: 200px;
 }
 
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
   .status-bar
-  .status-value {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .status-value
-  p {
-  margin: 0;
-  font-weight: bold;
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .bar-input {
-  width: 50px;
-  text-align: center;
-  border: 1px solid var(--dhp-border);
-  border-radius: 4px;
-  padding: 0.25rem;
-  font-weight: bold;
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .bar-label {
-  color: var(--dhp-text-light);
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .progress-bar {
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--dhp-border);
-  margin-bottom: 0.5rem;
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .progress-bar::-webkit-progress-bar {
-  background: var(--dhp-border);
-  border-radius: 4px;
-}
-
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-bar
-  .progress-bar::-webkit-progress-value {
-  background: var(--dhp-success);
-  border-radius: 4px;
+  .status-label {
+  order: -1;
 }
 
 .daggerheart-plus.sheet.companion
@@ -159,9 +133,102 @@
   .status-label
   h4 {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--dhp-text-light);
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
   text-align: center;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value {
+  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  z-index: 2;
+  width: 100%;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value
+  p {
+  color: var(--dh-color-gold-light);
+  font-weight: 600;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .bar-input {
+  text-align: center;
+  color: var(--dh-color-off-white);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  width: 15px;
+  margin-top: -1px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .bar-label {
+  color: var(--dhp-text);
+  font-weight: 700;
+}
+
+/* Progress Bar track and fill */
+.daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar {
+  grid-area: 2 / 1 / 3 / 2;
+  width: 100%;
+  height: var(--qs-bar-height);
+  border-radius: 6px;
+  background: var(--dhp-border);
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 1;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .progress-bar::-webkit-progress-bar {
+  background: var(--dhp-border);
+  border-radius: 6px;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .progress-bar::-webkit-progress-value {
+  background: var(--dhp-accent);
+  border-radius: 6px;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .progress-bar::-moz-progress-bar {
+  background: var(--dhp-accent);
+  border-radius: 6px;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .progress-bar.stress-color::-webkit-progress-value,
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .progress-bar.stress-color::-moz-progress-bar {
+  background: var(--dhp-accent);
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .level-div {

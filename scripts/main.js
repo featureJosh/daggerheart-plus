@@ -350,6 +350,24 @@ Hooks.once("ready", async () => {
       position: {
         ...(super.DEFAULT_OPTIONS?.position || {}),
         ...getDefaultSheetSize(),
+
+        width: 340,
+      },
+    };
+
+    static PARTS = {
+      ...super.PARTS,
+      header: {
+        id: "header",
+        template: "modules/daggerheart-plus/templates/companion/header.hbs",
+      },
+      details: {
+        id: "details",
+        template: "modules/daggerheart-plus/templates/companion/details.hbs",
+      },
+      effects: {
+        id: "effects",
+        template: "modules/daggerheart-plus/templates/companion/effects.hbs",
       },
     };
 
@@ -473,8 +491,13 @@ Hooks.once("ready", async () => {
     if (setting.key === "defaultSheetWidth" || setting.key === "defaultSheetHeight") {
       const size = getDefaultSheetSize();
       for (const app of Object.values(ui.windows)) {
-        if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") &&
-            !(app?.constructor?.name?.includes?.("Adversary"))) {
+        const name = app?.constructor?.name;
+        if (!name?.startsWith?.("DaggerheartPlus")) continue;
+        if (name?.includes?.("Adversary")) continue;
+
+        if (name === "DaggerheartPlusCompanionSheet") {
+          applyDefaultSizeToApp(app, { width: 340, height: size.height });
+        } else {
           applyDefaultSizeToApp(app, size);
         }
       }
@@ -500,5 +523,22 @@ Hooks.once("ready", async () => {
 Hooks.on("renderActorSheet", (app, html, data) => {
   if (app.constructor.name.startsWith("DaggerheartPlus")) {
     console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
+  }
+
+  // Lock down Companion sheet resizing behavior
+  if (app.constructor.name === "DaggerheartPlusCompanionSheet") {
+    try {
+      if (app.options) app.options.resizable = false;
+      const el = app.element;
+      if (el) {
+        el.classList?.remove?.("resizable");
+        const handles = el.querySelectorAll(
+          ".resizable, .app-resizable, .window-resizable, .resize-handle"
+        );
+        handles.forEach((h) => h.remove?.());
+      }
+    } catch (_) {
+      /* noop */
+    }
   }
 });

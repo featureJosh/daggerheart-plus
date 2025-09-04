@@ -45,7 +45,7 @@
 }
 
 .daggerheart-plus.sheet.character .character-header-modern {
-  padding: 0.75rem;
+  padding: 0.35rem 0.75rem;
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
@@ -70,6 +70,7 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  max-height: 13em;
 }
 
 .daggerheart-plus.sheet.character
@@ -513,8 +514,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0.5rem 0.25rem;
+  justify-content: center;
+  padding: 0rem 0.5rem;
   text-align: center;
   height: 100%;
   min-height: 80px;
@@ -542,7 +543,7 @@
 .daggerheart-plus.sheet.character .character-header-modern .attribute-value {
   font-size: 1.75rem;
   font-weight: bold;
-  color: var(--dhp-text-light);
+  color: var(--dhp-accent);
   /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); */
 }
 
