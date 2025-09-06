@@ -55,58 +55,59 @@
   "DHP.Settings.ExperimentalFeatures.Hint": "Active les fonctionnalités expérimentales encore en développement. Ces fonctionnalités peuvent ne pas fonctionner correctement et sont fournies uniquement à des fins de test.",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Name": "Activer le suivi de la Peur",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "Active une interface de suivi de la Peur affichée au-dessus de la barre d’action. Ce suivi s’intègre au système Daggerheart pour afficher et modifier le niveau actuel de Peur.",
-  "DHP.Settings.SheetSize.Width.Name": "Default DH+ Sheet Width (px)",
-  "DHP.Settings.SheetSize.Width.Hint": "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
-  "DHP.Settings.SheetSize.Height.Name": "Default DH+ Sheet Height (px)",
-  "DHP.Settings.SheetSize.Height.Hint": "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
+  "DHP.Settings.SheetSize.Width.Name": "Largeur par défaut de la fiche DH+ (px)",
+  "DHP.Settings.SheetSize.Width.Hint": "Largeur par défaut appliquée aux fiches d’acteur DH+ (Personnage, Adversaire, Compagnon, Environnement). Rouvrez les fiches pour l’appliquer si la mise à jour ne s’effectue pas automatiquement.",
+  "DHP.Settings.SheetSize.Height.Name": "Hauteur par défaut de la fiche DH+ (px)",
+  "DHP.Settings.SheetSize.Height.Hint": "Hauteur par défaut appliquée aux fiches d’acteur DH+ (Personnage, Adversaire, Compagnon, Environnement). Rouvrez les fiches pour l’appliquer si la mise à jour ne s’effectue pas automatiquement.",
   "DHP.Settings.SheetSize.Adversary.Width.Name": "Largeur par défaut Adversaire DH+ (px)",
   "DHP.Settings.SheetSize.Adversary.Width.Hint": "Largeur par défaut appliquée aux feuilles d'adversaire DH+.",
   "DHP.Settings.SheetSize.Adversary.Height.Name": "Hauteur par défaut Adversaire DH+ (px)",
   "DHP.Settings.SheetSize.Adversary.Height.Hint": "Hauteur par défaut appliquée aux feuilles d'adversaire DH+.",
   "DAGGERHEART": {
     "GENERAL": {
-      "actorName": "Actor Name",
-      "evasion": "Evasion",
+      "actorName": "Nom de l’acteur",
+      "evasion": "Esquive",
       "stress": "Stress",
-      "proficiency": "Proficiency",
-      "armorSlots": "Armor Slots",
-      "level": "Level",
+      "proficiency": "Maîtrise",
+      "armorSlots": "Emplacements d’armure",
+      "level": "Niveau",
       "HitPoints": {
-        "short": "HP"
+        "short": "PV"
       },
       "Tiers": {
-        "1": "Tier 1",
-        "2": "Tier 2",
-        "3": "Tier 3",
-        "4": "Tier 4",
-        "5": "Tier 5"
+        "1": "Rang 1",
+        "2": "Rang 2",
+        "3": "Rang 3",
+        "4": "Rang 4",
+        "5": "Rang 5"
       },
-      "difficulty": "Difficulty",
-      "attack": "Attack",
-      "activeEffects": "Active Effects",
-      "inactiveEffects": "Inactive Effects",
-      "partner": "Partner",
+      "difficulty": "Difficulté",
+      "attack": "Attaque",
+      "activeEffects": "Effets actifs",
+      "inactiveEffects": "Effets inactifs",
+      "partner": "Partenaire",
       "experience": {
-        "single": "Experience",
-        "plural": "Experiences"
+        "single": "Expérience",
+        "plural": "Expériences"
       },
-      "equipment": "Equipment",
-      "loadout": "Loadout",
+      "information": "Informations",
+      "equipment": "Équipement",
+      "loadout": "Main",
       "Roll": {
-        "reaction": "Roll Reaction"
+        "reaction": "Jet de Réaction"
       },
       "Tabs": {
-        "loadout": "Loadout",
-        "vault": "Vault"
+        "loadout": "Main",
+        "vault": "Caveau"
       },
       "DamageThresholds": {
-        "title": "Damage Thresholds",
-        "minor": "Minor",
-        "major": "Major",
-        "severe": "Severe",
-        "mark1HP": "1 HP",
-        "mark2HP": "2 HP",
-        "mark3HP": "3 HP"
+        "title": "Seuils de dégâts",
+        "minor": "Mineur",
+        "major": "Majeur",
+        "severe": "Grave",
+        "mark1HP": "1 PV",
+        "mark2HP": "2 PV",
+        "mark3HP": "3 PV"
       }
     }
   }
