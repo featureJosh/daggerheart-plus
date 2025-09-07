@@ -132,11 +132,6 @@ Hooks.once("ready", async () => {
 
     static PARTS = {
       ...super.PARTS,
-      tabs: {
-        id: "tabs",
-        classes: ["tabs-right"],
-        template: "modules/daggerheart-plus/templates/shared/sidebar-tabs.hbs",
-      },
       sidebar: {
         id: "sidebar",
         template: "modules/daggerheart-plus/templates/character/sidebar.hbs",
@@ -207,56 +202,11 @@ Hooks.once("ready", async () => {
 
     async _onRender(context, options) {
       await super._onRender(context, options);
-      // Attach tab button handlers
-      const root = this.element;
-      if (!root) return;
-      const tabButtons = root.querySelectorAll(
-        'nav.tabs[data-group="primary"] .item.control'
-      );
-      tabButtons.forEach((btn) => {
-        btn.addEventListener("click", (ev) => {
-          ev.preventDefault();
-          const tab = btn.dataset.tab;
-          if (!tab) return;
-          this.tabGroups.primary = tab;
-          this._showSection(tab);
-          tabButtons.forEach((b) =>
-            b.classList.toggle("active", b.dataset.tab === tab)
-          );
-        });
-      });
-      // Ensure correct initial section
-      this._showSection(this.tabGroups.primary);
-
       // Apply background images to sidebar loadout items only
       this._applySidebarLoadoutBackgrounds();
     }
 
-    _showSection(sectionName) {
-      const allSections = [
-        "features",
-        "loadout",
-        "inventory",
-        "biography",
-        "effects",
-      ];
-      const bodyElement = this.element?.querySelector(".sheet-body");
-      if (!bodyElement) return;
-      allSections.forEach((section) => {
-        const sectionElement =
-          bodyElement.querySelector(`[data-tab="${section}"]`) ||
-          bodyElement.querySelector(`.${section}-content`) ||
-          bodyElement.querySelector(`#${section}`);
-        if (sectionElement)
-          sectionElement.style.display =
-            section === sectionName ? "block" : "none";
-      });
-      const activeContent =
-        bodyElement.querySelector(`[data-tab="${sectionName}"]`) ||
-        bodyElement.querySelector(`.${sectionName}-content`) ||
-        bodyElement.querySelector(`#${sectionName}`);
-      if (activeContent) activeContent.style.display = "block";
-    }
+    // Remove custom section toggling; rely on system navigation
 
     /**
      * Minimal: read each loadout item's image and expose it as a CSS var

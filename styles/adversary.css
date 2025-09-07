@@ -786,26 +786,6 @@
   overflow-y: auto;
 }
 
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  background: var(--dhp-surface);
-  border: 1px solid var(--dhp-border);
-  border-radius: 8px;
-  margin-bottom: 0.25rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.daggerheart-plus.sheet.adversary
-  .adversary-sidebar-sheet
-  .experience-row:hover {
-  background: rgba(230, 168, 0, 0.15);
-  border-color: var(--dhp-primary);
-}
-
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-value {
   background: var(--dhp-success);
   color: white;
@@ -819,35 +799,6 @@
   font-weight: bold;
   box-shadow: 0 2px 4px var(--dhp-shadow);
   transition: all 0.3s ease;
-}
-
-.daggerheart-plus.sheet.adversary
-  .adversary-sidebar-sheet
-  .experience-row:hover
-  .experience-value {
-  background: var(--dhp-primary);
-  transform: scale(1.05);
-}
-
-.daggerheart-plus.sheet.adversary
-  .adversary-sidebar-sheet
-  .experience-row
-  span {
-  flex: 1;
-  font-size: 0.8rem;
-  color: var(--dhp-text);
-  transition: color 0.3s ease;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.daggerheart-plus.sheet.adversary
-  .adversary-sidebar-sheet
-  .experience-row:hover
-  span {
-  color: var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .controls a {

@@ -809,7 +809,7 @@
   height: 24px;
   border-radius: 5px;
 }
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-row {
+.daggerheart-plus.sheet .experience-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -826,16 +826,12 @@
   overflow: hidden;
 }
 
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .experience-row:hover {
+.daggerheart-plus.sheet .experience-row:hover {
   background: rgba(230, 168, 0, 0.15);
   border-color: var(--dhp-primary);
-  transform: translateX(2px);
-  box-shadow: 0 2px 4px var(--dhp-shadow);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-value {
+.daggerheart-plus.sheet .experience-value {
   background: var(--dhp-success);
   color: white;
   border-radius: 50%;
@@ -851,18 +847,11 @@
   flex-shrink: 0;
 }
 
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .experience-row:hover
-  .experience-value {
+.daggerheart-plus.sheet .experience-row:hover .experience-value {
   background: var(--dhp-primary);
-  transform: scale(1.1);
 }
 
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .experience-row
-  span {
+.daggerheart-plus.sheet .experience-row span {
   flex: 1;
   font-size: 0.8rem;
   color: var(--dhp-text);
@@ -873,10 +862,7 @@
   white-space: nowrap;
 }
 
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .experience-row:hover
-  span {
+.daggerheart-plus.sheet .experience-row:hover span {
   color: var(--dhp-primary);
 }
 
@@ -1504,58 +1490,7 @@
    the system's default horizontal navigation is unaffected. A previous
    unscoped selector (`nav.tabs`) unintentionally targeted the header
    navbar and collapsed/hid its items. */
-.daggerheart-plus.sheet.character nav.tabs.tabs-right {
-  --tab-full-width: 44px;
-  --tab-inactive-width: 38px;
-  --icon-size: 16px;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  border: none;
-  z-index: 1;
-  contain: content;
-  align-items: flex-start;
-}
-
-.daggerheart-plus.sheet.character nav.tabs.tabs-right > .item {
-  width: var(--tab-full-width);
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: var(--dhp-surface);
-  color: var(--dhp-accent);
-  border: 1px solid transparent;
-  border-radius: 0 8px 8px 0;
-  transition: all 200ms ease;
-  box-shadow: 0 1px 2px var(--dhp-shadow);
-  padding-inline-end: 12px;
-  justify-content: end;
-  margin-inline-start: calc(
-    (var(--tab-full-width) - var(--tab-inactive-width)) * -1
-  );
-}
-
-.daggerheart-plus.sheet.character nav.tabs.tabs-right > .item i {
-  font-size: var(--icon-size);
-}
-
-.daggerheart-plus.sheet.character nav.tabs.tabs-right > .item.active,
-.daggerheart-plus.sheet.character nav.tabs.tabs-right > .item:hover {
-  border-color: var(--dhp-primary);
-  color: var(--dhp-primary);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--dhp-primary) 40%, transparent);
-  margin: 0;
-}
-
-/* Wrapper produced by ApplicationV2 for the part; ensure it doesn't affect layout */
-.daggerheart-plus.sheet.character .tabs-right {
-  position: static;
-}
+/* (Removed) Sidebar tabs styling - feature dropped */
 
 /* === Sidebar Quick Stats: refreshed look === */
 .daggerheart-plus.sheet.character .character-sidebar-sheet .info-section {
