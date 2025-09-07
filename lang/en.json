@@ -65,50 +65,12 @@
   "DHP.Settings.SheetSize.Adversary.Height.Hint": "Default height applied to DH+ Adversary sheets.",
   "DAGGERHEART": {
     "GENERAL": {
-      "actorName": "Actor Name",
-      "evasion": "Evasion",
-      "stress": "Stress",
-      "proficiency": "Proficiency",
-      "armorSlots": "Armor Slots",
-      "level": "Level",
-      "HitPoints": {
-        "short": "HP"
-      },
-      "Tiers": {
-        "1": "Tier 1",
-        "2": "Tier 2",
-        "3": "Tier 3",
-        "4": "Tier 4",
-        "5": "Tier 5"
-      },
-      "difficulty": "Difficulty",
-      "attack": "Attack",
-      "activeEffects": "Active Effects",
-      "inactiveEffects": "Inactive Effects",
-      "partner": "Partner",
-      "experience": {
-        "single": "Experience",
-        "plural": "Experiences"
-      },
-      "information": "Information",
-      "equipment": "Equipment",
-      "loadout": "Loadout",
-      "Roll": {
-        "reaction": "Roll Reaction"
-      },
-      "Tabs": {
-        "loadout": "Loadout",
-        "vault": "Vault"
-      },
       "DamageThresholds": {
-        "title": "Damage Thresholds",
-        "minor": "Minor",
-        "major": "Major",
-        "severe": "Severe",
         "mark1HP": "1 HP",
         "mark2HP": "2 HP",
         "mark3HP": "3 HP"
-      }
+      },
+      "die": "Die"
     }
   }
 }

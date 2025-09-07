@@ -31,17 +31,16 @@ export class EnhancedDiceStyling {
     tooltipParts.each((index, part) => {
       const $part = $(part);
       const label = $part.find(".die-label");
+      const diceElement = $part.find(".dice");
 
-      if (label.length > 0) {
-        const flavor = label.text().trim();
-        const diceElement = $part.find(".dice");
-
-        if (flavor === "Hope") {
-          diceElement.addClass("hope-die").attr("data-flavor", "Hope");
+      if (diceElement.length > 0) {
+        const t = diceElement.attr("data-type");
+        if (t === "hope") {
+          diceElement.addClass("hope-die").attr("data-flavor", game.i18n.localize("DAGGERHEART.GENERAL.hope"));
           label.addClass("hope-flavor");
           $part.addClass("hope-die-container");
-        } else if (flavor === "Fear") {
-          diceElement.addClass("fear-die").attr("data-flavor", "Fear");
+        } else if (t === "fear") {
+          diceElement.addClass("fear-die").attr("data-flavor", game.i18n.localize("DAGGERHEART.GENERAL.fear"));
           label.addClass("fear-flavor");
           $part.addClass("fear-die-container");
         }
@@ -127,16 +126,18 @@ export class EnhancedDiceStyling {
       diceTooltip.length > 0 &&
       !diceTooltip.find(".reroll-instruction").length
     ) {
-      const instructionText = $(
-        '<div class="reroll-instruction">' +
-          '<i class="fas fa-info-circle"></i> Click on the Hope/Fear dice to reroll.' +
-          "</div>"
-      );
+      const hope = game.i18n.localize("DAGGERHEART.GENERAL.hope");
+      const fear = game.i18n.localize("DAGGERHEART.GENERAL.fear");
+      const instructionText = $(`
+        <div class="reroll-instruction">
+          <i class="fas fa-info-circle"></i> Click on the ${hope}/${fear} dice to reroll.
+        </div>
+      `);
       diceTooltip.find(".wrapper").before(instructionText);
     }
 
-    const hopeDice = html.find('.dice.color-hope[data-flavor="Hope"]');
-    const fearDice = html.find('.dice.color-fear[data-flavor="Fear"]');
+    const hopeDice = html.find('.dice.color-hope[data-type="hope"]');
+    const fearDice = html.find('.dice.color-fear[data-type="fear"]');
 
     hopeDice.each((index, die) => {
       const $die = $(die);
@@ -164,9 +165,15 @@ export class EnhancedDiceStyling {
   }
 
   static async _handleDiceReroll(dieElement, dieType, message) {
+    const dieLabel =
+      dieType === "hope"
+        ? game.i18n.localize("DAGGERHEART.GENERAL.hope")
+        : game.i18n.localize("DAGGERHEART.GENERAL.fear");
+
     const confirmResult = await Dialog.confirm({
-      title: `Reroll ${dieType.charAt(0).toUpperCase() + dieType.slice(1)} Die`,
-      content: `<p>Are you sure you want to reroll the ${dieType} die? This action cannot be undone.</p>`,
+      title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel} ${game.i18n.localize("DAGGERHEART.GENERAL.die" ) || "Die"}`,
+      content: `<p>${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}?` +
+        `</p>`,
       yes: () => true,
       no: () => false,
       defaultYes: false,
@@ -193,7 +200,7 @@ export class EnhancedDiceStyling {
       }, 1000);
 
       ui.notifications.info(
-        `${dieType.charAt(0).toUpperCase() + dieType.slice(1)} die rerolled!`
+        `${dieLabel} ${game.i18n.localize("DAGGERHEART.GENERAL.reroll").toLowerCase()}!`
       );
     } catch (error) {
       console.error("Dice reroll failed:", error);

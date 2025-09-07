@@ -48,7 +48,7 @@
         <div class="dice-roll expanded" data-action="expandRoll">
           <div class="roll-part-header">
             <div>
-              <span class="formula-toggle">Formula</span>
+              <span class="formula-toggle">{{localize 'DAGGERHEART.GENERAL.formula'}}</span>
             </div>
           </div>
 
@@ -57,7 +57,7 @@
               {{#if isDuality}}
               <div class="reroll-instruction">
                 <i class="fas fa-info-circle"></i> 
-                Click on the Hope/Fear dice to reroll.
+                Click on the {{localize 'DAGGERHEART.GENERAL.hope'}}/{{localize 'DAGGERHEART.GENERAL.fear'}} dice to reroll.
               </div>
               {{/if}}
 
@@ -65,12 +65,12 @@
                 <div class="roll-dice">
                   {{#if hopeDie}}
                   <div class="roll-die hope-die-container">
-                    <label class="die-label hope-flavor">Hope</label>
+                    <label class="die-label hope-flavor">{{localize 'DAGGERHEART.GENERAL.hope'}}</label>
                     <div class="dice d12 color-hope reroll-button {{#if isDuality}}clickable-die{{/if}}" 
                          data-die-index="0" 
                          data-type="hope" 
-                         data-flavor="Hope"
-                         data-tooltip="{{#if isDuality}}Reroll Hope{{/if}}">
+                         data-flavor="{{localize 'DAGGERHEART.GENERAL.hope'}}"
+                         data-tooltip="{{#if isDuality}}Reroll {{localize 'DAGGERHEART.GENERAL.hope'}}{{/if}}">
                       {{hopeDie.result}}
                       {{#if hopeDie.rerolled}}
                       <span class="dice-rerolled">
@@ -83,12 +83,12 @@
 
                   {{#if fearDie}}
                   <div class="roll-die fear-die-container has-plus">
-                    <label class="die-label fear-flavor">Fear</label>
+                    <label class="die-label fear-flavor">{{localize 'DAGGERHEART.GENERAL.fear'}}</label>
                     <div class="dice d12 color-fear reroll-button {{#if isDuality}}clickable-die{{/if}}" 
                          data-die-index="1" 
                          data-type="fear" 
-                         data-flavor="Fear"
-                         data-tooltip="{{#if isDuality}}Reroll Fear{{/if}}">
+                         data-flavor="{{localize 'DAGGERHEART.GENERAL.fear'}}"
+                         data-tooltip="{{#if isDuality}}Reroll {{localize 'DAGGERHEART.GENERAL.fear'}}{{/if}}">
                       {{fearDie.result}}
                       {{#if fearDie.rerolled}}
                       <span class="dice-rerolled">
@@ -116,7 +116,7 @@
 
               {{#if rollDifficulty}}
               <div class="roll-difficulty {{#if isSuccess}}success{{else}}failure{{/if}}">
-                Target: {{rollDifficulty}}
+                {{localize 'DAGGERHEART.GENERAL.Target.single'}}: {{rollDifficulty}}
               </div>
               {{/if}}
             </div>

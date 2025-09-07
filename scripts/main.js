@@ -16,8 +16,8 @@ Hooks.once("init", () => {
   }
 
   game.settings.register(MODULE_ID, "enableFearTracker", {
-    name: "DHP.Settings.ExperimentalFeatures.FearTracker.Name",
-    hint: "DHP.Settings.ExperimentalFeatures.FearTracker.Hint",
+    name: "Enable Fear Tracker",
+    hint: "Enables a fear tracker UI that displays above the hotbar. The tracker integrates with the Daggerheart system to show and modify the current fear level.",
     scope: "world",
     config: true,
     type: Boolean,
@@ -32,8 +32,8 @@ Hooks.once("init", () => {
 
   // Default DH+ sheet size (global)
   game.settings.register(MODULE_ID, "defaultSheetWidth", {
-    name: "DHP.Settings.SheetSize.Width.Name",
-    hint: "DHP.Settings.SheetSize.Width.Hint",
+    name: "Default DH+ Sheet Width (px)",
+    hint: "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
     config: true,
     type: Number,
@@ -42,8 +42,8 @@ Hooks.once("init", () => {
   });
 
   game.settings.register(MODULE_ID, "defaultSheetHeight", {
-    name: "DHP.Settings.SheetSize.Height.Name",
-    hint: "DHP.Settings.SheetSize.Height.Hint",
+    name: "Default DH+ Sheet Height (px)",
+    hint: "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
     config: true,
     type: Number,
@@ -53,8 +53,8 @@ Hooks.once("init", () => {
 
   // Default DH+ Adversary sheet size (specific)
   game.settings.register(MODULE_ID, "adversarySheetWidth", {
-    name: "DHP.Settings.SheetSize.Adversary.Width.Name",
-    hint: "DHP.Settings.SheetSize.Adversary.Width.Hint",
+    name: "Default DH+ Adversary Width (px)",
+    hint: "Default width applied to DH+ Adversary sheets.",
     scope: "world",
     config: true,
     type: Number,
@@ -63,8 +63,8 @@ Hooks.once("init", () => {
   });
 
   game.settings.register(MODULE_ID, "adversarySheetHeight", {
-    name: "DHP.Settings.SheetSize.Adversary.Height.Name",
-    hint: "DHP.Settings.SheetSize.Adversary.Height.Hint",
+    name: "Default DH+ Adversary Height (px)",
+    hint: "Default height applied to DH+ Adversary sheets.",
     scope: "world",
     config: true,
     type: Number,
@@ -397,7 +397,7 @@ Hooks.once("ready", async () => {
     DaggerheartPlusCharacterSheet,
     {
       types: ["character"],
-      label: "DHP.CharacterSheet",
+      label: "DH+ Character Sheet",
       makeDefault: true,
     }
   );
@@ -408,7 +408,7 @@ Hooks.once("ready", async () => {
     DaggerheartPlusAdversarySheet,
     {
       types: ["adversary"],
-      label: "DHP.AdversarySheet",
+      label: "DH+ Adversary Sheet",
       makeDefault: true,
     }
   );
@@ -419,7 +419,7 @@ Hooks.once("ready", async () => {
     DaggerheartPlusCompanionSheet,
     {
       types: ["companion"],
-      label: "DHP.CompanionSheet",
+      label: "DH+ Companion Sheet",
       makeDefault: true,
     }
   );
@@ -430,7 +430,7 @@ Hooks.once("ready", async () => {
     DaggerheartPlusEnvironmentSheet,
     {
       types: ["environment"],
-      label: "DHP.EnvironmentSheet",
+      label: "DH+ Environment Sheet",
       makeDefault: true,
     }
   );

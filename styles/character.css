@@ -1813,14 +1813,14 @@
   color: var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet .tab.inventory .search-section {
+.daggerheart-plus.sheet .tab .search-section {
   display: flex;
   gap: 10px;
   align-items: center;
   margin-top: 0.33em;
 }
 
-.daggerheart-plus.sheet .tab.inventory .search-section .search-bar input {
+.daggerheart-plus.sheet .tab .search-section .search-bar input {
   border-radius: 50px;
   font-family: "Montserrat", sans-serif;
   background: var(--dhp-surface);
@@ -1831,7 +1831,7 @@
   color: var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet .tab.inventory .search-section .search-bar {
+.daggerheart-plus.sheet .tab .search-section .search-bar {
   position: relative;
   color: light-dark(#18162e50, #efe6d850);
   width: 100%;

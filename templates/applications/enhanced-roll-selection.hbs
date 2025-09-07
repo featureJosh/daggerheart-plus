@@ -14,7 +14,7 @@
     <div class="roll-dialog-container">
       <div class="dices-section">
         <div class="dice-option hope-dice">
-          <img class="dice-icon hope" src="/modules/daggerheart-plus/assets/icons/dice/hope/d12.svg" alt="Hope Die">
+          <img class="dice-icon hope" src="/modules/daggerheart-plus/assets/icons/dice/hope/d12.svg" alt="{{localize 'DAGGERHEART.GENERAL.hope'}}">
           <div class="dice-select">
             <select name="hopeDie" class="hope-die-select">
               <option value="d4">d4</option>
@@ -24,12 +24,12 @@
               <option value="d12" selected>d12</option>
               <option value="d20">d20</option>
             </select>
-            <span class="label hope-label">Hope</span>
+            <span class="label hope-label">{{localize 'DAGGERHEART.GENERAL.hope'}}</span>
           </div>
         </div>
 
         <div class="dice-option fear-dice">
-          <img class="dice-icon fear" src="/modules/daggerheart-plus/assets/icons/dice/fear/d12.svg" alt="Fear Die">
+          <img class="dice-icon fear" src="/modules/daggerheart-plus/assets/icons/dice/fear/d12.svg" alt="{{localize 'DAGGERHEART.GENERAL.fear'}}">
           <div class="dice-select">
             <select name="fearDie" class="fear-die-select">
               <option value="d4">d4</option>
@@ -39,7 +39,7 @@
               <option value="d12" selected>d12</option>
               <option value="d20">d20</option>
             </select>
-            <span class="label fear-label">Fear</span>
+            <span class="label fear-label">{{localize 'DAGGERHEART.GENERAL.fear'}}</span>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
       {{/if}}
 
       <div class="modifier-input-section">
-        <label for="modifier">Modifier:</label>
+        <label for="modifier">{{localize 'DAGGERHEART.ACTORS.Adversary.FIELDS.attack.modifier.label'}}:</label>
         <input type="number" name="modifier" value="{{modifier}}" min="-20" max="20">
       </div>
 
@@ -88,7 +88,7 @@
         </button>
         
         <button type="submit" class="roll-button primary" data-action="roll">
-          <i class="fas fa-dice"></i> Roll
+          <i class="fas fa-dice"></i> {{localize 'DAGGERHEART.GENERAL.roll'}}
         </button>
       </div>
     </div>

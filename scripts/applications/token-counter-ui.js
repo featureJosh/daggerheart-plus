@@ -126,11 +126,19 @@ export class TokenCounterUI {
     container.innerHTML = "";
 
     if (this.canModify()) {
-      const hpCounter = this.createCounter("hp", this.hp, "HP");
+      const hpCounter = this.createCounter(
+        "hp",
+        this.hp,
+        game.i18n.localize("DAGGERHEART.GENERAL.HitPoints.short")
+      );
       container.appendChild(hpCounter);
 
       if (this.actorType === "character") {
-        const hopeCounter = this.createCounter("hope", this.hope, "Hope");
+        const hopeCounter = this.createCounter(
+          "hope",
+          this.hope,
+          game.i18n.localize("DAGGERHEART.GENERAL.hope")
+        );
         container.appendChild(hopeCounter);
       }
     }
@@ -364,21 +372,25 @@ export class TokenCounterUI {
       const characterStressCounter = this.createCounter(
         "character-stress",
         this.characterStress,
-        "Stress"
+        game.i18n.localize("DAGGERHEART.GENERAL.stress")
       );
       rightContainer.appendChild(characterStressCounter);
 
       const armorCounter = this.createCounter(
         "armor-slots",
         this.armorSlots,
-        "Armor"
+        game.i18n.localize("DAGGERHEART.GENERAL.armor")
       );
       rightContainer.appendChild(armorCounter);
     } else if (
       this.actorType === "adversary" ||
       this.actorType === "companion"
     ) {
-      const stressCounter = this.createCounter("stress", this.stress, "Stress");
+      const stressCounter = this.createCounter(
+        "stress",
+        this.stress,
+        game.i18n.localize("DAGGERHEART.GENERAL.stress")
+      );
       rightContainer.appendChild(stressCounter);
     }
   }
