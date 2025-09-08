@@ -7,11 +7,9 @@
 #tooltip.dhp-tooltip-card,
 .locked-tooltip.dhp-tooltip-card {
   min-width: max-content;
-  padding: 0;
-  background: transparent;
-  border-radius: 5px;
-  box-shadow: 0 0 4px #000;
-  border: none;
+  padding: 0.5em;
+  border-radius: 15px;
+  box-shadow: none;
   pointer-events: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
