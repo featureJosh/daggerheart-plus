@@ -109,41 +109,34 @@ Hooks.once("init", () => {
     console.warn("Daggerheart Plus | Failed to preload templates", e);
   }
 
-  // Wrap tooltips with a card-like presentation, preserving system behavior
-  // This will be done in the 'ready' hook to ensure the system has initialized first
+  // Enhance tooltips with card-like presentation, preserving system behavior
+  // Do this at init so Foundry instantiates our manager, not the system's
+  try {
+    const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
+    if (BaseTooltipManager) {
+      class DHPTooltipCardManager extends BaseTooltipManager {
+        async activate(element, options = {}) {
+          const result = await super.activate(element, options);
+          try {
+            if (this.tooltip) this.tooltip.classList.add("dhp-tooltip-card");
+          } catch (_) {}
+          return result;
+        }
+      }
+      CONFIG.ux.TooltipManager = DHPTooltipCardManager;
+      console.log("Daggerheart Plus | Tooltip enhancement applied (init)");
+    } else {
+      console.warn(
+        "Daggerheart Plus | No base tooltip manager found at init; skipping enhancement"
+      );
+    }
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to enhance tooltips at init", e);
+  }
 });
 
 Hooks.once("ready", async () => {
   console.log("Daggerheart Plus | Module ready - creating enhanced sheets");
-
-  // Enhance tooltips with card-like presentation, preserving system behavior
-  try {
-    const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
-    
-    if (BaseTooltipManager) {
-      class DHPTooltipCardManager extends BaseTooltipManager {
-        async activate(element, options = {}) {
-          // Defer to the system's manager first
-          const result = await super.activate(element, options);
-          try {
-            // Mark the tooltip root so our CSS can style it like a card
-            if (this.tooltip) this.tooltip.classList.add("dhp-tooltip-card");
-          } catch (_) {
-            /* no-op */
-          }
-          return result;
-        }
-      }
-
-      // Register our subclass so all tooltips get the card treatment
-      CONFIG.ux.TooltipManager = DHPTooltipCardManager;
-      console.log("Daggerheart Plus | Tooltip enhancement applied");
-    } else {
-      console.warn("Daggerheart Plus | No base tooltip manager found to enhance");
-    }
-  } catch (e) {
-    console.warn("Daggerheart Plus | Failed to enhance tooltips", e);
-  }
 
   const documentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
   const systemAPI = game.system.api?.applications?.sheets?.actors;

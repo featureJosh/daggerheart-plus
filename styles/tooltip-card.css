@@ -6,7 +6,7 @@
 
 #tooltip,
 .locked-tooltip {
-  width: max-content;
+  min-width: max-content;
   padding: 0;
   background: transparent;
   border-radius: 5px;
