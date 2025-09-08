@@ -1,9 +1,0 @@
-<nav class="tabs tabs-right" data-group="primary" data-application-part="tabs" aria-roledescription="Form Tab Navigation">
-  {{#each tabs}}
-    <a class="item control {{#if active}}active{{/if}} {{ cssClass }}" data-action="tab" data-group="primary"
-       data-tab="{{ id }}" data-tooltip="{{ label }}" aria-label="{{ label }}">
-      {{#if icon}}<i class="{{ icon }}" inert></i>{{/if}}
-      {{#if svg}}<img src="{{ svg }}" alt="" />{{/if}}
-    </a>
-  {{/each}}
-</nav>
