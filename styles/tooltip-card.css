@@ -15,7 +15,6 @@
   pointer-events: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  visibility: hidden;
 }
 
 .locked-tooltip {
