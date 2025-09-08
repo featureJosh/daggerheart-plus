@@ -718,7 +718,8 @@
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
-.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section {
+.daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section,
+.dh-inline-rails.rails-left .floating-rail-left .loadout-section {
   border-radius: var(--dh-radius-lg);
   padding: 0.5em 0em;
   transition: all 0.3s ease;
@@ -736,11 +737,13 @@
   .loadout-section:hover,
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
-  .experience-section:hover {
+  .experience-section:hover,
+.dh-inline-rails.rails-left .floating-rail-left .loadout-section:hover {
   border-color: var(--dhp-primary);
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .title {
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title,
+.dh-inline-rails.rails-left .floating-rail-left .loadout-section .title {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -752,7 +755,8 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3 {
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3,
+.dh-inline-rails.rails-left .floating-rail-left .loadout-section .title h3 {
   margin: 0;
   font-size: 0.9rem;
   color: var(--dhp-primary);
@@ -761,12 +765,19 @@
   font-weight: bold;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .items-sidebar-list {
+.daggerheart-plus.sheet.character .character-sidebar-sheet .items-sidebar-list,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .items-sidebar-list {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
   min-width: 0;
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: column;
 }
 
 /*.daggerheart-plus.sheet.character
@@ -1073,10 +1084,15 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .loadout-section
+  .inventory-item,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
   .inventory-item {
   position: relative !important;
   padding: 0 !important; /* content overlays handle padding */
   height: 72px !important; /* compact default height */
+  min-width: 200px;
   border-radius: 10px !important;
   overflow: hidden !important;
   /* expects url(...) stored in --sidebar-card-bg */
@@ -1090,10 +1106,15 @@
     border-color 180ms ease !important;
   /* No delay by default; collapse immediately when leaving */
   transition-delay: 0ms, 0ms, 0ms, 0ms !important;
+  margin-bottom: 0.25rem;
 }
 
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item:hover,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item:hover {
   height: 85px !important; /* expand on hover */
@@ -1107,6 +1128,11 @@
   .character-sidebar-sheet
   .loadout-section
   .inventory-item
+  .item-img,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
   .item-img {
   opacity: 0 !important;
   position: absolute !important;
@@ -1118,6 +1144,11 @@
   .character-sidebar-sheet
   .loadout-section
   .inventory-item
+  .img-portait,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
   .img-portait {
   width: 0 !important;
   height: 0 !important;
@@ -1127,6 +1158,11 @@
 /* Ensure the header shows the background (and doesn’t paint over it) */
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .inventory-item-header,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item
   .inventory-item-header {
@@ -1154,6 +1190,12 @@
   .loadout-section
   .inventory-item
   .img-portait
+  .roll-img,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .img-portait
   .roll-img {
   position: absolute;
   top: 6px;
@@ -1169,6 +1211,10 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .loadout-section
+  .inventory-item::before,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
   .inventory-item::before {
   content: "";
   position: absolute;
@@ -1183,6 +1229,10 @@
 
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item::after,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item::after {
   content: "";
@@ -1203,6 +1253,11 @@
   .character-sidebar-sheet
   .loadout-section
   .inventory-item
+  .item-label,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
   .item-label {
   position: absolute;
   left: 0;
@@ -1217,6 +1272,11 @@
 
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .item-name,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item
   .item-name {
@@ -1252,6 +1312,17 @@
   .loadout-section
   .inventory-item
   .item-labels
+  .label,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .item-labels,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .item-labels
   .label {
   color: rgba(255, 255, 255, 0.85);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
@@ -1260,6 +1331,11 @@
 /* Controls overlay in the top-right corner */
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .controls,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item
   .controls {
@@ -1286,6 +1362,11 @@
   .character-sidebar-sheet
   .loadout-section
   .inventory-item:hover
+  .controls,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item:hover
   .controls {
   opacity: 1;
   transform: translateY(0);
@@ -1297,12 +1378,24 @@
   .loadout-section
   .inventory-item
   .controls
+  a,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .controls
   a {
   color: rgba(255, 255, 255, 0.9);
 }
 
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .controls
+  a:hover,
+.dh-inline-rails.rails-left
+  .floating-rail-left
   .loadout-section
   .inventory-item
   .controls

@@ -163,7 +163,7 @@ export function createDaggerheartPlusCharacterSheet() {
           try {
             const countLoadout =
               this.element?.querySelectorAll?.(
-                ".character-sidebar-sheet .loadout-section .inventory-item"
+                ".character-sidebar-sheet .loadout-section .inventory-item, .dh-inline-rails.rails-left .loadout-section .inventory-item"
               )?.length || 0;
             const countEquip =
               this.element?.querySelectorAll?.(
@@ -186,18 +186,25 @@ export function createDaggerheartPlusCharacterSheet() {
     _bindSidebarLoadoutCardClicks() {
       const root = this.element;
       if (!root) return;
-      const container = root.querySelector(
-        ".character-sidebar-sheet .loadout-section"
-      );
-      if (!container) return;
+      const containers = [
+        root.querySelector(".character-sidebar-sheet .loadout-section"),
+        root.querySelector(".dh-inline-rails.rails-left .loadout-section"),
+      ].filter(Boolean);
+      if (!containers.length) return;
 
       // Remove previous delegation if re-rendering
-      if (this._loadoutClickHandler)
-        container.removeEventListener("click", this._loadoutClickHandler, true);
+      if (this._loadoutClickHandler) {
+        for (const c of containers) {
+          try {
+            c.removeEventListener("click", this._loadoutClickHandler, true);
+          } catch {}
+        }
+      }
 
       this._loadoutClickHandler = (ev) => {
         const itemCard = ev.target.closest(".inventory-item");
-        if (!itemCard || !container.contains(itemCard)) return;
+        if (!itemCard) return;
+        if (!containers.some((c) => c.contains(itemCard))) return;
 
         // Ignore clicks on explicit controls or links inside the card
         const interactive = ev.target.closest(
@@ -220,7 +227,9 @@ export function createDaggerheartPlusCharacterSheet() {
       };
 
       // Capture phase improves reliability when base handlers stop propagation
-      container.addEventListener("click", this._loadoutClickHandler, true);
+      for (const c of containers) {
+        c.addEventListener("click", this._loadoutClickHandler, true);
+      }
     }
 
     _synthesizePrimaryClick(target) {
@@ -241,9 +250,13 @@ export function createDaggerheartPlusCharacterSheet() {
 
     _debugSidebarLoadoutBackgrounds() {
       try {
-        const list = this.element?.querySelector(
-          ".character-sidebar-sheet .loadout-section .items-sidebar-list"
-        );
+        const list =
+          this.element?.querySelector(
+            ".character-sidebar-sheet .loadout-section .items-sidebar-list"
+          ) ||
+          this.element?.querySelector(
+            ".dh-inline-rails.rails-left .loadout-section .items-sidebar-list"
+          );
         if (!list) return;
         const items = list.querySelectorAll(".inventory-item");
         console.log(`[DH+] Loadout items: ${items.length}`);
@@ -271,7 +284,7 @@ export function createDaggerheartPlusCharacterSheet() {
       if (!root) return;
       const selectors = [
         ".character-sidebar-sheet .loadout-section .items-sidebar-list",
-        ".character-sidebar-sheet .equipment-section .items-sidebar-list",
+        ".dh-inline-rails.rails-left .loadout-section .items-sidebar-list",
       ];
       const lists = selectors
         .map((sel) => root.querySelector(sel))
@@ -344,15 +357,10 @@ export function createDaggerheartPlusCharacterSheet() {
               if (n.nodeType === Node.ELEMENT_NODE) {
                 if (n.matches?.(".inventory-item")) {
                   apply(n);
-                  // Bind hover intent if this is in equipment section
-                  if (n.closest?.(".equipment-section"))
-                    this._bindEquipmentHoverIntent(n);
                   needsUpdate = true;
                 } else
                   n.querySelectorAll?.(".inventory-item").forEach((it) => {
                     apply(it);
-                    if (it.closest?.(".equipment-section"))
-                      this._bindEquipmentHoverIntent(it);
                     needsUpdate = true;
                   });
               }

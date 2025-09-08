@@ -251,10 +251,9 @@ Hooks.once("ready", async () => {
 
     async _onRender(context, options) {
       await super._onRender(context, options);
-      // Apply background images to sidebar loadout items only
-      this._applySidebarLoadoutBackgrounds();
 
-      // Conditionally mount inline rails per-user
+      // Conditionally mount inline rails per-user, then apply backgrounds so
+      // left-rail cards (if present) also get painted.
       try {
         const useRails = game.settings.get(
           MODULE_ID,
@@ -268,6 +267,9 @@ Hooks.once("ready", async () => {
           this._removeInlineRails();
         } catch {}
       }
+
+      // Apply background images to loadout items in both sidebar and left rail
+      this._applySidebarLoadoutBackgrounds();
     }
 
     // Remove custom section toggling; rely on system navigation
@@ -280,38 +282,94 @@ Hooks.once("ready", async () => {
       try {
         const root = this.element;
         if (!root) return;
-        const items = root.querySelectorAll(
-          ".character-sidebar-sheet .loadout-section .inventory-item"
-        );
-        if (!items?.length) return;
 
-        items.forEach((el) => {
-          // Prefer the owning document's image via data-item-id
-          const id = el.dataset?.itemId;
-          let src = id ? this.document?.items?.get?.(id)?.img : undefined;
-          // Fallback to the inline <img>
+        const selectors = [
+          ".character-sidebar-sheet .loadout-section .items-sidebar-list",
+          ".dh-inline-rails.rails-left .loadout-section .items-sidebar-list",
+        ];
+        const lists = selectors
+          .map((sel) => root.querySelector(sel))
+          .filter((el) => !!el);
+        if (!lists.length) return;
+
+        const apply = (el) => {
+          const item = el.closest?.(".inventory-item") || el;
+          if (!item || !item.classList.contains("inventory-item")) return;
+
+          // Try to resolve the image source in a few ways:
+          // 1) Prefer the owning document's image via data-item-id
+          // 2) Fallback to the inline <img> inside the card (src/data-src/currentSrc)
+          let src;
+          const itemId = item.dataset.itemId;
+          const doc = itemId ? this.document?.items?.get?.(itemId) : null;
+          if (doc?.img) src = doc.img;
           if (!src) {
-            const img = el.querySelector?.(".item-img, .item-image, img");
+            const imgEl = item.querySelector?.(".item-img, .item-image, img");
             src =
-              img?.getAttribute?.("src") ||
-              img?.dataset?.src ||
-              img?.currentSrc;
+              imgEl?.getAttribute?.("src") ||
+              imgEl?.dataset?.src ||
+              imgEl?.currentSrc;
           }
           if (!src) return;
 
           const url = `url("${src}")`;
-          el.style.setProperty("--sidebar-card-bg", url);
-          // Defensive inline background to avoid shorthand overrides
-          el.style.setProperty("background-image", url, "important");
-          el.style.setProperty("background-size", "cover", "important");
-          el.style.setProperty("background-position", "center", "important");
-          el.style.setProperty("background-repeat", "no-repeat", "important");
+          // CSS variable + direct background (with important) to defeat shorthands
+          item.style.setProperty("--sidebar-card-bg", url);
+          item.style.setProperty("background-image", url, "important");
+          item.style.setProperty("background-size", "cover", "important");
+          item.style.setProperty("background-position", "center", "important");
+          item.style.setProperty("background-repeat", "no-repeat", "important");
 
-          // Ensure cards are usable in the sidebar
+          const header = item.querySelector(".inventory-item-header");
+          if (header) {
+            header.style.setProperty("background-image", url, "important");
+            header.style.setProperty("background-size", "cover", "important");
+            header.style.setProperty("background-position", "center", "important");
+            header.style.setProperty("background-repeat", "no-repeat", "important");
+          }
+
+          // Ensure cards are usable: mark them as actionable
           try {
-            el.setAttribute("data-action", "useItem");
-          } catch (_) {}
-        });
+            item.setAttribute("data-action", "useItem");
+          } catch {}
+          item.dataset.bgApplied = "1";
+        };
+
+        // Initial paint for both sections
+        lists.forEach((list) =>
+          list.querySelectorAll(".inventory-item").forEach(apply)
+        );
+
+        // Observe both lists for dynamic changes
+        try {
+          if (this._loadoutObserver) this._loadoutObserver.disconnect();
+          this._loadoutObserver = new MutationObserver((mutations) => {
+            let needsUpdate = false;
+            for (const m of mutations) {
+              m.addedNodes.forEach((n) => {
+                if (n.nodeType === Node.ELEMENT_NODE) {
+                  if (n.matches?.(".inventory-item")) {
+                    apply(n);
+                    needsUpdate = true;
+                  } else
+                    n.querySelectorAll?.(".inventory-item").forEach((it) => {
+                      apply(it);
+                      needsUpdate = true;
+                    });
+                }
+              });
+            }
+            if (needsUpdate)
+              lists.forEach((list) =>
+                list.querySelectorAll(".inventory-item").forEach(apply)
+              );
+          });
+          lists.forEach((list) =>
+            this._loadoutObserver.observe(list, { childList: true, subtree: true })
+          );
+        } catch (e) {
+          /* ignore */
+        }
       } catch (_) {
         /* noop */
       }
@@ -444,7 +502,11 @@ Hooks.once("ready", async () => {
           "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs";
         const [rightHTML, leftHTML] = await Promise.all([
           renderTemplate(templatePath, { side: "right", tabs }),
-          renderTemplate(templatePath, { side: "left", items: leftItems }),
+          renderTemplate(templatePath, {
+            side: "left",
+            items: leftItems,
+            document: this.document,
+          }),
         ]);
 
         right.innerHTML = rightHTML;
