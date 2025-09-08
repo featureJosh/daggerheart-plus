@@ -1,0 +1,193 @@
+/*
+  DH+ Tooltip Card Styling
+  This styles the dynamic Daggerheart tooltips to read like compact cards
+  without altering core system logic or templates.
+*/
+
+#tooltip,
+.locked-tooltip {
+  width: max-content;
+  padding: 0;
+  background: transparent;
+  border-radius: 5px;
+  box-shadow: 0 0 4px #000;
+  border: none;
+  pointer-events: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  visibility: hidden;
+}
+
+.locked-tooltip {
+  pointer-events: all;
+  border: none;
+}
+
+#tooltip:where([popover]),
+.locked-tooltip:where([popover]) {
+  display: block;
+  margin: unset;
+  inset: unset;
+  border: unset;
+  margin-right: 1.5em;
+}
+
+.daggerheart.dh-style.tooltip .tooltip-sub-title {
+  margin-left: 1em;
+}
+
+.dhp-tooltip-card > .daggerheart.dh-style.tooltip::before,
+.dhp-tooltip-card > .tooltip::before {
+  background: none;
+}
+
+:root {
+  --dhp-card-bg: #191a24;
+  --dhp-card-surface: #222635;
+  --dhp-card-border: #3a3d4e;
+  --dhp-card-shadow: rgba(0, 0, 0, 0.45);
+  --dhp-card-accent: #f3c267;
+  --dhp-card-accent-2: #fef790;
+  --dhp-card-text: #f5f6fa;
+  --dhp-card-muted: #c5c9d6;
+}
+
+/*
+  We add the class `dhp-tooltip-card` to the tooltip root via JS.
+  The first child is the system’s rendered tooltip content
+  (e.g., <div class="daggerheart dh-style tooltip"> ... ).
+*/
+.dhp-tooltip-card {
+  /* Ensure card floats above app chrome */
+  z-index: 9999 !important;
+}
+
+.dhp-tooltip-card > .daggerheart.dh-style.tooltip,
+.dhp-tooltip-card > .tooltip {
+  /* fallback if class changes upstream */
+  display: block;
+  width: min(380px, 40vw);
+  color: var(--dhp-card-text);
+  background: linear-gradient(
+    180deg,
+    var(--dhp-card-surface) 0%,
+    var(--dhp-card-bg) 100%
+  );
+  border: 1px solid var(--dhp-card-border);
+  border-radius: 12px;
+  box-shadow: 0 14px 28px var(--dhp-card-shadow);
+  overflow: hidden; /* round the top image corners */
+  padding: 0; /* rely on internal spacing */
+}
+
+/* Top image behaves like a card illustration */
+.dhp-tooltip-card .tooltip-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-bottom: 4px solid var(--dhp-card-accent);
+}
+
+/* Title area – strong and compact */
+.dhp-tooltip-card .tooltip-title {
+  margin: 0.75rem 1rem 0.25rem;
+  font-weight: 900;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Optional chip/badge next to title, if templates provide one */
+.dhp-tooltip-card .tooltip-title .badge,
+.dhp-tooltip-card .badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    var(--dhp-card-accent-2),
+    var(--dhp-card-accent)
+  );
+  color: #1b1b1b;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+/* Description spacing and readability */
+.dhp-tooltip-card .tooltip-description {
+  padding: 0 1rem 0.75rem;
+  color: var(--dhp-card-muted);
+}
+.dhp-tooltip-card .tooltip-description p {
+  margin: 0.35rem 0;
+}
+.dhp-tooltip-card .tooltip-description b,
+.dhp-tooltip-card .tooltip-description strong {
+  color: var(--dhp-card-text);
+}
+
+/* Information sections read like grouped rules text */
+.dhp-tooltip-card .tooltip-information-section {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem 0.75rem;
+  border-top: 1px dashed var(--dhp-card-border);
+  display: grid;
+  gap: 0.35rem;
+}
+
+.dhp-tooltip-card .tooltip-information label {
+  display: block;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--dhp-card-muted);
+}
+
+.dhp-tooltip-card .tooltip-information > div,
+.dhp-tooltip-card .tooltip-information .value {
+  color: var(--dhp-card-text);
+  font-weight: 600;
+}
+
+/* Sub-headings inside the description or sections */
+.dhp-tooltip-card .tooltip-description h3,
+.dhp-tooltip-card .tooltip-description h4,
+.dhp-tooltip-card .tooltip-description h5 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dhp-card-text);
+}
+
+/* Optional angled accent band below image (visual nod to physical cards) */
+.dhp-tooltip-card > .daggerheart.dh-style.tooltip::before,
+.dhp-tooltip-card > .tooltip::before {
+  content: "";
+  display: block;
+  height: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--dhp-card-accent) 0%,
+    var(--dhp-card-accent-2) 100%
+  );
+}
+
+/* Reduce any default outer padding from system templates so the card edge stays crisp */
+.dhp-tooltip-card .tooltip > *:first-child {
+  margin-top: 0;
+}
+.dhp-tooltip-card .tooltip > *:last-child {
+  margin-bottom: 0;
+}
+
+/* If the manager shows an arrow, keep it subtle against dark surfaces */
+.dhp-tooltip-card .arrow, /* Foundry v10/v11 style */
+.dhp-tooltip-card .tooltip-arrow {
+  filter: drop-shadow(0 4px 6px var(--dhp-card-shadow));
+}
