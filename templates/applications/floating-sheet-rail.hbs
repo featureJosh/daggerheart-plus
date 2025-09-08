@@ -1,0 +1,28 @@
+{{!--
+  FloatingSheetRail
+  Context:
+    - side: "left" | "right"
+    - items: [{ key, label, icon? }]
+--}}
+
+<div class="floating-rail floating-rail-{{side}}">
+  {{#if (eq side "right")}}
+    <div class="rail-buttons" role="toolbar" aria-label="Right Rail">
+      {{#each items as |it|}}
+        <button type="button" class="rail-btn" data-key="{{it.key}}" data-tooltip="{{it.label}}">
+          <i class="{{it.icon}}" aria-hidden="true"></i>
+        </button>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="rail-pill" aria-label="Left Rail">
+      {{#each items as |it|}}
+        <div class="pill-item" data-key="{{it.key}}">{{it.label}}</div>
+      {{/each}}
+    </div>
+  {{/if}}
+  
+  {{!-- Placeholder note --}}
+  <span class="rail-placeholder-note">Placeholder – future features</span>
+</div>
+

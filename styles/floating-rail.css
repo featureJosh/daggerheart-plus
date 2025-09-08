@@ -1,0 +1,125 @@
+.floating-sheet-rail {
+  position: fixed !important;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.floating-sheet-rail .floating-rail {
+  pointer-events: auto;
+}
+
+/* Inline rails that live inside the sheet element so they move with it */
+.application.sheet.daggerheart-plus {
+  /* Only allow overflow so rails can sit outside without affecting layout */
+  overflow: visible !important;
+}
+
+.dh-inline-rails {
+  position: absolute;
+  top: 35%;
+  z-index: 5;
+  pointer-events: none; /* container blocks nothing */
+}
+
+.dh-inline-rails .floating-rail {
+  pointer-events: auto;
+}
+
+.dh-inline-rails.rails-right {
+  right: 0;
+  transform: translate(calc(100% + var(--dh-rail-gap, 15px)), -50%);
+}
+.dh-inline-rails.rails-left {
+  left: 0;
+  transform: translate(calc(-100% - var(--dh-rail-gap, 15px)), -50%);
+}
+
+/* Right rail: icon buttons stacked */
+.floating-sheet-rail .floating-rail-right .rail-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dh-space-sm, 0.5rem);
+  background: rgba(10, 15, 33, 0.95);
+  border: 2px solid var(--dh-color-gold, #f3c267);
+  border-radius: var(--dh-radius-xl, 10px);
+  padding: var(--dh-space-md, 0.75rem);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.floating-sheet-rail .rail-btn {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: var(--dh-radius-lg, 8px);
+  background: var(--dh-color-purple, #1e184d);
+  color: var(--dh-color-gold, #f3c267);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.floating-sheet-rail .rail-btn:hover {
+  background: var(--dh-color-purple-light, #38227b);
+  color: var(--dh-color-gold-light, #fef790);
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(243, 194, 103, 0.3);
+}
+
+/* Left rail: a vertical pill with text items */
+.floating-sheet-rail .floating-rail-left .rail-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(10, 15, 33, 0.95);
+  color: var(--dh-color-gold, #f3c267);
+  border: 2px solid var(--dh-color-gold, #f3c267);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 140px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.floating-sheet-rail .pill-item {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(56, 34, 123, 0.35);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.floating-sheet-rail .pill-item:hover {
+  background: rgba(56, 34, 123, 0.6);
+}
+
+.floating-sheet-rail .rail-placeholder-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.7;
+  color: var(--dh-color-gold, #f3c267);
+}
+
+@media (max-width: 1200px) {
+  .floating-sheet-rail .rail-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-sheet-rail .floating-rail-right .rail-buttons {
+    flex-direction: row;
+    padding: 8px;
+  }
+  .floating-sheet-rail .rail-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}

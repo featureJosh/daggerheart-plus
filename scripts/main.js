@@ -30,6 +30,28 @@ Hooks.once("init", () => {
     },
   });
 
+  // Per-user toggle for Character Sheet inline rails (sidebars)
+  game.settings.register(MODULE_ID, "enableCharacterSheetSidebars", {
+    name: "Character Sheet Sidebars (Rails)",
+    hint: "Show left/right inline rails on DH+ Character sheets. Per-user preference only.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      try {
+        // Apply immediately to any open DH+ Character sheets for this user
+        for (const app of Object.values(ui.windows)) {
+          if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
+          if (value) app._mountInlineRails?.();
+          else app._removeInlineRails?.();
+        }
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying sidebar toggle to open sheets", e);
+      }
+    },
+  });
+
   // Default DH+ sheet size (global)
   game.settings.register(MODULE_ID, "defaultSheetWidth", {
     name: "Default DH+ Sheet Width (px)",
@@ -130,6 +152,12 @@ Hooks.once("ready", async () => {
       },
     };
 
+    constructor(options = {}) {
+      super(options);
+      this._leftRail = null;
+      this._rightRail = null;
+    }
+
     static PARTS = {
       ...super.PARTS,
       sidebar: {
@@ -197,6 +225,11 @@ Hooks.once("ready", async () => {
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
       context.tabs = this._getTabs();
+      try {
+        context.enableCharacterSheetSidebars = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+      } catch (_) {
+        context.enableCharacterSheetSidebars = false;
+      }
       return context;
     }
 
@@ -204,6 +237,16 @@ Hooks.once("ready", async () => {
       await super._onRender(context, options);
       // Apply background images to sidebar loadout items only
       this._applySidebarLoadoutBackgrounds();
+
+      // Conditionally mount inline rails per-user
+      try {
+        const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+        if (useRails) this._mountInlineRails();
+        else this._removeInlineRails();
+      } catch (_) {
+        // Fallback: ensure rails are not duplicated
+        try { this._removeInlineRails(); } catch {}
+      }
     }
 
     // Remove custom section toggling; rely on system navigation
@@ -251,6 +294,151 @@ Hooks.once("ready", async () => {
       } catch (_) {
         /* noop */
       }
+    }
+
+    _ensureFallbackRailsDOM() {
+      try {
+        const hasRight = this._rightRail?.element && document.body.contains(this._rightRail.element);
+        const hasLeft = this._leftRail?.element && document.body.contains(this._leftRail.element);
+        const rect = this.element?.getBoundingClientRect?.();
+        if (!rect) return;
+
+        const make = (side) => {
+          const root = document.createElement("nav");
+          root.className = "floating-sheet-rail";
+          const wrapper = document.createElement("div");
+          wrapper.className = `floating-rail floating-rail-${side}`;
+          if (side === "right") {
+            const buttons = document.createElement("div");
+            buttons.className = "rail-buttons";
+            buttons.innerHTML = `
+              <button type="button" class="rail-btn" title="A"><i class="fa-solid fa-sparkles"></i></button>
+              <button type="button" class="rail-btn" title="B"><i class="fa-solid fa-shield-halved"></i></button>
+              <button type="button" class="rail-btn" title="C"><i class="fa-solid fa-bag-shopping"></i></button>
+              <button type="button" class="rail-btn" title="D"><i class="fa-solid fa-user"></i></button>
+              <button type="button" class="rail-btn" title="E"><i class="fa-solid fa-hourglass"></i></button>`;
+            wrapper.appendChild(buttons);
+          } else {
+            const pill = document.createElement("div");
+            pill.className = "rail-pill";
+            pill.innerHTML = `
+              <div class="pill-item">Domain</div>
+              <div class="pill-item">Class</div>
+              <div class="pill-item">Subclass</div>
+              <div class="pill-item">Community</div>
+              <div class="pill-item">Ancestry</div>`;
+            wrapper.appendChild(pill);
+          }
+          const note = document.createElement("span");
+          note.className = "rail-placeholder-note";
+          note.textContent = "Placeholder – future features";
+          wrapper.appendChild(note);
+          root.appendChild(wrapper);
+          document.body.appendChild(root);
+          // Position
+          const applyPos = () => {
+            root.style.position = "fixed";
+            root.style.zIndex = "1000";
+            if (side === "right") {
+              root.style.left = "";
+              root.style.right = `${Math.max(0, window.innerWidth - rect.right + 20)}px`;
+              root.style.top = `${rect.top + rect.height / 2}px`;
+              root.style.transform = "translateY(-50%)";
+            } else {
+              const width = root.getBoundingClientRect().width || 0;
+              const targetRight = rect.left - 20;
+              const left = Math.max(0, targetRight - width);
+              root.style.right = "";
+              root.style.left = `${left}px`;
+              root.style.top = `${rect.top + rect.height / 2}px`;
+              root.style.transform = "translateY(-50%)";
+            }
+          };
+          applyPos();
+          const onResize = () => applyPos();
+          window.addEventListener("resize", onResize);
+          // Track for cleanup
+          if (side === "right") this.__fallbackRight = { root, onResize };
+          else this.__fallbackLeft = { root, onResize };
+        };
+
+        if (!hasRight && !this.__fallbackRight) make("right");
+        if (!hasLeft && !this.__fallbackLeft) make("left");
+      } catch {}
+    }
+
+    _cleanupFallbackRailsDOM() {
+      try {
+        if (this.__fallbackRight) {
+          window.removeEventListener("resize", this.__fallbackRight.onResize);
+          this.__fallbackRight.root.remove();
+          this.__fallbackRight = null;
+        }
+        if (this.__fallbackLeft) {
+          window.removeEventListener("resize", this.__fallbackLeft.onResize);
+          this.__fallbackLeft.root.remove();
+          this.__fallbackLeft = null;
+        }
+      } catch {}
+    }
+
+    async close(options = {}) {
+      try { this._removeInlineRails(); } catch {}
+      return super.close(options);
+    }
+
+    _mountInlineRails() {
+      try {
+        const root = this.element;
+        if (!root) return;
+        // Remove any existing
+        this._removeInlineRails();
+
+        // Right rail
+        const right = document.createElement("div");
+        right.className = "dh-inline-rails rails-right";
+        right.innerHTML = `
+          <div class="floating-rail floating-rail-right">
+            <div class="rail-buttons" role="toolbar" aria-label="Right Rail">
+              <button type="button" class="rail-btn" title="A"><i class="fa-solid fa-sparkles"></i></button>
+              <button type="button" class="rail-btn" title="B"><i class="fa-solid fa-shield-halved"></i></button>
+              <button type="button" class="rail-btn" title="C"><i class="fa-solid fa-bag-shopping"></i></button>
+              <button type="button" class="rail-btn" title="D"><i class="fa-solid fa-user"></i></button>
+              <button type="button" class="rail-btn" title="E"><i class="fa-solid fa-hourglass"></i></button>
+            </div>
+            <span class="rail-placeholder-note">Placeholder – future features</span>
+          </div>`;
+
+        // Left rail
+        const left = document.createElement("div");
+        left.className = "dh-inline-rails rails-left";
+        left.innerHTML = `
+          <div class="floating-rail floating-rail-left">
+            <div class="rail-pill" aria-label="Left Rail">
+              <div class="pill-item">Domain</div>
+              <div class="pill-item">Class</div>
+              <div class="pill-item">Subclass</div>
+              <div class="pill-item">Community</div>
+              <div class="pill-item">Ancestry</div>
+            </div>
+            <span class="rail-placeholder-note">Placeholder – future features</span>
+          </div>`;
+
+        root.appendChild(right);
+        root.appendChild(left);
+        this.__inlineRails = { right, left };
+        console.debug("[DH+] Mounted inline rails inside sheet", this.id);
+      } catch (e) {
+        console.error("[DH+] _mountInlineRails failed", e);
+      }
+    }
+
+    _removeInlineRails() {
+      try {
+        this.__inlineRails?.right?.remove?.();
+        this.__inlineRails?.left?.remove?.();
+        this.__inlineRails = null;
+      } catch {}
     }
   };
 
@@ -463,6 +651,15 @@ Hooks.once("ready", async () => {
       }
       if (game.user.isGM) ui.notifications.info(`DH+ adversary sheet size set to ${size.width}x${size.height}.`);
     }
+
+    if (setting.key === "enableCharacterSheetSidebars") {
+      const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+      for (const app of Object.values(ui.windows)) {
+        if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
+        if (useRails) app._mountInlineRails?.();
+        else app._removeInlineRails?.();
+      }
+    }
   });
 
   if (game.user.isGM) {
@@ -473,6 +670,21 @@ Hooks.once("ready", async () => {
 Hooks.on("renderActorSheet", (app, html, data) => {
   if (app.constructor.name.startsWith("DaggerheartPlus")) {
     console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
+  }
+
+  // Ensure inline rails exist for DH+ Character sheets (per-user setting)
+  if (app.constructor.name === "DaggerheartPlusCharacterSheet") {
+    try {
+      const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+      console.debug("[DH+] renderActorSheet hook: sidebar rails", { app: app.id, useRails });
+      if (useRails) {
+        if (typeof app._mountInlineRails === "function") app._mountInlineRails();
+      } else {
+        if (typeof app._removeInlineRails === "function") app._removeInlineRails();
+      }
+    } catch (_) {
+      console.error("[DH+] renderActorSheet hook: failed to ensure inline rails", _);
+    }
   }
 
   // Lock down Companion sheet resizing behavior
@@ -491,4 +703,9 @@ Hooks.on("renderActorSheet", (app, html, data) => {
       /* noop */
     }
   }
+});
+
+Hooks.on("closeActorSheet", async (app) => {
+  if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") return;
+  try { app._removeInlineRails?.(); } catch {}
 });
