@@ -97,12 +97,15 @@ body.theme-dark .application.daggerheart.sheet {
 }
 
 .daggerheart-plus.sheet .sheet-tabs {
+}
+
+.daggerheart-plus.sheet .rail-nav .sheet-tabs {
   background: none;
   border-bottom: none;
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 0;
+  gap: 0.5em;
   box-shadow: none;
 }
 

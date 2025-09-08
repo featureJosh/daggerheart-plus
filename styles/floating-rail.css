@@ -35,24 +35,22 @@
 }
 
 /* Right rail: icon buttons stacked */
-.floating-sheet-rail .floating-rail-right .rail-buttons {
+.floating-sheet-rail .floating-rail-right .rail-buttons,
+.floating-sheet-rail .floating-rail-right .rail-nav,
+.dh-inline-rails .floating-rail-right .rail-buttons,
+.dh-inline-rails .floating-rail-right .rail-nav {
   display: flex;
   flex-direction: column;
   gap: var(--dh-space-sm, 0.5rem);
-  background: rgba(10, 15, 33, 0.95);
-  border: 2px solid var(--dh-color-gold, #f3c267);
-  border-radius: var(--dh-radius-xl, 10px);
-  padding: var(--dh-space-md, 0.75rem);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
 }
 
-.floating-sheet-rail .rail-btn {
-  width: 48px;
-  height: 48px;
+.floating-sheet-rail .rail-btn,
+.dh-inline-rails .rail-btn {
+  width: 35x;
+  height: 45px;
   border: none;
   border-radius: var(--dh-radius-lg, 8px);
-  background: var(--dh-color-purple, #1e184d);
+  background: var(--dhp-surface);
   color: var(--dh-color-gold, #f3c267);
   cursor: pointer;
   display: inline-flex;
@@ -62,15 +60,38 @@
   transition: all 0.2s ease;
 }
 
-.floating-sheet-rail .rail-btn:hover {
-  background: var(--dh-color-purple-light, #38227b);
+.floating-sheet-rail .rail-btn:hover,
+.dh-inline-rails .rail-btn:hover {
+  background: var(--dhp-border);
   color: var(--dh-color-gold-light, #fef790);
   transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(243, 194, 103, 0.3);
+}
+
+/* Active state for rail tabs */
+.floating-sheet-rail .rail-btn.active,
+.dh-inline-rails .rail-btn.active {
+  background: var(--dhp-border);
+  box-shadow: 0 0 0 2px rgba(243, 194, 103, 0.65),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Settings button variant: distinct palette */
+.floating-sheet-rail .rail-btn.rail-btn-settings,
+.dh-inline-rails .rail-btn.rail-btn-settings {
+  background: var(--dhp-accent);
+  color: var(--dhp-surface);
+  transition: all 0.2s ease;
+}
+.floating-sheet-rail .rail-btn.rail-btn-settings:hover,
+.dh-inline-rails .rail-btn.rail-btn-settings:hover {
+  background: ar(--dhp-surface);
+  color: var(--dhp-accent);
+  transform: scale(1.05);
 }
 
 /* Left rail: a vertical pill with text items */
-.floating-sheet-rail .floating-rail-left .rail-pill {
+.floating-sheet-rail .floating-rail-left .rail-pill,
+.dh-inline-rails .floating-rail-left .rail-pill {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -83,7 +104,8 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-.floating-sheet-rail .pill-item {
+.floating-sheet-rail .pill-item,
+.dh-inline-rails .pill-item {
   padding: 6px 10px;
   border-radius: 8px;
   background: rgba(56, 34, 123, 0.35);
@@ -92,11 +114,13 @@
   letter-spacing: 0.06em;
 }
 
-.floating-sheet-rail .pill-item:hover {
+.floating-sheet-rail .pill-item:hover,
+.dh-inline-rails .pill-item:hover {
   background: rgba(56, 34, 123, 0.6);
 }
 
-.floating-sheet-rail .rail-placeholder-note {
+.floating-sheet-rail .rail-placeholder-note,
+.dh-inline-rails .rail-placeholder-note {
   display: block;
   margin-top: 6px;
   font-size: 11px;
@@ -105,21 +129,10 @@
 }
 
 @media (max-width: 1200px) {
-  .floating-sheet-rail .rail-btn {
+  .floating-sheet-rail .rail-btn,
+  .dh-inline-rails .rail-btn {
     width: 40px;
     height: 40px;
     font-size: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .floating-sheet-rail .floating-rail-right .rail-buttons {
-    flex-direction: row;
-    padding: 8px;
-  }
-  .floating-sheet-rail .rail-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
   }
 }

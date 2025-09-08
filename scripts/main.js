@@ -42,12 +42,16 @@ Hooks.once("init", () => {
       try {
         // Apply immediately to any open DH+ Character sheets for this user
         for (const app of Object.values(ui.windows)) {
-          if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
+          if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
+            continue;
           if (value) app._mountInlineRails?.();
           else app._removeInlineRails?.();
         }
       } catch (e) {
-        console.warn("Daggerheart Plus | Failed applying sidebar toggle to open sheets", e);
+        console.warn(
+          "Daggerheart Plus | Failed applying sidebar toggle to open sheets",
+          e
+        );
       }
     },
   });
@@ -95,6 +99,15 @@ Hooks.once("init", () => {
   });
 
   console.log("Daggerheart Plus | Module settings registered");
+
+  // Preload HBS templates used by inline rails
+  try {
+    loadTemplates([
+      "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs",
+    ]);
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to preload templates", e);
+  }
 });
 
 Hooks.once("ready", async () => {
@@ -226,7 +239,10 @@ Hooks.once("ready", async () => {
       const context = await super._prepareContext(options);
       context.tabs = this._getTabs();
       try {
-        context.enableCharacterSheetSidebars = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+        context.enableCharacterSheetSidebars = game.settings.get(
+          MODULE_ID,
+          "enableCharacterSheetSidebars"
+        );
       } catch (_) {
         context.enableCharacterSheetSidebars = false;
       }
@@ -240,12 +256,17 @@ Hooks.once("ready", async () => {
 
       // Conditionally mount inline rails per-user
       try {
-        const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
-        if (useRails) this._mountInlineRails();
+        const useRails = game.settings.get(
+          MODULE_ID,
+          "enableCharacterSheetSidebars"
+        );
+        if (useRails) await this._mountInlineRails();
         else this._removeInlineRails();
       } catch (_) {
         // Fallback: ensure rails are not duplicated
-        try { this._removeInlineRails(); } catch {}
+        try {
+          this._removeInlineRails();
+        } catch {}
       }
     }
 
@@ -298,8 +319,12 @@ Hooks.once("ready", async () => {
 
     _ensureFallbackRailsDOM() {
       try {
-        const hasRight = this._rightRail?.element && document.body.contains(this._rightRail.element);
-        const hasLeft = this._leftRail?.element && document.body.contains(this._leftRail.element);
+        const hasRight =
+          this._rightRail?.element &&
+          document.body.contains(this._rightRail.element);
+        const hasLeft =
+          this._leftRail?.element &&
+          document.body.contains(this._leftRail.element);
         const rect = this.element?.getBoundingClientRect?.();
         if (!rect) return;
 
@@ -341,7 +366,10 @@ Hooks.once("ready", async () => {
             root.style.zIndex = "1000";
             if (side === "right") {
               root.style.left = "";
-              root.style.right = `${Math.max(0, window.innerWidth - rect.right + 20)}px`;
+              root.style.right = `${Math.max(
+                0,
+                window.innerWidth - rect.right + 20
+              )}px`;
               root.style.top = `${rect.top + rect.height / 2}px`;
               root.style.transform = "translateY(-50%)";
             } else {
@@ -383,53 +411,85 @@ Hooks.once("ready", async () => {
     }
 
     async close(options = {}) {
-      try { this._removeInlineRails(); } catch {}
+      try {
+        this._removeInlineRails();
+      } catch {}
       return super.close(options);
     }
 
-    _mountInlineRails() {
+    async _mountInlineRails() {
       try {
         const root = this.element;
         if (!root) return;
         // Remove any existing
         this._removeInlineRails();
 
-        // Right rail
         const right = document.createElement("div");
         right.className = "dh-inline-rails rails-right";
-        right.innerHTML = `
-          <div class="floating-rail floating-rail-right">
-            <div class="rail-buttons" role="toolbar" aria-label="Right Rail">
-              <button type="button" class="rail-btn" title="A"><i class="fa-solid fa-sparkles"></i></button>
-              <button type="button" class="rail-btn" title="B"><i class="fa-solid fa-shield-halved"></i></button>
-              <button type="button" class="rail-btn" title="C"><i class="fa-solid fa-bag-shopping"></i></button>
-              <button type="button" class="rail-btn" title="D"><i class="fa-solid fa-user"></i></button>
-              <button type="button" class="rail-btn" title="E"><i class="fa-solid fa-hourglass"></i></button>
-            </div>
-            <span class="rail-placeholder-note">Placeholder – future features</span>
-          </div>`;
 
-        // Left rail
         const left = document.createElement("div");
         left.className = "dh-inline-rails rails-left";
-        left.innerHTML = `
-          <div class="floating-rail floating-rail-left">
-            <div class="rail-pill" aria-label="Left Rail">
-              <div class="pill-item">Domain</div>
-              <div class="pill-item">Class</div>
-              <div class="pill-item">Subclass</div>
-              <div class="pill-item">Community</div>
-              <div class="pill-item">Ancestry</div>
-            </div>
-            <span class="rail-placeholder-note">Placeholder – future features</span>
-          </div>`;
+
+        // Prepare context
+        const tabs = Object.values(this._getTabs?.() ?? {});
+        const leftItems = [
+          { key: "domain", label: "Domain" },
+          { key: "class", label: "Class" },
+          { key: "subclass", label: "Subclass" },
+          { key: "community", label: "Community" },
+          { key: "ancestry", label: "Ancestry" },
+        ];
+
+        const templatePath =
+          "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs";
+        const [rightHTML, leftHTML] = await Promise.all([
+          renderTemplate(templatePath, { side: "right", tabs }),
+          renderTemplate(templatePath, { side: "left", items: leftItems }),
+        ]);
+
+        right.innerHTML = rightHTML;
+        left.innerHTML = leftHTML;
 
         root.appendChild(right);
         root.appendChild(left);
         this.__inlineRails = { right, left };
-        console.debug("[DH+] Mounted inline rails inside sheet", this.id);
+        // Wire rail nav clicks to switch tabs (without Foundry's Tabs controller)
+        try {
+          const nav = right.querySelector(".rail-nav");
+          if (nav) {
+            nav.addEventListener("click", (ev) => {
+              const a = ev.target.closest("a[data-tab]");
+              if (!a) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              const id = a.dataset.tab;
+              try {
+                // Update in-memory state
+                this.tabGroups = this.tabGroups || { primary: "features" };
+                this.tabGroups.primary = id;
+
+                // Toggle tab content visibility
+                const sections = this.element.querySelectorAll(
+                  '.tab[data-group="primary"]'
+                );
+                sections.forEach((sec) => {
+                  const active = sec.dataset.tab === id;
+                  sec.classList.toggle("active", active);
+                });
+
+                // Update active classes in rail nav
+                for (const el of nav.querySelectorAll("a[data-tab]")) {
+                  el.classList.toggle("active", el === a);
+                }
+              } catch (e) {
+                //console.warn('[DH+] Rail nav tab switch failed', id, e);
+              }
+            });
+          }
+        } catch (_) {}
+        //console.debug("[DH+] Mounted inline rails inside sheet", this.id);
       } catch (e) {
-        console.error("[DH+] _mountInlineRails failed", e);
+        //console.error("[DH+] _mountInlineRails failed", e);
       }
     }
 
@@ -626,7 +686,10 @@ Hooks.once("ready", async () => {
       return;
     }
 
-    if (setting.key === "defaultSheetWidth" || setting.key === "defaultSheetHeight") {
+    if (
+      setting.key === "defaultSheetWidth" ||
+      setting.key === "defaultSheetHeight"
+    ) {
       const size = getDefaultSheetSize();
       for (const app of Object.values(ui.windows)) {
         const name = app?.constructor?.name;
@@ -639,23 +702,36 @@ Hooks.once("ready", async () => {
           applyDefaultSizeToApp(app, size);
         }
       }
-      if (game.user.isGM) ui.notifications.info(`DH+ sheet size set to ${size.width}x${size.height}.`);
+      if (game.user.isGM)
+        ui.notifications.info(
+          `DH+ sheet size set to ${size.width}x${size.height}.`
+        );
     }
 
-    if (setting.key === "adversarySheetWidth" || setting.key === "adversarySheetHeight") {
+    if (
+      setting.key === "adversarySheetWidth" ||
+      setting.key === "adversarySheetHeight"
+    ) {
       const size = getDefaultAdversarySheetSize();
       for (const app of Object.values(ui.windows)) {
         if (app?.constructor?.name === "DaggerheartPlusAdversarySheet") {
           applyDefaultSizeToApp(app, size);
         }
       }
-      if (game.user.isGM) ui.notifications.info(`DH+ adversary sheet size set to ${size.width}x${size.height}.`);
+      if (game.user.isGM)
+        ui.notifications.info(
+          `DH+ adversary sheet size set to ${size.width}x${size.height}.`
+        );
     }
 
     if (setting.key === "enableCharacterSheetSidebars") {
-      const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
+      const useRails = game.settings.get(
+        MODULE_ID,
+        "enableCharacterSheetSidebars"
+      );
       for (const app of Object.values(ui.windows)) {
-        if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
+        if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
+          continue;
         if (useRails) app._mountInlineRails?.();
         else app._removeInlineRails?.();
       }
@@ -675,15 +751,26 @@ Hooks.on("renderActorSheet", (app, html, data) => {
   // Ensure inline rails exist for DH+ Character sheets (per-user setting)
   if (app.constructor.name === "DaggerheartPlusCharacterSheet") {
     try {
-      const useRails = game.settings.get(MODULE_ID, "enableCharacterSheetSidebars");
-      console.debug("[DH+] renderActorSheet hook: sidebar rails", { app: app.id, useRails });
+      const useRails = game.settings.get(
+        MODULE_ID,
+        "enableCharacterSheetSidebars"
+      );
+      console.debug("[DH+] renderActorSheet hook: sidebar rails", {
+        app: app.id,
+        useRails,
+      });
       if (useRails) {
-        if (typeof app._mountInlineRails === "function") app._mountInlineRails();
+        if (typeof app._mountInlineRails === "function")
+          app._mountInlineRails();
       } else {
-        if (typeof app._removeInlineRails === "function") app._removeInlineRails();
+        if (typeof app._removeInlineRails === "function")
+          app._removeInlineRails();
       }
     } catch (_) {
-      console.error("[DH+] renderActorSheet hook: failed to ensure inline rails", _);
+      console.error(
+        "[DH+] renderActorSheet hook: failed to ensure inline rails",
+        _
+      );
     }
   }
 
@@ -707,5 +794,7 @@ Hooks.on("renderActorSheet", (app, html, data) => {
 
 Hooks.on("closeActorSheet", async (app) => {
   if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") return;
-  try { app._removeInlineRails?.(); } catch {}
+  try {
+    app._removeInlineRails?.();
+  } catch {}
 });

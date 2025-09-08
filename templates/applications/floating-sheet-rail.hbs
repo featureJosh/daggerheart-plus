@@ -1,19 +1,76 @@
-{{!--
+{{!
   FloatingSheetRail
   Context:
     - side: "left" | "right"
     - items: [{ key, label, icon? }]
---}}
+}}
 
 <div class="floating-rail floating-rail-{{side}}">
   {{#if (eq side "right")}}
-    <div class="rail-buttons" role="toolbar" aria-label="Right Rail">
-      {{#each items as |it|}}
-        <button type="button" class="rail-btn" data-key="{{it.key}}" data-tooltip="{{it.label}}">
-          <i class="{{it.icon}}" aria-hidden="true"></i>
+    {{#if items}}
+      <div class="rail-buttons" role="toolbar" aria-label="Right Rail">
+        {{#each items as |it|}}
+          <button
+            type="button"
+            class="rail-btn"
+            data-key="{{it.key}}"
+            data-tooltip="{{it.label}}"
+          >
+            <i class="{{it.icon}}" aria-hidden="true"></i>
+          </button>
+        {{/each}}
+      </div>
+    {{/if}}
+
+    {{!-- Right rail tab navigation to mirror docs/tab-navigation.hbs --}}
+    <nav class="rail-nav sheet-tabs" data-group="primary" aria-label="Right Rail Navigation">
+      {{#if tabs}}
+        {{#each tabs as |tab|}}
+          <a
+            class="rail-btn {{tab.id}} {{tab.cssClass}}"
+            data-group="{{tab.group}}"
+            data-tab="{{tab.id}}"
+            data-tooltip="{{localize tab.label}}"
+            aria-label="{{localize tab.label}}"
+          >
+            {{#if tab.icon}}<i class="{{tab.icon}}" aria-hidden="true"></i>{{/if}}
+            <span class="sr-only">{{localize tab.label}}</span>
+          </a>
+        {{/each}}
+        <button
+          type="button"
+          class="rail-btn rail-btn-settings"
+          data-action="openSettings"
+          data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"
+          aria-label="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"
+        >
+          <i class="fa-solid fa-wrench" aria-hidden="true"></i>
         </button>
-      {{/each}}
-    </div>
+      {{else}}
+        {{!-- Fallback to items if tabs not provided --}}
+        {{#each items as |it|}}
+          <a
+            class="rail-btn {{it.key}}"
+            data-group="primary"
+            data-tab="{{it.key}}"
+            data-tooltip="{{it.label}}"
+            aria-label="{{it.label}}"
+          >
+            {{#if it.icon}}<i class="{{it.icon}}" aria-hidden="true"></i>{{/if}}
+            <span class="sr-only">{{it.label}}</span>
+          </a>
+        {{/each}}
+        <button
+          type="button"
+          class="rail-btn rail-btn-settings"
+          data-action="openSettings"
+          data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"
+          aria-label="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}"
+        >
+          <i class="fa-solid fa-wrench" aria-hidden="true"></i>
+        </button>
+      {{/if}}
+    </nav>
   {{else}}
     <div class="rail-pill" aria-label="Left Rail">
       {{#each items as |it|}}
@@ -21,8 +78,7 @@
       {{/each}}
     </div>
   {{/if}}
-  
-  {{!-- Placeholder note --}}
-  <span class="rail-placeholder-note">Placeholder – future features</span>
-</div>
 
+  {{! Placeholder note
+  <span class="rail-placeholder-note">Placeholder – future features</span> }}
+</div>
