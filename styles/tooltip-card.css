@@ -4,8 +4,8 @@
   without altering core system logic or templates.
 */
 
-#tooltip,
-.locked-tooltip {
+#tooltip.dhp-tooltip-card,
+.locked-tooltip.dhp-tooltip-card {
   min-width: max-content;
   padding: 0;
   background: transparent;
@@ -17,13 +17,13 @@
   -webkit-backdrop-filter: none;
 }
 
-.locked-tooltip {
+.locked-tooltip.dhp-tooltip-card {
   pointer-events: all;
   border: none;
 }
 
-#tooltip:where([popover]),
-.locked-tooltip:where([popover]) {
+#tooltip.dhp-tooltip-card:where([popover]),
+.locked-tooltip.dhp-tooltip-card:where([popover]) {
   display: block;
   margin: unset;
   inset: unset;
@@ -31,7 +31,7 @@
   margin-right: 1.5em;
 }
 
-.daggerheart.dh-style.tooltip .tooltip-sub-title {
+.dhp-tooltip-card .tooltip-sub-title {
   margin-left: 1em;
 }
 
@@ -63,8 +63,7 @@
 
 .dhp-tooltip-card > .daggerheart.dh-style.tooltip,
 .dhp-tooltip-card > .tooltip {
-  /* fallback if class changes upstream */
-  display: block;
+  display: grid;
   width: min(380px, 40vw);
   color: var(--dhp-card-text);
   background: linear-gradient(
@@ -75,8 +74,9 @@
   border: 1px solid var(--dhp-card-border);
   border-radius: 12px;
   box-shadow: 0 14px 28px var(--dhp-card-shadow);
-  overflow: hidden; /* round the top image corners */
-  padding: 0; /* rely on internal spacing */
+  overflow: hidden;
+  padding: 0;
+  gap: 0;
 }
 
 /* Top image behaves like a card illustration */
@@ -85,15 +85,31 @@
   display: block;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-bottom: 4px solid var(--dhp-card-accent);
+  grid-area: 1 / 1; /* occupy the first grid layer */
+  z-index: 1;
 }
 
 /* Title area – strong and compact */
 .dhp-tooltip-card .tooltip-title {
-  margin: 0.75rem 1rem 0.25rem;
+  grid-area: 1 / 1; /* overlap the image */
+  align-self: end; /* stick to bottom of the image */
+  margin: 0; /* remove default margins */
+  padding: 0.6rem 1rem 0.75rem; /* breathing room inside the overlay */
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+  color: #fff; /* ensure contrast over dark fade */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+
   font-weight: 900;
-  font-size: 1.25rem;
-  line-height: 1.1;
+  font-size: 1.2rem;
+  line-height: 1.15;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -118,7 +134,7 @@
 
 /* Description spacing and readability */
 .dhp-tooltip-card .tooltip-description {
-  padding: 0 1rem 0.75rem;
+  padding: 0 1rem 0.9rem;
   color: var(--dhp-card-muted);
 }
 .dhp-tooltip-card .tooltip-description p {
@@ -189,4 +205,23 @@
 .dhp-tooltip-card .arrow, /* Foundry v10/v11 style */
 .dhp-tooltip-card .tooltip-arrow {
   filter: drop-shadow(0 4px 6px var(--dhp-card-shadow));
+}
+
+/* If a template already provides a hero wrapper with overlay, respect it */
+.dhp-tooltip-card .tooltip-hero {
+  position: relative;
+}
+.dhp-tooltip-card .tooltip-hero .tooltip-image {
+  grid-area: auto;
+}
+.dhp-tooltip-card .tooltip-hero .tooltip-hero-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0.6rem 1rem 0.75rem;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
 }
