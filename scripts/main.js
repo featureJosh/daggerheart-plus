@@ -547,8 +547,8 @@ Hooks.once("ready", async () => {
         const templatePath =
           "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs";
         const [rightHTML, leftHTML] = await Promise.all([
-          renderTemplate(templatePath, { side: "right", tabs }),
-          renderTemplate(templatePath, {
+          foundry.applications.handlebars.renderTemplate(templatePath, { side: "right", tabs }),
+          foundry.applications.handlebars.renderTemplate(templatePath, {
             side: "left",
             items: leftItems,
             document: this.document,
