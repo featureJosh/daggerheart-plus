@@ -1,6 +1,6 @@
 {
   "name": "daggerheart-plus",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "description": "A module that improves upon the default Daggerheart system UI/UX",
   "main": "scripts/main.js",
   "scripts": {
