@@ -13,12 +13,8 @@
       "name": "featureJosh"
     }
   ],
-  "esmodules": [
-    "scripts/main.js"
-  ],
-  "styles": [
-    "styles/main.css"
-  ],
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/main.css"],
   "relationships": {
     "systems": [
       {
@@ -41,5 +37,7 @@
       "name": "Français",
       "path": "lang/fr.json"
     }
-  ]
+  ],
+  "download": "https://github.com/featureJosh/daggerheart-plus/archive/refs/tags/1.0.0.zip",
+  "manifest": "https://raw.githubusercontent.com/featureJosh/daggerheart-plus/refs/heads/main/module.json"
 }
