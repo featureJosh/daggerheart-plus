@@ -40,6 +40,7 @@
   background-image: url("../assets/backgrounds/domain-pattern.png");
   background-repeat: repeat;
   background-size: contain;
+  border-top-right-radius: 10px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-header-sheet .profile {
@@ -437,9 +438,7 @@
   width: auto;
   box-sizing: unset;
   overflow: hidden;
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
   padding: 0.5rem 0rem;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
@@ -448,7 +447,7 @@
   cursor: pointer;
   word-wrap: break-word;
   word-break: break-word;
-  justify-content: center;
+  border-radius: 10px;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait img {

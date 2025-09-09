@@ -1,6 +1,7 @@
 import { CounterUI } from "./applications/counter-ui.js";
 import { TokenCounterUI } from "./applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "./applications/enhanced-dice-styling.js";
+import { DHPPlusUIConfig, DHPPlusUIConfigApp } from "./settings/plus-settings.js";
 
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
@@ -13,6 +14,26 @@ Hooks.once("init", () => {
       "Daggerheart Plus | This module requires the Daggerheart system"
     );
     return;
+  }
+
+  // Register nested DataModel setting (world-scoped) for consolidated UI config
+  try {
+    game.settings.register(MODULE_ID, "uiConfig", {
+      scope: "world",
+      config: false,
+      type: DHPPlusUIConfig,
+    });
+
+    game.settings.registerMenu(MODULE_ID, "uiConfigMenu", {
+      name: game.i18n.localize("DHP.Settings.UIConfig.Menu.Name"),
+      label: game.i18n.localize("DHP.Settings.UIConfig.Menu.Label"),
+      hint: game.i18n.localize("DHP.Settings.UIConfig.Menu.Hint"),
+      icon: "fa-solid fa-sliders",
+      type: DHPPlusUIConfigApp,
+      restricted: true,
+    });
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to register nested UI config", e);
   }
 
   game.settings.register(MODULE_ID, "enableFearTracker", {
@@ -786,6 +807,36 @@ Hooks.once("ready", async () => {
 
   Hooks.on("updateSetting", async (setting) => {
     if (setting.namespace !== MODULE_ID) return;
+
+    if (setting.key === "uiConfig") {
+      try {
+        const cfg = game.settings.get(MODULE_ID, "uiConfig")?.toObject?.() ??
+          game.settings.get(MODULE_ID, "uiConfig");
+        // Apply sheet sizes to open windows similar to existing handlers
+        const size = {
+          width: Number(cfg?.sheets?.default?.width ?? 900),
+          height: Number(cfg?.sheets?.default?.height ?? 800),
+        };
+        const advSize = {
+          width: Number(cfg?.sheets?.adversary?.width ?? 630),
+          height: Number(cfg?.sheets?.adversary?.height ?? 820),
+        };
+        for (const app of Object.values(ui.windows)) {
+          const name = app?.constructor?.name;
+          if (!name?.startsWith?.("DaggerheartPlus")) continue;
+          if (name?.includes?.("Adversary")) applyDefaultSizeToApp(app, advSize);
+          else if (name === "DaggerheartPlusCompanionSheet")
+            applyDefaultSizeToApp(app, { width: 340, height: size.height });
+          else applyDefaultSizeToApp(app, size);
+        }
+        if (cfg?.features?.fearTracker !== undefined) {
+          await window.daggerheartPlus?.manageFearTracker?.();
+        }
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed to apply uiConfig change", e);
+      }
+      return;
+    }
 
     if (setting.key === "enableFearTracker") {
       await manageFearTracker();

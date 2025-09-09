@@ -1,0 +1,45 @@
+<section class="daggerheart-plus-settings">
+  <header class="form-header">
+    <h2>{{localize "DHP.Settings.UIConfig.Menu.Name"}}</h2>
+    <p class="hint">{{localize "DHP.Settings.UIConfig.Menu.Hint"}}</p>
+  </header>
+
+  <div class="form-group">
+    <label>{{localize "DHP.Settings.UIConfig.features.label"}}</label>
+    {{formGroup settingFields.schema.fields.features.fields.fearTracker
+                value=settingFields._source.features.fearTracker
+                localize=true}}
+  </div>
+
+  <hr/>
+
+  <div class="form-group">
+    <label>{{localize "DHP.Settings.UIConfig.sheets.default.label"}}</label>
+    {{formGroup settingFields.schema.fields.sheets.fields.default.fields.width
+                value=settingFields._source.sheets.default.width
+                localize=true}}
+    {{formGroup settingFields.schema.fields.sheets.fields.default.fields.height
+                value=settingFields._source.sheets.default.height
+                localize=true}}
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "DHP.Settings.UIConfig.sheets.adversary.label"}}</label>
+    {{formGroup settingFields.schema.fields.sheets.fields.adversary.fields.width
+                value=settingFields._source.sheets.adversary.width
+                localize=true}}
+    {{formGroup settingFields.schema.fields.sheets.fields.adversary.fields.height
+                value=settingFields._source.sheets.adversary.height
+                localize=true}}
+  </div>
+
+  <footer class="form-footer">
+    <button type="button" data-action="reset">
+      <i class="fa-solid fa-rotate-left"></i> {{localize "RESET"}}
+    </button>
+    <button type="button" data-action="save" class="primary">
+      <i class="fa-solid fa-floppy-disk"></i> {{localize "SAVE"}}
+    </button>
+  </footer>
+</section>
+

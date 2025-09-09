@@ -63,6 +63,22 @@
   "DHP.Settings.SheetSize.Adversary.Width.Hint": "Default width applied to DH+ Adversary sheets.",
   "DHP.Settings.SheetSize.Adversary.Height.Name": "Default DH+ Adversary Height (px)",
   "DHP.Settings.SheetSize.Adversary.Height.Hint": "Default height applied to DH+ Adversary sheets.",
+  "DHP.Settings.UIConfig.Menu.Name": "DH+ UI Configuration",
+  "DHP.Settings.UIConfig.Menu.Label": "Open DH+ UI Settings",
+  "DHP.Settings.UIConfig.Menu.Hint": "Configure DH+ feature toggles and default sheet sizing using a nested settings model.",
+  "DHP.Settings.UIConfig.features.label": "Features",
+  "DHP.Settings.UIConfig.features.fearTracker.label": "Enable Fear Tracker (world)",
+  "DHP.Settings.UIConfig.features.fearTracker.hint": "World-level toggle to enable the DH+ fear tracker above the hotbar.",
+  "DHP.Settings.UIConfig.sheets.default.label": "Default Sheet Size",
+  "DHP.Settings.UIConfig.sheets.default.width.label": "Default Sheet Width (px)",
+  "DHP.Settings.UIConfig.sheets.default.width.hint": "World default width for DH+ actor sheets.",
+  "DHP.Settings.UIConfig.sheets.default.height.label": "Default Sheet Height (px)",
+  "DHP.Settings.UIConfig.sheets.default.height.hint": "World default height for DH+ actor sheets.",
+  "DHP.Settings.UIConfig.sheets.adversary.label": "Adversary Sheet Size",
+  "DHP.Settings.UIConfig.sheets.adversary.width.label": "Adversary Width (px)",
+  "DHP.Settings.UIConfig.sheets.adversary.width.hint": "Default width for DH+ Adversary sheets.",
+  "DHP.Settings.UIConfig.sheets.adversary.height.label": "Adversary Height (px)",
+  "DHP.Settings.UIConfig.sheets.adversary.height.hint": "Default height for DH+ Adversary sheets.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {
