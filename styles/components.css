@@ -218,6 +218,10 @@ body.theme-dark.application .window-content {
   border-bottom: 1px solid var(--dhp-primary);
 }
 
+.daggerheart-plus.sheet .items-list .inventory-item:only-of-type:hover {
+  border-bottom: 1px solid var(--dhp-primary);
+}
+
 .daggerheart-plus.sheet .inventory-item img {
   border-radius: 4px;
 }

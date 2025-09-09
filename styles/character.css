@@ -946,6 +946,11 @@
   border-bottom: 1px solid var(--dhp-border);
 }
 
+.daggerheart-plus.sheet .items-list .inventory-item:only-of-type {
+  border-radius: 5px;
+  border-bottom: 1px solid var(--dhp-border);
+}
+
 .daggerheart-plus.sheet .inventory-item .inventory-item-header .item-label {
   flex: 1;
   font-family: "Montserrat", sans-serif;

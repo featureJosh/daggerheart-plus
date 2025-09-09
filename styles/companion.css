@@ -1,7 +1,13 @@
 .daggerheart-plus.sheet.companion .companion-header-sheet {
-  padding: 1rem;
   background: var(--dhp-surface);
-  border-bottom: 2px solid var(--dhp-border);
+  padding: 0.5rem;
+  padding-top: var(--header-height);
+  border-bottom: 2px solid var(--dhp-primary);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
+  background-image: url("../assets/backgrounds/domain-pattern.png");
+  background-repeat: repeat;
+  background-size: contain;
+  border-top-right-radius: 10px;
 }
 
 /* Portrait styling (match adversary sidebar look) */
@@ -16,9 +22,8 @@
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .portrait img {
-  width: 100%;
-  max-width: 300px;
-  height: 190px;
+  width: 315px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
   border: 2px solid var(--dhp-primary);
@@ -39,9 +44,24 @@
   border: none;
   background: transparent;
   width: 100%;
-  margin-bottom: 0.25rem;
   text-align: center;
+  margin-bottom: 0.25rem;
   font-family: "Cinzel Decorative", serif;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
+
+.daggerheart-plus.sheet.companion .statuses-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+.daggerheart-plus.sheet.companion .companion-header-sheet .actor-name {
+  top: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .status-section,
@@ -56,9 +76,7 @@
   border: 1px solid var(--dhp-border);
 }
 
-.daggerheart-plus.sheet.companion
-  .companion-header-sheet
-  .status-section,
+.daggerheart-plus.sheet.companion .companion-header-sheet .status-section,
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
   .status-sections
@@ -81,7 +99,6 @@
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
-  min-width: 120px;
 }
 
 .daggerheart-plus.sheet.companion
@@ -231,15 +248,19 @@
   background: var(--dhp-accent);
 }
 
+.daggerheart-plus.sheet.companion .char-info {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+}
+
 .daggerheart-plus.sheet.companion .companion-header-sheet .level-div {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  padding: 1rem;
-  background: var(--dhp-background);
-  border-radius: 8px;
-  border: 1px solid var(--dhp-border);
+  flex-direction: column;
 }
 
 .daggerheart-plus.sheet.companion .companion-header-sheet .level-div .label {
@@ -249,6 +270,7 @@
   margin: 0;
   color: var(--dhp-text);
   font-weight: bold;
+  font-size: larger;
 }
 
 .daggerheart-plus.sheet.companion
@@ -313,12 +335,10 @@
   .companion-navigation {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  background: var(--dhp-background);
   border-radius: 8px;
-  border: 1px solid var(--dhp-border);
   justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 
 .daggerheart-plus.sheet.companion
@@ -344,11 +364,37 @@
   transform: translateY(-2px);
 }
 
+.daggerheart-plus.sheet.companion .inventory-item {
+  width: auto;
+  box-sizing: unset;
+  overflow: hidden;
+  align-items: center;
+  padding: 0.5rem 0rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  word-wrap: break-word;
+  word-break: break-word;
+  border-radius: 10px;
+}
+
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .partner-section,
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .attack-section,
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-section {
+  margin-top: 1em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet {
-  padding: 1rem;
-  background: var(--dhp-surface);
-  border-right: 1px solid var(--dhp-border);
-  min-width: 200px;
+  margin: 0;
+  padding: 0;
 }
 
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .portrait {
