@@ -78,10 +78,12 @@ jobs:
         asset_content_type: application/zip
         
     - name: Publish to Foundry VTT
+      env:
+        FOUNDRY_TOKEN: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}
       run: |
         curl -X POST "https://foundryvtt.com/_api/packages/release_version/" \
           -H "Content-Type: application/json" \
-          -H "Authorization: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}" \
+          -H "Authorization: $FOUNDRY_TOKEN" \
           -d '{
             "id": "daggerheart-plus",
             "release": {
