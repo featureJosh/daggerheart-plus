@@ -8,6 +8,7 @@
   background-repeat: repeat;
   background-size: contain;
   border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
 
 /* Portrait styling (match adversary sidebar look) */

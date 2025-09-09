@@ -75,6 +75,7 @@ body.theme-dark .application.daggerheart.sheet {
   padding: 0;
   overflow: hidden;
   color: var(--dhp-text);
+  border-radius: 10px;
 }
 
 .daggerheart-plus.sheet form {
