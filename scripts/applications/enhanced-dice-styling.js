@@ -8,168 +8,176 @@ export class EnhancedDiceStyling {
   }
 
   static _onRenderChatMessageHTML(_, element, message) {
-    const html = $(element);
-    // Reuse existing jQuery-based implementation
-    return EnhancedDiceStyling._onRenderChatMessage(message, html, {});
+    const root = element;
+    return EnhancedDiceStyling._onRenderChatMessage(message, root, {});
   }
 
-  static _onRenderChatMessage(message, html, data) {
+  static _onRenderChatMessage(message, root, data) {
     if (
       !message.flags?.daggerheart &&
       !message.flags?.["daggerheart-unofficial"]
     )
       return;
 
-    EnhancedDiceStyling._styleDiceTooltips(html);
-    EnhancedDiceStyling._styleChatMessageBackground(html, message);
-    EnhancedDiceStyling._addClickableRerollHandlers(html, message);
-    EnhancedDiceStyling._setupExpandableRolls(html);
+    EnhancedDiceStyling._styleDiceTooltips(root);
+    EnhancedDiceStyling._styleChatMessageBackground(root, message);
+    EnhancedDiceStyling._addClickableRerollHandlers(root, message);
+    EnhancedDiceStyling._setupExpandableRolls(root);
   }
 
-  static _onRenderApplication(app, html, data) {
-    if (html.hasClass("roll-selection")) {
-      EnhancedDiceStyling._setupRollSelectionHandlers(html);
+  static _onRenderApplication(app, element, data) {
+    if (element?.classList?.contains("roll-selection")) {
+      EnhancedDiceStyling._setupRollSelectionHandlers(element);
     }
   }
 
-  static _styleDiceTooltips(html) {
-    const tooltipParts = html.find(
+  static _styleDiceTooltips(root) {
+    const tooltipParts = root.querySelectorAll(
       ".dice-tooltip .wrapper .roll-dice .roll-die"
     );
 
-    tooltipParts.each((index, part) => {
-      const $part = $(part);
-      const label = $part.find(".die-label");
-      const diceElement = $part.find(".dice");
+    tooltipParts.forEach((part) => {
+      const label = part.querySelector(".die-label");
+      const diceElement = part.querySelector(".dice");
 
-      if (diceElement.length > 0) {
-        const t = diceElement.attr("data-type");
+      if (diceElement) {
+        const t = diceElement.getAttribute("data-type");
         if (t === "hope") {
-          diceElement.addClass("hope-die").attr("data-flavor", game.i18n.localize("DAGGERHEART.GENERAL.hope"));
-          label.addClass("hope-flavor");
-          $part.addClass("hope-die-container");
+          diceElement.classList.add("hope-die");
+          diceElement.setAttribute(
+            "data-flavor",
+            game.i18n.localize("DAGGERHEART.GENERAL.hope")
+          );
+          label?.classList.add("hope-flavor");
+          part.classList.add("hope-die-container");
         } else if (t === "fear") {
-          diceElement.addClass("fear-die").attr("data-flavor", game.i18n.localize("DAGGERHEART.GENERAL.fear"));
-          label.addClass("fear-flavor");
-          $part.addClass("fear-die-container");
+          diceElement.classList.add("fear-die");
+          diceElement.setAttribute(
+            "data-flavor",
+            game.i18n.localize("DAGGERHEART.GENERAL.fear")
+          );
+          label?.classList.add("fear-flavor");
+          part.classList.add("fear-die-container");
         }
       }
     });
 
-    const rollFlavorLines = html.find(".roll-result-desc, .roll-title");
-    rollFlavorLines.each((index, line) => {
-      const $line = $(line);
-      const text = $line.text().toLowerCase();
+    const rollFlavorLines = root.querySelectorAll(".roll-result-desc, .roll-title");
+    rollFlavorLines.forEach((line) => {
+      const text = (line.textContent || "").toLowerCase();
 
       if (text.includes("hope")) {
-        $line.addClass("hope-result");
+        line.classList.add("hope-result");
       } else if (text.includes("fear")) {
-        $line.addClass("fear-result");
+        line.classList.add("fear-result");
       } else if (text.includes("critical")) {
-        $line.addClass("critical-result");
+        line.classList.add("critical-result");
       }
     });
   }
 
-  static _styleChatMessageBackground(html, message) {
+  static _styleChatMessageBackground(root, message) {
     const flags =
       message.flags?.daggerheart || message.flags?.["daggerheart-unofficial"];
     if (!flags) return;
 
-    const chatMessage = html.hasClass("chat-message")
-      ? html
-      : html.closest(".chat-message");
-    if (!chatMessage.length) return;
+    const chatMessage = root.classList?.contains("chat-message")
+      ? root
+      : root.closest(".chat-message");
+    if (!chatMessage) return;
 
     if (flags.rollType === "hope" || flags.isHope) {
-      chatMessage.addClass("hope");
+      chatMessage.classList.add("hope");
       EnhancedDiceStyling._styleRollEffectText(chatMessage, "hope");
     } else if (flags.rollType === "fear" || flags.isFear) {
-      chatMessage.addClass("fear");
+      chatMessage.classList.add("fear");
       EnhancedDiceStyling._styleRollEffectText(chatMessage, "fear");
     } else if (flags.isCrit) {
-      chatMessage.addClass("critical");
+      chatMessage.classList.add("critical");
       EnhancedDiceStyling._styleRollEffectText(chatMessage, "critical");
     }
 
     if (flags.isDuality) {
-      chatMessage.addClass("duality");
+      chatMessage.classList.add("duality");
     }
   }
 
   static _styleRollEffectText(chatMessage, rollType) {
-    const rollEffectElements = chatMessage.find(".roll-effect");
+    const rollEffectElements = chatMessage.querySelectorAll(".roll-effect");
     if (rollEffectElements.length > 0) {
-      rollEffectElements.each(function () {
-        const element = $(this);
-        const text = element.text().toLowerCase();
+      rollEffectElements.forEach((el) => {
+        const text = (el.textContent || "").toLowerCase();
 
         if (text.includes("hope") && rollType === "hope") {
-          element.addClass("hope-effect");
+          el.classList.add("hope-effect");
         } else if (text.includes("fear") && rollType === "fear") {
-          element.addClass("fear-effect");
+          el.classList.add("fear-effect");
         } else if (
           rollType === "hope" &&
           (text.includes("gain") || text.includes("add"))
         ) {
-          element.addClass("hope-effect");
+          el.classList.add("hope-effect");
         } else if (
           rollType === "fear" &&
           (text.includes("gain") || text.includes("add"))
         ) {
-          element.addClass("fear-effect");
+          el.classList.add("fear-effect");
         } else if (rollType === "critical") {
-          element.addClass("critical-effect");
+          el.classList.add("critical-effect");
         }
       });
     }
   }
 
-  static _addClickableRerollHandlers(html, message) {
+  static _addClickableRerollHandlers(root, message) {
     const flags =
       message.flags?.daggerheart || message.flags?.["daggerheart-unofficial"];
     if (!flags || !flags.isDuality) return;
 
-    const diceTooltip = html.find(".dice-tooltip");
-    if (
-      diceTooltip.length > 0 &&
-      !diceTooltip.find(".reroll-instruction").length
-    ) {
+    const diceTooltip = root.querySelector(".dice-tooltip");
+    if (diceTooltip && !diceTooltip.querySelector(".reroll-instruction")) {
       const hope = game.i18n.localize("DAGGERHEART.GENERAL.hope");
       const fear = game.i18n.localize("DAGGERHEART.GENERAL.fear");
-      const instructionText = $(`
-        <div class="reroll-instruction">
+      const instructionText = document.createElement("div");
+      instructionText.className = "reroll-instruction";
+      instructionText.innerHTML = `
           <i class="fas fa-info-circle"></i> Click on the ${hope}/${fear} dice to reroll.
-        </div>
-      `);
-      diceTooltip.find(".wrapper").before(instructionText);
+        `;
+      const wrapper = diceTooltip.querySelector(".wrapper");
+      if (wrapper && wrapper.parentElement) {
+        wrapper.parentElement.insertBefore(instructionText, wrapper);
+      }
     }
 
-    const hopeDice = html.find('.dice.color-hope[data-type="hope"]');
-    const fearDice = html.find('.dice.color-fear[data-type="fear"]');
+    const hopeDice = root.querySelectorAll('.dice.color-hope[data-type="hope"]');
+    const fearDice = root.querySelectorAll('.dice.color-fear[data-type="fear"]');
 
-    hopeDice.each((index, die) => {
-      const $die = $(die);
-      $die.addClass("clickable-die hope-die");
-      $die.off("click.reroll").on("click.reroll", async (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if ($die.hasClass("rerolling")) return;
+    hopeDice.forEach((die) => {
+      die.classList.add("clickable-die", "hope-die");
+      if (!die.dataset.rerollBound) {
+        die.addEventListener("click", async (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (die.classList.contains("rerolling")) return;
 
-        await EnhancedDiceStyling._handleDiceReroll($die, "hope", message);
-      });
+          await EnhancedDiceStyling._handleDiceReroll(die, "hope", message);
+        });
+        die.dataset.rerollBound = "1";
+      }
     });
 
-    fearDice.each((index, die) => {
-      const $die = $(die);
-      $die.addClass("clickable-die fear-die");
-      $die.off("click.reroll").on("click.reroll", async (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if ($die.hasClass("rerolling")) return;
+    fearDice.forEach((die) => {
+      die.classList.add("clickable-die", "fear-die");
+      if (!die.dataset.rerollBound) {
+        die.addEventListener("click", async (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (die.classList.contains("rerolling")) return;
 
-        await EnhancedDiceStyling._handleDiceReroll($die, "fear", message);
-      });
+          await EnhancedDiceStyling._handleDiceReroll(die, "fear", message);
+        });
+        die.dataset.rerollBound = "1";
+      }
     });
   }
 
@@ -190,22 +198,23 @@ export class EnhancedDiceStyling {
 
     if (!confirmResult) return;
 
-    dieElement.addClass("rerolling");
+    dieElement.classList.add("rerolling");
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      dieElement.removeClass("rerolling").addClass("rerolled");
+      dieElement.classList.remove("rerolling");
+      dieElement.classList.add("rerolled");
 
-      const rerolledIcon = $(
-        '<span class="dice-rerolled"><i class="fas fa-redo"></i></span>'
-      );
-      if (!dieElement.find(".dice-rerolled").length) {
-        dieElement.append(rerolledIcon);
+      if (!dieElement.querySelector(".dice-rerolled")) {
+        const span = document.createElement("span");
+        span.className = "dice-rerolled";
+        span.innerHTML = '<i class="fas fa-redo"></i>';
+        dieElement.appendChild(span);
       }
 
       setTimeout(() => {
-        dieElement.removeClass("rerolled");
+        dieElement.classList.remove("rerolled");
       }, 1000);
 
       ui.notifications.info(
@@ -215,96 +224,108 @@ export class EnhancedDiceStyling {
       console.error("Dice reroll failed:", error);
       ui.notifications.error("Failed to reroll die");
     } finally {
-      dieElement.removeClass("rerolling");
+      dieElement.classList.remove("rerolling");
     }
   }
 
-  static _setupExpandableRolls(html) {
-    const expandableRolls = html.find('[data-action="expandRoll"]');
+  static _setupExpandableRolls(root) {
+    const expandableRolls = root.querySelectorAll('[data-action="expandRoll"]');
 
-    expandableRolls.each((index, element) => {
-      const $element = $(element);
+    expandableRolls.forEach((el) => {
+      if (!el.dataset.expandBound) {
+        el.addEventListener("click", (event) => {
+          event.preventDefault();
+          el.classList.toggle("expanded");
 
-      $element.off("click.expand").on("click.expand", function (event) {
-        event.preventDefault();
-        $element.toggleClass("expanded");
-
-        const content = $element.find(".roll-part-content.dice-result");
-        if ($element.hasClass("expanded")) {
-          content.slideUp(250);
-        } else {
-          content.slideDown(250);
-        }
-      });
+          const content = el.querySelector(".roll-part-content.dice-result");
+          if (content) {
+            const expanded = el.classList.contains("expanded");
+            // Mimic slideUp/Down by toggling visibility
+            content.style.display = expanded ? "none" : "";
+          }
+        });
+        el.dataset.expandBound = "1";
+      }
     });
   }
 
-  static _setupRollSelectionHandlers(html) {
-    const advantageChips = html.find(".advantage-chip");
-    const disadvantageChips = html.find(".disadvantage-chip");
+  static _setupRollSelectionHandlers(root) {
+    const advantageChips = root.querySelectorAll(".advantage-chip");
+    const disadvantageChips = root.querySelectorAll(".disadvantage-chip");
 
-    advantageChips.on("click", function () {
-      const $chip = $(this);
-      $chip.toggleClass("selected");
-      $chip.siblings(".advantage-chip").removeClass("selected");
+    advantageChips.forEach((chip) => {
+      chip.addEventListener("click", (event) => {
+        chip.classList.toggle("selected");
+        const siblings = chip.parentElement?.querySelectorAll(".advantage-chip") || [];
+        siblings.forEach?.((sib) => {
+          if (sib !== chip) sib.classList.remove("selected");
+        });
+      });
     });
 
-    disadvantageChips.on("click", function () {
-      const $chip = $(this);
-      $chip.toggleClass("selected");
-      $chip.siblings(".disadvantage-chip").removeClass("selected");
+    disadvantageChips.forEach((chip) => {
+      chip.addEventListener("click", (event) => {
+        chip.classList.toggle("selected");
+        const siblings = chip.parentElement?.querySelectorAll(".disadvantage-chip") || [];
+        siblings.forEach?.((sib) => {
+          if (sib !== chip) sib.classList.remove("selected");
+        });
+      });
     });
 
-    const diceOptions = html.find(".dice-option");
-    diceOptions.on("mouseenter", function () {
-      const $option = $(this);
-      $option.find(".dice-icon").addClass("animated");
+    const diceOptions = root.querySelectorAll(".dice-option");
+    diceOptions.forEach((option) => {
+      option.addEventListener("mouseenter", () => {
+        option.querySelector(".dice-icon")?.classList.add("animated");
+      });
+      option.addEventListener("mouseleave", () => {
+        option.querySelector(".dice-icon")?.classList.remove("animated");
+      });
     });
 
-    diceOptions.on("mouseleave", function () {
-      const $option = $(this);
-      $option.find(".dice-icon").removeClass("animated");
-    });
+    const reactionController = root.querySelector(".reaction-roll-controller");
+    if (reactionController && !reactionController.dataset.clickBound) {
+      reactionController.addEventListener("click", () => {
+        reactionController.classList.toggle("active");
 
-    const reactionController = html.find(".reaction-roll-controller");
-    reactionController.on("click", function () {
-      const $controller = $(this);
-      $controller.toggleClass("active");
+        if (reactionController.classList.contains("active")) {
+          ui.notifications.info("Reaction roll mode activated");
+        } else {
+          ui.notifications.info("Reaction roll mode deactivated");
+        }
+      });
+      reactionController.dataset.clickBound = "1";
+    }
 
-      if ($controller.hasClass("active")) {
-        ui.notifications.info("Reaction roll mode activated");
-      } else {
-        ui.notifications.info("Reaction roll mode deactivated");
-      }
-    });
+    const rollButton = root.querySelector(".roll-button.primary");
+    if (rollButton && !rollButton.dataset.clickBound) {
+      rollButton.addEventListener("click", (event) => {
+        rollButton.classList.add("rolling");
 
-    const rollButton = html.find(".roll-button.primary");
-    rollButton.on("click", function (event) {
-      const $button = $(this);
-
-      $button.addClass("rolling");
-
-      setTimeout(() => {
-        $button.removeClass("rolling");
-      }, 1000);
-    });
+        setTimeout(() => {
+          rollButton.classList.remove("rolling");
+        }, 1000);
+      });
+      rollButton.dataset.clickBound = "1";
+    }
   }
 
   static _addDualityRollButtonHandlers(html) {
-    const dualityButtons = html.find('[data-action*="duality"]');
+    const dualityButtons = html.querySelectorAll('[data-action*="duality"]');
 
-    dualityButtons.each((index, button) => {
-      const $button = $(button);
+    dualityButtons.forEach((button) => {
+      if (!button.dataset.dualityBound) {
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
 
-      $button.off("click.duality").on("click.duality", function (event) {
-        event.preventDefault();
+          button.classList.add("processing");
 
-        $button.addClass("processing");
-
-        setTimeout(() => {
-          $button.removeClass("processing");
-        }, 500);
-      });
+          setTimeout(() => {
+            button.classList.remove("processing");
+          }, 500);
+        });
+        button.dataset.dualityBound = "1";
+      }
     });
   }
 }
