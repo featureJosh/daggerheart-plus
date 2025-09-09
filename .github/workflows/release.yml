@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -20,7 +22,12 @@ jobs:
         
     - name: Get version from tag
       id: version
-      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      run: |
+        if [ "${{ github.event_name }}" = "release" ]; then
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        else
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        fi
       
     - name: Update module.json version
       run: |
@@ -28,7 +35,8 @@ jobs:
         jq --arg version "$VERSION" '.version = $version' module.json > module.json.tmp
         mv module.json.tmp module.json
         
-    - name: Create GitHub Release
+    - name: Create GitHub Release (if not exists)
+      if: github.event_name == 'push'
       id: create_release
       uses: actions/create-release@v1
       env:
