@@ -815,6 +815,12 @@
   transform: scale(1.1);
 }
 
+/* Disable interactions on the sidebar when the sheet is minimizing/minimized */
+.application.sheet.daggerheart-plus.minimizing .adversary-sidebar-sheet,
+.application.sheet.daggerheart-plus.minimized .adversary-sidebar-sheet {
+  pointer-events: none;
+}
+
 /* Damage thresholds: compact pill display */
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .threshold-values {
   display: flex;

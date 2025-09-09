@@ -21,11 +21,6 @@
   overflow: visible;
 }
 
-/* Allow outside-positioned tabs to be visible beyond content bounds */
-.daggerheart-plus.sheet.character .window-content {
-  overflow: visible;
-}
-
 .daggerheart-plus.sheet.character .sheet-header {
   grid-area: header;
 }
@@ -52,6 +47,7 @@
   background-image: url("../assets/backgrounds/domain-pattern.png");
   background-repeat: repeat;
   background-size: contain;
+  border-top-right-radius: 10px;
 }
 
 .daggerheart-plus.sheet.character
@@ -703,6 +699,12 @@
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .death-save {
   font-size: 1.2rem;
+}
+
+/* Disable interactions on the sidebar when the sheet is minimizing/minimized */
+.application.sheet.daggerheart-plus.minimizing .character-sidebar-sheet,
+.application.sheet.daggerheart-plus.minimized .character-sidebar-sheet {
+  pointer-events: none;
 }
 
 .daggerheart-plus.sheet.character

@@ -63,11 +63,17 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
   }
 
   _bind() {
-    this._resizeHandler = () => this._position();
+    this._resizeHandler = () => {
+      this._position();
+      this._syncVisibility?.();
+    };
     window.addEventListener("resize", this._resizeHandler);
 
     if (this.sheet?.element) {
-      const observer = new MutationObserver(() => this._position());
+      const observer = new MutationObserver(() => {
+        this._position();
+        this._syncVisibility?.();
+      });
       try {
         observer.observe(this.sheet.element, {
           attributes: true,
@@ -107,6 +113,23 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
       el.style.top = `${rect.top + rect.height / 2}px`;
       el.style.transform = "translateY(-50%)";
     }
+
+    // Also ensure visibility matches the sheet's minimized state
+    this._syncVisibility?.();
+  }
+
+  /**
+   * Toggle a hidden class while the host sheet is minimizing/minimized,
+   * so rails fade/scale out and disable pointer events.
+   */
+  _syncVisibility() {
+    const root = this.sheet?.element;
+    const el = this.element;
+    if (!root || !el) return;
+    const isHidden =
+      root.classList?.contains?.("minimized") ||
+      root.classList?.contains?.("minimizing");
+    el.classList.toggle("is-hidden", Boolean(isHidden));
   }
 
   async close(options = {}) {
