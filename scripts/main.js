@@ -365,6 +365,14 @@ Hooks.once("ready", async () => {
           try {
             item.setAttribute("data-action", "useItem");
           } catch {}
+          
+          // Attach rich tooltip when possible using system manager patterns
+          try {
+            if (!item.hasAttribute("data-tooltip")) {
+              const uuid = doc?.uuid || (itemId && this.document?.uuid ? `${this.document.uuid}.Item.${itemId}` : null);
+              if (uuid) item.setAttribute("data-tooltip", `#item#${uuid}`);
+            }
+          } catch {}
           item.dataset.bgApplied = "1";
         };
 

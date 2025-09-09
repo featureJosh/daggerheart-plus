@@ -765,6 +765,23 @@
   font-weight: bold;
 }
 
+.dh-inline-rails.rails-left .floating-rail-left .loadout-section .title h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  border: none;
+  padding: 0.35em 0.25em;
+  width: 100%;
+  border-radius: var(--dh-radius-lg, 8px);
+  background: var(--dhp-surface);
+  color: var(--dh-color-gold, #f3c267);
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 0 2px rgba(243, 194, 103, 0.65),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .items-sidebar-list,
 .dh-inline-rails.rails-left
   .floating-rail-left
@@ -896,10 +913,8 @@
   width: auto;
   box-sizing: unset;
   overflow: hidden;
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0rem;
+  padding: 0.5rem 0.25rem;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   margin-bottom: 0.25rem;
@@ -907,6 +922,7 @@
   cursor: pointer;
   word-wrap: break-word;
   word-break: break-word;
+  border-radius: 10px;
 }
 
 .daggerheart-plus.sheet .items-list .inventory-item:first-of-type {
@@ -1182,6 +1198,11 @@
 
 .daggerheart-plus.sheet .inventory-item .inventory-item-header {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
 /* Optional: show the roll d20 near controls (hidden if not desired) */
