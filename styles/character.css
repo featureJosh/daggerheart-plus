@@ -922,7 +922,7 @@
   cursor: pointer;
   word-wrap: break-word;
   word-break: break-word;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .daggerheart-plus.sheet .items-list .inventory-item:first-of-type {
