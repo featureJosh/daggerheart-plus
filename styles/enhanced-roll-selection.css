@@ -174,32 +174,55 @@
 
 .hope-die-select,
 .fear-die-select {
-  background: rgba(11, 10, 19, 0.8);
-  border: 2px solid rgba(243, 194, 103, 0.5);
-  border-radius: 6px;
-  color: var(--dh-beige);
-  padding: 10px 14px;
-  font-family: "Montserrat", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  transition: all 0.3s ease;
+  background: rgba(11, 10, 19, 0.8) !important;
+  border: 2px solid rgba(243, 194, 103, 0.5) !important;
+  border-radius: 6px !important;
+  color: var(--dh-beige) !important;
+  padding: 12px 16px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px !important;
+  min-width: 80px !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  box-sizing: border-box !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23efe6d8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 8px center !important;
+  background-size: 14px !important;
+  padding-right: 32px !important;
+  transition: all 0.3s ease !important;
 }
 
 .fear-die-select {
-  border-color: rgba(143, 135, 238, 0.5);
+  border-color: rgba(143, 135, 238, 0.5) !important;
+}
+
+.hope-die-select:hover {
+  border-color: rgba(243, 194, 103, 0.8) !important;
+  background: rgba(11, 10, 19, 0.9) !important;
+}
+
+.fear-die-select:hover {
+  border-color: rgba(143, 135, 238, 0.8) !important;
+  background: rgba(11, 10, 19, 0.9) !important;
 }
 
 .hope-die-select:focus,
 .fear-die-select:focus {
-  outline: none;
-  border-color: var(--dh-golden);
-  box-shadow: 0 0 12px rgba(243, 194, 103, 0.6);
+  outline: none !important;
+  border-color: var(--dh-golden) !important;
+  box-shadow: 0 0 12px rgba(243, 194, 103, 0.6) !important;
 }
 
 .fear-die-select:focus {
-  border-color: var(--dh-chat-blue);
-  box-shadow: 0 0 12px rgba(143, 135, 238, 0.6);
+  border-color: var(--dh-chat-blue) !important;
+  box-shadow: 0 0 12px rgba(143, 135, 238, 0.6) !important;
 }
 
 .hope-label,
@@ -347,23 +370,51 @@
 }
 
 .roll-mode-select {
-  background: rgba(11, 10, 19, 0.8);
-  border: 2px solid rgba(239, 230, 216, 0.3);
-  border-radius: 6px;
-  color: var(--dh-beige);
-  font-family: "Montserrat", sans-serif;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  min-width: 150px;
-  transition: all 0.3s ease;
+	background: rgba(11, 10, 19, 0.8) !important;
+	border: 2px solid rgba(239, 230, 216, 0.3) !important;
+	border-radius: 6px !important;
+	color: var(--dh-beige) !important;
+	font-family: "Montserrat", sans-serif !important;
+	padding: 0px 10px !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	letter-spacing: 0.3px !important;
+	width: auto !important;
+	height: auto !important;
+	line-height: 1.4 !important;
+	box-sizing: border-box !important;
+	-moz-appearance: none !important;
+	transition: all 0.3s ease !important;
+}
+
+.roll-mode-select:hover {
+  border-color: rgba(243, 194, 103, 0.6) !important;
+  background: rgba(11, 10, 19, 0.9) !important;
 }
 
 .roll-mode-select:focus {
-  outline: none;
-  border-color: var(--dh-golden);
-  box-shadow: 0 0 8px rgba(243, 194, 103, 0.4);
+  outline: none !important;
+  border-color: var(--dh-golden) !important;
+  box-shadow: 0 0 8px rgba(243, 194, 103, 0.4) !important;
+}
+
+.roll-mode-select option {
+  background: rgba(11, 10, 19, 0.95) !important;
+  color: var(--dh-beige) !important;
+  padding: 8px 12px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.hope-die-select option,
+.fear-die-select option {
+  background: rgba(11, 10, 19, 0.95) !important;
+  color: var(--dh-beige) !important;
+  padding: 6px 10px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }
 
 .cancel-button,
