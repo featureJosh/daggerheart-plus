@@ -1,7 +1,16 @@
 export class EnhancedDiceStyling {
   static initialize() {
-    Hooks.on("renderChatMessage", EnhancedDiceStyling._onRenderChatMessage);
+    Hooks.on(
+      "renderChatMessageHTML",
+      EnhancedDiceStyling._onRenderChatMessageHTML
+    );
     Hooks.on("renderApplication", EnhancedDiceStyling._onRenderApplication);
+  }
+
+  static _onRenderChatMessageHTML(_, element, message) {
+    const html = $(element);
+    // Reuse existing jQuery-based implementation
+    return EnhancedDiceStyling._onRenderChatMessage(message, html, {});
   }
 
   static _onRenderChatMessage(message, html, data) {
