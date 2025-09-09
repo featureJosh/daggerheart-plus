@@ -1,0 +1,24 @@
+{
+  "name": "daggerheart-plus",
+  "version": "1.0.0",
+  "description": "A module that improves upon the default Daggerheart system UI/UX",
+  "main": "scripts/main.js",
+  "scripts": {
+    "release": "node scripts/release.js",
+    "release:dry": "node scripts/release.js --dry-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/featureJosh/daggerheart-plus.git"
+  },
+  "keywords": [
+    "foundryvtt",
+    "daggerheart",
+    "module"
+  ],
+  "author": "featureJosh",
+  "license": "MIT",
+  "devDependencies": {
+    "jq": "^1.6.0"
+  }
+}
