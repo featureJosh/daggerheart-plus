@@ -2,7 +2,7 @@
   "id": "daggerheart-plus",
   "title": "Daggerheart Plus - Enhanced Sheets",
   "description": "A module that improves upon the default Daggerheart system UI/UX",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": {
     "minimum": "13",
     "verified": "13",
@@ -13,8 +13,12 @@
       "name": "featureJosh"
     }
   ],
-  "esmodules": ["scripts/main.js"],
-  "styles": ["styles/main.css"],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/main.css"
+  ],
   "relationships": {
     "systems": [
       {

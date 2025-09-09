@@ -5,7 +5,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "release": "node scripts/release.js",
-    "release:dry": "node scripts/release.js --dry-run"
+    "release:dry": "node scripts/release.js --dry-run",
+    "create-release": "node scripts/create-release.js"
   },
   "repository": {
     "type": "git",
