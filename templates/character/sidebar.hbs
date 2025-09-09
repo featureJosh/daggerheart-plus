@@ -33,6 +33,7 @@
                     class='progress-bar'
                     max='{{document.system.resources.hitPoints.max}}'
                     value='{{document.system.resources.hitPoints.value}}'
+                    style='--value: {{document.system.resources.hitPoints.value}}; --max: {{document.system.resources.hitPoints.max}};'
                     aria-label='{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}'
                 ></progress>
                 <div class="status-label">
@@ -65,6 +66,7 @@
                     value='{{document.system.resources.stress.value}}'
                     min="0"
                     max='{{document.system.resources.stress.max}}'
+                    style='--value: {{document.system.resources.stress.value}}; --max: {{document.system.resources.stress.max}};'
                     aria-label='{{localize "DAGGERHEART.GENERAL.stress"}}'
                 ></progress>
                 <div class="status-label">
@@ -99,6 +101,7 @@
                         class='progress-bar armor-color'
                         value='{{document.system.resources.armor.value}}'
                         max='{{document.system.resources.armor.max}}'
+                        style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};'
                         aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
                     ></progress>
                     <div class="status-label">
@@ -131,6 +134,7 @@
                             class='progress-bar armor-color'
                             value='{{document.system.resources.armor.value}}'
                             max='{{document.system.armorScore}}'
+                            style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};'
                             aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
                         ></progress>
                         <div class="status-label">

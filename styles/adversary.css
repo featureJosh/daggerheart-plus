@@ -214,14 +214,21 @@
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: var(--dhp-border);
+  /* Compute percent from provided CSS variables */
+  --bar-value: var(--value, 0);
+  --bar-max: max(var(--max, 1), 1);
+  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
+  /* Static gradient revealed by covering the unfilled portion on the right */
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-damage-gradient);
 }
 
 .daggerheart-plus.sheet.adversary
   .adversary-header-sheet
   .status-bar
   .progress-bar::-webkit-progress-bar {
-  background: var(--dhp-border);
+  background: transparent;
   border-radius: 3px;
 }
 
@@ -229,7 +236,15 @@
   .adversary-header-sheet
   .status-bar
   .progress-bar::-webkit-progress-value {
-  background: var(--dhp-warning);
+  background: transparent;
+  border-radius: 3px;
+}
+
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  .status-bar
+  .progress-bar::-moz-progress-bar {
+  background: transparent;
   border-radius: 3px;
 }
 
@@ -593,7 +608,14 @@
   width: 100%;
   height: var(--qs-bar-height);
   border-radius: 6px;
-  background: var(--dhp-border);
+  /* Compute percent from provided CSS variables */
+  --bar-value: var(--value, 0);
+  --bar-max: max(var(--max, 1), 1);
+  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
+  /* Static gradient revealed by covering the unfilled portion on the right */
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-damage-gradient);
   -webkit-appearance: none;
   appearance: none;
   z-index: 1;
@@ -601,19 +623,19 @@
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-bar {
-  background: var(--dhp-border);
+  background: transparent;
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-value {
-  background: var(--dhp-accent);
+  background: transparent;
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-moz-progress-bar {
-  background: var(--dhp-accent);
+  background: transparent;
   border-radius: 6px;
 }
 
@@ -652,14 +674,14 @@
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-bar {
-  background: var(--dhp-border);
+  background: transparent;
   border-radius: 5px;
 }
 
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .progress-bar::-webkit-progress-value {
-  background: var(--dhp-warning);
+  background: transparent;
   border-radius: 5px;
 }
 

@@ -31,6 +31,17 @@ body.theme-dark .application.daggerheart.sheet {
     #2a2a35 50%,
     #1a1a25 100%
   );
+  
+  /* Progress bar damage gradient aligned with theme */
+  --dhp-damage-gradient: linear-gradient(
+    90deg,
+    var(--dh-color-gold-light, var(--dhp-primary)) 0%,
+    var(--dhp-accent) 30%,
+    var(--dhp-warning) 65%,
+    var(--dhp-danger) 100%
+  );
+  --dhp-damage-gradient-webkit: var(--dhp-damage-gradient);
+  --dhp-damage-gradient-moz: var(--dhp-damage-gradient);
 
   --dh-color-dark-blue: #0a0f21;
   --dh-color-purple: #1e184d;
@@ -178,4 +189,46 @@ body.theme-dark .application.daggerheart.sheet {
   background: var(--dhp-primary);
   color: var(--dhp-background);
   border-color: var(--dhp-secondary);
+}
+
+/* Enhanced progress bar styling with damage gradient */
+.daggerheart-plus.sheet .progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.daggerheart-plus.sheet .progress-bar::-webkit-progress-value {
+  background: var(--dhp-damage-gradient);
+  box-shadow: 0 0 4px rgba(255, 235, 59, 0.3);
+  transition: all 0.3s ease;
+}
+
+.daggerheart-plus.sheet .progress-bar::-moz-progress-bar {
+  background: var(--dhp-damage-gradient);
+  box-shadow: 0 0 4px rgba(255, 235, 59, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Add subtle glow effect for low health/damage */
+.daggerheart-plus.sheet .progress-bar[value="0"]::-webkit-progress-value,
+.daggerheart-plus.sheet .progress-bar[value="0"]::-moz-progress-bar {
+  box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);
+}
+
+/* Add warning glow for high damage */
+.daggerheart-plus.sheet .progress-bar[value="5"]::-webkit-progress-value,
+.daggerheart-plus.sheet .progress-bar[value="6"]::-webkit-progress-value,
+.daggerheart-plus.sheet .progress-bar[value="5"]::-moz-progress-bar,
+.daggerheart-plus.sheet .progress-bar[value="6"]::-moz-progress-bar {
+  box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+  animation: damagePulse 2s ease-in-out infinite;
+}
+
+@keyframes damagePulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(244, 67, 54, 0.8);
+  }
 }

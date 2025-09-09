@@ -151,7 +151,7 @@
   .environment-header-sheet
   .status-bar
   .progress-bar::-webkit-progress-value {
-  background: var(--dhp-info);
+  background: linear-gradient(90deg, #ffeb3b 0%, #ff9800 50%, #f44336 100%);
   border-radius: 3px;
 }
 
@@ -365,7 +365,7 @@
 .daggerheart-plus.sheet.environment
   .environment-sidebar-sheet
   .progress-bar::-webkit-progress-value {
-  background: var(--dhp-info);
+  background: linear-gradient(90deg, #ffeb3b 0%, #ff9800 50%, #f44336 100%);
   border-radius: 4px;
 }
 

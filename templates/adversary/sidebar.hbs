@@ -14,7 +14,8 @@
                     <p class="bar-label">{{source.system.resources.hitPoints.max}}</p>
                 </div>
                 <progress class='progress-bar' value='{{source.system.resources.hitPoints.value}}'
-                    max='{{source.system.resources.hitPoints.max}}'></progress>
+                    max='{{source.system.resources.hitPoints.max}}'
+                    style='--value: {{source.system.resources.hitPoints.value}}; --max: {{source.system.resources.hitPoints.max}};'></progress>
                 <div class="status-label">
                     <h4>{{localize 'DAGGERHEART.GENERAL.HitPoints.short'}}</h4>
                 </div>
@@ -28,7 +29,8 @@
                     <p class="bar-label">{{source.system.resources.stress.max}}</p>
                 </div>
                 <progress class='progress-bar stress-color' value='{{source.system.resources.stress.value}}'
-                    max='{{source.system.resources.stress.max}}'></progress>
+                    max='{{source.system.resources.stress.max}}'
+                    style='--value: {{source.system.resources.stress.value}}; --max: {{source.system.resources.stress.max}};'></progress>
                 <div class="status-label">
                     <h4>{{localize 'DAGGERHEART.GENERAL.stress'}}</h4>
                 </div>

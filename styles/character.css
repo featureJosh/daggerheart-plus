@@ -1744,7 +1744,14 @@
   width: 100%;
   height: var(--qs-bar-height);
   border-radius: 6px;
-  background: var(--dhp-border);
+  /* Compute percent from provided CSS variables */
+  --bar-value: var(--value, 0);
+  --bar-max: max(var(--max, 1), 1);
+  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
+  /* Static gradient revealed by covering the unfilled portion on the right */
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-damage-gradient);
   -webkit-appearance: none;
   appearance: none;
   z-index: 1;
@@ -1752,22 +1759,22 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-webkit-progress-bar {
-  /* WebKit TRACK (empty portion): should match base track color */
-  background: var(--dhp-border);
+  /* Let the element background show through (we paint our own layers) */
+  background: transparent;
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-webkit-progress-value {
-  /* WebKit FILLED portion */
-  background: var(--dhp-accent);
+  /* Value layer is transparent; reveal happens via element background */
+  background: transparent;
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar::-moz-progress-bar {
-  /* Firefox FILLED portion */
-  background: var(--dhp-accent);
+  /* Firefox value portion transparent; use element background layers */
+  background: transparent;
   border-radius: 6px;
 }
 .daggerheart-plus.sheet.character
@@ -1776,8 +1783,8 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar.stress-color::-moz-progress-bar {
-  /* Variant: filled color for Stress */
-  background: var(--dhp-accent);
+  /* Variants now inherit the same reveal mechanic */
+  background: transparent;
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
@@ -1785,8 +1792,7 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar.armor-color::-moz-progress-bar {
-  /* Variant: filled color for Armor */
-  background: var(--dhp-accent);
+  background: transparent;
 }
 
 /* Metrics (Evasion / Armor Slots / Proficiency) */
