@@ -515,6 +515,14 @@
   span {
   flex: 1;
   font-size: 0.8rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .daggerheart-plus.sheet.environment .environment-sidebar-sheet .controls a {
