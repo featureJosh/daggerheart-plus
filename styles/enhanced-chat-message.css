@@ -17,7 +17,7 @@
   --dhc-accent: #f3c267; /* gold */
   --dhc-hope: #f3c267; /* gold */
   --dhc-fear: #87a0ff; /* cool indigo */
-  --dhc-crit: #d19cff; /* magenta */
+  --dhc-crit: #ff9b3d; /* flame orange */
 
   margin: 8px 6px;
   padding: 0;
@@ -27,6 +27,7 @@
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   overflow: hidden;
+  position: relative;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
 }
@@ -40,6 +41,142 @@
   --dhc-text: #fff8dc;
   background: linear-gradient(180deg, #191307 0%, var(--dhc-bg) 100%);
   border-color: color-mix(in oklab, var(--dhc-hope) 55%, var(--dhc-border));
+}
+
+/* Critical variant — orange flame celebration */
+
+.daggerheart .chat-message.duality.critical .message-header,
+#chat-notifications .chat-message.duality.critical .message-header,
+.daggerheart .chat-message.duality.critical .message-content,
+#chat-notifications .chat-message.duality.critical .message-content {
+  background-color: #2e151599;
+}
+
+.chat-message.duality.critical {
+  --dhc-bg: #1a0f04;
+  --dhc-surface: #231106;
+  --dhc-border: #6a3511;
+  --dhc-text: #fff3e0;
+  background: linear-gradient(180deg, #2a1506 0%, var(--dhc-bg) 100%);
+  /* Neon white/orange border with outer bloom */
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7),
+    0 0 16px rgba(255, 255, 255, 0.55),
+    0 0 28px rgba(255, 150, 64, 0.55),
+    0 0 64px rgba(255, 120, 32, 0.35),
+    0 6px 16px rgba(0, 0, 0, 0.45);
+  animation: neonPulse 3.6s ease-in-out infinite;
+}
+
+/* Flame glow overlay */
+.chat-message.duality.critical::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  /* Flame glow + inner neon border */
+  background: linear-gradient(transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+      top/100% 2px no-repeat,
+    linear-gradient(transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+      bottom/100% 2px no-repeat,
+    linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+      left/2px 100% no-repeat,
+    linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+      right/2px 100% no-repeat,
+    radial-gradient(120% 60% at 50% 120%, rgba(255, 140, 64, 0.28), transparent 55%),
+    radial-gradient(80% 40% at 50% -10%, rgba(255, 196, 64, 0.18), transparent 65%);
+  mix-blend-mode: screen;
+  animation: flameFlicker 2.3s ease-in-out infinite;
+}
+
+/* Rising embers */
+.chat-message.duality.critical::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Particle field: warm embers + white sparks */
+  background-image: radial-gradient(
+      3px 3px at 15% 115%,
+      rgba(255, 255, 255, 0.7) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      2px 2px at 28% 130%,
+      rgba(255, 230, 190, 0.7) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      2px 2px at 40% 120%,
+      rgba(255, 170, 100, 0.7) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      2px 2px at 55% 135%,
+      rgba(255, 255, 255, 0.7) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      3px 3px at 70% 125%,
+      rgba(255, 210, 140, 0.7) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      2px 2px at 82% 140%,
+      rgba(255, 190, 120, 0.65) 42%,
+      transparent 43%
+    );
+  background-repeat: no-repeat;
+  animation: emberScroll 7s linear infinite, particleTwinkle 2.2s ease-in-out infinite;
+  opacity: 0.65;
+  mix-blend-mode: screen;
+}
+
+.duality.critical .roll-title {
+  color: color-mix(in oklab, var(--dhc-crit) 90%, white);
+}
+.duality.critical .roll-result-value {
+  color: color-mix(in oklab, var(--dhc-crit) 95%, white);
+  text-shadow: 0 0 6px rgba(255, 150, 64, 0.7),
+    0 0 24px rgba(255, 120, 32, 0.35), 0 4px 12px rgba(0, 0, 0, 0.6);
+  animation: critPulse 1.8s ease-in-out infinite;
+}
+.duality.critical .roll-part.roll-section {
+  /* Warm background and border, no blue tint */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--dhc-crit) 10%, var(--dhc-surface)) 0%,
+    color-mix(in oklab, var(--dhc-crit) 6%, transparent) 100%
+  );
+  border-color: color-mix(in oklab, var(--dhc-crit) 55%, var(--dhc-border));
+  box-shadow: inset 0 0 0 1px rgba(255, 140, 64, 0.18),
+    0 0 40px rgba(255, 120, 32, 0.1);
+}
+.duality.critical .roll-formula {
+  background: rgba(255, 180, 96, 0.12);
+  border-color: color-mix(in oklab, var(--dhc-crit) 55%, var(--dhc-border));
+  color: #fff1dc;
+}
+.duality.critical .roll-difficulty {
+  color: #ffe0b3;
+  background: color-mix(in oklab, var(--dhc-crit) 22%, transparent);
+  border-color: color-mix(in oklab, var(--dhc-crit) 60%, var(--dhc-border));
+}
+/* Neon white chip borders inside critical */
+.duality.critical .roll-formula,
+.duality.critical .roll-difficulty {
+  box-shadow: 0 0 8px rgba(255,255,255,.35), 0 0 18px rgba(255,150,64,.25);
+}
+
+/* Buttons warm-up for critical */
+.duality.critical .roll-action-button {
+  background: #1a1209;
+  border-color: color-mix(in oklab, var(--dhc-crit) 45%, var(--dhc-border));
+  color: #ffdcb3;
+}
+.duality.critical .roll-action-button:hover {
+  background: color-mix(in oklab, var(--dhc-crit) 12%, #1a1209);
+  border-color: color-mix(in oklab, var(--dhc-crit) 70%, var(--dhc-border));
 }
 
 /* Header */
@@ -77,7 +214,7 @@
 .daggerheart .chat-message.duality.hope .message-content,
 #chat-notifications .chat-message.duality.hope .message-content {
   background-color: #f3c2671a;
-  /* border-radius: 10px; */
+  border-radius: 0;
 }
 
 .daggerheart .chat-message.duality.fear .message-header,
@@ -85,7 +222,7 @@
 .daggerheart .chat-message.duality.fear .message-content,
 #chat-notifications .chat-message.duality.fear .message-content {
   background-color: #14142599;
-  /* border-radius: 10px; */
+  border-radius: 0;
 }
 
 .dice.color-fear:before {
@@ -194,7 +331,7 @@
   background: linear-gradient(
     180deg,
     var(--dhc-surface) 0%,
-    rgba(21, 24, 50, 0.3) 100%
+    color-mix(in oklab, var(--dhc-bg) 20%, transparent) 100%
   );
   border: 1px solid var(--dhc-border);
   border-radius: 10px;
@@ -458,6 +595,16 @@
   box-shadow: none;
 }
 
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .chat-message.duality.critical,
+  .chat-message.duality.critical::before,
+  .chat-message.duality.critical::after,
+  .duality.critical .roll-result-value {
+    animation: none !important;
+  }
+}
+
 /* Animations preserved */
 @keyframes diceReroll {
   0% {
@@ -474,5 +621,74 @@
   }
   100% {
     transform: rotateY(360deg) scale(1);
+  }
+}
+
+/* Neon pulse for critical border */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.55),
+                0 0 16px rgba(255,255,255,.45),
+                0 0 24px rgba(255,160,64,.45),
+                0 0 48px rgba(255,120,32,.25),
+                0 6px 16px rgba(0,0,0,.45);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,.85),
+                0 0 20px rgba(255,255,255,.75),
+                0 0 36px rgba(255,190,96,.65),
+                0 0 72px rgba(255,140,48,.45),
+                0 8px 18px rgba(0,0,0,.5);
+  }
+}
+
+/* Particle twinkle */
+@keyframes particleTwinkle {
+  0%, 100% { opacity: .55; filter: brightness(.9); }
+  50% { opacity: .9; filter: brightness(1.2); }
+}
+
+/* Critical celebration animations */
+@keyframes flameFlicker {
+  0% {
+    opacity: 0.65;
+    filter: brightness(0.95);
+  }
+  35% {
+    opacity: 0.9;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.12);
+  }
+  70% {
+    opacity: 0.92;
+    filter: brightness(1.02);
+  }
+  100% {
+    opacity: 0.7;
+    filter: brightness(0.98);
+  }
+}
+
+@keyframes emberScroll {
+  0% {
+    background-position: 20% 110%, 60% 120%, 85% 130%;
+  }
+  100% {
+    background-position: 20% -10%, 60% -20%, 85% -30%;
+  }
+}
+
+@keyframes critPulse {
+  0%,
+  100% {
+    text-shadow: 0 0 6px rgba(255, 150, 64, 0.6),
+      0 0 20px rgba(255, 120, 32, 0.2), 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(255, 180, 96, 0.9),
+      0 0 36px rgba(255, 140, 64, 0.35), 0 4px 16px rgba(0, 0, 0, 0.65);
   }
 }

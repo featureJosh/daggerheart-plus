@@ -981,3 +981,18 @@
   transform: scale(1.02);
   box-shadow: 0 4px 8px var(--dhp-shadow);
 }
+
+/* DH+ configurable gradients for stress/armor progress bars (adversary) */
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar.stress-color,
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .progress-bar.stress-color {
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-stress-gradient, var(--dhp-damage-gradient));
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar.armor-color,
+.daggerheart-plus.sheet.adversary .adversary-header-sheet .progress-bar.armor-color {
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-armor-gradient, var(--dhp-damage-gradient));
+}

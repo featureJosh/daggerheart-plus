@@ -65,6 +65,12 @@
   "DHP.Settings.SheetSize.Adversary.Width.Hint": "Largeur par défaut appliquée aux feuilles d'adversaire DH+.",
   "DHP.Settings.SheetSize.Adversary.Height.Name": "Hauteur par défaut Adversaire DH+ (px)",
   "DHP.Settings.SheetSize.Adversary.Height.Hint": "Hauteur par défaut appliquée aux feuilles d'adversaire DH+.",
+  "DHP.Settings.ProgressGradients.HP.Name": "Dégradé de barre de PV (couleurs)",
+  "DHP.Settings.ProgressGradients.HP.Hint": "Par utilisateur. Liste de couleurs séparées par des virgules ou des espaces pour le dégradé de la barre de PV. Exemple : #fef790, #ffbb33, #ff9800, #f44336. Laisser vide pour la valeur par défaut.",
+  "DHP.Settings.ProgressGradients.Stress.Name": "Dégradé de barre de Stress (couleurs)",
+  "DHP.Settings.ProgressGradients.Stress.Hint": "Par utilisateur. Liste de couleurs séparées par des virgules ou des espaces pour la barre de Stress. Exemple : #90caf9, #42a5f5, #1e88e5.",
+  "DHP.Settings.ProgressGradients.Armor.Name": "Dégradé de barre d’emplacements d’armure (couleurs)",
+  "DHP.Settings.ProgressGradients.Armor.Hint": "Par utilisateur. Liste de couleurs séparées par des virgules ou des espaces pour la barre d’emplacements d’armure. Exemple : #c8e6c9, #81c784, #4caf50.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {

@@ -647,3 +647,17 @@
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .controls a:hover {
   color: var(--dhp-primary);
 }
+
+/* DH+ configurable gradient for stress progress bar (companion) */
+.daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar.stress-color {
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-stress-gradient, var(--dhp-damage-gradient));
+}
+
+/* If armor-color is used on companion in future, support now */
+.daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar.armor-color {
+  background:
+    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-armor-gradient, var(--dhp-damage-gradient));
+}

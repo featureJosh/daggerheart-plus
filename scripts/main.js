@@ -1,4 +1,4 @@
-import { CounterUI } from "./applications/counter-ui.js";
+﻿import { CounterUI } from "./applications/counter-ui.js";
 import { TokenCounterUI } from "./applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "./applications/enhanced-dice-styling.js";
 
@@ -139,17 +139,143 @@ Hooks.once("init", () => {
   try {
     const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
     if (BaseTooltipManager) {
-      class DHPTooltipCardManager extends BaseTooltipManager {
-        async activate(element, options = {}) {
-          const result = await super.activate(element, options);
-          try {
-            if (this.tooltip) this.tooltip.classList.add("dhp-tooltip-card");
-          } catch (_) {}
-          return result;
-        }
-      }
+       class DHPTooltipCardManager extends BaseTooltipManager {
+         async activate(element, options = {}) {
+           console.log("DH+ Tooltip Manager: activate() called", element, options);
+           const result = await super.activate(element, options);
+           console.log("DH+ Tooltip Manager: super.activate() completed", result);
+           
+           try {
+             if (this.tooltip) {
+               console.log("DH+ Tooltip Manager: Found tooltip element", this.tooltip);
+               console.log("DH+ Tooltip Manager: Tooltip innerHTML preview:", this.tooltip.innerHTML.substring(0, 200));
+               
+               this.tooltip.classList.add("dhp-tooltip-card");
+               
+               const images = this.tooltip.querySelectorAll('.tooltip-image');
+               console.log("DH+ Tooltip Manager: Found images in tooltip:", images.length, images);
+
+               const tooltipEl = this.tooltip;
+
+               // Build a content signature so the shine plays for new content
+               const buildKey = () => {
+                 try {
+                   const parts = [];
+                   images.forEach((img) => {
+                     parts.push(
+                       img.getAttribute('src') || img.currentSrc || img.dataset?.src || ''
+                     );
+                   });
+                   const title = tooltipEl.querySelector('.tooltip-title')?.textContent?.trim() || '';
+                   parts.push(title);
+                   return parts.join('|');
+                 } catch (_) {
+                   return String(Date.now());
+                 }
+               };
+               const currentKey = buildKey();
+
+               // Controller to manage pending timers/cleanup across rapid hovers
+               const prevCtrl = tooltipEl._dhpShineCtrl;
+               if (prevCtrl && prevCtrl.key !== currentKey) {
+                 try {
+                   if (prevCtrl.startTimer) clearTimeout(prevCtrl.startTimer);
+                 } catch {}
+                 try {
+                   if (prevCtrl.cleanupTimer) clearTimeout(prevCtrl.cleanupTimer);
+                 } catch {}
+                 try {
+                   tooltipEl.classList.remove('tooltip-shine');
+                 } catch {}
+                 try {
+                   prevCtrl.overlays?.forEach?.((el) => el.remove());
+                 } catch {}
+                 delete tooltipEl.dataset.dhpShineRunning;
+                 delete tooltipEl.dataset.dhpShineDone;
+                 tooltipEl._dhpShineCtrl = null;
+               }
+
+               // If we already handled this exact content and it's done, allow replay on new hover by resetting on activation
+               let ctrl = tooltipEl._dhpShineCtrl;
+               if (!ctrl || ctrl.key !== currentKey) {
+                 ctrl = { key: currentKey, overlays: [], running: false, done: false };
+                 tooltipEl._dhpShineCtrl = ctrl;
+               } else if (ctrl.running || ctrl.done) {
+                 // Already running/done for this exact content instance
+                 return result;
+               }
+
+               // Prepare shine overlays for each image
+               ctrl.overlays = [];
+               try {
+                 images.forEach((img) => {
+                   const container = img.closest?.('.tooltip-hero') || img.parentElement;
+                   if (!container) return;
+                   try {
+                     const cs = getComputedStyle(container);
+                     if (cs?.position === 'static') container.style.position = 'relative';
+                   } catch (_) {
+                     if (!container.style.position) container.style.position = 'relative';
+                   }
+                   container.querySelectorAll?.('.tooltip-image-shine')?.forEach((el) => el.remove());
+                   const overlay = document.createElement('div');
+                   overlay.className = 'tooltip-image-shine';
+                   container.appendChild(overlay);
+                   ctrl.overlays.push(overlay);
+                 });
+               } catch (e) {
+                 console.warn('DH+ Tooltip Manager: Failed to prepare shine overlays', e);
+               }
+
+               if (!ctrl.overlays.length) return result;
+
+               // Schedule start after 250ms; cancel if content changes again
+               ctrl.startTimer = setTimeout(() => {
+                 if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
+                 if (ctrl.done) return;
+                 ctrl.running = true;
+                 tooltipEl.dataset.dhpShineRunning = '1';
+                 tooltipEl.classList.add('tooltip-shine');
+
+                 let remaining = ctrl.overlays.length;
+                 const finalize = () => {
+                   if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
+                   if (ctrl.done) return;
+                   ctrl.done = true;
+                   ctrl.running = false;
+                   tooltipEl.classList.remove('tooltip-shine');
+                   delete tooltipEl.dataset.dhpShineRunning;
+                   tooltipEl.dataset.dhpShineDone = '1';
+                   try { ctrl.overlays.forEach((el) => el.remove()); } catch {}
+                 };
+
+                 ctrl.overlays.forEach((el) => {
+                   const t = setTimeout(finalize, 1300);
+                   el.addEventListener('animationend', () => {
+                     clearTimeout(t);
+                     remaining -= 1;
+                     if (remaining <= 0) finalize();
+                   }, { once: true });
+                 });
+               }, 250);
+             } else {
+               console.log("DH+ Tooltip Manager: No tooltip element found");
+             }
+           } catch (e) {
+             console.error("DH+ Tooltip Manager: Error applying classes", e);
+           }
+           return result;
+         }
+       }
       CONFIG.ux.TooltipManager = DHPTooltipCardManager;
       console.log("Daggerheart Plus | Tooltip enhancement applied (init)");
+      console.log("DH+ Tooltip Manager: Registered manager", CONFIG.ux.TooltipManager);
+      
+      // Test if we can access the manager later
+      setTimeout(() => {
+        console.log("DH+ Tooltip Manager: Current manager after timeout", CONFIG.ux.TooltipManager);
+        console.log("DH+ Tooltip Manager: Manager is our class?", CONFIG.ux.TooltipManager === DHPTooltipCardManager);
+      }, 5000);
     } else {
       console.warn(
         "Daggerheart Plus | No base tooltip manager found at init; skipping enhancement"
@@ -525,7 +651,7 @@ Hooks.once("ready", async () => {
           }
           const note = document.createElement("span");
           note.className = "rail-placeholder-note";
-          note.textContent = "Placeholder – future features";
+          note.textContent = "Placeholder â€“ future features";
           wrapper.appendChild(note);
           root.appendChild(wrapper);
           document.body.appendChild(root);
@@ -745,7 +871,7 @@ Hooks.once("ready", async () => {
         } catch {}
       }
 
-      // Bind adversary Difficulty click → send roll request
+      // Bind adversary Difficulty click â†’ send roll request
       try {
         window.daggerheartPlus?.bindAdversaryDifficultyClick?.(
           this.element,
@@ -937,7 +1063,7 @@ Hooks.once("ready", async () => {
         ui.notifications?.warn?.("No difficulty set for this adversary.");
         return;
       }
-      const title = options.title || `${actor.name} — Difficulty ${diff}`;
+      const title = options.title || `${actor.name} â€” Difficulty ${diff}`;
       const content = `
         <div class="dhp-roll-request">
           <strong>Roll Request:</strong> [[/dr difficulty=${diff}]]{${title}}
@@ -1170,3 +1296,106 @@ Hooks.on("closeActorSheet", async (app) => {
     app._removeInlineRails?.();
   } catch {}
 });
+
+// --- DH+ Per-client Progress Bar Gradient Settings ---
+(function () {
+  const MOD = 'daggerheart-plus';
+
+  function buildLinearGradient(colors) {
+    const cs = (colors || [])
+      .filter(Boolean)
+      .map((c) => c.trim())
+      .filter((c) => c.length);
+    if (!cs.length) return null;
+    const n = cs.length - 1;
+    const stops = cs.map((c, i) => {
+      const pct = n <= 0 ? 100 * i : Math.round((i / n) * 100);
+      return `${c} ${pct}%`;
+    });
+    return `linear-gradient(90deg, ${stops.join(', ')})`;
+  }
+
+  function parseColorList(str) {
+    if (!str || typeof str !== 'string') return [];
+    // Accept comma/space separated list
+    const raw = str.split(/[\s,]+/g).map((s) => s.trim()).filter(Boolean);
+    // Basic sanitization: ensure colors look like hex/rgb/hsl or var(--x)
+    const ok = raw.filter((c) => /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(c)
+      || /^rgb(a)?\(/i.test(c)
+      || /^hsl(a)?\(/i.test(c)
+      || /^var\(/i.test(c));
+    return ok;
+  }
+
+  function applyProgressBarGradients() {
+    try {
+      const hpStr = String(game.settings.get(MOD, 'hpGradient') ?? '').trim();
+      const stressStr = String(game.settings.get(MOD, 'stressGradient') ?? '').trim();
+      const armorStr = String(game.settings.get(MOD, 'armorGradient') ?? '').trim();
+
+      const hpG = buildLinearGradient(parseColorList(hpStr));
+      const stressG = buildLinearGradient(parseColorList(stressStr));
+      const armorG = buildLinearGradient(parseColorList(armorStr));
+
+      const id = 'dhp-progress-gradients';
+      let style = document.getElementById(id);
+      if (!style) {
+        style = document.createElement('style');
+        style.id = id;
+        document.head.appendChild(style);
+      }
+      const lines = [];
+      lines.push('.daggerheart-plus.sheet{');
+      if (hpG) lines.push('--dhp-damage-gradient:' + hpG + ';');
+      if (stressG) lines.push('--dhp-stress-gradient:' + stressG + ';');
+      if (armorG) lines.push('--dhp-armor-gradient:' + armorG + ';');
+      lines.push('}');
+      style.textContent = lines.join('');
+    } catch (e) {
+      console.warn('Daggerheart Plus | Failed applying gradient settings', e);
+    }
+  }
+
+  Hooks.once('init', () => {
+    try {
+      game.settings.register(MOD, 'hpGradient', {
+        name: 'DHP.Settings.ProgressGradients.HP.Name',
+        hint: 'DHP.Settings.ProgressGradients.HP.Hint',
+        scope: 'client',
+        config: true,
+        type: String,
+        default: '',
+        onChange: () => applyProgressBarGradients(),
+      });
+      game.settings.register(MOD, 'stressGradient', {
+        name: 'DHP.Settings.ProgressGradients.Stress.Name',
+        hint: 'DHP.Settings.ProgressGradients.Stress.Hint',
+        scope: 'client',
+        config: true,
+        type: String,
+        default: '',
+        onChange: () => applyProgressBarGradients(),
+      });
+      game.settings.register(MOD, 'armorGradient', {
+        name: 'DHP.Settings.ProgressGradients.Armor.Name',
+        hint: 'DHP.Settings.ProgressGradients.Armor.Hint',
+        scope: 'client',
+        config: true,
+        type: String,
+        default: '',
+        onChange: () => applyProgressBarGradients(),
+      });
+    } catch (e) {
+      console.error('Daggerheart Plus | Failed registering gradient settings', e);
+    }
+  });
+
+  Hooks.on('ready', () => applyProgressBarGradients());
+
+  Hooks.on('updateSetting', (setting) => {
+    if (setting?.namespace !== MOD) return;
+    if (['hpGradient','stressGradient','armorGradient'].includes(setting?.key)) {
+      applyProgressBarGradients();
+    }
+  });
+})();

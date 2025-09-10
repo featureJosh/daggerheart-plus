@@ -65,6 +65,12 @@
   "DHP.Settings.SheetSize.Adversary.Width.Hint": "Default width applied to DH+ Adversary sheets.",
   "DHP.Settings.SheetSize.Adversary.Height.Name": "Default DH+ Adversary Height (px)",
   "DHP.Settings.SheetSize.Adversary.Height.Hint": "Default height applied to DH+ Adversary sheets.",
+  "DHP.Settings.ProgressGradients.HP.Name": "HP Bar Gradient (colors)",
+  "DHP.Settings.ProgressGradients.HP.Hint": "Per-user. Comma/space-separated colors for the HP bar gradient. Example: #fef790, #ffbb33, #ff9800, #f44336. Leave blank for default.",
+  "DHP.Settings.ProgressGradients.Stress.Name": "Stress Bar Gradient (colors)",
+  "DHP.Settings.ProgressGradients.Stress.Hint": "Per-user. Comma/space-separated colors for the Stress bar. Example: #90caf9, #42a5f5, #1e88e5.",
+  "DHP.Settings.ProgressGradients.Armor.Name": "Armor Slots Bar Gradient (colors)",
+  "DHP.Settings.ProgressGradients.Armor.Hint": "Per-user. Comma/space-separated colors for the Armor Slots bar. Example: #c8e6c9, #81c784, #4caf50.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {
