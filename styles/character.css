@@ -1653,6 +1653,10 @@
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
+  /* expose computed percent for children (e.g., split text overlay) */
+  --bar-value: var(--value, 0);
+  --bar-max: max(var(--max, 1), 1);
+  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
@@ -1693,13 +1697,17 @@
   .character-sidebar-sheet
   .status-bar
   .status-value {
-  grid-area: 2 / 1 / 3 / 2; /* row 2, col 1 overlay */
+  grid-area: 2 / 1 / 3 / 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
   z-index: 2;
   width: 100%;
+  position: relative;
+  font-size: 1.25em;
+  font-weight: 600;
+  font-family: "Montserrat";
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
@@ -1716,6 +1724,103 @@
   p {
   color: var(--dh-color-gold-light);
   font-weight: 600;
+}
+
+/* Two-tone value text overlay that splits at the fill edge */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value::before,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value::after {
+  content: attr(data-value) " / " attr(data-max);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* allow input interaction */
+  font: inherit;
+}
+
+/* Right side (unfilled track) uses light text */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value::before {
+  color: var(--dhp-text-light);
+  clip-path: inset(0 0 0 var(--percent));
+}
+
+/* Left side (filled bar) uses dark text for contrast on yellow */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value::after {
+  /* dark-on-fill; tuned for bright gold bar */
+  color: #111111;
+  clip-path: inset(0 calc(100% - var(--percent)) 0 0);
+}
+
+/* Hide the underlying static text and show live input only when editing */
+/* Hide only the static slash and max; keep input visible */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value
+  > p:nth-child(2),
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value
+  > .bar-label {
+  display: none;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value:focus-within
+  > p:nth-child(2),
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value:focus-within
+  > .bar-label {
+  display: block;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value
+  .bar-input {
+  opacity: 1;
+  color: transparent;
+  caret-color: var(--dhp-text);
+  outline: none;
+}
+
+/* When user is editing, reveal the input text and hide overlay */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value:focus-within::before,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value:focus-within::after {
+  content: "";
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .status-bar
+  .status-value:focus-within
+  .bar-input {
+  color: var(--dhp-text);
 }
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet

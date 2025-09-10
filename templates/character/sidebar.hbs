@@ -9,8 +9,8 @@
 
         <div class="information-section">
             <div class="resources-section">
-            <div class="status-bar">
-                <div class='status-value'>
+            <div class="status-bar" style="--value: {{document.system.resources.hitPoints.value}}; --max: {{document.system.resources.hitPoints.max}};">
+                <div class='status-value' data-value="{{document.system.resources.hitPoints.value}}" data-max="{{document.system.resources.hitPoints.max}}">
                     <p>
                         <input
                             class="bar-input"
@@ -41,8 +41,8 @@
                 </div>
 
             </div>
-            <div class="status-bar">
-                <div class='status-value'>
+            <div class="status-bar" style="--value: {{document.system.resources.stress.value}}; --max: {{document.system.resources.stress.max}};">
+                <div class='status-value' data-value="{{document.system.resources.stress.value}}" data-max="{{document.system.resources.stress.max}}">
                     <p>
                         <input
                             class="bar-input"
@@ -77,8 +77,8 @@
 
         <!-- START OF ARMOR AREA -->
             {{#if document.system.resources.armor.max}}
-                <div class="status-bar armor-slots">
-                    <div class='status-value'>
+                <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};">
+                    <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.resources.armor.max}}">
                         <p>
                             <input
                                 class="bar-input armor-marks-input"
@@ -110,8 +110,8 @@
                 </div>
             {{else}}
                 {{#if document.system.armorScore}}
-                    <div class="status-bar armor-slots">
-                        <div class='status-value'>
+                    <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};">
+                        <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.armorScore}}">
                             <p>
                                 <input
                                     class="bar-input armor-marks-input"
