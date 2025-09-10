@@ -786,6 +786,7 @@
   justify-content: center;
   box-shadow: 0 0 0 2px rgba(243, 194, 103, 0.65),
     0 6px 18px rgba(0, 0, 0, 0.35);
+  display: none;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .items-sidebar-list,
@@ -1693,6 +1694,7 @@
   padding: 0;
   text-align: center;
 }
+
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .status-bar
