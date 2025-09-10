@@ -744,6 +744,30 @@ Hooks.once("ready", async () => {
           }
         } catch {}
       }
+
+      // Bind adversary Difficulty click → send roll request
+      try {
+        window.daggerheartPlus?.bindAdversaryDifficultyClick?.(
+          this.element,
+          this.document
+        );
+      } catch (_) {
+        try {
+          const root = this.element;
+          const actor = this.document;
+          if (root && actor && !root._dhpDifficultyDelegationBound) {
+            const handler = (ev) => {
+              const el = ev.target?.closest?.('[data-action="requestDifficultyRoll"]');
+              if (!el || !root.contains(el)) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              window.daggerheartPlus?.sendDifficultyRollRequest?.(actor);
+            };
+            root.addEventListener("click", handler, true);
+            root._dhpDifficultyDelegationBound = true;
+          }
+        } catch {}
+      }
     }
   };
 
@@ -904,6 +928,50 @@ Hooks.once("ready", async () => {
     }
   }
 
+  // Create a chat message with a clickable roll request using the system's /dr enricher
+  async function sendDifficultyRollRequest(actor, options = {}) {
+    try {
+      if (!actor) return;
+      const diff = Number(actor.system?.difficulty ?? 0) || 0;
+      if (!diff) {
+        ui.notifications?.warn?.("No difficulty set for this adversary.");
+        return;
+      }
+      const title = options.title || `${actor.name} — Difficulty ${diff}`;
+      const content = `
+        <div class="dhp-roll-request">
+          <strong>Roll Request:</strong> [[/dr difficulty=${diff}]]{${title}}
+        </div>
+      `;
+      await ChatMessage.create({
+        content,
+        speaker: ChatMessage.getSpeaker({ actor }),
+      });
+    } catch (e) {
+      console.error("Daggerheart Plus | sendDifficultyRollRequest failed", e);
+      ui.notifications?.error?.("Failed to send roll request.");
+    }
+  }
+
+  // Bind clicks on the Difficulty display within an Adversary sheet
+  function bindAdversaryDifficultyClick(root, actor) {
+    try {
+      if (!root || !actor) return;
+      if (root._dhpDifficultyDelegationBound) return;
+      const handler = (ev) => {
+        const el = ev.target?.closest?.('[data-action="requestDifficultyRoll"]');
+        if (!el || !root.contains(el)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        sendDifficultyRollRequest(actor);
+      };
+      root.addEventListener("click", handler, true);
+      root._dhpDifficultyDelegationBound = true;
+    } catch (e) {
+      console.warn("Daggerheart Plus | bindAdversaryDifficultyClick failed", e);
+    }
+  }
+
   window.daggerheartPlus = {
     fearTracker: null,
     tokenCounter: null,
@@ -912,6 +980,8 @@ Hooks.once("ready", async () => {
     enhancedDiceStyling: EnhancedDiceStyling,
     modifyHP,
     bindThresholdClicks,
+    sendDifficultyRollRequest,
+    bindAdversaryDifficultyClick,
   };
 
   console.log(
