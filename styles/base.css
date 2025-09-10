@@ -155,10 +155,6 @@ body.theme-dark .application.daggerheart.sheet {
   color: var(--dhp-text);
 }
 
-.daggerheart-plus.sheet.environment .sheet-body {
-  padding: 0;
-}
-
 .daggerheart-plus.sheet input[type="text"],
 .daggerheart-plus.sheet input[type="number"],
 .daggerheart-plus.sheet textarea,

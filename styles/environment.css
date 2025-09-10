@@ -1,27 +1,20 @@
 .daggerheart-plus.sheet.environment .environment-header-sheet {
-  padding: 0;
-  background: transparent;
-  margin: 0;
-  width: 100%;
+  padding: 1rem;
+  background: var(--dhp-surface);
+  border-bottom: 2px solid var(--dhp-border);
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .profile {
-  width: 140px;
-  height: 140px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  align-self: center;
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .profile:hover {
-  transform: translateX(-50%) scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
 }
 
 .daggerheart-plus.sheet.environment
@@ -85,10 +78,9 @@
   .status-label
   h4 {
   margin: 0;
-  font-size: 0.9rem;
-  color: var(--dhp-background);
+  font-size: 0.7rem;
+  color: var(--dhp-text-light);
   text-align: center;
-  font-weight: 600;
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .status-bar {
@@ -257,9 +249,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 2rem;
-  background: var(--dhp-surface);
-  border-bottom: 1px solid var(--dhp-border);
+  padding-top: 1rem;
+  border-top: 1px solid var(--dhp-border);
+  margin-top: 1rem;
 }
 
 .daggerheart-plus.sheet.environment
@@ -543,289 +535,4 @@
   .controls
   a:hover {
   color: var(--dhp-primary);
-}
-
-/* Tab styling */
-.daggerheart-plus.sheet.environment .tab {
-  background: var(--dhp-background);
-  padding: 1.5rem 2rem;
-  margin: 0;
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* Overall sheet styling */
-.daggerheart-plus.sheet.environment .window-content {
-  background: var(--dhp-background);
-  overflow: hidden;
-  padding: 0;
-}
-
-.daggerheart-plus.sheet.environment form {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-}
-
-.daggerheart-plus.sheet.environment .sheet-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Features tab styling */
-.daggerheart-plus.sheet.environment .feature-section {
-  background: transparent;
-  padding: 0;
-}
-
-.daggerheart-plus.sheet.environment .inventory-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.daggerheart-plus.sheet.environment .inventory-items .item {
-  background: var(--dhp-surface);
-  border: 1px solid var(--dhp-border);
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.daggerheart-plus.sheet.environment .inventory-items .item:hover {
-  background: rgba(243, 194, 103, 0.1);
-  border-color: var(--dhp-primary);
-}
-
-/* Header card improvements */
-.daggerheart-plus.sheet.environment .environment-header-sheet .item-container {
-  background: linear-gradient(135deg, #a8a8a8 0%, #d8d8d8 50%, #a8a8a8 100%);
-  padding: 80px 30px 30px;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  min-height: 180px;
-  margin: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .item-info {
-  flex: 1;
-  margin-top: 30px;
-  padding-left: 10px;
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .item-name input {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--dhp-primary);
-  border: none;
-  background: transparent;
-  width: 100%;
-  padding: 0;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .tags {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-  flex-wrap: wrap;
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .tags .tag {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .status-number {
-  background: var(--dhp-primary);
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  min-width: auto;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  flex-direction: row;
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .status-number:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .status-value p {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: var(--dhp-background);
-  margin: 0;
-  line-height: 1;
-}
-
-/* Environment info card */
-.daggerheart-plus.sheet.environment .environment-header-sheet .environment-info {
-  background: var(--dhp-surface);
-  padding: 1rem 2rem;
-  margin: 0;
-  border-bottom: 1px solid var(--dhp-border);
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .description {
-  color: var(--dhp-text-light);
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
-  font-style: normal;
-}
-
-.daggerheart-plus.sheet.environment .environment-header-sheet .impulses {
-  color: var(--dhp-text);
-  line-height: 1.6;
-  font-size: 0.95rem;
-}
-
-/* Notes tab card styling */
-.daggerheart-plus.sheet.environment .tab.notes fieldset {
-  background: var(--dhp-background);
-  border: 1px solid var(--dhp-border);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 0;
-}
-
-.daggerheart-plus.sheet.environment .tab.notes fieldset legend {
-  color: var(--dhp-primary);
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 0 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Potential Adversaries card styling */
-.daggerheart-plus.sheet.environment .action-section {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.daggerheart-plus.sheet.environment .action-section .inventory-items {
-  background: var(--dhp-background);
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.daggerheart-plus.sheet.environment .action-section .inventory-items .title {
-  color: var(--dhp-primary);
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--dhp-border);
-}
-
-.daggerheart-plus.sheet.environment .action-section .adversary-item {
-  background: var(--dhp-surface);
-  border: 1px solid var(--dhp-border);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.daggerheart-plus.sheet.environment .action-section .adversary-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px var(--dhp-shadow);
-  border-color: var(--dhp-primary);
-}
-
-/* Line divider styling */
-.daggerheart-plus.sheet.environment line-div {
-  display: none;
-}
-
-/* Features button styling */
-.daggerheart-plus.sheet.environment .inventory-items .title {
-  background: var(--dhp-primary);
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.25rem;
-  color: var(--dhp-background);
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.daggerheart-plus.sheet.environment .inventory-items .title:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.daggerheart-plus.sheet.environment .inventory-items .title::after {
-  content: '+';
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-/* Clean up tab navigation */
-.daggerheart-plus.sheet.environment .sheet-tabs {
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
-.daggerheart-plus.sheet.environment .sheet-tabs .tab {
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--dhp-text-light);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: normal;
-}
-
-.daggerheart-plus.sheet.environment .sheet-tabs .tab:hover {
-  background: transparent;
-  color: var(--dhp-primary);
-  transform: none;
-}
-
-.daggerheart-plus.sheet.environment .sheet-tabs .tab.active {
-  background: transparent;
-  border-bottom-color: var(--dhp-primary);
-  color: var(--dhp-primary);
-  font-weight: 600;
 }
