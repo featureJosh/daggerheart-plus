@@ -1,9 +1,3 @@
-/*
-  DH+ Tooltip Card Styling
-  This styles the dynamic Daggerheart tooltips to read like compact cards
-  without altering core system logic or templates.
-*/
-
 #tooltip.dhp-tooltip-card,
 .locked-tooltip.dhp-tooltip-card {
   min-width: max-content;
@@ -49,13 +43,7 @@
   --dhp-card-muted: #c5c9d6;
 }
 
-/*
-  We add the class `dhp-tooltip-card` to the tooltip root via JS.
-  The first child is the system’s rendered tooltip content
-  (e.g., <div class="daggerheart dh-style tooltip"> ... ).
-*/
 .dhp-tooltip-card {
-  /* Ensure card floats above app chrome */
   z-index: 9999 !important;
 }
 
@@ -77,19 +65,17 @@
   gap: 0;
 }
 
-/* Top image behaves like a card illustration - target img element specifically */
 .dhp-tooltip-card img.tooltip-image {
   width: 100%;
   display: block;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  grid-area: 1 / 1; /* occupy the first grid layer */
+  grid-area: 1 / 1;
   z-index: 1;
   position: relative;
   overflow: hidden;
 }
 
-/* Shine effect overlay element injected by JS (works on all browsers) */
 .dhp-tooltip-card .tooltip-image-shine {
   position: absolute;
   top: 0;
@@ -111,21 +97,23 @@
   pointer-events: none;
 }
 
-/* Shine animation */
 @keyframes tooltip-image-shine {
   0% {
     transform: translateX(-120%) skewX(-20deg);
     opacity: 0;
   }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
   100% {
     transform: translateX(120%) skewX(-20deg);
     opacity: 0;
   }
 }
 
-/* Apply shine when tooltip appears */
 .dhp-tooltip-card.tooltip-shine .tooltip-image-shine {
   animation: tooltip-image-shine 1.2s ease-out both;
 }
@@ -133,16 +121,15 @@
 @media (prefers-reduced-motion: reduce) {
   .dhp-tooltip-card.tooltip-shine .tooltip-image-shine {
     animation: none;
-    opacity: 0; /* don't display the sweep */
+    opacity: 0;
   }
 }
 
-/* Title area – strong and compact */
 .dhp-tooltip-card .tooltip-title {
-  grid-area: 1 / 1; /* overlap the image */
-  align-self: end; /* stick to bottom of the image */
-  margin: 0; /* remove default margins */
-  padding: 0.6rem 1rem 0.75rem; /* breathing room inside the overlay */
+  grid-area: 1 / 1;
+  align-self: end;
+  margin: 0;
+  padding: 0.6rem 1rem 0.75rem;
   width: 100%;
   box-sizing: border-box;
   background: linear-gradient(
@@ -151,7 +138,7 @@
     rgba(0, 0, 0, 0.45) 35%,
     rgba(0, 0, 0, 0.72) 100%
   );
-  color: #fff; /* ensure contrast over dark fade */
+  color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   z-index: 2;
 
@@ -162,7 +149,6 @@
   text-transform: uppercase;
 }
 
-/* Optional chip/badge next to title, if templates provide one */
 .dhp-tooltip-card .tooltip-title .badge,
 .dhp-tooltip-card .badge {
   display: inline-block;
@@ -180,9 +166,8 @@
   letter-spacing: 0.06em;
 }
 
-/* Description spacing and readability */
 .dhp-tooltip-card .tooltip-description {
-  padding: 0 1rem 0.9rem;
+  padding: 1rem 1.25rem;
   color: var(--dhp-card-muted);
 }
 .dhp-tooltip-card .tooltip-description p {
@@ -193,7 +178,6 @@
   color: var(--dhp-card-text);
 }
 
-/* Information sections read like grouped rules text */
 .dhp-tooltip-card .tooltip-information-section {
   margin-top: 0.25rem;
   padding: 0.5rem 1rem 0.75rem;
@@ -217,7 +201,6 @@
   font-weight: 600;
 }
 
-/* Sub-headings inside the description or sections */
 .dhp-tooltip-card .tooltip-description h3,
 .dhp-tooltip-card .tooltip-description h4,
 .dhp-tooltip-card .tooltip-description h5 {
@@ -228,12 +211,11 @@
   color: var(--dhp-card-text);
 }
 
-/* Optional angled accent band below image (visual nod to physical cards) */
 .dhp-tooltip-card > .daggerheart.dh-style.tooltip::before,
 .dhp-tooltip-card > .tooltip::before {
   content: "";
   display: block;
-  height: 10px;
+  height: 5px;
   background: linear-gradient(
     135deg,
     var(--dhp-card-accent) 0%,
@@ -241,7 +223,6 @@
   );
 }
 
-/* Reduce any default outer padding from system templates so the card edge stays crisp */
 .dhp-tooltip-card .tooltip > *:first-child {
   margin-top: 0;
 }
@@ -249,13 +230,11 @@
   margin-bottom: 0;
 }
 
-/* If the manager shows an arrow, keep it subtle against dark surfaces */
-.dhp-tooltip-card .arrow, /* Foundry v10/v11 style */
+.dhp-tooltip-card .arrow,
 .dhp-tooltip-card .tooltip-arrow {
   filter: drop-shadow(0 4px 6px var(--dhp-card-shadow));
 }
 
-/* If a template already provides a hero wrapper with overlay, respect it */
 .dhp-tooltip-card .tooltip-hero {
   position: relative;
 }

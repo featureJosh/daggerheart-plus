@@ -31,7 +31,7 @@ body.theme-dark .application.daggerheart.sheet {
     #2a2a35 50%,
     #1a1a25 100%
   );
-  
+
   /* Progress bar damage gradient aligned with theme */
   --dhp-damage-gradient: linear-gradient(
     90deg,
@@ -155,6 +155,10 @@ body.theme-dark .application.daggerheart.sheet {
   color: var(--dhp-text);
 }
 
+.daggerheart-plus.sheet input.inventory-item-quantity {
+  max-width: 3em;
+}
+
 .daggerheart-plus.sheet input[type="text"],
 .daggerheart-plus.sheet input[type="number"],
 .daggerheart-plus.sheet textarea,
@@ -163,7 +167,7 @@ body.theme-dark .application.daggerheart.sheet {
   border: 1px solid var(--dhp-border);
   color: var(--dhp-text);
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 0.5em 0em;
   transition: all 0.2s ease;
 }
 
@@ -225,7 +229,8 @@ body.theme-dark .application.daggerheart.sheet {
 }
 
 @keyframes damagePulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
   }
   50% {

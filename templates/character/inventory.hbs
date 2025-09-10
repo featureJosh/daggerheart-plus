@@ -2,25 +2,25 @@
     data-group='{{tabs.inventory.group}}'>
 
     <div class="currency-section">
-        <div class="input">
-            <span>{{localize this.inventory.currency.coins}}</span>
-            {{formInput systemFields.gold.fields.coins value=source.system.gold.coins enriched=source.system.gold.coins
-            localize=true toggled=true}}
+        <div class="currency-input" data-currency="coins">
+            <div class="icon" aria-hidden="true"><i class="fa-solid fa-coins"></i></div>
+            <label class="label">{{localize this.inventory.currency.coins}}</label>
+            {{formInput systemFields.gold.fields.coins value=source.system.gold.coins enriched=source.system.gold.coins localize=true toggled=true class="currency-field"}}
         </div>
-        <div class="input">
-            <span>{{localize this.inventory.currency.handfuls}}</span>
-            {{formInput systemFields.gold.fields.handfuls value=source.system.gold.handfuls
-            enriched=source.system.gold.handfuls localize=true toggled=true}}
+        <div class="currency-input" data-currency="handfuls">
+            <div class="icon" aria-hidden="true"><i class="fa-solid fa-hand-holding"></i></div>
+            <label class="label">{{localize this.inventory.currency.handfuls}}</label>
+            {{formInput systemFields.gold.fields.handfuls value=source.system.gold.handfuls enriched=source.system.gold.handfuls localize=true toggled=true class="currency-field"}}
         </div>
-        <div class="input">
-            <span>{{localize this.inventory.currency.bags}}</span>
-            {{formInput systemFields.gold.fields.bags value=source.system.gold.bags enriched=source.system.gold.bags
-            localize=true toggled=true}}
+        <div class="currency-input" data-currency="bags">
+            <div class="icon" aria-hidden="true"><i class="fa-solid fa-bag-shopping"></i></div>
+            <label class="label">{{localize this.inventory.currency.bags}}</label>
+            {{formInput systemFields.gold.fields.bags value=source.system.gold.bags enriched=source.system.gold.bags localize=true toggled=true class="currency-field"}}
         </div>
-        <div class="input">
-            <span>{{localize this.inventory.currency.chests}}</span>
-            {{formInput systemFields.gold.fields.chests value=source.system.gold.chests
-            enriched=source.system.gold.chests localize=true toggled=true}}
+        <div class="currency-input" data-currency="chests">
+            <div class="icon" aria-hidden="true"><i class="fa-solid fa-box"></i></div>
+            <label class="label">{{localize this.inventory.currency.chests}}</label>
+            {{formInput systemFields.gold.fields.chests value=source.system.gold.chests enriched=source.system.gold.chests localize=true toggled=true class="currency-field"}}
         </div>
 
     </div>

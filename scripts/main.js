@@ -483,6 +483,8 @@ Hooks.once("ready", async () => {
 
       // Apply loadout backgrounds
       this._applySidebarLoadoutBackgrounds();
+      // Ensure card-style loadout items have rich tooltips
+      this._attachLoadoutCardTooltips();
 
       // Re-bind to catch any late-rendered header content
       try {
@@ -612,6 +614,74 @@ Hooks.once("ready", async () => {
       }
     }
 
+    /**
+     * Attach Dh tooltip data to card-style loadout items in the main Loadout tab.
+     * Works even if the card lists render after the sheet, and on dynamic updates.
+     */
+    _attachLoadoutCardTooltips() {
+      try {
+        const root = this.element;
+        if (!root) return;
+        const container = root.querySelector('.tab.loadout');
+        if (!container) return;
+
+        const apply = (li) => {
+          if (!li || !li.classList?.contains?.('card-item')) return;
+          try {
+            const uuid = li?.dataset?.itemUuid;
+            if (!uuid) return;
+            // Attach to LI to catch overlay hovers
+            if (!li.hasAttribute('data-tooltip')) li.setAttribute('data-tooltip', `#item#${uuid}`);
+            // Also attach to overlay label and image
+            const label = li.querySelector('.card-label');
+            if (label && !label.hasAttribute('data-tooltip')) label.setAttribute('data-tooltip', `#item#${uuid}`);
+            const img = li.querySelector('img.card-img, .card-img img, img');
+            if (img) {
+              if (!img.getAttribute('data-action')) img.setAttribute('data-action', 'useItem');
+              if (!img.hasAttribute('data-tooltip')) img.setAttribute('data-tooltip', `#item#${uuid}`);
+            }
+            const nameEl = li.querySelector('.card-name');
+            if (nameEl && !nameEl.hasAttribute('data-tooltip')) nameEl.setAttribute('data-tooltip', `#item#${uuid}`);
+          } catch (_) {}
+        };
+
+        const wireLists = () => {
+          const lists = container.querySelectorAll('.card-list');
+          if (!lists?.length) return false;
+          lists.forEach((ul) => ul.querySelectorAll('.card-item').forEach(apply));
+
+          try {
+            if (this._loadoutCardsObserver) this._loadoutCardsObserver.disconnect();
+            this._loadoutCardsObserver = new MutationObserver((mutations) => {
+              for (const m of mutations) {
+                m.addedNodes.forEach((n) => {
+                  if (n.nodeType === Node.ELEMENT_NODE) {
+                    if (n.matches?.('.card-item')) apply(n);
+                    n.querySelectorAll?.('.card-item').forEach(apply);
+                  }
+                });
+              }
+            });
+            lists.forEach((ul) => this._loadoutCardsObserver.observe(ul, { childList: true, subtree: true }));
+          } catch (_) {}
+          return true;
+        };
+
+        if (!wireLists()) {
+          try {
+            if (this._loadoutCardsBootstrapObserver) this._loadoutCardsBootstrapObserver.disconnect();
+            this._loadoutCardsBootstrapObserver = new MutationObserver(() => {
+              if (wireLists()) {
+                try { this._loadoutCardsBootstrapObserver.disconnect(); } catch {}
+                this._loadoutCardsBootstrapObserver = null;
+              }
+            });
+            this._loadoutCardsBootstrapObserver.observe(container, { childList: true, subtree: true });
+          } catch (_) {}
+        }
+      } catch (_) {}
+    }
+
     _ensureFallbackRailsDOM() {
       try {
         const hasRight =
@@ -705,10 +775,14 @@ Hooks.once("ready", async () => {
       } catch {}
     }
 
-    async close(options = {}) {
+  async close(options = {}) {
       try {
         this._removeInlineRails();
       } catch {}
+      try { this._loadoutCardsObserver?.disconnect?.(); } catch {}
+      this._loadoutCardsObserver = null;
+      try { this._loadoutCardsBootstrapObserver?.disconnect?.(); } catch {}
+      this._loadoutCardsBootstrapObserver = null;
       return super.close(options);
     }
 

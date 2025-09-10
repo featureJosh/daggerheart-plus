@@ -102,6 +102,7 @@ export function createDaggerheartPlusCharacterSheet() {
 
       this._bindSidebarLoadoutCardClicks();
       this._applySidebarLoadoutBackgrounds();
+      this._attachLoadoutCardTooltips();
       this._bindEquipmentHoverIntent();
       try {
         if (game.user?.isGM) this._debugSidebarLoadoutBackgrounds();
@@ -485,6 +486,82 @@ export function createDaggerheartPlusCharacterSheet() {
       } catch {}
     }
 
+    /**
+     * Ensure card items in the Loadout tab (grid/card view) get rich tooltips.
+     * Upstream domain-card-item.hbs lacks data-tooltip; add it here using each
+     * card's data-item-uuid so the system DhTooltipManager renders the item tooltip.
+     */
+    _attachLoadoutCardTooltips() {
+      try {
+        const root = this.element;
+        if (!root) return;
+        const container = root.querySelector(".tab.loadout");
+        if (!container) return;
+
+        const apply = (li) => {
+          if (!li || !li.classList?.contains?.("card-item")) return;
+          try {
+            const uuid = li?.dataset?.itemUuid;
+            if (!uuid) return;
+            // Attach to the LI itself so overlay layers don't block hovers.
+            if (!li.hasAttribute("data-tooltip")) li.setAttribute("data-tooltip", `#item#${uuid}`);
+            // Also attach to the visible overlay container
+            const label = li.querySelector(".card-label");
+            if (label && !label.hasAttribute("data-tooltip")) label.setAttribute("data-tooltip", `#item#${uuid}`);
+            const img = li.querySelector("img.card-img, .card-img img, img");
+            if (img) {
+              if (!img.getAttribute("data-action")) img.setAttribute("data-action", "useItem");
+              if (!img.hasAttribute("data-tooltip")) img.setAttribute("data-tooltip", `#item#${uuid}`);
+            }
+            const nameEl = li.querySelector(".card-name");
+            if (nameEl && !nameEl.hasAttribute("data-tooltip")) nameEl.setAttribute("data-tooltip", `#item#${uuid}`);
+          } catch {}
+        };
+
+        const wireLists = () => {
+          const lists = container.querySelectorAll(".card-list");
+          if (!lists?.length) return false;
+          // Initial pass
+          lists.forEach((ul) => ul.querySelectorAll(".card-item").forEach(apply));
+          // Observe dynamic changes
+          try {
+            if (this._loadoutCardsObserver) this._loadoutCardsObserver.disconnect();
+            this._loadoutCardsObserver = new MutationObserver((mutations) => {
+              for (const m of mutations) {
+                m.addedNodes.forEach((n) => {
+                  if (n.nodeType === Node.ELEMENT_NODE) {
+                    if (n.matches?.(".card-item")) apply(n);
+                    n.querySelectorAll?.(".card-item").forEach(apply);
+                  }
+                });
+              }
+            });
+            lists.forEach((ul) =>
+              this._loadoutCardsObserver.observe(ul, { childList: true, subtree: true })
+            );
+          } catch {}
+          return true;
+        };
+
+        // If lists exist now, wire them; otherwise observe until they appear
+        if (!wireLists()) {
+          try {
+            if (this._loadoutCardsBootstrapObserver) this._loadoutCardsBootstrapObserver.disconnect();
+            this._loadoutCardsBootstrapObserver = new MutationObserver(() => {
+              if (wireLists()) {
+                try { this._loadoutCardsBootstrapObserver.disconnect(); } catch {}
+                this._loadoutCardsBootstrapObserver = null;
+              }
+            });
+            this._loadoutCardsBootstrapObserver.observe(container, {
+              childList: true,
+              subtree: true,
+            });
+          } catch {}
+        }
+      } catch {}
+    }
+
     async close(options = {}) {
       if (this.floatingNav) {
         await this.floatingNav.close();
@@ -499,6 +576,10 @@ export function createDaggerheartPlusCharacterSheet() {
       if (this._equipHoverObserver) {
         try { this._equipHoverObserver.disconnect(); } catch {}
         this._equipHoverObserver = null;
+      }
+      if (this._loadoutCardsObserver) {
+        try { this._loadoutCardsObserver.disconnect(); } catch {}
+        this._loadoutCardsObserver = null;
       }
 
       return super.close(options);

@@ -590,9 +590,13 @@
   scrollbar-color: light-dark(#18162e, #f3c267) transparent;
 }
 
+.daggerheart-plus.sheet .items-section .inventory-item .inventory-item-header {
+  gap: 1em;
+}
+
 .daggerheart-plus.sheet fieldset {
   align-items: center;
-  margin-top: 0px;
+  margin-top: 1em;
   border-radius: 6px;
   border-color: light-dark(#18162e, #f3c267);
   border: none;
@@ -1034,11 +1038,15 @@
   font-weight: 500;
   color: var(--dhp-text);
   margin-bottom: 0.25rem;
+  /* Allow wrapping to two lines like experiences */
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
+  white-space: normal;
   line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-width: 0;
 }
 
 .daggerheart-plus.sheet.character
@@ -1842,16 +1850,35 @@
   font-size: 1.1rem;
   color: var(--dhp-text);
 }
-/* === DH+ Character Sidebar: Quick Resource + Status UI === */
-/* --- Sidebar Equipment: Card Style (match Loadout) ----------------------- */
-/*.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section
-  .items-sidebar-list {
+
+.daggerheart-plus.sheet .card-item .card-label {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-}*/
+  height: fit-content;
+  align-items: center;
+  gap: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
+  position: absolute;
+  background-color: var(--dh-bg);
+  bottom: 0;
+  mask-image: linear-gradient(180deg, transparent 0%, black 20%);
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.daggerheart-plus.sheet .card-item .card-label .card-name {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #efe6d8;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding: 0.25em 0.5em;
+}
 
 *.daggerheart-plus.sheet.character
   .character-sidebar-sheet
@@ -1873,13 +1900,93 @@
   text-align: left;
 }
 
+.daggerheart-plus.sheet .tab.effects .effects-sections {
+  overflow: hidden;
+}
+
 .daggerheart-plus.sheet .tab.inventory .currency-section {
-  display: flex;
-  gap: 10px;
-  padding: 0.45em 1em;
-  background: var(--dhp-surface);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 5px;
+  padding: 0.5em 0.35em;
+  background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--dhp-border);
   border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input:hover {
+  border-color: var(--dhp-primary);
+  box-shadow: 0 2px 6px var(--dhp-shadow);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--dhp-primary);
+  color: var(--dhp-background);
+  box-shadow: 0 1px 3px var(--dhp-shadow);
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input .icon i {
+  font-size: 0.9rem;
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input .label {
+  font-weight: 700;
+  color: var(--dhp-text);
+  letter-spacing: 0.02em;
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input input,
+.daggerheart-plus.sheet .tab.inventory .currency-input .currency-field {
+  text-align: center;
+  min-width: 0;
+  width: 2em;
+  height: 1em;
+  border-radius: 8px;
+  border: 1px solid var(--dhp-border);
+  background: var(--dhp-background);
+  color: var(--dhp-primary);
+  outline: 2px solid transparent;
+  transition: outline-color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.daggerheart-plus.sheet .tab.inventory .currency-input input:focus,
+.daggerheart-plus.sheet .tab.inventory .currency-input .currency-field:focus {
+  border-color: var(--dhp-primary);
+  outline-color: color-mix(in oklab, var(--dhp-primary) 30%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dhp-primary) 15%, transparent);
+}
+
+/* Responsive: stack into two columns on narrow sheets */
+@media (max-width: 900px) {
+  .daggerheart-plus.sheet .tab.inventory .currency-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .daggerheart-plus.sheet .tab.inventory .currency-section {
+    grid-template-columns: 1fr;
+  }
 }
 
 .daggerheart-plus.sheet a.filter-button,
@@ -1939,14 +2046,29 @@
 }
 
 /* DH+ configurable gradients for stress/armor progress bars */
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.stress-color {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.stress-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
       calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-stress-gradient, var(--dhp-damage-gradient));
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .progress-bar.armor-color {
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.armor-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
       calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-armor-gradient, var(--dhp-damage-gradient));
+}
+
+/* Adversary sidebar: allow item names to wrap to two lines */
+.daggerheart-plus.sheet .adversary-sidebar-sheet .inventory-item .item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
