@@ -60,11 +60,9 @@
   background: linear-gradient(180deg, #2a1506 0%, var(--dhc-bg) 100%);
   /* Neon white/orange border with outer bloom */
   border-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7),
-    0 0 16px rgba(255, 255, 255, 0.55),
-    0 0 28px rgba(255, 150, 64, 0.55),
-    0 0 64px rgba(255, 120, 32, 0.35),
-    0 6px 16px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65),
+    0 0 6px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 150, 64, 0.5),
+    0 0 18px rgba(255, 120, 32, 0.35), 0 4px 10px rgba(0, 0, 0, 0.45);
   animation: neonPulse 3.6s ease-in-out infinite;
 }
 
@@ -75,16 +73,42 @@
   inset: -2px;
   pointer-events: none;
   /* Flame glow + inner neon border */
-  background: linear-gradient(transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+  background: linear-gradient(
+        transparent 10%,
+        rgba(255, 255, 255, 0.25) 11%,
+        transparent 12%
+      )
       top/100% 2px no-repeat,
-    linear-gradient(transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+    linear-gradient(
+        transparent 10%,
+        rgba(255, 255, 255, 0.25) 11%,
+        transparent 12%
+      )
       bottom/100% 2px no-repeat,
-    linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+    linear-gradient(
+        90deg,
+        transparent 10%,
+        rgba(255, 255, 255, 0.25) 11%,
+        transparent 12%
+      )
       left/2px 100% no-repeat,
-    linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.25) 11%, transparent 12%)
+    linear-gradient(
+        90deg,
+        transparent 10%,
+        rgba(255, 255, 255, 0.25) 11%,
+        transparent 12%
+      )
       right/2px 100% no-repeat,
-    radial-gradient(120% 60% at 50% 120%, rgba(255, 140, 64, 0.28), transparent 55%),
-    radial-gradient(80% 40% at 50% -10%, rgba(255, 196, 64, 0.18), transparent 65%);
+    radial-gradient(
+      120% 60% at 50% 120%,
+      rgba(255, 140, 64, 0.28),
+      transparent 55%
+    ),
+    radial-gradient(
+      80% 40% at 50% -10%,
+      rgba(255, 196, 64, 0.18),
+      transparent 65%
+    );
   mix-blend-mode: screen;
   animation: flameFlicker 2.3s ease-in-out infinite;
 }
@@ -127,7 +151,8 @@
       transparent 43%
     );
   background-repeat: no-repeat;
-  animation: emberScroll 7s linear infinite, particleTwinkle 2.2s ease-in-out infinite;
+  animation: emberScroll 7s linear infinite,
+    particleTwinkle 2.2s ease-in-out infinite;
   opacity: 0.65;
   mix-blend-mode: screen;
 }
@@ -165,7 +190,8 @@
 /* Neon white chip borders inside critical */
 .duality.critical .roll-formula,
 .duality.critical .roll-difficulty {
-  box-shadow: 0 0 8px rgba(255,255,255,.35), 0 0 18px rgba(255,150,64,.25);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.35),
+    0 0 18px rgba(255, 150, 64, 0.25);
 }
 
 /* Buttons warm-up for critical */
@@ -338,6 +364,59 @@
   padding: 10px;
 }
 
+.daggerheart .chat-message .chat-roll .roll-part-header {
+  padding-top: 10px;
+}
+
+/* Accent lines in headers (title and formula) matching roll theme  */
+/* .chat-message.duality .roll-part-header {
+  position: relative;
+  text-align: center;
+}  */
+
+.chat-message.duality.critical {
+  background: linear-gradient(180deg, #fb2918 0%, var(--dhc-bg) 100%);
+}
+
+.chat-message.duality {
+  background: linear-gradient(180deg, #2d3773 0%, var(--dhc-bg) 100%);
+}
+
+.chat-message.duality.hope {
+  background: linear-gradient(180deg, #87631a 0%, var(--dhc-bg) 100%);
+}
+
+.chat-message.duality .roll-part-header:before {
+  left: 0;
+}
+.chat-message.duality .roll-part-header:after {
+  right: 0;
+}
+
+/* Hope (simple gold) */
+.duality.hope .roll-part-header:before {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-hope) 100%);
+}
+.duality.hope .roll-part-header:after {
+  background: linear-gradient(90deg, var(--dhc-hope) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Fear (simple indigo) */
+.duality.fear .roll-part-header:before {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-fear) 100%);
+}
+.duality.fear .roll-part-header:after {
+  background: linear-gradient(90deg, var(--dhc-fear) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Critical (simple orange) */
+.duality.critical .roll-part-header:before {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-crit) 100%);
+}
+.duality.critical .roll-part-header:after {
+  background: linear-gradient(90deg, var(--dhc-crit) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
 .roll-result-container {
   text-align: center;
   padding: 8px 0 2px;
@@ -371,6 +450,10 @@
 }
 .duality.hope .roll-result-desc {
   color: color-mix(in oklab, var(--dhc-hope) 45%, var(--dhc-muted));
+}
+/* Critical override — warm orange/red, not system blue */
+.duality.critical .roll-result-desc {
+  color: color-mix(in oklab, var(--dhc-crit) 65%, #fff1dc);
 }
 
 .roll-effects {
@@ -420,6 +503,28 @@
 }
 .dice-roll.expanded .formula-toggle::before {
   transform: rotate(180deg);
+}
+
+/* Override built-in chevron color for each roll type (color only) */
+.daggerheart .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:before,
+#chat-notifications .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:before,
+.daggerheart .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:after,
+#chat-notifications .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:after {
+  color: var(--dhc-hope);
+}
+
+.daggerheart .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:before,
+#chat-notifications .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:before,
+.daggerheart .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:after,
+#chat-notifications .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:after {
+  color: var(--dhc-fear);
+}
+
+.daggerheart .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:before,
+#chat-notifications .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:before,
+.daggerheart .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:after,
+#chat-notifications .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:after {
+  color: var(--dhc-crit);
 }
 
 /* Dice result area */
@@ -626,26 +731,30 @@
 
 /* Neon pulse for critical border */
 @keyframes neonPulse {
-  0%, 100% {
-    box-shadow: 0 0 0 1px rgba(255,255,255,.55),
-                0 0 16px rgba(255,255,255,.45),
-                0 0 24px rgba(255,160,64,.45),
-                0 0 48px rgba(255,120,32,.25),
-                0 6px 16px rgba(0,0,0,.45);
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.62),
+      0 0 6px rgba(255, 255, 255, 0.45), 0 0 10px rgba(255, 160, 64, 0.45),
+      0 0 16px rgba(255, 120, 32, 0.3), 0 4px 10px rgba(0, 0, 0, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 1px rgba(255,255,255,.85),
-                0 0 20px rgba(255,255,255,.75),
-                0 0 36px rgba(255,190,96,.65),
-                0 0 72px rgba(255,140,48,.45),
-                0 8px 18px rgba(0,0,0,.5);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85),
+      0 0 8px rgba(255, 255, 255, 0.7), 0 0 14px rgba(255, 190, 96, 0.6),
+      0 0 22px rgba(255, 140, 48, 0.4), 0 6px 12px rgba(0, 0, 0, 0.5);
   }
 }
 
 /* Particle twinkle */
 @keyframes particleTwinkle {
-  0%, 100% { opacity: .55; filter: brightness(.9); }
-  50% { opacity: .9; filter: brightness(1.2); }
+  0%,
+  100% {
+    opacity: 0.55;
+    filter: brightness(0.9);
+  }
+  50% {
+    opacity: 0.9;
+    filter: brightness(1.2);
+  }
 }
 
 /* Critical celebration animations */

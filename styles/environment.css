@@ -257,7 +257,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 2rem;
   background: var(--dhp-surface);
   border-bottom: 1px solid var(--dhp-border);
 }
@@ -548,8 +548,10 @@
 /* Tab styling */
 .daggerheart-plus.sheet.environment .tab {
   background: var(--dhp-background);
-  padding: 1.5rem;
+  padding: 1.5rem 2rem;
   margin: 0;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* Overall sheet styling */
@@ -565,6 +567,13 @@
   flex-direction: column;
   margin: 0;
   padding: 0;
+}
+
+.daggerheart-plus.sheet.environment .sheet-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Features tab styling */
@@ -609,7 +618,8 @@
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .item-info {
   flex: 1;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding-left: 10px;
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .item-name input {
@@ -665,10 +675,11 @@
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .status-value p {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--dhp-background);
   margin: 0;
+  line-height: 1;
 }
 
 /* Environment info card */
@@ -754,31 +765,35 @@
   display: none;
 }
 
-/* Features input styling */
+/* Features button styling */
 .daggerheart-plus.sheet.environment .inventory-items .title {
-  background: transparent;
-  border: 2px solid var(--dhp-border);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  color: var(--dhp-text);
-  font-size: 1rem;
-  font-weight: 500;
+  background: var(--dhp-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  color: var(--dhp-background);
+  font-size: 0.9rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .daggerheart-plus.sheet.environment .inventory-items .title:hover {
-  border-color: var(--dhp-primary);
-  background: rgba(243, 194, 103, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .daggerheart-plus.sheet.environment .inventory-items .title::after {
   content: '+';
   font-size: 1.25rem;
-  color: var(--dhp-primary);
+  font-weight: bold;
 }
 
 /* Clean up tab navigation */
