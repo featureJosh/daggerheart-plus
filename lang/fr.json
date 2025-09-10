@@ -55,6 +55,8 @@
   "DHP.Settings.ExperimentalFeatures.Hint": "Active les fonctionnalités expérimentales encore en développement. Ces fonctionnalités peuvent ne pas fonctionner correctement et sont fournies uniquement à des fins de test.",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Name": "Activer le suivi de la Peur",
   "DHP.Settings.ExperimentalFeatures.FearTracker.Hint": "Active une interface de suivi de la Peur affichée au-dessus de la barre d’action. Ce suivi s’intègre au système Daggerheart pour afficher et modifier le niveau actuel de Peur.",
+  "DHP.Settings.ExperimentalFeatures.TokenCounters.Name": "Activer les compteurs de jeton",
+  "DHP.Settings.ExperimentalFeatures.TokenCounters.Hint": "Active l'interface des compteurs de jeton (PV, Espoir, Stress, Armure) affichée près de la barre d’action pour le jeton sélectionné.",
   "DHP.Settings.SheetSize.Width.Name": "Largeur par défaut de la fiche DH+ (px)",
   "DHP.Settings.SheetSize.Width.Hint": "Largeur par défaut appliquée aux fiches d’acteur DH+ (Personnage, Adversaire, Compagnon, Environnement). Rouvrez les fiches pour l’appliquer si la mise à jour ne s’effectue pas automatiquement.",
   "DHP.Settings.SheetSize.Height.Name": "Hauteur par défaut de la fiche DH+ (px)",

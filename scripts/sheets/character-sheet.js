@@ -71,6 +71,11 @@ export function createDaggerheartPlusCharacterSheet() {
       await this._createFloatingNavigation();
       this._showSection(this.currentSection);
 
+      // Bind threshold HP quick marks early so it's not blocked by waits
+      try {
+        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+      } catch (_) {}
+
       // Bind right-side tabs if present
       const root = this.element;
       if (!root) return;
@@ -101,6 +106,44 @@ export function createDaggerheartPlusCharacterSheet() {
       try {
         if (game.user?.isGM) this._debugSidebarLoadoutBackgrounds();
       } catch {}
+
+      // Re-bind threshold HP quick marks (1/2/3 HP) to catch late DOM
+      try {
+        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+      } catch (_) {
+        // Fallback: delegate at the root element
+        try {
+          const root = this.element;
+          const actor = this.document;
+          if (root && actor && !root._dhpThresholdDelegationBound) {
+            const clickHandler = (ev) => {
+              const el = ev.target?.closest?.(
+                '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+              );
+              if (!el || !root.contains(el)) return;
+              const amt = Number(el.dataset.hpAmount) || 0;
+              if (!amt) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              window.daggerheartPlus?.modifyHP?.(actor, "add", amt);
+            };
+            const contextHandler = (ev) => {
+              const el = ev.target?.closest?.(
+                '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+              );
+              if (!el || !root.contains(el)) return;
+              const amt = Number(el.dataset.hpAmount) || 0;
+              if (!amt) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              window.daggerheartPlus?.modifyHP?.(actor, "subtract", amt);
+            };
+            root.addEventListener("click", clickHandler, true);
+            root.addEventListener("contextmenu", contextHandler, true);
+            root._dhpThresholdDelegationBound = true;
+          }
+        } catch {}
+      }
     }
 
     async _createFloatingNavigation() {

@@ -15,8 +15,6 @@ Hooks.once("init", () => {
     return;
   }
 
-  
-
   game.settings.register(MODULE_ID, "enableFearTracker", {
     name: "Enable Fear Tracker",
     hint: "Enables a fear tracker UI that displays above the hotbar. The tracker integrates with the Daggerheart system to show and modify the current fear level.",
@@ -28,6 +26,27 @@ Hooks.once("init", () => {
       console.log("Daggerheart Plus | Fear tracker setting changed:", value);
       if (window.daggerheartPlus?.manageFearTracker) {
         window.daggerheartPlus.manageFearTracker();
+      }
+    },
+  });
+
+  // Toggle for Token Counters UI (world)
+  game.settings.register(MODULE_ID, "enableTokenCounters", {
+    name: "Enable Token Counters",
+    hint: "Enables the token counters UI (HP, Hope, Stress, Armor) displayed near the hotbar for the currently selected token.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    // Maintain previous behavior (counters were always on before)
+    default: true,
+    onChange: (value) => {
+      try {
+        console.log("Daggerheart Plus | Token counters setting changed:", value);
+        if (window.daggerheartPlus?.manageTokenCounters) {
+          window.daggerheartPlus.manageTokenCounters();
+        }
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying token counters toggle", e);
       }
     },
   });
@@ -63,7 +82,8 @@ Hooks.once("init", () => {
     name: "Default DH+ Sheet Width (px)",
     hint: "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
-    config: true,
+    // Hidden for now; keep for future use
+    config: false,
     type: Number,
     default: 900,
     range: { min: 400, max: 2000, step: 10 },
@@ -73,7 +93,8 @@ Hooks.once("init", () => {
     name: "Default DH+ Sheet Height (px)",
     hint: "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
-    config: true,
+    // Hidden for now; keep for future use
+    config: false,
     type: Number,
     default: 800,
     range: { min: 300, max: 1600, step: 10 },
@@ -84,7 +105,8 @@ Hooks.once("init", () => {
     name: "Default DH+ Adversary Width (px)",
     hint: "Default width applied to DH+ Adversary sheets.",
     scope: "world",
-    config: true,
+    // Hidden for now; keep for future use
+    config: false,
     type: Number,
     default: 630,
     range: { min: 400, max: 2000, step: 10 },
@@ -94,7 +116,8 @@ Hooks.once("init", () => {
     name: "Default DH+ Adversary Height (px)",
     hint: "Default height applied to DH+ Adversary sheets.",
     scope: "world",
-    config: true,
+    // Hidden for now; keep for future use
+    config: false,
     type: Number,
     default: 820,
     range: { min: 300, max: 1600, step: 10 },
@@ -279,6 +302,43 @@ Hooks.once("ready", async () => {
     async _onRender(context, options) {
       await super._onRender(context, options);
 
+      // Bind threshold HP quick marks in header (1/2/3 HP)
+      try {
+        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+      } catch (_) {
+        try {
+          const root = this.element;
+          const actor = this.document;
+          if (root && actor && !root._dhpThresholdDelegationBound) {
+            const clickHandler = (ev) => {
+              const el = ev.target?.closest?.(
+                '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+              );
+              if (!el || !root.contains(el)) return;
+              const amt = Number(el.dataset.hpAmount) || 0;
+              if (!amt) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              window.daggerheartPlus?.modifyHP?.(actor, "add", amt);
+            };
+            const contextHandler = (ev) => {
+              const el = ev.target?.closest?.(
+                '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+              );
+              if (!el || !root.contains(el)) return;
+              const amt = Number(el.dataset.hpAmount) || 0;
+              if (!amt) return;
+              ev.preventDefault();
+              ev.stopPropagation();
+              window.daggerheartPlus?.modifyHP?.(actor, "subtract", amt);
+            };
+            root.addEventListener("click", clickHandler, true);
+            root.addEventListener("contextmenu", contextHandler, true);
+            root._dhpThresholdDelegationBound = true;
+          }
+        } catch {}
+      }
+
       // Conditionally mount inline rails per-user, then apply backgrounds so
       // left-rail cards (if present) also get painted.
       try {
@@ -295,8 +355,13 @@ Hooks.once("ready", async () => {
         } catch {}
       }
 
-      // Apply background images to loadout items in both sidebar and left rail
+      // Apply loadout backgrounds
       this._applySidebarLoadoutBackgrounds();
+
+      // Re-bind to catch any late-rendered header content
+      try {
+        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+      } catch {}
     }
 
     // Remove custom section toggling; rely on system navigation
@@ -647,6 +712,39 @@ Hooks.once("ready", async () => {
     get title() {
       return `${this.document.name} [DH+]`;
     }
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+      try {
+        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+      } catch (_) {
+        // Inline fallback: simple binder if helper isn't present yet
+        try {
+          const root = this.element;
+          const actor = this.document;
+          if (root && actor) {
+            root
+              .querySelectorAll(
+                '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+              )
+              .forEach((el) => {
+                const amt = Number(el.dataset.hpAmount) || 0;
+                if (!amt) return;
+                el.addEventListener("click", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  window.daggerheartPlus?.modifyHP?.(actor, "add", amt);
+                });
+                el.addEventListener("contextmenu", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  window.daggerheartPlus?.modifyHP?.(actor, "subtract", amt);
+                });
+              });
+          }
+        } catch {}
+      }
+    }
   };
 
   const DaggerheartPlusCompanionSheet = class extends systemAPI.Companion {
@@ -743,16 +841,77 @@ Hooks.once("ready", async () => {
 
   console.log("Daggerheart Plus | Enhanced sheets registered successfully");
 
-  const tokenCounter = new TokenCounterUI();
-  await tokenCounter.initialize();
+  // Token counters are managed by a setting; initialize conditionally later
 
   EnhancedDiceStyling.initialize();
 
+  // Generic HP modification helper
+  async function modifyHP(actor, operation, amount) {
+    try {
+      if (!actor) return;
+      const current = Number(actor.system?.resources?.hitPoints?.value ?? 0) || 0;
+      const max = Number(actor.system?.resources?.hitPoints?.max ?? 0) || 0;
+      const amt = Number(amount) || 0;
+      if (!amt) return;
+      const sign = operation === "subtract" || operation === "minus" || operation === "-" ? -1 : 1;
+      const next = Math.max(0, Math.min(current + sign * amt, max));
+      if (next === current) return;
+      await actor.update({ "system.resources.hitPoints.value": next });
+    } catch (e) {
+      console.error("Daggerheart Plus | modifyHP failed", e);
+      ui.notifications?.error?.("Failed to modify HP.");
+    }
+  }
+
+  // Utility to bind threshold click handlers within a sheet root element
+  function bindThresholdClicks(root, actor) {
+    try {
+      if (!root || !actor) return;
+
+      // Avoid rebinding multiple times per sheet element
+      if (root._dhpThresholdDelegationBound) return;
+
+      const clickHandler = (ev) => {
+        const el = ev.target?.closest?.(
+          '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+        );
+        if (!el || !root.contains(el)) return;
+        const amt = Number(el.dataset.hpAmount) || 0;
+        if (!amt) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        modifyHP(actor, "add", amt);
+      };
+
+      const contextHandler = (ev) => {
+        const el = ev.target?.closest?.(
+          '.threshold-text.threshold-clickable[data-action="mark-hp"]'
+        );
+        if (!el || !root.contains(el)) return;
+        const amt = Number(el.dataset.hpAmount) || 0;
+        if (!amt) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        modifyHP(actor, "subtract", amt);
+      };
+
+      // Use capture phase to be resilient to internal handlers
+      root.addEventListener("click", clickHandler, true);
+      root.addEventListener("contextmenu", contextHandler, true);
+      root._dhpThresholdDelegationBound = true;
+    } catch (e) {
+      console.warn("Daggerheart Plus | bindThresholdClicks failed", e);
+    }
+  }
+
   window.daggerheartPlus = {
     fearTracker: null,
-    tokenCounter,
+    tokenCounter: null,
     manageFearTracker: null,
+    manageTokenCounters: null,
     enhancedDiceStyling: EnhancedDiceStyling,
+    modifyHP,
+    bindThresholdClicks,
   };
 
   console.log(
@@ -784,7 +943,35 @@ Hooks.once("ready", async () => {
 
   window.daggerheartPlus.manageFearTracker = manageFearTracker;
 
+  // Manage Token Counters visibility and lifecycle
+  async function manageTokenCounters() {
+    try {
+      const enabled = game.settings.get(MODULE_ID, "enableTokenCounters");
+      if (enabled) {
+        if (!window.daggerheartPlus.tokenCounter) {
+          const tc = new TokenCounterUI();
+          await tc.initialize();
+          window.daggerheartPlus.tokenCounter = tc;
+        }
+        // Ensure visible if a token is selected
+        try {
+          window.daggerheartPlus.tokenCounter.show?.();
+        } catch (_) {}
+      } else {
+        // Hide and dispose
+        try { window.daggerheartPlus.tokenCounter?.hide?.(); } catch (_) {}
+        try { window.daggerheartPlus.tokenCounter?.dispose?.(); } catch (_) {}
+        window.daggerheartPlus.tokenCounter = null;
+      }
+    } catch (e) {
+      console.error("Daggerheart Plus | Error managing token counters:", e);
+    }
+  }
+
+  window.daggerheartPlus.manageTokenCounters = manageTokenCounters;
+
   await manageFearTracker();
+  await manageTokenCounters();
 
   Hooks.on("updateSetting", async (setting) => {
     if (setting.namespace !== MODULE_ID) return;
@@ -793,6 +980,11 @@ Hooks.once("ready", async () => {
 
     if (setting.key === "enableFearTracker") {
       await manageFearTracker();
+      return;
+    }
+
+    if (setting.key === "enableTokenCounters") {
+      await manageTokenCounters();
       return;
     }
 
