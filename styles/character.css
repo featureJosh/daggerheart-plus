@@ -1749,8 +1749,8 @@
   --bar-max: max(var(--max, 1), 1);
   --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
   /* Static gradient revealed by covering the unfilled portion on the right */
-  background:
-    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+  background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
+      calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-damage-gradient);
   -webkit-appearance: none;
   appearance: none;
@@ -1884,9 +1884,8 @@
 
 .daggerheart-plus.sheet a.filter-button,
 .daggerheart-plus.sheet a[data-tooltip="Compendium Browser"] {
-  color: var(--dhp-primary);
+  color: var(--dhp-primary) !important;
 }
-
 .daggerheart-plus.sheet .tab .search-section {
   display: flex;
   gap: 10px;

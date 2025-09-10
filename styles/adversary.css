@@ -710,6 +710,22 @@
   border-radius: 8px;
 }
 
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"]:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: var(--dhp-primary);
+  transform: scale(1.02);
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"]:active {
+  transform: scale(0.98);
+}
+
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .status-number
