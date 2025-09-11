@@ -91,6 +91,8 @@
   "DHP.Settings.HoverDistance.Mode.alt_212": "Alternating (2/1/2)",
   "DHP.Settings.HoverDistance.Mode.illegal_inf": "Illegal (∞)",
   "DHP.Settings.HoverDistance.Mode.exact3d": "Exact 3D (√x²+y²+z²)",
+  "DHP.Settings.EnhancedChat.Enable.Name": "Enhanced Chat Styling",
+  "DHP.Settings.EnhancedChat.Enable.Hint": "Per-user. Enable the DH+ enhanced chat message styling.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {

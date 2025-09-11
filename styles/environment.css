@@ -227,7 +227,7 @@
   .environment-header-sheet
   .level-div
   .level-button.glow {
-  animation: pulse 2s infinite;
+  animation: DHPPulseGlow 2s infinite;
 }
 
 .daggerheart-plus.sheet.environment

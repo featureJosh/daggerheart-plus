@@ -1615,7 +1615,7 @@
   margin-top: 0.25em;
 }
 
-@keyframes pulse {
+@keyframes DHPPulseGlow {
   0% {
     box-shadow: 0 0 0 0 rgba(230, 168, 0, 0.7);
   }
@@ -1657,7 +1657,8 @@
   /* expose computed percent for children (e.g., split text overlay) */
   --bar-value: var(--value, 0);
   --bar-max: max(var(--max, 1), 1);
-  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
+  /* Clamp to 100% to avoid tiny rounding gaps at full value */
+  --percent: min(100%, calc((var(--bar-value) / var(--bar-max)) * 100%));
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
@@ -1862,10 +1863,12 @@
   /* Compute percent from provided CSS variables */
   --bar-value: var(--value, 0);
   --bar-max: max(var(--max, 1), 1);
-  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
+  /* Clamp to 100% to avoid tiny rounding gaps at full value */
+  --percent: min(100%, calc((var(--bar-value) / var(--bar-max)) * 100%));
   /* Static gradient revealed by covering the unfilled portion on the right */
+  /* Use max() so any slight over-100% rounds down to 0 width */
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
-      calc(100% - var(--percent)) 100% no-repeat,
+      max(0%, calc(100% - var(--percent))) 100% no-repeat,
     var(--dhp-damage-gradient);
   -webkit-appearance: none;
   appearance: none;
@@ -2157,7 +2160,7 @@
   .character-sidebar-sheet
   .progress-bar.stress-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
-      calc(100% - var(--percent)) 100% no-repeat,
+      max(0%, calc(100% - var(--percent))) 100% no-repeat,
     var(--dhp-stress-gradient, var(--dhp-damage-gradient));
 }
 
@@ -2165,7 +2168,7 @@
   .character-sidebar-sheet
   .progress-bar.armor-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
-      calc(100% - var(--percent)) 100% no-repeat,
+      max(0%, calc(100% - var(--percent))) 100% no-repeat,
     var(--dhp-armor-gradient, var(--dhp-damage-gradient));
 }
 

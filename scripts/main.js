@@ -6,6 +6,39 @@ import { HoverDistance } from "./applications/hover-distance.js";
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
 
+// Utility: enable/disable the Enhanced Chat stylesheet without reloading
+function applyEnhancedChatStyles(enabled) {
+  try {
+    // Toggle a body class for any future CSS scoping needs
+    document.body?.classList?.toggle?.("dhp-enhanced-chat-enabled", Boolean(enabled));
+  } catch (_) {}
+
+  try {
+    const links = Array.from(
+      document.querySelectorAll('link[rel="stylesheet"]')
+    ).filter((l) =>
+      typeof l?.href === "string" &&
+      l.href.includes("/modules/") &&
+      l.href.includes("daggerheart-plus") &&
+      l.href.includes("styles/enhanced-chat-message.css")
+    );
+
+    for (const link of links) {
+      // Prefer the standard "disabled" toggle if supported
+      if ("disabled" in link) {
+        link.disabled = !enabled;
+        continue;
+      }
+      // Fallback via media switching
+      const original = link.getAttribute("data-dhp-media") ?? link.media ?? "all";
+      if (!link.hasAttribute("data-dhp-media")) link.setAttribute("data-dhp-media", original);
+      link.media = enabled ? original : "not all";
+    }
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed toggling enhanced chat stylesheet", e);
+  }
+}
+
 Hooks.once("init", () => {
   console.log("Daggerheart Plus | Initializing module");
 
@@ -125,6 +158,25 @@ Hooks.once("init", () => {
   });
 
   console.log("Daggerheart Plus | Module settings registered");
+
+  // Per-user toggle for Enhanced Chat styling
+  game.settings.register(MODULE_ID, "enableEnhancedChat", {
+    name: game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Name") ||
+      "Enhanced Chat Styling",
+    hint: game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Hint") ||
+      "Enable redesigned DH+ styles for chat messages.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      try {
+        applyEnhancedChatStyles(Boolean(value));
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying enhanced chat toggle", e);
+      }
+    },
+  });
 
   // Register Hover Distance settings
   try {
@@ -310,6 +362,14 @@ Hooks.once("ready", () => {
 });
 
 Hooks.once("ready", async () => {
+  // Apply initial state of Enhanced Chat stylesheet
+  try {
+    const enabled = game.settings.get(MODULE_ID, "enableEnhancedChat");
+    applyEnhancedChatStyles(Boolean(enabled));
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply initial enhanced chat state", e);
+  }
+
   console.log("Daggerheart Plus | Module ready - creating enhanced sheets");
 
   const documentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
@@ -1278,6 +1338,15 @@ Hooks.once("ready", async () => {
 
     if (setting.key === "enableTokenCounters") {
       await manageTokenCounters();
+      return;
+    }
+
+    if (setting.key === "enableEnhancedChat") {
+      try {
+        applyEnhancedChatStyles(Boolean(setting.value));
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying enhanced chat toggle (updateSetting)", e);
+      }
       return;
     }
 
