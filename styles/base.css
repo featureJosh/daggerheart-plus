@@ -163,8 +163,6 @@ body.theme-dark .application.daggerheart.sheet {
 .daggerheart-plus.sheet input[type="number"],
 .daggerheart-plus.sheet textarea,
 .daggerheart-plus.sheet select {
-  background: var(--dhp-surface);
-  border: 1px solid var(--dhp-border);
   color: var(--dhp-text);
   border-radius: 4px;
   padding: 0.5em 0em;

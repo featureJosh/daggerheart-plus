@@ -6,33 +6,36 @@
 
     <div class="information-section">
         <div class="resources-section">
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.hitPoints.value" min="0" max='{{source.system.resources.hitPoints.max}}'
-                            value="{{source.system.resources.hitPoints.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{source.system.resources.hitPoints.max}}</p>
+            <div class="status-bar" style="--value: {{source.system.resources.hitPoints.value}}; --max: {{source.system.resources.hitPoints.max}};">
+                <div class='status-value' data-value="{{source.system.resources.hitPoints.value}}" data-max="{{source.system.resources.hitPoints.max}}">
                 </div>
-                <progress class='progress-bar' value='{{source.system.resources.hitPoints.value}}'
+                <progress
+                    class='progress-bar'
+                    data-field="resources.hitPoints.value"
                     max='{{source.system.resources.hitPoints.max}}'
-                    style='--value: {{source.system.resources.hitPoints.value}}; --max: {{source.system.resources.hitPoints.max}};'></progress>
+                    value='{{source.system.resources.hitPoints.value}}'
+                    style='--value: {{source.system.resources.hitPoints.value}}; --max: {{source.system.resources.hitPoints.max}};'
+                    aria-label='{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}'
+                ></progress>
                 <div class="status-label">
-                    <h4>{{localize 'DAGGERHEART.GENERAL.HitPoints.short'}}</h4>
+                    <h4>{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</h4>
                 </div>
 
             </div>
-            <div class="status-bar">
-                <div class='status-value'>
-                    <p><input class="bar-input" name="system.resources.stress.value" min="0" max='{{source.system.resources.stress.max}}'
-                            value="{{source.system.resources.stress.value}}" type="number"></p>
-                    <p>/</p>
-                    <p class="bar-label">{{source.system.resources.stress.max}}</p>
+            <div class="status-bar" style="--value: {{source.system.resources.stress.value}}; --max: {{source.system.resources.stress.max}};">
+                <div class='status-value' data-value="{{source.system.resources.stress.value}}" data-max="{{source.system.resources.stress.max}}">
                 </div>
-                <progress class='progress-bar stress-color' value='{{source.system.resources.stress.value}}'
+                <progress
+                    class='progress-bar stress-color'
+                    data-field="resources.stress.value"
+                    value='{{source.system.resources.stress.value}}'
+                    min="0"
                     max='{{source.system.resources.stress.max}}'
-                    style='--value: {{source.system.resources.stress.value}}; --max: {{source.system.resources.stress.max}};'></progress>
+                    style='--value: {{source.system.resources.stress.value}}; --max: {{source.system.resources.stress.max}};'
+                    aria-label='{{localize "DAGGERHEART.GENERAL.stress"}}'
+                ></progress>
                 <div class="status-label">
-                    <h4>{{localize 'DAGGERHEART.GENERAL.stress'}}</h4>
+                    <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
                 </div>
             </div>
         </div>

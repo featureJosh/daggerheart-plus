@@ -561,6 +561,11 @@ Hooks.once("ready", async () => {
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
       } catch {}
+
+      // Bind progress bar click handlers (HP, Stress, Armor)
+      try {
+        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+      } catch {}
     }
 
     // Remove custom section toggling; rely on system navigation
@@ -1039,6 +1044,11 @@ Hooks.once("ready", async () => {
           }
         } catch {}
       }
+
+      // Bind progress bar click handlers (HP, Stress)
+      try {
+        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+      } catch {}
     }
   };
 
@@ -1072,6 +1082,13 @@ Hooks.once("ready", async () => {
 
     get title() {
       return `${this.document.name} [DH+]`;
+    }
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+      try {
+        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+      } catch {}
     }
   };
 
@@ -1253,6 +1270,7 @@ Hooks.once("ready", async () => {
     bindThresholdClicks,
     sendDifficultyRollRequest,
     bindAdversaryDifficultyClick,
+    bindProgressBarClicks,
   };
 
   console.log(
@@ -1393,6 +1411,116 @@ Hooks.once("ready", async () => {
   if (game.user.isGM) {
     ui.notifications.info("Daggerheart Plus module loaded successfully!");
   }
+
+  // Bind click/right-click on resource progress bars to increment/decrement values
+  function bindProgressBarClicks(root, actor) {
+    try {
+      if (!root || !actor) return;
+      if (root._dhpProgressDelegationBound) return;
+
+      const adjustActorPath = async (path, delta, min = 0, max = undefined) => {
+        const current = foundry.utils.getProperty(actor.system, path);
+        const newVal = Math.max(min, Math.min(max ?? Number.MAX_SAFE_INTEGER, Number(current || 0) + delta));
+        const updatePath = `system.${path}`;
+        await actor.update({ [updatePath]: newVal });
+      };
+
+      const adjustArmorMarks = async (delta) => {
+        try {
+          // Find equipped armor item
+          const armorItem = actor.items?.find?.((i) => i.type === 'armor' && i.system?.equipped);
+          if (!armorItem) return false;
+          const current = Number(armorItem.system?.marks?.value ?? 0) || 0;
+          const max = Number(actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0) || 0;
+          const next = Math.max(0, Math.min(max, current + delta));
+          if (next === current) return true; // no change but handled
+          await armorItem.update({ 'system.marks.value': next });
+          // Keep actor armor resource in sync when present
+          try {
+            if (foundry.utils.hasProperty(actor.system, 'resources.armor.value')) {
+              await actor.update({ 'system.resources.armor.value': next });
+            }
+          } catch (_) {}
+          return true;
+        } catch (e) {
+          console.warn('Daggerheart Plus | adjustArmorMarks failed', e);
+          return false;
+        }
+      };
+
+      function resolveFieldAndBounds(container) {
+        if (!container) return {};
+        const bar = container.querySelector('progress.progress-bar, .progress-bar');
+        let field = bar?.getAttribute?.('name') || bar?.dataset?.field;
+        if (!field) {
+          // Look for an input with a system-backed name
+          const input = container.querySelector('input.bar-input, input.armor-marks-input, input[name^="system."]');
+          if (input?.name?.startsWith('system.')) field = input.name.replace(/^system\./, '');
+          else if (input?.name) field = input.name;
+        }
+        if (!field) {
+          // Infer from label text if present
+          const labelText = (container.querySelector('.status-label h4')?.textContent || '').toLowerCase();
+          if (labelText) {
+            if (labelText.includes('hit point') || labelText.includes('hp')) field = 'resources.hitPoints.value';
+            else if (labelText.includes('stress')) field = 'resources.stress.value';
+            else if (labelText.includes('armor')) field = 'resources.armor.value';
+          }
+        }
+        // Bounds
+        let min = 0;
+        let max;
+        if (bar) {
+          min = Number(bar.getAttribute('min') || 0) || 0;
+          const maxAttr = bar.getAttribute('max');
+          if (maxAttr != null) max = Number(maxAttr);
+        }
+        if (!max) {
+          try {
+            const styles = getComputedStyle(container);
+            const cssMax = Number((styles.getPropertyValue('--max') || '').trim());
+            if (!Number.isNaN(cssMax) && cssMax > 0) max = cssMax;
+          } catch {}
+        }
+        return { field, min, max };
+      }
+
+      const clickHandler = async (ev) => {
+        const container = ev.target?.closest?.('.status-bar');
+        if (!container || !root.contains(container)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        const { field, min, max } = resolveFieldAndBounds(container);
+        if (!field) return;
+        if (actor.type === 'character' && field === 'resources.armor.value') {
+          // Prefer adjusting equipped armor marks for characters
+          const ok = await adjustArmorMarks(+1);
+          if (ok) return;
+        }
+        await adjustActorPath(field, +1, min, max);
+      };
+
+      const contextHandler = async (ev) => {
+        const container = ev.target?.closest?.('.status-bar');
+        if (!container || !root.contains(container)) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        const { field, min, max } = resolveFieldAndBounds(container);
+        if (!field) return;
+        if (actor.type === 'character' && field === 'resources.armor.value') {
+          const ok = await adjustArmorMarks(-1);
+          if (ok) return;
+        }
+        await adjustActorPath(field, -1, min, max);
+      };
+
+      root.addEventListener('click', clickHandler, true);
+      root.addEventListener('contextmenu', contextHandler, true);
+      root._dhpProgressDelegationBound = true;
+    } catch (e) {
+      console.warn('Daggerheart Plus | bindProgressBarClicks failed', e);
+    }
+  }
 });
 
 // Inject non-interactive section headers into the Settings UI
@@ -1449,6 +1577,14 @@ Hooks.on("renderActorSheet", (app, html, data) => {
       );
     }
   }
+
+  // Bind progress bar clicks for any DH+ sheet to ensure interactivity
+  try {
+    const actor = app.document || app.object;
+    if (actor && app.element) {
+      window.daggerheartPlus?.bindProgressBarClicks?.(app.element, actor);
+    }
+  } catch (_) {}
 
   // Lock down Companion sheet resizing behavior
   if (app.constructor.name === "DaggerheartPlusCompanionSheet") {

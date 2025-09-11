@@ -11,26 +11,10 @@
             <div class="resources-section">
             <div class="status-bar" style="--value: {{document.system.resources.hitPoints.value}}; --max: {{document.system.resources.hitPoints.max}};">
                 <div class='status-value' data-value="{{document.system.resources.hitPoints.value}}" data-max="{{document.system.resources.hitPoints.max}}">
-                    <p>
-                        <input
-                            class="bar-input"
-                            name="system.resources.hitPoints.value"
-                            data-dtype="Number"
-                            inputmode="numeric"
-                            pattern="[0-9]*"
-                            min="0"
-                            max='{{document.system.resources.hitPoints.max}}'
-                            value="{{document.system.resources.hitPoints.value}}"
-                            type="number"
-                            aria-label='{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}'
-                            title='{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}'
-                        />
-                    </p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.hitPoints.max}}</p>
                 </div>
                 <progress
                     class='progress-bar'
+                    data-field="resources.hitPoints.value"
                     max='{{document.system.resources.hitPoints.max}}'
                     value='{{document.system.resources.hitPoints.value}}'
                     style='--value: {{document.system.resources.hitPoints.value}}; --max: {{document.system.resources.hitPoints.max}};'
@@ -43,26 +27,10 @@
             </div>
             <div class="status-bar" style="--value: {{document.system.resources.stress.value}}; --max: {{document.system.resources.stress.max}};">
                 <div class='status-value' data-value="{{document.system.resources.stress.value}}" data-max="{{document.system.resources.stress.max}}">
-                    <p>
-                        <input
-                            class="bar-input"
-                            name="system.resources.stress.value"
-                            data-dtype="Number"
-                            inputmode="numeric"
-                            pattern="[0-9]*"
-                            min="0"
-                            max='{{document.system.resources.stress.max}}'
-                            value="{{document.system.resources.stress.value}}"
-                            type="number"
-                            aria-label='{{localize "DAGGERHEART.GENERAL.stress"}}'
-                            title='{{localize "DAGGERHEART.GENERAL.stress"}}'
-                        />
-                    </p>
-                    <p>/</p>
-                    <p class="bar-label">{{document.system.resources.stress.max}}</p>
                 </div>
                 <progress
                     class='progress-bar stress-color'
+                    data-field="resources.stress.value"
                     value='{{document.system.resources.stress.value}}'
                     min="0"
                     max='{{document.system.resources.stress.max}}'
@@ -79,26 +47,10 @@
             {{#if document.system.resources.armor.max}}
                 <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};">
                     <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.resources.armor.max}}">
-                        <p>
-                            <input
-                                class="bar-input armor-marks-input"
-                                name="system.resources.armor.value"
-                                data-dtype="Number"
-                                inputmode="numeric"
-                                pattern="[0-9]*"
-                                min="0"
-                                max='{{document.system.resources.armor.max}}'
-                                value="{{document.system.resources.armor.value}}"
-                                type="number"
-                                aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
-                                title='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
-                            />
-                        </p>
-                        <p>/</p>
-                        <p class="bar-label">{{document.system.resources.armor.max}}</p>
                     </div>
                     <progress
                         class='progress-bar armor-color'
+                        data-field="resources.armor.value"
                         value='{{document.system.resources.armor.value}}'
                         max='{{document.system.resources.armor.max}}'
                         style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};'
@@ -112,26 +64,10 @@
                 {{#if document.system.armorScore}}
                     <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};">
                         <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.armorScore}}">
-                            <p>
-                                <input
-                                    class="bar-input armor-marks-input"
-                                    name="system.resources.armor.value"
-                                    data-dtype="Number"
-                                    inputmode="numeric"
-                                    pattern="[0-9]*"
-                                    min="0"
-                                    max='{{document.system.armorScore}}'
-                                    value="{{document.system.resources.armor.value}}"
-                                    type="number"
-                                    aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
-                                    title='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
-                                />
-                            </p>
-                            <p>/</p>
-                            <p class="bar-label">{{document.system.armorScore}}</p>
                         </div>
                         <progress
                             class='progress-bar armor-color'
+                            data-field="resources.armor.value"
                             value='{{document.system.resources.armor.value}}'
                             max='{{document.system.armorScore}}'
                             style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};'

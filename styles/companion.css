@@ -136,6 +136,10 @@
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
   min-width: 200px;
+  /* expose computed percent for children (e.g., split text overlay) */
+  --bar-value: var(--value, 0);
+  --bar-max: max(var(--max, 1), 1);
+  --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
 }
 
 .daggerheart-plus.sheet.companion
@@ -143,6 +147,21 @@
   .status-bar
   .status-label {
   order: -1;
+}
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-label
+  h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dhp-text-light);
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  text-align: center;
 }
 
 .daggerheart-plus.sheet.companion
@@ -172,6 +191,10 @@
   gap: 0.35rem;
   z-index: 2;
   width: 100%;
+  position: relative;
+  font-size: 1.25em;
+  font-weight: 600;
+  font-family: "Montserrat";
 }
 
 .daggerheart-plus.sheet.companion
@@ -207,6 +230,105 @@
   font-weight: 700;
 }
 
+/* Two-tone value text overlay that splits at the fill edge */
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value::before,
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value::after {
+  content: attr(data-value) " / " attr(data-max);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* allow input interaction */
+  font: inherit;
+  font-size: 1.25em;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+/* Right side (unfilled track) uses light text */
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value::before {
+  color: var(--dhp-text-light);
+  clip-path: inset(0 0 0 var(--percent));
+}
+
+/* Left side (filled bar) uses dark text for contrast on yellow */
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value::after {
+  /* dark-on-fill; tuned for bright gold bar */
+  color: #111111;
+  clip-path: inset(0 calc(100% - var(--percent)) 0 0);
+}
+
+/* Hide the underlying static text and show live input only when editing */
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value
+  > p:nth-child(2),
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value
+  > .bar-label {
+  display: none;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value:focus-within
+  > p:nth-child(2),
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value:focus-within
+  > .bar-label {
+  display: block;
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value
+  .bar-input {
+  opacity: 1;
+  color: transparent;
+  caret-color: var(--dhp-text);
+  outline: none;
+}
+
+/* When user is editing, reveal the input text and hide overlay */
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value:focus-within::before,
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value:focus-within::after {
+  content: "";
+}
+
+.daggerheart-plus.sheet.companion
+  .companion-header-sheet
+  .status-bar
+  .status-value:focus-within
+  .bar-input {
+  color: var(--dhp-text);
+}
+
 /* Progress Bar track and fill */
 .daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar {
   grid-area: 2 / 1 / 3 / 2;
@@ -218,8 +340,8 @@
   --bar-max: max(var(--max, 1), 1);
   --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
   /* Static gradient revealed by covering the unfilled portion on the right */
-  background:
-    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+  background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
+      calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-damage-gradient);
   -webkit-appearance: none;
   appearance: none;
@@ -236,15 +358,17 @@
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
   .progress-bar::-webkit-progress-value {
-  background: transparent;
+  background: transparent !important;
   border-radius: 6px;
+  box-shadow: none !important;
 }
 
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
   .progress-bar::-moz-progress-bar {
-  background: transparent;
+  background: transparent !important;
   border-radius: 6px;
+  box-shadow: none !important;
 }
 
 .daggerheart-plus.sheet.companion
@@ -253,7 +377,8 @@
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
   .progress-bar.stress-color::-moz-progress-bar {
-  background: transparent;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .daggerheart-plus.sheet.companion .char-info {
@@ -485,8 +610,9 @@
 .daggerheart-plus.sheet.companion
   .companion-sidebar-sheet
   .progress-bar::-webkit-progress-value {
-  background: linear-gradient(90deg, #ffeb3b 0%, #ff9800 50%, #f44336 100%);
+  background: transparent !important;
   border-radius: 4px;
+  box-shadow: none !important;
 }
 
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .status-label h4 {
@@ -650,14 +776,14 @@
 
 /* DH+ configurable gradient for stress progress bar (companion) */
 .daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar.stress-color {
-  background:
-    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+  background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
+      calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-stress-gradient, var(--dhp-damage-gradient));
 }
 
 /* If armor-color is used on companion in future, support now */
 .daggerheart-plus.sheet.companion .companion-header-sheet .progress-bar.armor-color {
-  background:
-    linear-gradient(var(--dhp-border), var(--dhp-border)) right / calc(100% - var(--percent)) 100% no-repeat,
+  background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
+      calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-armor-gradient, var(--dhp-damage-gradient));
 }

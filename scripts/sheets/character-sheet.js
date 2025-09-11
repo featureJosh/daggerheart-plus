@@ -66,7 +66,7 @@ export function createDaggerheartPlusCharacterSheet() {
       return `${this.document.name} [DH+]`;
     }
 
-    async _onRender(context, options) {
+  async _onRender(context, options) {
       await super._onRender(context, options);
       await this._createFloatingNavigation();
       this._showSection(this.currentSection);
@@ -75,6 +75,15 @@ export function createDaggerheartPlusCharacterSheet() {
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
       } catch (_) {}
+
+      // Bind left/right click on progress bars (HP, Stress, Armor)
+      try {
+        window.daggerheartPlus?.bindProgressBarClicks?.(
+          this.element,
+          this.document
+        );
+      } catch (_) {}
+
 
       // Bind right-side tabs if present
       const root = this.element;
@@ -145,7 +154,14 @@ export function createDaggerheartPlusCharacterSheet() {
           }
         } catch {}
       }
+
+      // Bind progress bar click handlers (HP, Stress, Armor)
+      try {
+        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+      } catch (_) {}
     }
+
+    
 
     async _createFloatingNavigation() {
       if (this.floatingNav) {
