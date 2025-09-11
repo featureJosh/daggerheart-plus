@@ -338,16 +338,22 @@ export class HoverDistance {
 
   static _drawLabel(token, text) {
     try {
+      const base = Math.max(1, Math.min(token?.w || 0, token?.h || 0) || (canvas?.dimensions?.size ?? 100));
+      const fontSize = Math.round(Math.max(12, Math.min(base * 0.22, 48)));
+      const strokeThickness = Math.round(Math.max(2, Math.min(fontSize / 6, 8)));
+      const shadowBlur = Math.max(2, Math.round(strokeThickness / 2));
+      const shadowDist = Math.max(1, Math.round(strokeThickness / 2));
+
       const style = new PIXI.TextStyle({
         fill: 0xffffff,
-        fontSize: 16,
+        fontSize,
         fontWeight: "bold",
         stroke: 0x000000,
-        strokeThickness: 4,
+        strokeThickness,
         dropShadow: true,
         dropShadowColor: 0x000000,
-        dropShadowBlur: 2,
-        dropShadowDistance: 1,
+        dropShadowBlur: shadowBlur,
+        dropShadowDistance: shadowDist,
         align: "center",
       });
 
@@ -355,19 +361,20 @@ export class HoverDistance {
       HoverDistance._clearDistance(token);
 
       const label = new PIXI.Text(text, style);
-      label.resolution = 2;
+      label.resolution = Math.max(2, Math.ceil((globalThis?.devicePixelRatio) || 2));
 
       // Position relative to token
       const posPref = game.settings.get(MODULE_ID, "hoverDistancePosition") || "center";
       const w = token.w;
       const h = token.h;
+      const offset = Math.round(Math.max(10, fontSize * 0.75));
       label.anchor.set(0.5, 0.5);
       switch (posPref) {
         case "top":
-          label.position.set(w / 2, -12);
+          label.position.set(w / 2, -offset);
           break;
         case "bottom":
-          label.position.set(w / 2, h + 12);
+          label.position.set(w / 2, h + offset);
           break;
         case "center":
         default:
