@@ -67,6 +67,7 @@
 
 .dhp-tooltip-card img.tooltip-image {
   width: 100%;
+  height: 100%;
   display: block;
   aspect-ratio: 4 / 3;
   object-fit: cover;
@@ -118,8 +119,15 @@
   animation: tooltip-image-shine 1.2s ease-out both;
 }
 
+/* Removed hovered trigger shine per feedback */
+
 @media (prefers-reduced-motion: reduce) {
   .dhp-tooltip-card.tooltip-shine .tooltip-image-shine {
+    animation: none;
+    opacity: 0;
+  }
+  .dhp-hover-shine > .tooltip-image-shine,
+  .dhp-hover-shine.tooltip-image-shine {
     animation: none;
     opacity: 0;
   }

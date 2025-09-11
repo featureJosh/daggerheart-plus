@@ -1,6 +1,7 @@
 ﻿import { CounterUI } from "./applications/counter-ui.js";
 import { TokenCounterUI } from "./applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "./applications/enhanced-dice-styling.js";
+import { HoverDistance } from "./applications/hover-distance.js";
 
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
@@ -125,6 +126,13 @@ Hooks.once("init", () => {
 
   console.log("Daggerheart Plus | Module settings registered");
 
+  // Register Hover Distance settings
+  try {
+    HoverDistance.registerSettings();
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to register HoverDistance settings", e);
+  }
+
   // Preload HBS templates used by inline rails
   try {
     loadTemplates([
@@ -152,7 +160,7 @@ Hooks.once("init", () => {
                
                this.tooltip.classList.add("dhp-tooltip-card");
                
-               const images = this.tooltip.querySelectorAll('.tooltip-image');
+              const images = this.tooltip.querySelectorAll('.tooltip-image');
                console.log("DH+ Tooltip Manager: Found images in tooltip:", images.length, images);
 
                const tooltipEl = this.tooltip;
@@ -176,24 +184,25 @@ Hooks.once("init", () => {
                const currentKey = buildKey();
 
                // Controller to manage pending timers/cleanup across rapid hovers
-               const prevCtrl = tooltipEl._dhpShineCtrl;
-               if (prevCtrl && prevCtrl.key !== currentKey) {
-                 try {
-                   if (prevCtrl.startTimer) clearTimeout(prevCtrl.startTimer);
-                 } catch {}
-                 try {
-                   if (prevCtrl.cleanupTimer) clearTimeout(prevCtrl.cleanupTimer);
-                 } catch {}
-                 try {
-                   tooltipEl.classList.remove('tooltip-shine');
-                 } catch {}
-                 try {
-                   prevCtrl.overlays?.forEach?.((el) => el.remove());
-                 } catch {}
-                 delete tooltipEl.dataset.dhpShineRunning;
-                 delete tooltipEl.dataset.dhpShineDone;
-                 tooltipEl._dhpShineCtrl = null;
-               }
+              const prevCtrl = tooltipEl._dhpShineCtrl;
+              if (prevCtrl && prevCtrl.key !== currentKey) {
+                try {
+                  if (prevCtrl.startTimer) clearTimeout(prevCtrl.startTimer);
+                } catch {}
+                try {
+                  if (prevCtrl.cleanupTimer) clearTimeout(prevCtrl.cleanupTimer);
+                } catch {}
+                try {
+                  tooltipEl.classList.remove('tooltip-shine');
+                } catch {}
+                
+                try {
+                  prevCtrl.overlays?.forEach?.((el) => el.remove());
+                } catch {}
+                delete tooltipEl.dataset.dhpShineRunning;
+                delete tooltipEl.dataset.dhpShineDone;
+                tooltipEl._dhpShineCtrl = null;
+              }
 
                // If we already handled this exact content and it's done, allow replay on new hover by resetting on activation
                let ctrl = tooltipEl._dhpShineCtrl;
@@ -205,37 +214,40 @@ Hooks.once("init", () => {
                  return result;
                }
 
-               // Prepare shine overlays for each image
-               ctrl.overlays = [];
-               try {
-                 images.forEach((img) => {
-                   const container = img.closest?.('.tooltip-hero') || img.parentElement;
-                   if (!container) return;
-                   try {
-                     const cs = getComputedStyle(container);
-                     if (cs?.position === 'static') container.style.position = 'relative';
-                   } catch (_) {
-                     if (!container.style.position) container.style.position = 'relative';
-                   }
-                   container.querySelectorAll?.('.tooltip-image-shine')?.forEach((el) => el.remove());
-                   const overlay = document.createElement('div');
-                   overlay.className = 'tooltip-image-shine';
-                   container.appendChild(overlay);
-                   ctrl.overlays.push(overlay);
-                 });
-               } catch (e) {
-                 console.warn('DH+ Tooltip Manager: Failed to prepare shine overlays', e);
-               }
+              // Prepare shine overlays for each image, plus hovered trigger when applicable
+              ctrl.overlays = [];
+              try {
+                images.forEach((img) => {
+                  const container = img.closest?.('.tooltip-hero') || img.parentElement;
+                  if (!container) return;
+                  try {
+                    const cs = getComputedStyle(container);
+                    if (cs?.position === 'static') container.style.position = 'relative';
+                  } catch (_) {
+                    if (!container.style.position) container.style.position = 'relative';
+                  }
+                  container.querySelectorAll?.('.tooltip-image-shine')?.forEach((el) => el.remove());
+                  const overlay = document.createElement('div');
+                  overlay.className = 'tooltip-image-shine';
+                  container.appendChild(overlay);
+                  ctrl.overlays.push(overlay);
+                });
+
+                // Removed hovered trigger shine overlay per user feedback
+              } catch (e) {
+                console.warn('DH+ Tooltip Manager: Failed to prepare shine overlays', e);
+              }
 
                if (!ctrl.overlays.length) return result;
 
-               // Schedule start after 250ms; cancel if content changes again
-               ctrl.startTimer = setTimeout(() => {
-                 if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
-                 if (ctrl.done) return;
-                 ctrl.running = true;
-                 tooltipEl.dataset.dhpShineRunning = '1';
-                 tooltipEl.classList.add('tooltip-shine');
+              // Schedule start after 150ms; cancel if content changes again
+              ctrl.startTimer = setTimeout(() => {
+                if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
+                if (ctrl.done) return;
+                ctrl.running = true;
+                tooltipEl.dataset.dhpShineRunning = '1';
+                tooltipEl.classList.add('tooltip-shine');
+                // Removed hovered trigger shine class per user feedback
 
                  let remaining = ctrl.overlays.length;
                  const finalize = () => {
@@ -243,11 +255,12 @@ Hooks.once("init", () => {
                    if (ctrl.done) return;
                    ctrl.done = true;
                    ctrl.running = false;
-                   tooltipEl.classList.remove('tooltip-shine');
-                   delete tooltipEl.dataset.dhpShineRunning;
-                   tooltipEl.dataset.dhpShineDone = '1';
-                   try { ctrl.overlays.forEach((el) => el.remove()); } catch {}
-                 };
+                  tooltipEl.classList.remove('tooltip-shine');
+                  
+                  delete tooltipEl.dataset.dhpShineRunning;
+                  tooltipEl.dataset.dhpShineDone = '1';
+                  try { ctrl.overlays.forEach((el) => el.remove()); } catch {}
+                };
 
                  ctrl.overlays.forEach((el) => {
                    const t = setTimeout(finalize, 1300);
@@ -257,7 +270,7 @@ Hooks.once("init", () => {
                      if (remaining <= 0) finalize();
                    }, { once: true });
                  });
-               }, 250);
+               }, 150);
              } else {
                console.log("DH+ Tooltip Manager: No tooltip element found");
              }
@@ -283,6 +296,16 @@ Hooks.once("init", () => {
     }
   } catch (e) {
     console.warn("Daggerheart Plus | Failed to enhance tooltips at init", e);
+  }
+});
+
+// Activate Hover Distance hooks once Foundry is ready
+Hooks.once("ready", () => {
+  try {
+    HoverDistance.initHooks();
+    console.log("Daggerheart Plus | Hover Distance feature enabled");
+  } catch (e) {
+    console.warn("Daggerheart Plus | Hover Distance failed to initialize", e);
   }
 });
 
@@ -1312,6 +1335,30 @@ Hooks.once("ready", async () => {
 
   if (game.user.isGM) {
     ui.notifications.info("Daggerheart Plus module loaded successfully!");
+  }
+});
+
+// Inject non-interactive section headers into the Settings UI
+Hooks.on("renderSettingsConfig", (app, html) => {
+  try {
+    const $root = html && html.find ? html : $(html);
+    if (!$root || !$root.length) return;
+
+    const insertHeader = (beforeKey, title) => {
+      const selector = `input[name='${MODULE_ID}.${beforeKey}']`;
+      const $input = $root.find(selector).first();
+      const $group = $input.closest('.form-group');
+      if (!$group.length) return;
+      if ($group.prev().hasClass('dhp-settings-header')) return;
+      const block = `<div class="dhp-settings-header"><h4 style="margin-top: 0; border-bottom: 1px solid #888; padding-bottom: 4px; margin-bottom: 6px;">${title}</h4></div>`;
+      $group.before(block);
+    };
+
+    insertHeader("enableFearTracker", "UI Enhancements");
+    insertHeader("enableHoverDistance", "Hover Distance");
+    insertHeader("hpGradient", "Styling: Progress Bar Gradients");
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed injecting settings headers", e);
   }
 });
 

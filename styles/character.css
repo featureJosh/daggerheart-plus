@@ -1135,14 +1135,14 @@
   .inventory-item {
   position: relative !important;
   padding: 0 !important; /* content overlays handle padding */
-  height: 72px !important; /* compact default height */
-  min-width: 200px;
+  height: 100px !important; /* compact default height */
+  min-width: 210px;
   border-radius: 10px !important;
   overflow: hidden !important;
   /* expects url(...) stored in --sidebar-card-bg */
   background: var(--sidebar-card-bg) !important;
   background-size: cover !important;
-  background-position: center !important;
+  background-position: top center !important;
   background-repeat: no-repeat !important;
   border: 1px solid var(--dhp-border) !important;
   box-shadow: 0 1px 2px var(--dhp-shadow) !important;
@@ -1161,7 +1161,7 @@
   .floating-rail-left
   .loadout-section
   .inventory-item:hover {
-  height: 85px !important; /* expand on hover */
+  height: 168px !important; /* expand on hover */
   border-color: var(--dhp-primary) !important;
   /* Delay only the height transition (3rd in the list above) */
   transition-delay: 0ms, 0ms, 350ms, 0ms !important;
@@ -2066,7 +2066,7 @@
   text-align: center;
   min-width: 0;
   width: 2em;
-  height: 1em;
+  height: 1.75em;
   border-radius: 8px;
   border: 1px solid var(--dhp-border);
   background: var(--dhp-background);
