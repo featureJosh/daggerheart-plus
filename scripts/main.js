@@ -6,36 +6,24 @@ import { HoverDistance } from "./applications/hover-distance.js";
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
 
-// Utility: enable/disable the Enhanced Chat stylesheet without reloading
+// Utility: add or remove the enhanced chat stylesheet link
 function applyEnhancedChatStyles(enabled) {
   try {
-    // Toggle a body class for any future CSS scoping needs
-    document.body?.classList?.toggle?.("dhp-enhanced-chat-enabled", Boolean(enabled));
-  } catch (_) {}
-
-  try {
-    const links = Array.from(
-      document.querySelectorAll('link[rel="stylesheet"]')
-    ).filter((l) =>
-      typeof l?.href === "string" &&
-      l.href.includes("/modules/") &&
-      l.href.includes("daggerheart-plus") &&
-      l.href.includes("styles/enhanced-chat-message.css")
-    );
-
-    for (const link of links) {
-      // Prefer the standard "disabled" toggle if supported
-      if ("disabled" in link) {
-        link.disabled = !enabled;
-        continue;
+    const LINK_ID = "dhp-enhanced-chat-style";
+    let link = document.getElementById(LINK_ID);
+    if (enabled) {
+      if (!link) {
+        link = document.createElement("link");
+        link.id = LINK_ID;
+        link.rel = "stylesheet";
+        link.href = `modules/${MODULE_ID}/styles/enhanced-chat-message.css`;
+        document.head.appendChild(link);
       }
-      // Fallback via media switching
-      const original = link.getAttribute("data-dhp-media") ?? link.media ?? "all";
-      if (!link.hasAttribute("data-dhp-media")) link.setAttribute("data-dhp-media", original);
-      link.media = enabled ? original : "not all";
+    } else if (link) {
+      link.remove();
     }
   } catch (e) {
-    console.warn("Daggerheart Plus | Failed toggling enhanced chat stylesheet", e);
+    console.warn("Daggerheart Plus | Failed to toggle enhanced chat stylesheet link", e);
   }
 }
 
@@ -362,7 +350,7 @@ Hooks.once("ready", () => {
 });
 
 Hooks.once("ready", async () => {
-  // Apply initial state of Enhanced Chat stylesheet
+  // Apply initial state of Enhanced Chat stylesheet by injecting/removing link
   try {
     const enabled = game.settings.get(MODULE_ID, "enableEnhancedChat");
     applyEnhancedChatStyles(Boolean(enabled));

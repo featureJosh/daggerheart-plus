@@ -506,36 +506,92 @@
 }
 
 /* Override built-in chevron color for each roll type (color only) */
-.daggerheart .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:before,
-#chat-notifications .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:before,
-.daggerheart .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:after,
-#chat-notifications .chat-message.duality.hope div[data-action="expandRoll"] .roll-part-header > div > span:after {
+.daggerheart
+  .chat-message.duality.hope
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+#chat-notifications
+  .chat-message.duality.hope
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+.daggerheart
+  .chat-message.duality.hope
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after,
+#chat-notifications
+  .chat-message.duality.hope
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after {
   color: var(--dhc-hope);
 }
 
-.daggerheart .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:before,
-#chat-notifications .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:before,
-.daggerheart .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:after,
-#chat-notifications .chat-message.duality.fear div[data-action="expandRoll"] .roll-part-header > div > span:after {
+.daggerheart
+  .chat-message.duality.fear
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+#chat-notifications
+  .chat-message.duality.fear
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+.daggerheart
+  .chat-message.duality.fear
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after,
+#chat-notifications
+  .chat-message.duality.fear
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after {
   color: var(--dhc-fear);
 }
 
-.daggerheart .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:before,
-#chat-notifications .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:before,
-.daggerheart .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:after,
-#chat-notifications .chat-message.duality.critical div[data-action="expandRoll"] .roll-part-header > div > span:after {
+.daggerheart
+  .chat-message.duality.critical
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+#chat-notifications
+  .chat-message.duality.critical
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:before,
+.daggerheart
+  .chat-message.duality.critical
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after,
+#chat-notifications
+  .chat-message.duality.critical
+  div[data-action="expandRoll"]
+  .roll-part-header
+  > div
+  > span:after {
   color: var(--dhc-crit);
 }
 
 /* Dice result area */
 .dice-result {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.02) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  border-radius: 8px;
-  padding: 10px 6px 8px;
+  background: none;
+  border-radius: 0;
+  padding: 0;
 }
 .dice-tooltip {
   max-width: 100%;
@@ -639,14 +695,14 @@
   border: 1px solid var(--dhc-border);
   border-radius: 999px;
   padding: 6px 12px;
-  margin: 8px auto 0;
+  margin: 8px auto;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
 
 .roll-difficulty {
   display: inline-block;
-  margin: 8px auto 0;
+  margin: 8px auto;
   padding: 6px 12px;
   border-radius: 999px;
   font-weight: 900;
