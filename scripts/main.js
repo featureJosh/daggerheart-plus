@@ -23,7 +23,10 @@ function applyEnhancedChatStyles(enabled) {
       link.remove();
     }
   } catch (e) {
-    console.warn("Daggerheart Plus | Failed to toggle enhanced chat stylesheet link", e);
+    console.warn(
+      "Daggerheart Plus | Failed to toggle enhanced chat stylesheet link",
+      e
+    );
   }
 }
 
@@ -63,12 +66,18 @@ Hooks.once("init", () => {
     default: true,
     onChange: (value) => {
       try {
-        console.log("Daggerheart Plus | Token counters setting changed:", value);
+        console.log(
+          "Daggerheart Plus | Token counters setting changed:",
+          value
+        );
         if (window.daggerheartPlus?.manageTokenCounters) {
           window.daggerheartPlus.manageTokenCounters();
         }
       } catch (e) {
-        console.warn("Daggerheart Plus | Failed applying token counters toggle", e);
+        console.warn(
+          "Daggerheart Plus | Failed applying token counters toggle",
+          e
+        );
       }
     },
   });
@@ -149,9 +158,11 @@ Hooks.once("init", () => {
 
   // Per-user toggle for Enhanced Chat styling
   game.settings.register(MODULE_ID, "enableEnhancedChat", {
-    name: game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Name") ||
+    name:
+      game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Name") ||
       "Enhanced Chat Styling",
-    hint: game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Hint") ||
+    hint:
+      game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Hint") ||
       "Enable redesigned DH+ styles for chat messages.",
     scope: "client",
     config: true,
@@ -161,7 +172,10 @@ Hooks.once("init", () => {
       try {
         applyEnhancedChatStyles(Boolean(value));
       } catch (e) {
-        console.warn("Daggerheart Plus | Failed applying enhanced chat toggle", e);
+        console.warn(
+          "Daggerheart Plus | Failed applying enhanced chat toggle",
+          e
+        );
       }
     },
   });
@@ -170,7 +184,10 @@ Hooks.once("init", () => {
   try {
     HoverDistance.registerSettings();
   } catch (e) {
-    console.warn("Daggerheart Plus | Failed to register HoverDistance settings", e);
+    console.warn(
+      "Daggerheart Plus | Failed to register HoverDistance settings",
+      e
+    );
   }
 
   // Preload HBS templates used by inline rails
@@ -187,55 +204,79 @@ Hooks.once("init", () => {
   try {
     const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
     if (BaseTooltipManager) {
-       class DHPTooltipCardManager extends BaseTooltipManager {
-         async activate(element, options = {}) {
-           console.log("DH+ Tooltip Manager: activate() called", element, options);
-           const result = await super.activate(element, options);
-           console.log("DH+ Tooltip Manager: super.activate() completed", result);
-           
-           try {
-             if (this.tooltip) {
-               console.log("DH+ Tooltip Manager: Found tooltip element", this.tooltip);
-               console.log("DH+ Tooltip Manager: Tooltip innerHTML preview:", this.tooltip.innerHTML.substring(0, 200));
-               
-               this.tooltip.classList.add("dhp-tooltip-card");
-               
-              const images = this.tooltip.querySelectorAll('.tooltip-image');
-               console.log("DH+ Tooltip Manager: Found images in tooltip:", images.length, images);
+      class DHPTooltipCardManager extends BaseTooltipManager {
+        async activate(element, options = {}) {
+          console.log(
+            "DH+ Tooltip Manager: activate() called",
+            element,
+            options
+          );
+          const result = await super.activate(element, options);
+          console.log(
+            "DH+ Tooltip Manager: super.activate() completed",
+            result
+          );
 
-               const tooltipEl = this.tooltip;
+          try {
+            if (this.tooltip) {
+              console.log(
+                "DH+ Tooltip Manager: Found tooltip element",
+                this.tooltip
+              );
+              console.log(
+                "DH+ Tooltip Manager: Tooltip innerHTML preview:",
+                this.tooltip.innerHTML.substring(0, 200)
+              );
 
-               // Build a content signature so the shine plays for new content
-               const buildKey = () => {
-                 try {
-                   const parts = [];
-                   images.forEach((img) => {
-                     parts.push(
-                       img.getAttribute('src') || img.currentSrc || img.dataset?.src || ''
-                     );
-                   });
-                   const title = tooltipEl.querySelector('.tooltip-title')?.textContent?.trim() || '';
-                   parts.push(title);
-                   return parts.join('|');
-                 } catch (_) {
-                   return String(Date.now());
-                 }
-               };
-               const currentKey = buildKey();
+              this.tooltip.classList.add("dhp-tooltip-card");
 
-               // Controller to manage pending timers/cleanup across rapid hovers
+              const images = this.tooltip.querySelectorAll(".tooltip-image");
+              console.log(
+                "DH+ Tooltip Manager: Found images in tooltip:",
+                images.length,
+                images
+              );
+
+              const tooltipEl = this.tooltip;
+
+              // Build a content signature so the shine plays for new content
+              const buildKey = () => {
+                try {
+                  const parts = [];
+                  images.forEach((img) => {
+                    parts.push(
+                      img.getAttribute("src") ||
+                        img.currentSrc ||
+                        img.dataset?.src ||
+                        ""
+                    );
+                  });
+                  const title =
+                    tooltipEl
+                      .querySelector(".tooltip-title")
+                      ?.textContent?.trim() || "";
+                  parts.push(title);
+                  return parts.join("|");
+                } catch (_) {
+                  return String(Date.now());
+                }
+              };
+              const currentKey = buildKey();
+
+              // Controller to manage pending timers/cleanup across rapid hovers
               const prevCtrl = tooltipEl._dhpShineCtrl;
               if (prevCtrl && prevCtrl.key !== currentKey) {
                 try {
                   if (prevCtrl.startTimer) clearTimeout(prevCtrl.startTimer);
                 } catch {}
                 try {
-                  if (prevCtrl.cleanupTimer) clearTimeout(prevCtrl.cleanupTimer);
+                  if (prevCtrl.cleanupTimer)
+                    clearTimeout(prevCtrl.cleanupTimer);
                 } catch {}
                 try {
-                  tooltipEl.classList.remove('tooltip-shine');
+                  tooltipEl.classList.remove("tooltip-shine");
                 } catch {}
-                
+
                 try {
                   prevCtrl.overlays?.forEach?.((el) => el.remove());
                 } catch {}
@@ -244,90 +285,118 @@ Hooks.once("init", () => {
                 tooltipEl._dhpShineCtrl = null;
               }
 
-               // If we already handled this exact content and it's done, allow replay on new hover by resetting on activation
-               let ctrl = tooltipEl._dhpShineCtrl;
-               if (!ctrl || ctrl.key !== currentKey) {
-                 ctrl = { key: currentKey, overlays: [], running: false, done: false };
-                 tooltipEl._dhpShineCtrl = ctrl;
-               } else if (ctrl.running || ctrl.done) {
-                 // Already running/done for this exact content instance
-                 return result;
-               }
+              // If we already handled this exact content and it's done, allow replay on new hover by resetting on activation
+              let ctrl = tooltipEl._dhpShineCtrl;
+              if (!ctrl || ctrl.key !== currentKey) {
+                ctrl = {
+                  key: currentKey,
+                  overlays: [],
+                  running: false,
+                  done: false,
+                };
+                tooltipEl._dhpShineCtrl = ctrl;
+              } else if (ctrl.running || ctrl.done) {
+                // Already running/done for this exact content instance
+                return result;
+              }
 
               // Prepare shine overlays for each image, plus hovered trigger when applicable
               ctrl.overlays = [];
               try {
                 images.forEach((img) => {
-                  const container = img.closest?.('.tooltip-hero') || img.parentElement;
+                  const container =
+                    img.closest?.(".tooltip-hero") || img.parentElement;
                   if (!container) return;
                   try {
                     const cs = getComputedStyle(container);
-                    if (cs?.position === 'static') container.style.position = 'relative';
+                    if (cs?.position === "static")
+                      container.style.position = "relative";
                   } catch (_) {
-                    if (!container.style.position) container.style.position = 'relative';
+                    if (!container.style.position)
+                      container.style.position = "relative";
                   }
-                  container.querySelectorAll?.('.tooltip-image-shine')?.forEach((el) => el.remove());
-                  const overlay = document.createElement('div');
-                  overlay.className = 'tooltip-image-shine';
+                  container
+                    .querySelectorAll?.(".tooltip-image-shine")
+                    ?.forEach((el) => el.remove());
+                  const overlay = document.createElement("div");
+                  overlay.className = "tooltip-image-shine";
                   container.appendChild(overlay);
                   ctrl.overlays.push(overlay);
                 });
 
                 // Removed hovered trigger shine overlay per user feedback
               } catch (e) {
-                console.warn('DH+ Tooltip Manager: Failed to prepare shine overlays', e);
+                console.warn(
+                  "DH+ Tooltip Manager: Failed to prepare shine overlays",
+                  e
+                );
               }
 
-               if (!ctrl.overlays.length) return result;
+              if (!ctrl.overlays.length) return result;
 
               // Schedule start after 150ms; cancel if content changes again
               ctrl.startTimer = setTimeout(() => {
                 if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
                 if (ctrl.done) return;
                 ctrl.running = true;
-                tooltipEl.dataset.dhpShineRunning = '1';
-                tooltipEl.classList.add('tooltip-shine');
+                tooltipEl.dataset.dhpShineRunning = "1";
+                tooltipEl.classList.add("tooltip-shine");
                 // Removed hovered trigger shine class per user feedback
 
-                 let remaining = ctrl.overlays.length;
-                 const finalize = () => {
-                   if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
-                   if (ctrl.done) return;
-                   ctrl.done = true;
-                   ctrl.running = false;
-                  tooltipEl.classList.remove('tooltip-shine');
-                  
+                let remaining = ctrl.overlays.length;
+                const finalize = () => {
+                  if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
+                  if (ctrl.done) return;
+                  ctrl.done = true;
+                  ctrl.running = false;
+                  tooltipEl.classList.remove("tooltip-shine");
+
                   delete tooltipEl.dataset.dhpShineRunning;
-                  tooltipEl.dataset.dhpShineDone = '1';
-                  try { ctrl.overlays.forEach((el) => el.remove()); } catch {}
+                  tooltipEl.dataset.dhpShineDone = "1";
+                  try {
+                    ctrl.overlays.forEach((el) => el.remove());
+                  } catch {}
                 };
 
-                 ctrl.overlays.forEach((el) => {
-                   const t = setTimeout(finalize, 1300);
-                   el.addEventListener('animationend', () => {
-                     clearTimeout(t);
-                     remaining -= 1;
-                     if (remaining <= 0) finalize();
-                   }, { once: true });
-                 });
-               }, 150);
-             } else {
-               console.log("DH+ Tooltip Manager: No tooltip element found");
-             }
-           } catch (e) {
-             console.error("DH+ Tooltip Manager: Error applying classes", e);
-           }
-           return result;
-         }
-       }
+                ctrl.overlays.forEach((el) => {
+                  const t = setTimeout(finalize, 1300);
+                  el.addEventListener(
+                    "animationend",
+                    () => {
+                      clearTimeout(t);
+                      remaining -= 1;
+                      if (remaining <= 0) finalize();
+                    },
+                    { once: true }
+                  );
+                });
+              }, 150);
+            } else {
+              console.log("DH+ Tooltip Manager: No tooltip element found");
+            }
+          } catch (e) {
+            console.error("DH+ Tooltip Manager: Error applying classes", e);
+          }
+          return result;
+        }
+      }
       CONFIG.ux.TooltipManager = DHPTooltipCardManager;
       console.log("Daggerheart Plus | Tooltip enhancement applied (init)");
-      console.log("DH+ Tooltip Manager: Registered manager", CONFIG.ux.TooltipManager);
-      
+      console.log(
+        "DH+ Tooltip Manager: Registered manager",
+        CONFIG.ux.TooltipManager
+      );
+
       // Test if we can access the manager later
       setTimeout(() => {
-        console.log("DH+ Tooltip Manager: Current manager after timeout", CONFIG.ux.TooltipManager);
-        console.log("DH+ Tooltip Manager: Manager is our class?", CONFIG.ux.TooltipManager === DHPTooltipCardManager);
+        console.log(
+          "DH+ Tooltip Manager: Current manager after timeout",
+          CONFIG.ux.TooltipManager
+        );
+        console.log(
+          "DH+ Tooltip Manager: Manager is our class?",
+          CONFIG.ux.TooltipManager === DHPTooltipCardManager
+        );
       }, 5000);
     } else {
       console.warn(
@@ -355,7 +424,10 @@ Hooks.once("ready", async () => {
     const enabled = game.settings.get(MODULE_ID, "enableEnhancedChat");
     applyEnhancedChatStyles(Boolean(enabled));
   } catch (e) {
-    console.warn("Daggerheart Plus | Failed to apply initial enhanced chat state", e);
+    console.warn(
+      "Daggerheart Plus | Failed to apply initial enhanced chat state",
+      e
+    );
   }
 
   console.log("Daggerheart Plus | Module ready - creating enhanced sheets");
@@ -501,7 +573,10 @@ Hooks.once("ready", async () => {
 
       // Bind threshold HP quick marks in header (1/2/3 HP)
       try {
-        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindThresholdClicks?.(
+          this.element,
+          this.document
+        );
       } catch (_) {
         try {
           const root = this.element;
@@ -559,12 +634,18 @@ Hooks.once("ready", async () => {
 
       // Re-bind to catch any late-rendered header content
       try {
-        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindThresholdClicks?.(
+          this.element,
+          this.document
+        );
       } catch {}
 
       // Bind progress bar click handlers (HP, Stress, Armor)
       try {
-        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindProgressBarClicks?.(
+          this.element,
+          this.document
+        );
       } catch {}
     }
 
@@ -636,11 +717,15 @@ Hooks.once("ready", async () => {
           try {
             item.setAttribute("data-action", "useItem");
           } catch {}
-          
+
           // Attach rich tooltip when possible using system manager patterns
           try {
             if (!item.hasAttribute("data-tooltip")) {
-              const uuid = doc?.uuid || (itemId && this.document?.uuid ? `${this.document.uuid}.Item.${itemId}` : null);
+              const uuid =
+                doc?.uuid ||
+                (itemId && this.document?.uuid
+                  ? `${this.document.uuid}.Item.${itemId}`
+                  : null);
               if (uuid) item.setAttribute("data-tooltip", `#item#${uuid}`);
             }
           } catch {}
@@ -698,61 +783,80 @@ Hooks.once("ready", async () => {
       try {
         const root = this.element;
         if (!root) return;
-        const container = root.querySelector('.tab.loadout');
+        const container = root.querySelector(".tab.loadout");
         if (!container) return;
 
         const apply = (li) => {
-          if (!li || !li.classList?.contains?.('card-item')) return;
+          if (!li || !li.classList?.contains?.("card-item")) return;
           try {
             const uuid = li?.dataset?.itemUuid;
             if (!uuid) return;
             // Attach to LI to catch overlay hovers
-            if (!li.hasAttribute('data-tooltip')) li.setAttribute('data-tooltip', `#item#${uuid}`);
+            if (!li.hasAttribute("data-tooltip"))
+              li.setAttribute("data-tooltip", `#item#${uuid}`);
             // Also attach to overlay label and image
-            const label = li.querySelector('.card-label');
-            if (label && !label.hasAttribute('data-tooltip')) label.setAttribute('data-tooltip', `#item#${uuid}`);
-            const img = li.querySelector('img.card-img, .card-img img, img');
+            const label = li.querySelector(".card-label");
+            if (label && !label.hasAttribute("data-tooltip"))
+              label.setAttribute("data-tooltip", `#item#${uuid}`);
+            const img = li.querySelector("img.card-img, .card-img img, img");
             if (img) {
-              if (!img.getAttribute('data-action')) img.setAttribute('data-action', 'useItem');
-              if (!img.hasAttribute('data-tooltip')) img.setAttribute('data-tooltip', `#item#${uuid}`);
+              if (!img.getAttribute("data-action"))
+                img.setAttribute("data-action", "useItem");
+              if (!img.hasAttribute("data-tooltip"))
+                img.setAttribute("data-tooltip", `#item#${uuid}`);
             }
-            const nameEl = li.querySelector('.card-name');
-            if (nameEl && !nameEl.hasAttribute('data-tooltip')) nameEl.setAttribute('data-tooltip', `#item#${uuid}`);
+            const nameEl = li.querySelector(".card-name");
+            if (nameEl && !nameEl.hasAttribute("data-tooltip"))
+              nameEl.setAttribute("data-tooltip", `#item#${uuid}`);
           } catch (_) {}
         };
 
         const wireLists = () => {
-          const lists = container.querySelectorAll('.card-list');
+          const lists = container.querySelectorAll(".card-list");
           if (!lists?.length) return false;
-          lists.forEach((ul) => ul.querySelectorAll('.card-item').forEach(apply));
+          lists.forEach((ul) =>
+            ul.querySelectorAll(".card-item").forEach(apply)
+          );
 
           try {
-            if (this._loadoutCardsObserver) this._loadoutCardsObserver.disconnect();
+            if (this._loadoutCardsObserver)
+              this._loadoutCardsObserver.disconnect();
             this._loadoutCardsObserver = new MutationObserver((mutations) => {
               for (const m of mutations) {
                 m.addedNodes.forEach((n) => {
                   if (n.nodeType === Node.ELEMENT_NODE) {
-                    if (n.matches?.('.card-item')) apply(n);
-                    n.querySelectorAll?.('.card-item').forEach(apply);
+                    if (n.matches?.(".card-item")) apply(n);
+                    n.querySelectorAll?.(".card-item").forEach(apply);
                   }
                 });
               }
             });
-            lists.forEach((ul) => this._loadoutCardsObserver.observe(ul, { childList: true, subtree: true }));
+            lists.forEach((ul) =>
+              this._loadoutCardsObserver.observe(ul, {
+                childList: true,
+                subtree: true,
+              })
+            );
           } catch (_) {}
           return true;
         };
 
         if (!wireLists()) {
           try {
-            if (this._loadoutCardsBootstrapObserver) this._loadoutCardsBootstrapObserver.disconnect();
+            if (this._loadoutCardsBootstrapObserver)
+              this._loadoutCardsBootstrapObserver.disconnect();
             this._loadoutCardsBootstrapObserver = new MutationObserver(() => {
               if (wireLists()) {
-                try { this._loadoutCardsBootstrapObserver.disconnect(); } catch {}
+                try {
+                  this._loadoutCardsBootstrapObserver.disconnect();
+                } catch {}
                 this._loadoutCardsBootstrapObserver = null;
               }
             });
-            this._loadoutCardsBootstrapObserver.observe(container, { childList: true, subtree: true });
+            this._loadoutCardsBootstrapObserver.observe(container, {
+              childList: true,
+              subtree: true,
+            });
           } catch (_) {}
         }
       } catch (_) {}
@@ -851,13 +955,17 @@ Hooks.once("ready", async () => {
       } catch {}
     }
 
-  async close(options = {}) {
+    async close(options = {}) {
       try {
         this._removeInlineRails();
       } catch {}
-      try { this._loadoutCardsObserver?.disconnect?.(); } catch {}
+      try {
+        this._loadoutCardsObserver?.disconnect?.();
+      } catch {}
       this._loadoutCardsObserver = null;
-      try { this._loadoutCardsBootstrapObserver?.disconnect?.(); } catch {}
+      try {
+        this._loadoutCardsBootstrapObserver?.disconnect?.();
+      } catch {}
       this._loadoutCardsBootstrapObserver = null;
       return super.close(options);
     }
@@ -888,7 +996,10 @@ Hooks.once("ready", async () => {
         const templatePath =
           "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs";
         const [rightHTML, leftHTML] = await Promise.all([
-          foundry.applications.handlebars.renderTemplate(templatePath, { side: "right", tabs }),
+          foundry.applications.handlebars.renderTemplate(templatePath, {
+            side: "right",
+            tabs,
+          }),
           foundry.applications.handlebars.renderTemplate(templatePath, {
             side: "left",
             items: leftItems,
@@ -992,7 +1103,10 @@ Hooks.once("ready", async () => {
     async _onRender(context, options) {
       await super._onRender(context, options);
       try {
-        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindThresholdClicks?.(
+          this.element,
+          this.document
+        );
       } catch (_) {
         // Inline fallback: simple binder if helper isn't present yet
         try {
@@ -1033,7 +1147,9 @@ Hooks.once("ready", async () => {
           const actor = this.document;
           if (root && actor && !root._dhpDifficultyDelegationBound) {
             const handler = (ev) => {
-              const el = ev.target?.closest?.('[data-action="requestDifficultyRoll"]');
+              const el = ev.target?.closest?.(
+                '[data-action="requestDifficultyRoll"]'
+              );
               if (!el || !root.contains(el)) return;
               ev.preventDefault();
               ev.stopPropagation();
@@ -1047,7 +1163,10 @@ Hooks.once("ready", async () => {
 
       // Bind progress bar click handlers (HP, Stress)
       try {
-        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindProgressBarClicks?.(
+          this.element,
+          this.document
+        );
       } catch {}
     }
   };
@@ -1087,7 +1206,10 @@ Hooks.once("ready", async () => {
     async _onRender(context, options) {
       await super._onRender(context, options);
       try {
-        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindProgressBarClicks?.(
+          this.element,
+          this.document
+        );
       } catch {}
     }
   };
@@ -1161,11 +1283,15 @@ Hooks.once("ready", async () => {
   async function modifyHP(actor, operation, amount) {
     try {
       if (!actor) return;
-      const current = Number(actor.system?.resources?.hitPoints?.value ?? 0) || 0;
+      const current =
+        Number(actor.system?.resources?.hitPoints?.value ?? 0) || 0;
       const max = Number(actor.system?.resources?.hitPoints?.max ?? 0) || 0;
       const amt = Number(amount) || 0;
       if (!amt) return;
-      const sign = operation === "subtract" || operation === "minus" || operation === "-" ? -1 : 1;
+      const sign =
+        operation === "subtract" || operation === "minus" || operation === "-"
+          ? -1
+          : 1;
       const next = Math.max(0, Math.min(current + sign * amt, max));
       if (next === current) return;
       await actor.update({ "system.resources.hitPoints.value": next });
@@ -1225,7 +1351,7 @@ Hooks.once("ready", async () => {
         ui.notifications?.warn?.("No difficulty set for this adversary.");
         return;
       }
-      const title = options.title || `${actor.name} â€” Difficulty ${diff}`;
+      const title = options.title || `${actor.name}” | Difficulty ${diff}`;
       const content = `
         <div class="dhp-roll-request">
           <strong>Roll Request:</strong> [[/dr difficulty=${diff}]]{${title}}
@@ -1247,7 +1373,9 @@ Hooks.once("ready", async () => {
       if (!root || !actor) return;
       if (root._dhpDifficultyDelegationBound) return;
       const handler = (ev) => {
-        const el = ev.target?.closest?.('[data-action="requestDifficultyRoll"]');
+        const el = ev.target?.closest?.(
+          '[data-action="requestDifficultyRoll"]'
+        );
         if (!el || !root.contains(el)) return;
         ev.preventDefault();
         ev.stopPropagation();
@@ -1318,8 +1446,12 @@ Hooks.once("ready", async () => {
         } catch (_) {}
       } else {
         // Hide and dispose
-        try { window.daggerheartPlus.tokenCounter?.hide?.(); } catch (_) {}
-        try { window.daggerheartPlus.tokenCounter?.dispose?.(); } catch (_) {}
+        try {
+          window.daggerheartPlus.tokenCounter?.hide?.();
+        } catch (_) {}
+        try {
+          window.daggerheartPlus.tokenCounter?.dispose?.();
+        } catch (_) {}
         window.daggerheartPlus.tokenCounter = null;
       }
     } catch (e) {
@@ -1335,8 +1467,6 @@ Hooks.once("ready", async () => {
   Hooks.on("updateSetting", async (setting) => {
     if (setting.namespace !== MODULE_ID) return;
 
-    
-
     if (setting.key === "enableFearTracker") {
       await manageFearTracker();
       return;
@@ -1351,7 +1481,10 @@ Hooks.once("ready", async () => {
       try {
         applyEnhancedChatStyles(Boolean(setting.value));
       } catch (e) {
-        console.warn("Daggerheart Plus | Failed applying enhanced chat toggle (updateSetting)", e);
+        console.warn(
+          "Daggerheart Plus | Failed applying enhanced chat toggle (updateSetting)",
+          e
+        );
       }
       return;
     }
@@ -1420,7 +1553,10 @@ Hooks.once("ready", async () => {
 
       const adjustActorPath = async (path, delta, min = 0, max = undefined) => {
         const current = foundry.utils.getProperty(actor.system, path);
-        const newVal = Math.max(min, Math.min(max ?? Number.MAX_SAFE_INTEGER, Number(current || 0) + delta));
+        const newVal = Math.max(
+          min,
+          Math.min(max ?? Number.MAX_SAFE_INTEGER, Number(current || 0) + delta)
+        );
         const updatePath = `system.${path}`;
         await actor.update({ [updatePath]: newVal });
       };
@@ -1428,57 +1564,76 @@ Hooks.once("ready", async () => {
       const adjustArmorMarks = async (delta) => {
         try {
           // Find equipped armor item
-          const armorItem = actor.items?.find?.((i) => i.type === 'armor' && i.system?.equipped);
+          const armorItem = actor.items?.find?.(
+            (i) => i.type === "armor" && i.system?.equipped
+          );
           if (!armorItem) return false;
           const current = Number(armorItem.system?.marks?.value ?? 0) || 0;
-          const max = Number(actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0) || 0;
+          const max =
+            Number(
+              actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0
+            ) || 0;
           const next = Math.max(0, Math.min(max, current + delta));
           if (next === current) return true; // no change but handled
-          await armorItem.update({ 'system.marks.value': next });
+          await armorItem.update({ "system.marks.value": next });
           // Keep actor armor resource in sync when present
           try {
-            if (foundry.utils.hasProperty(actor.system, 'resources.armor.value')) {
-              await actor.update({ 'system.resources.armor.value': next });
+            if (
+              foundry.utils.hasProperty(actor.system, "resources.armor.value")
+            ) {
+              await actor.update({ "system.resources.armor.value": next });
             }
           } catch (_) {}
           return true;
         } catch (e) {
-          console.warn('Daggerheart Plus | adjustArmorMarks failed', e);
+          console.warn("Daggerheart Plus | adjustArmorMarks failed", e);
           return false;
         }
       };
 
       function resolveFieldAndBounds(container) {
         if (!container) return {};
-        const bar = container.querySelector('progress.progress-bar, .progress-bar');
-        let field = bar?.getAttribute?.('name') || bar?.dataset?.field;
+        const bar = container.querySelector(
+          "progress.progress-bar, .progress-bar"
+        );
+        let field = bar?.getAttribute?.("name") || bar?.dataset?.field;
         if (!field) {
           // Look for an input with a system-backed name
-          const input = container.querySelector('input.bar-input, input.armor-marks-input, input[name^="system."]');
-          if (input?.name?.startsWith('system.')) field = input.name.replace(/^system\./, '');
+          const input = container.querySelector(
+            'input.bar-input, input.armor-marks-input, input[name^="system."]'
+          );
+          if (input?.name?.startsWith("system."))
+            field = input.name.replace(/^system\./, "");
           else if (input?.name) field = input.name;
         }
         if (!field) {
           // Infer from label text if present
-          const labelText = (container.querySelector('.status-label h4')?.textContent || '').toLowerCase();
+          const labelText = (
+            container.querySelector(".status-label h4")?.textContent || ""
+          ).toLowerCase();
           if (labelText) {
-            if (labelText.includes('hit point') || labelText.includes('hp')) field = 'resources.hitPoints.value';
-            else if (labelText.includes('stress')) field = 'resources.stress.value';
-            else if (labelText.includes('armor')) field = 'resources.armor.value';
+            if (labelText.includes("hit point") || labelText.includes("hp"))
+              field = "resources.hitPoints.value";
+            else if (labelText.includes("stress"))
+              field = "resources.stress.value";
+            else if (labelText.includes("armor"))
+              field = "resources.armor.value";
           }
         }
         // Bounds
         let min = 0;
         let max;
         if (bar) {
-          min = Number(bar.getAttribute('min') || 0) || 0;
-          const maxAttr = bar.getAttribute('max');
+          min = Number(bar.getAttribute("min") || 0) || 0;
+          const maxAttr = bar.getAttribute("max");
           if (maxAttr != null) max = Number(maxAttr);
         }
         if (!max) {
           try {
             const styles = getComputedStyle(container);
-            const cssMax = Number((styles.getPropertyValue('--max') || '').trim());
+            const cssMax = Number(
+              (styles.getPropertyValue("--max") || "").trim()
+            );
             if (!Number.isNaN(cssMax) && cssMax > 0) max = cssMax;
           } catch {}
         }
@@ -1486,13 +1641,13 @@ Hooks.once("ready", async () => {
       }
 
       const clickHandler = async (ev) => {
-        const container = ev.target?.closest?.('.status-bar');
+        const container = ev.target?.closest?.(".status-bar");
         if (!container || !root.contains(container)) return;
         ev.preventDefault();
         ev.stopPropagation();
         const { field, min, max } = resolveFieldAndBounds(container);
         if (!field) return;
-        if (actor.type === 'character' && field === 'resources.armor.value') {
+        if (actor.type === "character" && field === "resources.armor.value") {
           // Prefer adjusting equipped armor marks for characters
           const ok = await adjustArmorMarks(+1);
           if (ok) return;
@@ -1501,24 +1656,24 @@ Hooks.once("ready", async () => {
       };
 
       const contextHandler = async (ev) => {
-        const container = ev.target?.closest?.('.status-bar');
+        const container = ev.target?.closest?.(".status-bar");
         if (!container || !root.contains(container)) return;
         ev.preventDefault();
         ev.stopPropagation();
         const { field, min, max } = resolveFieldAndBounds(container);
         if (!field) return;
-        if (actor.type === 'character' && field === 'resources.armor.value') {
+        if (actor.type === "character" && field === "resources.armor.value") {
           const ok = await adjustArmorMarks(-1);
           if (ok) return;
         }
         await adjustActorPath(field, -1, min, max);
       };
 
-      root.addEventListener('click', clickHandler, true);
-      root.addEventListener('contextmenu', contextHandler, true);
+      root.addEventListener("click", clickHandler, true);
+      root.addEventListener("contextmenu", contextHandler, true);
       root._dhpProgressDelegationBound = true;
     } catch (e) {
-      console.warn('Daggerheart Plus | bindProgressBarClicks failed', e);
+      console.warn("Daggerheart Plus | bindProgressBarClicks failed", e);
     }
   }
 });
@@ -1532,9 +1687,9 @@ Hooks.on("renderSettingsConfig", (app, html) => {
     const insertHeader = (beforeKey, title) => {
       const selector = `input[name='${MODULE_ID}.${beforeKey}']`;
       const $input = $root.find(selector).first();
-      const $group = $input.closest('.form-group');
+      const $group = $input.closest(".form-group");
       if (!$group.length) return;
-      if ($group.prev().hasClass('dhp-settings-header')) return;
+      if ($group.prev().hasClass("dhp-settings-header")) return;
       const block = `<div class="dhp-settings-header"><h4 style="margin-top: 0; border-bottom: 1px solid #888; padding-bottom: 4px; margin-bottom: 6px;">${title}</h4></div>`;
       $group.before(block);
     };
@@ -1613,7 +1768,7 @@ Hooks.on("closeActorSheet", async (app) => {
 
 // --- DH+ Per-client Progress Bar Gradient Settings ---
 (function () {
-  const MOD = 'daggerheart-plus';
+  const MOD = "daggerheart-plus";
 
   function buildLinearGradient(colors) {
     const cs = (colors || [])
@@ -1626,89 +1781,104 @@ Hooks.on("closeActorSheet", async (app) => {
       const pct = n <= 0 ? 100 * i : Math.round((i / n) * 100);
       return `${c} ${pct}%`;
     });
-    return `linear-gradient(90deg, ${stops.join(', ')})`;
+    return `linear-gradient(90deg, ${stops.join(", ")})`;
   }
 
   function parseColorList(str) {
-    if (!str || typeof str !== 'string') return [];
+    if (!str || typeof str !== "string") return [];
     // Accept comma/space separated list
-    const raw = str.split(/[\s,]+/g).map((s) => s.trim()).filter(Boolean);
+    const raw = str
+      .split(/[\s,]+/g)
+      .map((s) => s.trim())
+      .filter(Boolean);
     // Basic sanitization: ensure colors look like hex/rgb/hsl or var(--x)
-    const ok = raw.filter((c) => /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(c)
-      || /^rgb(a)?\(/i.test(c)
-      || /^hsl(a)?\(/i.test(c)
-      || /^var\(/i.test(c));
+    const ok = raw.filter(
+      (c) =>
+        /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(c) ||
+        /^rgb(a)?\(/i.test(c) ||
+        /^hsl(a)?\(/i.test(c) ||
+        /^var\(/i.test(c)
+    );
     return ok;
   }
 
   function applyProgressBarGradients() {
     try {
-      const hpStr = String(game.settings.get(MOD, 'hpGradient') ?? '').trim();
-      const stressStr = String(game.settings.get(MOD, 'stressGradient') ?? '').trim();
-      const armorStr = String(game.settings.get(MOD, 'armorGradient') ?? '').trim();
+      const hpStr = String(game.settings.get(MOD, "hpGradient") ?? "").trim();
+      const stressStr = String(
+        game.settings.get(MOD, "stressGradient") ?? ""
+      ).trim();
+      const armorStr = String(
+        game.settings.get(MOD, "armorGradient") ?? ""
+      ).trim();
 
       const hpG = buildLinearGradient(parseColorList(hpStr));
       const stressG = buildLinearGradient(parseColorList(stressStr));
       const armorG = buildLinearGradient(parseColorList(armorStr));
 
-      const id = 'dhp-progress-gradients';
+      const id = "dhp-progress-gradients";
       let style = document.getElementById(id);
       if (!style) {
-        style = document.createElement('style');
+        style = document.createElement("style");
         style.id = id;
         document.head.appendChild(style);
       }
       const lines = [];
-      lines.push('.daggerheart-plus.sheet{');
-      if (hpG) lines.push('--dhp-damage-gradient:' + hpG + ';');
-      if (stressG) lines.push('--dhp-stress-gradient:' + stressG + ';');
-      if (armorG) lines.push('--dhp-armor-gradient:' + armorG + ';');
-      lines.push('}');
-      style.textContent = lines.join('');
+      lines.push(".daggerheart-plus.sheet{");
+      if (hpG) lines.push("--dhp-damage-gradient:" + hpG + ";");
+      if (stressG) lines.push("--dhp-stress-gradient:" + stressG + ";");
+      if (armorG) lines.push("--dhp-armor-gradient:" + armorG + ";");
+      lines.push("}");
+      style.textContent = lines.join("");
     } catch (e) {
-      console.warn('Daggerheart Plus | Failed applying gradient settings', e);
+      console.warn("Daggerheart Plus | Failed applying gradient settings", e);
     }
   }
 
-  Hooks.once('init', () => {
+  Hooks.once("init", () => {
     try {
-      game.settings.register(MOD, 'hpGradient', {
-        name: 'DHP.Settings.ProgressGradients.HP.Name',
-        hint: 'DHP.Settings.ProgressGradients.HP.Hint',
-        scope: 'client',
+      game.settings.register(MOD, "hpGradient", {
+        name: "DHP.Settings.ProgressGradients.HP.Name",
+        hint: "DHP.Settings.ProgressGradients.HP.Hint",
+        scope: "client",
         config: true,
         type: String,
-        default: '',
+        default: "",
         onChange: () => applyProgressBarGradients(),
       });
-      game.settings.register(MOD, 'stressGradient', {
-        name: 'DHP.Settings.ProgressGradients.Stress.Name',
-        hint: 'DHP.Settings.ProgressGradients.Stress.Hint',
-        scope: 'client',
+      game.settings.register(MOD, "stressGradient", {
+        name: "DHP.Settings.ProgressGradients.Stress.Name",
+        hint: "DHP.Settings.ProgressGradients.Stress.Hint",
+        scope: "client",
         config: true,
         type: String,
-        default: '',
+        default: "",
         onChange: () => applyProgressBarGradients(),
       });
-      game.settings.register(MOD, 'armorGradient', {
-        name: 'DHP.Settings.ProgressGradients.Armor.Name',
-        hint: 'DHP.Settings.ProgressGradients.Armor.Hint',
-        scope: 'client',
+      game.settings.register(MOD, "armorGradient", {
+        name: "DHP.Settings.ProgressGradients.Armor.Name",
+        hint: "DHP.Settings.ProgressGradients.Armor.Hint",
+        scope: "client",
         config: true,
         type: String,
-        default: '',
+        default: "",
         onChange: () => applyProgressBarGradients(),
       });
     } catch (e) {
-      console.error('Daggerheart Plus | Failed registering gradient settings', e);
+      console.error(
+        "Daggerheart Plus | Failed registering gradient settings",
+        e
+      );
     }
   });
 
-  Hooks.on('ready', () => applyProgressBarGradients());
+  Hooks.on("ready", () => applyProgressBarGradients());
 
-  Hooks.on('updateSetting', (setting) => {
+  Hooks.on("updateSetting", (setting) => {
     if (setting?.namespace !== MOD) return;
-    if (['hpGradient','stressGradient','armorGradient'].includes(setting?.key)) {
+    if (
+      ["hpGradient", "stressGradient", "armorGradient"].includes(setting?.key)
+    ) {
       applyProgressBarGradients();
     }
   });
