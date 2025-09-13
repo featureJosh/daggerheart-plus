@@ -173,17 +173,26 @@ export class HoverDistance {
       const p1 = a.center; // {x, y}
       const p2 = b.center;
 
-      // Defer to Foundry's grid measurement (2D). This mirrors system behavior.
-      let units = HoverDistance._measureCoreRulerUnits(p1, p2);
-      if (!isFinite(units)) {
+      // Defer to Foundry's grid measurement for horizontal distance so it
+      // mirrors scene measurement rules (diagonals, hex, etc.).
+      let horizontalUnits = HoverDistance._measureCoreRulerUnits(p1, p2);
+      if (!isFinite(horizontalUnits)) {
         // Fallback to Euclidean using scene distance-per-pixel
         const dpp = (Number(dims.distance) || 5) / (Number(dims.size) || 100);
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
-        units = Math.hypot(dx, dy) * dpp;
+        horizontalUnits = Math.hypot(dx, dy) * dpp;
       }
-      if (!isFinite(units)) return null;
-      return units;
+      if (!isFinite(horizontalUnits)) return null;
+
+      // Include vertical component (elevation) in scene distance units.
+      // Token elevation is already expressed in the scene's units.
+      const z1 = Number(a?.document?.elevation ?? a?.elevation ?? 0);
+      const z2 = Number(b?.document?.elevation ?? b?.elevation ?? 0);
+      const dz = Math.abs(z2 - z1);
+
+      // 3D distance combining horizontal scene distance and elevation delta.
+      return Math.hypot(horizontalUnits, dz);
     } catch (e) {
       return null;
     }
