@@ -18,15 +18,15 @@
 
 .chat-message.duality {
   /* Core palette */
-  --dhc-bg: #0f1120;
-  --dhc-surface: #151832;
-  --dhc-border: #2c2f57;
+  --dhc-bg: #11152b; /* slightly brighter base */
+  --dhc-surface: #171b38; /* slightly brighter surface */
+  --dhc-border: #343a67; /* clearer border */
   --dhc-text: #e9ecff;
-  --dhc-muted: #aab0cf;
-  --dhc-accent: #f3c267; /* gold */
-  --dhc-hope: #f3c267; /* gold */
-  --dhc-fear: #87a0ff; /* cool indigo */
-  --dhc-crit: #ff9b3d; /* flame orange */
+  --dhc-muted: #b7c1ea;
+  --dhc-accent: #ffd86b; /* refined gold accent */
+  --dhc-hope: #ffe27a; /* divine yellow light */
+  --dhc-fear: #545ecc; /* brooding indigo */
+  --dhc-crit: #ff5a3d; /* fiery red-orange */
 
   margin: 1em 0.5em;
   padding: 0;
@@ -35,7 +35,8 @@
   border: 1px solid var(--dhc-border);
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  overflow: hidden;
+  /* Avoid clipping menus/tooltips; allow content to overflow card */
+  overflow: visible;
   position: relative;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
@@ -77,9 +78,9 @@
   /* Neon white/orange border with outer bloom */
   border-color: rgba(255, 255, 255, 0.85);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65),
-    0 0 6px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 150, 64, 0.5),
-    0 0 18px rgba(255, 120, 32, 0.35), 0 4px 10px rgba(0, 0, 0, 0.45);
-  animation: neonPulse 3.6s ease-in-out infinite;
+    0 0 3px rgba(255, 255, 255, 0.5), 0 0 5px rgba(255, 150, 64, 0.5),
+    0 0 9px rgba(255, 120, 32, 0.35), 0 2px 5px rgba(0, 0, 0, 0.45);
+  animation: neonPulse 1.6s ease-in-out infinite;
 }
 
 /* Flame glow overlay */
@@ -333,7 +334,7 @@
   background: #0000007d;
   border: 1px solid var(--dhc-border);
   border-radius: 10px;
-  padding: 5px 2em;
+  padding: 10px 2em;
 }
 
 .daggerheart .chat-message .chat-roll .roll-part-header {
@@ -434,6 +435,24 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
+}
+
+.chat-message
+  .chat-roll
+  .roll-part-content
+  .roll-result-container
+  .roll-result-desc
+  span,
+#chat-notifications
+  .chat-message
+  .chat-roll
+  .roll-part-content
+  .roll-result-container
+  .roll-result-desc
+  span {
+  margin-left: 0;
+  margin: 0;
+  color: var(--dhc-text);
 }
 
 .chat-message .roll-result-value {
@@ -670,6 +689,12 @@
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
+
+.dice:before {
+  width: 50px;
+  height: 100%;
+}
+
 .chat-message .dice.color-hope {
   background: radial-gradient(
       120px 120px at 30% 30%,
@@ -871,4 +896,249 @@
     text-shadow: 0 0 10px rgba(255, 180, 96, 0.9),
       0 0 36px rgba(255, 140, 64, 0.35), 0 4px 16px rgba(0, 0, 0, 0.65);
   }
+}
+
+/* =============================================
+   Modern refinement overrides (sleek, minimal)
+   - Reduce gradients and glows
+   - Remove decorative animations
+   - Keep spacing and structure intact
+   ============================================= */
+
+/* Base card */
+.chat-message.duality {
+  background: var(--dhc-bg) !important;
+  border-color: var(--dhc-border) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+  border-left: 4px solid transparent;
+}
+
+/* Variant accents via left border only */
+.chat-message.duality.hope {
+  border-left-color: var(--dhc-hope);
+  background: var(--dhc-bg) !important;
+}
+.chat-message.duality.fear {
+  border-left-color: var(--dhc-fear);
+  background: var(--dhc-bg) !important;
+}
+.chat-message.duality.critical {
+  border-left-color: var(--dhc-crit);
+  background: var(--dhc-bg) !important;
+  animation: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Remove decorative overlays and tint blocks */
+.chat-message.duality.critical::before,
+.chat-message.duality.critical::after {
+  content: none !important;
+  display: none !important;
+}
+.daggerheart .chat-message.duality.critical .message-header,
+#chat-notifications .chat-message.duality.critical .message-header,
+.daggerheart .chat-message.duality.critical .message-content,
+#chat-notifications .chat-message.duality.critical .message-content {
+  background: transparent !important;
+}
+
+/* Headers and sections */
+.chat-message.duality .title-row {
+  padding: 10px 14px 2px;
+}
+.chat-message .roll-title {
+  color: #cfd3e6;
+  opacity: 0.95;
+}
+.chat-message.duality.hope .roll-title {
+  color: color-mix(in oklab, var(--dhc-hope) 60%, #f6f7ff) !important;
+}
+.chat-message.duality.fear .roll-title {
+  color: color-mix(in oklab, var(--dhc-fear) 55%, #f6f7ff) !important;
+}
+.chat-message.duality.critical .roll-title {
+  color: color-mix(in oklab, var(--dhc-crit) 60%, #f6f7ff) !important;
+}
+.chat-message.duality .roll-part.roll-section {
+  background: #0000003d;
+  border: 1px solid var(--dhc-border) !important;
+  box-shadow: none !important;
+}
+.chat-message.duality .roll-part-header::before,
+.chat-message.duality .roll-part-header::after {
+  content: none;
+  display: none;
+}
+
+/* Results */
+.chat-message .roll-result-value {
+  color: var(--dhc-text) !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+.chat-message.duality.hope .roll-result-value {
+  color: color-mix(in oklab, var(--dhc-hope) 55%, var(--dhc-text)) !important;
+}
+.chat-message.duality.fear .roll-result-value {
+  color: color-mix(in oklab, var(--dhc-fear) 45%, var(--dhc-text)) !important;
+}
+.chat-message.duality.critical .roll-result-value {
+  color: color-mix(in oklab, var(--dhc-crit) 60%, var(--dhc-text)) !important;
+}
+
+.chat-message .roll-result-desc {
+  color: var(--dhc-muted) !important;
+  text-transform: none;
+  letter-spacing: 0.3px;
+}
+.chat-message.duality.hope .roll-result-desc {
+  color: color-mix(in oklab, var(--dhc-hope) 35%, var(--dhc-muted)) !important;
+}
+.chat-message.duality.fear .roll-result-desc {
+  color: color-mix(in oklab, var(--dhc-fear) 25%, var(--dhc-muted)) !important;
+}
+.chat-message.duality.critical .roll-result-desc {
+  color: color-mix(in oklab, var(--dhc-crit) 40%, var(--dhc-muted)) !important;
+}
+
+/* Chips (formula + difficulty) */
+.chat-message .roll-formula,
+.chat-message .roll-difficulty {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--dhc-border) !important;
+  color: var(--dhc-text) !important;
+  box-shadow: none !important;
+}
+.chat-message.duality.hope .roll-formula,
+.chat-message.duality.hope .roll-difficulty {
+  border-color: color-mix(
+    in oklab,
+    var(--dhc-hope) 45%,
+    var(--dhc-border)
+  ) !important;
+}
+.chat-message.duality.fear .roll-formula,
+.chat-message.duality.fear .roll-difficulty {
+  border-color: color-mix(
+    in oklab,
+    var(--dhc-fear) 40%,
+    var(--dhc-border)
+  ) !important;
+}
+.chat-message.duality.critical .roll-formula,
+.chat-message.duality.critical .roll-difficulty {
+  border-color: color-mix(
+    in oklab,
+    var(--dhc-crit) 50%,
+    var(--dhc-border)
+  ) !important;
+}
+
+/* Buttons */
+.chat-message .roll-action-button {
+  background: transparent !important;
+  border: 1px solid var(--dhc-border) !important;
+  color: var(--dhc-text) !important;
+  box-shadow: none !important;
+}
+.chat-message .roll-action-button:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: color-mix(
+    in oklab,
+    var(--dhc-accent) 30%,
+    var(--dhc-border)
+  ) !important;
+}
+.chat-message .roll-action-button:disabled {
+  opacity: 0.6;
+}
+
+/* Type indicator chip */
+.chat-message .roll-type-indicator {
+  color: #0f1120;
+  opacity: 0.9;
+}
+
+/* Dice: keep readable without extra glow */
+.chat-message .dice.color-fear:before {
+  filter: saturate(0.8) brightness(0.95);
+}
+
+/* Generic buttons inside messages */
+.chat-message .message-content button {
+  background: transparent !important;
+  border: 1px solid var(--dhc-border) !important;
+  color: var(--dhc-text) !important;
+}
+.chat-message .message-content button:hover {
+  border-color: color-mix(
+    in oklab,
+    var(--dhc-accent) 30%,
+    var(--dhc-border)
+  ) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Bring content above any visual FX layers */
+.chat-message.duality .message-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Critical FX: tasteful glow + animated particles --- */
+.chat-message.duality.critical.dhp-crit-fx {
+  border-color: color-mix(in oklab, var(--dhc-crit) 40%, var(--dhc-border));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--dhc-crit) 55%, #ffffff30),
+    0 6px 16px rgba(0, 0, 0, 0.45),
+    0 0 20px color-mix(in oklab, var(--dhc-crit) 35%, transparent);
+  animation: dhpCritGlowPulse 3.2s ease-in-out infinite;
+}
+
+.chat-message.duality.critical.dhp-crit-fx::before {
+  /* Warm vignette + subtle diagonal sweep */
+  content: "" !important;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+      120% 80% at 50% 110%,
+      color-mix(in oklab, var(--dhc-crit) 18%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 40%,
+      color-mix(in oklab, var(--dhc-crit) 10%, transparent) 60%,
+      transparent 80%
+    );
+  mix-blend-mode: screen;
+}
+
+/* Particle canvas overlay (drawn by JS) */
+.chat-message.duality.critical .dhp-crit-particles {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0; /* content sits above via z-index:1 */
+}
+
+@keyframes dhpCritGlowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--dhc-crit) 50%, #ffffff30),
+      0 6px 16px rgba(0, 0, 0, 0.45),
+      0 0 12px color-mix(in oklab, var(--dhc-crit) 25%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--dhc-crit) 70%, #ffffff60),
+      0 8px 22px rgba(0, 0, 0, 0.52),
+      0 0 28px color-mix(in oklab, var(--dhc-crit) 55%, transparent);
+  }
+}
+
+/* Ensure context menus are not hidden behind or clipped by the card */
+.context-menu {
+  z-index: 9999 !important;
 }

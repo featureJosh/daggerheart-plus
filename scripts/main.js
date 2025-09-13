@@ -2,6 +2,7 @@
 import { TokenCounterUI } from "./applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "./applications/enhanced-dice-styling.js";
 import { HoverDistance } from "./applications/hover-distance.js";
+import { EnhancedChatEffects } from "./applications/enhanced-chat-effects.js";
 
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
@@ -458,6 +459,8 @@ Hooks.once("ready", async () => {
   try {
     const enabled = game.settings.get(MODULE_ID, "enableEnhancedChat");
     applyEnhancedChatStyles(Boolean(enabled));
+    // mount crit FX after styles are available
+    try { EnhancedChatEffects.init(); } catch (_) {}
   } catch (e) {
     console.warn(
       "Daggerheart Plus | Failed to apply initial enhanced chat state",
