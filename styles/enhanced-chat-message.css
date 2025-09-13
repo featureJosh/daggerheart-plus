@@ -45,11 +45,10 @@
 /* Hope variant — warm/yellow theme */
 .chat-message.duality.hope {
   /* Warm overrides for hope */
-  --dhc-bg: #13100a;
+  --dhc-bg: #332407;
   --dhc-surface: #1a160d;
   --dhc-border: #574720;
   --dhc-text: #fff8dc;
-  background: linear-gradient(180deg, #191307 0%, var(--dhc-bg) 100%);
   border-color: color-mix(in oklab, var(--dhc-hope) 55%, var(--dhc-border));
 }
 
@@ -66,6 +65,13 @@
 #chat-notifications .chat-message.duality.fear .message-header,
 .daggerheart .chat-message.duality.fear .message-content,
 #chat-notifications .chat-message.duality.fear .message-content {
+  background-color: transparent;
+}
+
+.daggerheart .chat-message.duality.hope .message-header,
+#chat-notifications .chat-message.duality.hope .message-header,
+.daggerheart .chat-message.duality.hope .message-content,
+#chat-notifications .chat-message.duality.hope .message-content {
   background-color: transparent;
 }
 
@@ -372,10 +378,6 @@
   position: absolute;
   inset: 0;
 }*/
-
-.chat-message.duality.hope {
-  background: linear-gradient(180deg, #87631a 0%, var(--dhc-bg) 100%);
-}
 
 .chat-message.duality .roll-part-header:before {
   left: 0;
