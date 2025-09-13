@@ -7,7 +7,6 @@ import { EnhancedChatEffects } from "./applications/enhanced-chat-effects.js";
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
 
-// Utility: add or remove the enhanced chat stylesheet link
 function applyEnhancedChatStyles(enabled) {
   try {
     const LINK_ID = "dhp-enhanced-chat-style";
@@ -56,19 +55,16 @@ Hooks.once("init", () => {
     },
   });
 
-  // Per-user toggle for Token Counters visibility (simple display control)
   game.settings.register(MODULE_ID, "enableTokenCounters", {
     name: "Enable Token Counters",
-    hint:
-      "Show the token counters UI (HP, Hope, Stress, Armor) near the hotbar for the currently selected token. Per-user preference.",
+    hint: "Show the token counters UI (HP, Hope, Stress, Armor) near the hotbar for the currently selected token. Per-user preference.",
     scope: "client",
     config: true,
     type: Boolean,
-    // Default visible for users; toggling applies immediately via display styles
+
     default: false,
     onChange: (value) => {
       try {
-        // Apply simple display toggle immediately
         applyTokenCountersVisibilityBySetting();
       } catch (e) {
         console.warn(
@@ -79,7 +75,6 @@ Hooks.once("init", () => {
     },
   });
 
-  // Per-user toggle for Character Sheet inline rails (sidebars)
   game.settings.register(MODULE_ID, "enableCharacterSheetSidebars", {
     name: "Character Sheet Sidebars (Rails)",
     hint: "Show left/right inline rails on DH+ Character sheets. Per-user preference only.",
@@ -89,7 +84,6 @@ Hooks.once("init", () => {
     default: true,
     onChange: (value) => {
       try {
-        // Apply immediately to any open DH+ Character sheets for this user
         for (const app of Object.values(ui.windows)) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
             continue;
@@ -105,12 +99,11 @@ Hooks.once("init", () => {
     },
   });
 
-  // Default DH+ sheet size (global)
   game.settings.register(MODULE_ID, "defaultSheetWidth", {
     name: "Default DH+ Sheet Width (px)",
     hint: "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
-    // Hidden for now; keep for future use
+
     config: false,
     type: Number,
     default: 900,
@@ -121,19 +114,18 @@ Hooks.once("init", () => {
     name: "Default DH+ Sheet Height (px)",
     hint: "Default height applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
     scope: "world",
-    // Hidden for now; keep for future use
+
     config: false,
     type: Number,
     default: 800,
     range: { min: 300, max: 1600, step: 10 },
   });
 
-  // Default DH+ Adversary sheet size (specific)
   game.settings.register(MODULE_ID, "adversarySheetWidth", {
     name: "Default DH+ Adversary Width (px)",
     hint: "Default width applied to DH+ Adversary sheets.",
     scope: "world",
-    // Hidden for now; keep for future use
+
     config: false,
     type: Number,
     default: 630,
@@ -144,7 +136,7 @@ Hooks.once("init", () => {
     name: "Default DH+ Adversary Height (px)",
     hint: "Default height applied to DH+ Adversary sheets.",
     scope: "world",
-    // Hidden for now; keep for future use
+
     config: false,
     type: Number,
     default: 820,
@@ -152,7 +144,7 @@ Hooks.once("init", () => {
   });
 
   console.log("Daggerheart Plus | Module settings registered");
-  // Helper: Apply simple display toggling to token counters containers
+
   function applyTokenCountersVisibilityBySetting() {
     try {
       const enabled = Boolean(
@@ -162,12 +154,13 @@ Hooks.once("init", () => {
       const right = document.querySelector("#token-counters-right");
       if (left) left.style.display = enabled ? "" : "none";
       if (right) right.style.display = enabled ? "" : "none";
-      // Keep wrapper visibility in sync
-      try { updateCountersWrapperDisplay(); } catch (_) {}
+
+      try {
+        updateCountersWrapperDisplay();
+      } catch (_) {}
     } catch (_) {}
   }
 
-  // Per-user toggle for Enhanced Chat styling
   game.settings.register(MODULE_ID, "enableEnhancedChat", {
     name:
       game.i18n?.localize?.("DHP.Settings.EnhancedChat.Enable.Name") ||
@@ -191,7 +184,6 @@ Hooks.once("init", () => {
     },
   });
 
-  // Register Hover Distance settings
   try {
     HoverDistance.registerSettings();
   } catch (e) {
@@ -201,7 +193,6 @@ Hooks.once("init", () => {
     );
   }
 
-  // Preload HBS templates used by inline rails
   try {
     loadTemplates([
       "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs",
@@ -210,8 +201,6 @@ Hooks.once("init", () => {
     console.warn("Daggerheart Plus | Failed to preload templates", e);
   }
 
-  // Enhance tooltips with card-like presentation, preserving system behavior
-  // Do this at init so Foundry instantiates our manager, not the system's
   try {
     const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
     if (BaseTooltipManager) {
@@ -250,7 +239,6 @@ Hooks.once("init", () => {
 
               const tooltipEl = this.tooltip;
 
-              // Build a content signature so the shine plays for new content
               const buildKey = () => {
                 try {
                   const parts = [];
@@ -272,34 +260,34 @@ Hooks.once("init", () => {
                   return String(Date.now());
                 }
               };
-  // Ensure the counters wrapper shows only when needed
-  function updateCountersWrapperDisplay() {
-    try {
-      const wrapper = document.getElementById('counters-wrapper');
-      if (!wrapper) return;
 
-      // Is fear tracker active (element present)?
-      const fearActive = Boolean(window.daggerheartPlus?.fearTracker?.element);
+              function updateCountersWrapperDisplay() {
+                try {
+                  const wrapper = document.getElementById("counters-wrapper");
+                  if (!wrapper) return;
 
-      // Are token counters intended to be visible?
-      const tokenCountersEnabled = Boolean(
-        game.settings.get(MODULE_ID, 'enableTokenCounters')
-      );
-      const hasSelectedToken = Boolean(canvas?.tokens?.controlled?.length);
-      const tokenCountersActive = Boolean(
-        tokenCountersEnabled &&
-          (window.daggerheartPlus?.tokenCounter?.element || hasSelectedToken)
-      );
+                  const fearActive = Boolean(
+                    window.daggerheartPlus?.fearTracker?.element
+                  );
 
-      const shouldShow = fearActive || tokenCountersActive;
-      wrapper.style.display = shouldShow ? '' : 'none';
-    } catch (e) {
-      // Silent failure; not critical
-    }
-  }
+                  const tokenCountersEnabled = Boolean(
+                    game.settings.get(MODULE_ID, "enableTokenCounters")
+                  );
+                  const hasSelectedToken = Boolean(
+                    canvas?.tokens?.controlled?.length
+                  );
+                  const tokenCountersActive = Boolean(
+                    tokenCountersEnabled &&
+                      (window.daggerheartPlus?.tokenCounter?.element ||
+                        hasSelectedToken)
+                  );
+
+                  const shouldShow = fearActive || tokenCountersActive;
+                  wrapper.style.display = shouldShow ? "" : "none";
+                } catch (e) {}
+              }
               const currentKey = buildKey();
 
-              // Controller to manage pending timers/cleanup across rapid hovers
               const prevCtrl = tooltipEl._dhpShineCtrl;
               if (prevCtrl && prevCtrl.key !== currentKey) {
                 try {
@@ -321,7 +309,6 @@ Hooks.once("init", () => {
                 tooltipEl._dhpShineCtrl = null;
               }
 
-              // If we already handled this exact content and it's done, allow replay on new hover by resetting on activation
               let ctrl = tooltipEl._dhpShineCtrl;
               if (!ctrl || ctrl.key !== currentKey) {
                 ctrl = {
@@ -332,11 +319,9 @@ Hooks.once("init", () => {
                 };
                 tooltipEl._dhpShineCtrl = ctrl;
               } else if (ctrl.running || ctrl.done) {
-                // Already running/done for this exact content instance
                 return result;
               }
 
-              // Prepare shine overlays for each image, plus hovered trigger when applicable
               ctrl.overlays = [];
               try {
                 images.forEach((img) => {
@@ -359,8 +344,6 @@ Hooks.once("init", () => {
                   container.appendChild(overlay);
                   ctrl.overlays.push(overlay);
                 });
-
-                // Removed hovered trigger shine overlay per user feedback
               } catch (e) {
                 console.warn(
                   "DH+ Tooltip Manager: Failed to prepare shine overlays",
@@ -370,14 +353,12 @@ Hooks.once("init", () => {
 
               if (!ctrl.overlays.length) return result;
 
-              // Schedule start after 150ms; cancel if content changes again
               ctrl.startTimer = setTimeout(() => {
                 if (!tooltipEl || tooltipEl._dhpShineCtrl !== ctrl) return;
                 if (ctrl.done) return;
                 ctrl.running = true;
                 tooltipEl.dataset.dhpShineRunning = "1";
                 tooltipEl.classList.add("tooltip-shine");
-                // Removed hovered trigger shine class per user feedback
 
                 let remaining = ctrl.overlays.length;
                 const finalize = () => {
@@ -423,7 +404,6 @@ Hooks.once("init", () => {
         CONFIG.ux.TooltipManager
       );
 
-      // Test if we can access the manager later
       setTimeout(() => {
         console.log(
           "DH+ Tooltip Manager: Current manager after timeout",
@@ -444,7 +424,6 @@ Hooks.once("init", () => {
   }
 });
 
-// Activate Hover Distance hooks once Foundry is ready
 Hooks.once("ready", () => {
   try {
     HoverDistance.initHooks();
@@ -455,12 +434,13 @@ Hooks.once("ready", () => {
 });
 
 Hooks.once("ready", async () => {
-  // Apply initial state of Enhanced Chat stylesheet by injecting/removing link
   try {
     const enabled = game.settings.get(MODULE_ID, "enableEnhancedChat");
     applyEnhancedChatStyles(Boolean(enabled));
-    // mount crit FX after styles are available
-    try { EnhancedChatEffects.init(); } catch (_) {}
+
+    try {
+      EnhancedChatEffects.init();
+    } catch (_) {}
   } catch (e) {
     console.warn(
       "Daggerheart Plus | Failed to apply initial enhanced chat state",
@@ -499,7 +479,6 @@ Hooks.once("ready", async () => {
         app.position.height = height;
         if (typeof app.render === "function") app.render(false);
       } else if (app.element) {
-        // Last resort style application
         app.element.style.width = `${width}px`;
         app.element.style.height = `${height}px`;
       }
@@ -564,7 +543,6 @@ Hooks.once("ready", async () => {
       return `${this.document.name} [DH+]`;
     }
 
-    // --- Tabs Implementation ---
     static TABS = [
       { tab: "features", label: "Features", icon: "fas fa-list" },
       { tab: "loadout", label: "Loadout", icon: "fas fa-chess-rook" },
@@ -609,7 +587,6 @@ Hooks.once("ready", async () => {
     async _onRender(context, options) {
       await super._onRender(context, options);
 
-      // Bind threshold HP quick marks in header (1/2/3 HP)
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(
           this.element,
@@ -649,8 +626,6 @@ Hooks.once("ready", async () => {
         } catch {}
       }
 
-      // Conditionally mount inline rails per-user, then apply backgrounds so
-      // left-rail cards (if present) also get painted.
       try {
         const useRails = game.settings.get(
           MODULE_ID,
@@ -659,18 +634,15 @@ Hooks.once("ready", async () => {
         if (useRails) await this._mountInlineRails();
         else this._removeInlineRails();
       } catch (_) {
-        // Fallback: ensure rails are not duplicated
         try {
           this._removeInlineRails();
         } catch {}
       }
 
-      // Apply loadout backgrounds
       this._applySidebarLoadoutBackgrounds();
-      // Ensure card-style loadout items have rich tooltips
+
       this._attachLoadoutCardTooltips();
 
-      // Re-bind to catch any late-rendered header content
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(
           this.element,
@@ -678,7 +650,6 @@ Hooks.once("ready", async () => {
         );
       } catch {}
 
-      // Bind progress bar click handlers (HP, Stress, Armor)
       try {
         window.daggerheartPlus?.bindProgressBarClicks?.(
           this.element,
@@ -687,12 +658,6 @@ Hooks.once("ready", async () => {
       } catch {}
     }
 
-    // Remove custom section toggling; rely on system navigation
-
-    /**
-     * Minimal: read each loadout item's image and expose it as a CSS var
-     * on the list item so CSS can paint the card background.
-     */
     _applySidebarLoadoutBackgrounds() {
       try {
         const root = this.element;
@@ -711,9 +676,6 @@ Hooks.once("ready", async () => {
           const item = el.closest?.(".inventory-item") || el;
           if (!item || !item.classList.contains("inventory-item")) return;
 
-          // Try to resolve the image source in a few ways:
-          // 1) Prefer the owning document's image via data-item-id
-          // 2) Fallback to the inline <img> inside the card (src/data-src/currentSrc)
           let src;
           const itemId = item.dataset.itemId;
           const doc = itemId ? this.document?.items?.get?.(itemId) : null;
@@ -728,7 +690,7 @@ Hooks.once("ready", async () => {
           if (!src) return;
 
           const url = `url("${src}")`;
-          // CSS variable + direct background (with important) to defeat shorthands
+
           item.style.setProperty("--sidebar-card-bg", url);
           item.style.setProperty("background-image", url, "important");
           item.style.setProperty("background-size", "cover", "important");
@@ -751,12 +713,10 @@ Hooks.once("ready", async () => {
             );
           }
 
-          // Ensure cards are usable: mark them as actionable
           try {
             item.setAttribute("data-action", "useItem");
           } catch {}
 
-          // Attach rich tooltip when possible using system manager patterns
           try {
             if (!item.hasAttribute("data-tooltip")) {
               const uuid =
@@ -770,12 +730,10 @@ Hooks.once("ready", async () => {
           item.dataset.bgApplied = "1";
         };
 
-        // Initial paint for both sections
         lists.forEach((list) =>
           list.querySelectorAll(".inventory-item").forEach(apply)
         );
 
-        // Observe both lists for dynamic changes
         try {
           if (this._loadoutObserver) this._loadoutObserver.disconnect();
           this._loadoutObserver = new MutationObserver((mutations) => {
@@ -805,18 +763,10 @@ Hooks.once("ready", async () => {
               subtree: true,
             })
           );
-        } catch (e) {
-          /* ignore */
-        }
-      } catch (_) {
-        /* noop */
-      }
+        } catch (e) {}
+      } catch (_) {}
     }
 
-    /**
-     * Attach Dh tooltip data to card-style loadout items in the main Loadout tab.
-     * Works even if the card lists render after the sheet, and on dynamic updates.
-     */
     _attachLoadoutCardTooltips() {
       try {
         const root = this.element;
@@ -829,10 +779,10 @@ Hooks.once("ready", async () => {
           try {
             const uuid = li?.dataset?.itemUuid;
             if (!uuid) return;
-            // Attach to LI to catch overlay hovers
+
             if (!li.hasAttribute("data-tooltip"))
               li.setAttribute("data-tooltip", `#item#${uuid}`);
-            // Also attach to overlay label and image
+
             const label = li.querySelector(".card-label");
             if (label && !label.hasAttribute("data-tooltip"))
               label.setAttribute("data-tooltip", `#item#${uuid}`);
@@ -943,7 +893,7 @@ Hooks.once("ready", async () => {
           wrapper.appendChild(note);
           root.appendChild(wrapper);
           document.body.appendChild(root);
-          // Position
+
           const applyPos = () => {
             root.style.position = "fixed";
             root.style.zIndex = "1000";
@@ -968,7 +918,7 @@ Hooks.once("ready", async () => {
           applyPos();
           const onResize = () => applyPos();
           window.addEventListener("resize", onResize);
-          // Track for cleanup
+
           if (side === "right") this.__fallbackRight = { root, onResize };
           else this.__fallbackLeft = { root, onResize };
         };
@@ -1012,7 +962,7 @@ Hooks.once("ready", async () => {
       try {
         const root = this.element;
         if (!root) return;
-        // Remove any existing
+
         this._removeInlineRails();
 
         const right = document.createElement("div");
@@ -1021,7 +971,6 @@ Hooks.once("ready", async () => {
         const left = document.createElement("div");
         left.className = "dh-inline-rails rails-left";
 
-        // Prepare context
         const tabs = Object.values(this._getTabs?.() ?? {});
         const leftItems = [
           { key: "domain", label: "Domain" },
@@ -1051,7 +1000,7 @@ Hooks.once("ready", async () => {
         root.appendChild(right);
         root.appendChild(left);
         this.__inlineRails = { right, left };
-        // Wire rail nav clicks to switch tabs (without Foundry's Tabs controller)
+
         try {
           const nav = right.querySelector(".rail-nav");
           if (nav) {
@@ -1062,11 +1011,9 @@ Hooks.once("ready", async () => {
               ev.stopPropagation();
               const id = a.dataset.tab;
               try {
-                // Update in-memory state
                 this.tabGroups = this.tabGroups || { primary: "features" };
                 this.tabGroups.primary = id;
 
-                // Toggle tab content visibility
                 const sections = this.element.querySelectorAll(
                   '.tab[data-group="primary"]'
                 );
@@ -1075,20 +1022,14 @@ Hooks.once("ready", async () => {
                   sec.classList.toggle("active", active);
                 });
 
-                // Update active classes in rail nav
                 for (const el of nav.querySelectorAll("a[data-tab]")) {
                   el.classList.toggle("active", el === a);
                 }
-              } catch (e) {
-                //console.warn('[DH+] Rail nav tab switch failed', id, e);
-              }
+              } catch (e) {}
             });
           }
         } catch (_) {}
-        //console.debug("[DH+] Mounted inline rails inside sheet", this.id);
-      } catch (e) {
-        //console.error("[DH+] _mountInlineRails failed", e);
-      }
+      } catch (e) {}
     }
 
     _removeInlineRails() {
@@ -1146,7 +1087,6 @@ Hooks.once("ready", async () => {
           this.document
         );
       } catch (_) {
-        // Inline fallback: simple binder if helper isn't present yet
         try {
           const root = this.element;
           const actor = this.document;
@@ -1173,7 +1113,6 @@ Hooks.once("ready", async () => {
         } catch {}
       }
 
-      // Bind adversary Difficulty click â†’ send roll request
       try {
         window.daggerheartPlus?.bindAdversaryDifficultyClick?.(
           this.element,
@@ -1199,7 +1138,6 @@ Hooks.once("ready", async () => {
         } catch {}
       }
 
-      // Bind progress bar click handlers (HP, Stress)
       try {
         window.daggerheartPlus?.bindProgressBarClicks?.(
           this.element,
@@ -1313,11 +1251,8 @@ Hooks.once("ready", async () => {
 
   console.log("Daggerheart Plus | Enhanced sheets registered successfully");
 
-  // Token counters are managed by a setting; initialize conditionally later
-
   EnhancedDiceStyling.initialize();
 
-  // Generic HP modification helper
   async function modifyHP(actor, operation, amount) {
     try {
       if (!actor) return;
@@ -1339,12 +1274,10 @@ Hooks.once("ready", async () => {
     }
   }
 
-  // Utility to bind threshold click handlers within a sheet root element
   function bindThresholdClicks(root, actor) {
     try {
       if (!root || !actor) return;
 
-      // Avoid rebinding multiple times per sheet element
       if (root._dhpThresholdDelegationBound) return;
 
       const clickHandler = (ev) => {
@@ -1371,7 +1304,6 @@ Hooks.once("ready", async () => {
         modifyHP(actor, "subtract", amt);
       };
 
-      // Use capture phase to be resilient to internal handlers
       root.addEventListener("click", clickHandler, true);
       root.addEventListener("contextmenu", contextHandler, true);
       root._dhpThresholdDelegationBound = true;
@@ -1380,7 +1312,6 @@ Hooks.once("ready", async () => {
     }
   }
 
-  // Create a chat message with a clickable roll request using the system's /dr enricher
   async function sendDifficultyRollRequest(actor, options = {}) {
     try {
       if (!actor) return;
@@ -1405,7 +1336,6 @@ Hooks.once("ready", async () => {
     }
   }
 
-  // Bind clicks on the Difficulty display within an Adversary sheet
   function bindAdversaryDifficultyClick(root, actor) {
     try {
       if (!root || !actor) return;
@@ -1458,9 +1388,8 @@ Hooks.once("ready", async () => {
       } else {
         if (window.daggerheartPlus.fearTracker) {
           window.daggerheartPlus.fearTracker.dispose();
-          
-        // Update wrapper visibility after any change
-        updateCountersWrapperDisplay();
+
+          updateCountersWrapperDisplay();
         }
       }
     } catch (error) {
@@ -1470,7 +1399,6 @@ Hooks.once("ready", async () => {
 
   window.daggerheartPlus.manageFearTracker = manageFearTracker;
 
-  // Manage Token Counters visibility and lifecycle
   async function manageTokenCounters() {
     try {
       const enabled = game.settings.get(MODULE_ID, "enableTokenCounters");
@@ -1480,22 +1408,19 @@ Hooks.once("ready", async () => {
           await tc.initialize();
           window.daggerheartPlus.tokenCounter = tc;
         }
-        // Ensure visible if a token is selected
+
         try {
-          
-         updateCountersWrapperDisplay();
+          updateCountersWrapperDisplay();
         } catch (_) {}
       } else {
-        // Hide and dispose
         try {
           window.daggerheartPlus.tokenCounter?.hide?.();
         } catch (_) {}
         try {
           window.daggerheartPlus.tokenCounter?.dispose?.();
         } catch (_) {}
-        
-      // Update wrapper visibility after any change
-      updateCountersWrapperDisplay();
+
+        updateCountersWrapperDisplay();
       }
     } catch (e) {
       console.error("Daggerheart Plus | Error managing token counters:", e);
@@ -1506,7 +1431,9 @@ Hooks.once("ready", async () => {
 
   await manageFearTracker();
   await manageTokenCounters();
-  try { applyTokenCountersVisibilityBySetting(); } catch (_) {}
+  try {
+    applyTokenCountersVisibilityBySetting();
+  } catch (_) {}
 
   Hooks.on("updateSetting", async (setting) => {
     if (setting.namespace !== MODULE_ID) return;
@@ -1589,7 +1516,6 @@ Hooks.once("ready", async () => {
     ui.notifications.info("Daggerheart Plus module loaded successfully!");
   }
 
-  // Bind click/right-click on resource progress bars to increment/decrement values
   function bindProgressBarClicks(root, actor) {
     try {
       if (!root || !actor) return;
@@ -1607,7 +1533,6 @@ Hooks.once("ready", async () => {
 
       const adjustArmorMarks = async (delta) => {
         try {
-          // Find equipped armor item
           const armorItem = actor.items?.find?.(
             (i) => i.type === "armor" && i.system?.equipped
           );
@@ -1618,9 +1543,9 @@ Hooks.once("ready", async () => {
               actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0
             ) || 0;
           const next = Math.max(0, Math.min(max, current + delta));
-          if (next === current) return true; // no change but handled
+          if (next === current) return true;
           await armorItem.update({ "system.marks.value": next });
-          // Keep actor armor resource in sync when present
+
           try {
             if (
               foundry.utils.hasProperty(actor.system, "resources.armor.value")
@@ -1642,7 +1567,6 @@ Hooks.once("ready", async () => {
         );
         let field = bar?.getAttribute?.("name") || bar?.dataset?.field;
         if (!field) {
-          // Look for an input with a system-backed name
           const input = container.querySelector(
             'input.bar-input, input.armor-marks-input, input[name^="system."]'
           );
@@ -1651,7 +1575,6 @@ Hooks.once("ready", async () => {
           else if (input?.name) field = input.name;
         }
         if (!field) {
-          // Infer from label text if present
           const labelText = (
             container.querySelector(".status-label h4")?.textContent || ""
           ).toLowerCase();
@@ -1664,7 +1587,7 @@ Hooks.once("ready", async () => {
               field = "resources.armor.value";
           }
         }
-        // Bounds
+
         let min = 0;
         let max;
         if (bar) {
@@ -1692,7 +1615,6 @@ Hooks.once("ready", async () => {
         const { field, min, max } = resolveFieldAndBounds(container);
         if (!field) return;
         if (actor.type === "character" && field === "resources.armor.value") {
-          // Prefer adjusting equipped armor marks for characters
           const ok = await adjustArmorMarks(+1);
           if (ok) return;
         }
@@ -1722,7 +1644,6 @@ Hooks.once("ready", async () => {
   }
 });
 
-// Inject non-interactive section headers into the Settings UI
 Hooks.on("renderSettingsConfig", (app, html) => {
   try {
     const $root = html && html.find ? html : $(html);
@@ -1751,7 +1672,6 @@ Hooks.on("renderActorSheet", (app, html, data) => {
     console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
   }
 
-  // Ensure inline rails exist for DH+ Character sheets (per-user setting)
   if (app.constructor.name === "DaggerheartPlusCharacterSheet") {
     try {
       const useRails = game.settings.get(
@@ -1777,7 +1697,6 @@ Hooks.on("renderActorSheet", (app, html, data) => {
     }
   }
 
-  // Bind progress bar clicks for any DH+ sheet to ensure interactivity
   try {
     const actor = app.document || app.object;
     if (actor && app.element) {
@@ -1785,7 +1704,6 @@ Hooks.on("renderActorSheet", (app, html, data) => {
     }
   } catch (_) {}
 
-  // Lock down Companion sheet resizing behavior
   if (app.constructor.name === "DaggerheartPlusCompanionSheet") {
     try {
       if (app.options) app.options.resizable = false;
@@ -1797,9 +1715,7 @@ Hooks.on("renderActorSheet", (app, html, data) => {
         );
         handles.forEach((h) => h.remove?.());
       }
-    } catch (_) {
-      /* noop */
-    }
+    } catch (_) {}
   }
 });
 
@@ -1810,7 +1726,6 @@ Hooks.on("closeActorSheet", async (app) => {
   } catch {}
 });
 
-// --- DH+ Per-client Progress Bar Gradient Settings ---
 (function () {
   const MOD = "daggerheart-plus";
 
@@ -1830,12 +1745,12 @@ Hooks.on("closeActorSheet", async (app) => {
 
   function parseColorList(str) {
     if (!str || typeof str !== "string") return [];
-    // Accept comma/space separated list
+
     const raw = str
       .split(/[\s,]+/g)
       .map((s) => s.trim())
       .filter(Boolean);
-    // Basic sanitization: ensure colors look like hex/rgb/hsl or var(--x)
+
     const ok = raw.filter(
       (c) =>
         /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(c) ||

@@ -113,7 +113,9 @@ export class CounterUI {
             </button>
             <div class="counter-display">
                 <div class="counter-value">${currentFear}</div>
-                <div class="counter-label">${game.i18n.localize('DAGGERHEART.GENERAL.fear')}</div>
+                <div class="counter-label">${game.i18n.localize(
+                  "DAGGERHEART.GENERAL.fear"
+                )}</div>
             </div>
             <button type="button" class="counter-plus" title="Increase" ${
               !this.canModify ? 'style="display:none"' : ""

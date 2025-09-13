@@ -66,17 +66,18 @@ export function createDaggerheartPlusCharacterSheet() {
       return `${this.document.name} [DH+]`;
     }
 
-  async _onRender(context, options) {
+    async _onRender(context, options) {
       await super._onRender(context, options);
       await this._createFloatingNavigation();
       this._showSection(this.currentSection);
 
-      // Bind threshold HP quick marks early so it's not blocked by waits
       try {
-        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindThresholdClicks?.(
+          this.element,
+          this.document
+        );
       } catch (_) {}
 
-      // Bind left/right click on progress bars (HP, Stress, Armor)
       try {
         window.daggerheartPlus?.bindProgressBarClicks?.(
           this.element,
@@ -84,8 +85,6 @@ export function createDaggerheartPlusCharacterSheet() {
         );
       } catch (_) {}
 
-
-      // Bind right-side tabs if present
       const root = this.element;
       if (!root) return;
       const tabButtons = root.querySelectorAll(
@@ -99,14 +98,13 @@ export function createDaggerheartPlusCharacterSheet() {
           this.tabGroups = this.tabGroups || { primary: "features" };
           this.tabGroups.primary = tab;
           this._switchToSection(tab);
-          // Update active class on buttons
+
           tabButtons.forEach((b) =>
             b.classList.toggle("active", b.dataset.tab === tab)
           );
         });
       });
 
-      // Wait for loadout items to appear, then wire and apply
       await this._waitForLoadoutItems();
 
       this._bindSidebarLoadoutCardClicks();
@@ -117,11 +115,12 @@ export function createDaggerheartPlusCharacterSheet() {
         if (game.user?.isGM) this._debugSidebarLoadoutBackgrounds();
       } catch {}
 
-      // Re-bind threshold HP quick marks (1/2/3 HP) to catch late DOM
       try {
-        window.daggerheartPlus?.bindThresholdClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindThresholdClicks?.(
+          this.element,
+          this.document
+        );
       } catch (_) {
-        // Fallback: delegate at the root element
         try {
           const root = this.element;
           const actor = this.document;
@@ -155,13 +154,13 @@ export function createDaggerheartPlusCharacterSheet() {
         } catch {}
       }
 
-      // Bind progress bar click handlers (HP, Stress, Armor)
       try {
-        window.daggerheartPlus?.bindProgressBarClicks?.(this.element, this.document);
+        window.daggerheartPlus?.bindProgressBarClicks?.(
+          this.element,
+          this.document
+        );
       } catch (_) {}
     }
-
-    
 
     async _createFloatingNavigation() {
       if (this.floatingNav) {
@@ -237,12 +236,6 @@ export function createDaggerheartPlusCharacterSheet() {
       });
     }
 
-    /**
-     * Ensure clicking anywhere on a loadout card triggers the same action
-     * as clicking its roll image/button. We try common selectors used by
-     * the base system; if a roll trigger is not found, fall back to the
-     * item image inside the card.
-     */
     _bindSidebarLoadoutCardClicks() {
       const root = this.element;
       if (!root) return;
@@ -252,7 +245,6 @@ export function createDaggerheartPlusCharacterSheet() {
       ].filter(Boolean);
       if (!containers.length) return;
 
-      // Remove previous delegation if re-rendering
       if (this._loadoutClickHandler) {
         for (const c of containers) {
           try {
@@ -266,27 +258,22 @@ export function createDaggerheartPlusCharacterSheet() {
         if (!itemCard) return;
         if (!containers.some((c) => c.contains(itemCard))) return;
 
-        // Ignore clicks on explicit controls or links inside the card
         const interactive = ev.target.closest(
           'a, button, input, select, textarea, [contenteditable="true"]'
         );
-        if (interactive) return; // let native behavior occur
+        if (interactive) return;
 
-        // If the card advertises a data-action, let system handlers run
         if (itemCard.hasAttribute("data-action")) return;
 
-        // Prefer a dedicated roll trigger if present
         const rollTrigger = itemCard.querySelector(
           '.img-portait, [data-action="useItem"], .roll-img, .item-roll, [data-action="roll"], .rollable'
         );
         const target = rollTrigger || itemCard.querySelector(".item-img");
         if (!target) return;
 
-        // Synthesize a primary click sequence on the target element
         this._synthesizePrimaryClick(target);
       };
 
-      // Capture phase improves reliability when base handlers stop propagation
       for (const c of containers) {
         c.addEventListener("click", this._loadoutClickHandler, true);
       }
@@ -334,11 +321,6 @@ export function createDaggerheartPlusCharacterSheet() {
       } catch {}
     }
 
-    /**
-     * Use the item image inside each loadout card as the card background.
-     * We store it in a CSS variable set on the card element so CSS can
-     * render it and keep hover effects independent of JS afterwards.
-     */
     _applySidebarLoadoutBackgrounds() {
       const root = this.element;
       if (!root) return;
@@ -355,9 +337,6 @@ export function createDaggerheartPlusCharacterSheet() {
         const item = el.closest?.(".inventory-item") || el;
         if (!item || !item.classList.contains("inventory-item")) return;
 
-        // Try to resolve the image source in a few ways:
-        // 1) Prefer the owning document's image via data-item-id
-        // 2) Fallback to the inline <img> inside the card (src/data-src/currentSrc)
         let src;
         const itemId = item.dataset.itemId;
         const doc = itemId ? this.document?.items?.get?.(itemId) : null;
@@ -372,7 +351,7 @@ export function createDaggerheartPlusCharacterSheet() {
         if (!src) return;
 
         const url = `url("${src}")`;
-        // CSS variable + direct background (with important) to defeat shorthands
+
         item.style.setProperty("--sidebar-card-bg", url);
         item.style.setProperty("background-image", url, "important");
         item.style.setProperty("background-size", "cover", "important");
@@ -395,27 +374,27 @@ export function createDaggerheartPlusCharacterSheet() {
           );
         }
 
-        // Ensure cards are usable: mark them as actionable
         try {
           item.setAttribute("data-action", "useItem");
         } catch {}
 
-        // Attach rich tooltip when possible using system manager patterns
         try {
           if (!item.hasAttribute("data-tooltip")) {
-            const uuid = doc?.uuid || (itemId && this.document?.uuid ? `${this.document.uuid}.Item.${itemId}` : null);
+            const uuid =
+              doc?.uuid ||
+              (itemId && this.document?.uuid
+                ? `${this.document.uuid}.Item.${itemId}`
+                : null);
             if (uuid) item.setAttribute("data-tooltip", `#item#${uuid}`);
           }
         } catch {}
         item.dataset.bgApplied = "1";
       };
 
-      // Initial paint for both sections
       lists.forEach((list) =>
         list.querySelectorAll(".inventory-item").forEach(apply)
       );
 
-      // Observe both lists for dynamic changes
       try {
         if (this._loadoutObserver) this._loadoutObserver.disconnect();
         this._loadoutObserver = new MutationObserver((mutations) => {
@@ -440,18 +419,14 @@ export function createDaggerheartPlusCharacterSheet() {
             );
         });
         lists.forEach((list) =>
-          this._loadoutObserver.observe(list, { childList: true, subtree: true })
+          this._loadoutObserver.observe(list, {
+            childList: true,
+            subtree: true,
+          })
         );
-      } catch (e) {
-        /* ignore */
-      }
+      } catch (e) {}
     }
 
-    /**
-     * Add a small hover-intent delay to Equipment sidebar cards so they
-     * only expand after the cursor rests on them for ~350ms.
-     * If an element is provided, bind just that item; otherwise bind all.
-     */
     _bindEquipmentHoverIntent(element) {
       const root = this.element;
       if (!root) return;
@@ -464,13 +439,17 @@ export function createDaggerheartPlusCharacterSheet() {
         if (!item || item._hoverIntentBound) return;
         item._hoverIntentBound = true;
         const enter = () => {
-          try { clearTimeout(item._hoverTO); } catch {}
+          try {
+            clearTimeout(item._hoverTO);
+          } catch {}
           item._hoverTO = setTimeout(() => {
             item.classList.add("is-hovered");
           }, 350);
         };
         const leave = () => {
-          try { clearTimeout(item._hoverTO); } catch {}
+          try {
+            clearTimeout(item._hoverTO);
+          } catch {}
           item.classList.remove("is-hovered");
         };
         item.addEventListener("mouseenter", enter);
@@ -481,7 +460,6 @@ export function createDaggerheartPlusCharacterSheet() {
       if (element) bind(element);
       else list.querySelectorAll(".inventory-item").forEach(bind);
 
-      // Observe for dynamically added items in equipment list only
       try {
         if (!this._equipHoverObserver) {
           this._equipHoverObserver = new MutationObserver((mutations) => {
@@ -502,11 +480,6 @@ export function createDaggerheartPlusCharacterSheet() {
       } catch {}
     }
 
-    /**
-     * Ensure card items in the Loadout tab (grid/card view) get rich tooltips.
-     * Upstream domain-card-item.hbs lacks data-tooltip; add it here using each
-     * card's data-item-uuid so the system DhTooltipManager renders the item tooltip.
-     */
     _attachLoadoutCardTooltips() {
       try {
         const root = this.element;
@@ -519,29 +492,37 @@ export function createDaggerheartPlusCharacterSheet() {
           try {
             const uuid = li?.dataset?.itemUuid;
             if (!uuid) return;
-            // Attach to the LI itself so overlay layers don't block hovers.
-            if (!li.hasAttribute("data-tooltip")) li.setAttribute("data-tooltip", `#item#${uuid}`);
-            // Also attach to the visible overlay container
+
+            if (!li.hasAttribute("data-tooltip"))
+              li.setAttribute("data-tooltip", `#item#${uuid}`);
+
             const label = li.querySelector(".card-label");
-            if (label && !label.hasAttribute("data-tooltip")) label.setAttribute("data-tooltip", `#item#${uuid}`);
+            if (label && !label.hasAttribute("data-tooltip"))
+              label.setAttribute("data-tooltip", `#item#${uuid}`);
             const img = li.querySelector("img.card-img, .card-img img, img");
             if (img) {
-              if (!img.getAttribute("data-action")) img.setAttribute("data-action", "useItem");
-              if (!img.hasAttribute("data-tooltip")) img.setAttribute("data-tooltip", `#item#${uuid}`);
+              if (!img.getAttribute("data-action"))
+                img.setAttribute("data-action", "useItem");
+              if (!img.hasAttribute("data-tooltip"))
+                img.setAttribute("data-tooltip", `#item#${uuid}`);
             }
             const nameEl = li.querySelector(".card-name");
-            if (nameEl && !nameEl.hasAttribute("data-tooltip")) nameEl.setAttribute("data-tooltip", `#item#${uuid}`);
+            if (nameEl && !nameEl.hasAttribute("data-tooltip"))
+              nameEl.setAttribute("data-tooltip", `#item#${uuid}`);
           } catch {}
         };
 
         const wireLists = () => {
           const lists = container.querySelectorAll(".card-list");
           if (!lists?.length) return false;
-          // Initial pass
-          lists.forEach((ul) => ul.querySelectorAll(".card-item").forEach(apply));
-          // Observe dynamic changes
+
+          lists.forEach((ul) =>
+            ul.querySelectorAll(".card-item").forEach(apply)
+          );
+
           try {
-            if (this._loadoutCardsObserver) this._loadoutCardsObserver.disconnect();
+            if (this._loadoutCardsObserver)
+              this._loadoutCardsObserver.disconnect();
             this._loadoutCardsObserver = new MutationObserver((mutations) => {
               for (const m of mutations) {
                 m.addedNodes.forEach((n) => {
@@ -553,19 +534,24 @@ export function createDaggerheartPlusCharacterSheet() {
               }
             });
             lists.forEach((ul) =>
-              this._loadoutCardsObserver.observe(ul, { childList: true, subtree: true })
+              this._loadoutCardsObserver.observe(ul, {
+                childList: true,
+                subtree: true,
+              })
             );
           } catch {}
           return true;
         };
 
-        // If lists exist now, wire them; otherwise observe until they appear
         if (!wireLists()) {
           try {
-            if (this._loadoutCardsBootstrapObserver) this._loadoutCardsBootstrapObserver.disconnect();
+            if (this._loadoutCardsBootstrapObserver)
+              this._loadoutCardsBootstrapObserver.disconnect();
             this._loadoutCardsBootstrapObserver = new MutationObserver(() => {
               if (wireLists()) {
-                try { this._loadoutCardsBootstrapObserver.disconnect(); } catch {}
+                try {
+                  this._loadoutCardsBootstrapObserver.disconnect();
+                } catch {}
                 this._loadoutCardsBootstrapObserver = null;
               }
             });
@@ -590,11 +576,15 @@ export function createDaggerheartPlusCharacterSheet() {
         this._loadoutObserver = null;
       }
       if (this._equipHoverObserver) {
-        try { this._equipHoverObserver.disconnect(); } catch {}
+        try {
+          this._equipHoverObserver.disconnect();
+        } catch {}
         this._equipHoverObserver = null;
       }
       if (this._loadoutCardsObserver) {
-        try { this._loadoutCardsObserver.disconnect(); } catch {}
+        try {
+          this._loadoutCardsObserver.disconnect();
+        } catch {}
         this._loadoutCardsObserver = null;
       }
 

@@ -62,7 +62,9 @@ export class EnhancedDiceStyling {
       }
     });
 
-    const rollFlavorLines = root.querySelectorAll(".roll-result-desc, .roll-title");
+    const rollFlavorLines = root.querySelectorAll(
+      ".roll-result-desc, .roll-title"
+    );
     rollFlavorLines.forEach((line) => {
       const text = (line.textContent || "").toLowerCase();
 
@@ -149,8 +151,12 @@ export class EnhancedDiceStyling {
       }
     }
 
-    const hopeDice = root.querySelectorAll('.dice.color-hope[data-type="hope"]');
-    const fearDice = root.querySelectorAll('.dice.color-fear[data-type="fear"]');
+    const hopeDice = root.querySelectorAll(
+      '.dice.color-hope[data-type="hope"]'
+    );
+    const fearDice = root.querySelectorAll(
+      '.dice.color-fear[data-type="fear"]'
+    );
 
     hopeDice.forEach((die) => {
       die.classList.add("clickable-die", "hope-die");
@@ -188,8 +194,11 @@ export class EnhancedDiceStyling {
         : game.i18n.localize("DAGGERHEART.GENERAL.fear");
 
     const confirmResult = await Dialog.confirm({
-      title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel} ${game.i18n.localize("DAGGERHEART.GENERAL.die" ) || "Die"}`,
-      content: `<p>${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}?` +
+      title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel} ${
+        game.i18n.localize("DAGGERHEART.GENERAL.die") || "Die"
+      }`,
+      content:
+        `<p>${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}?` +
         `</p>`,
       yes: () => true,
       no: () => false,
@@ -218,7 +227,9 @@ export class EnhancedDiceStyling {
       }, 1000);
 
       ui.notifications.info(
-        `${dieLabel} ${game.i18n.localize("DAGGERHEART.GENERAL.reroll").toLowerCase()}!`
+        `${dieLabel} ${game.i18n
+          .localize("DAGGERHEART.GENERAL.reroll")
+          .toLowerCase()}!`
       );
     } catch (error) {
       console.error("Dice reroll failed:", error);
@@ -240,7 +251,7 @@ export class EnhancedDiceStyling {
           const content = el.querySelector(".roll-part-content.dice-result");
           if (content) {
             const expanded = el.classList.contains("expanded");
-            // Mimic slideUp/Down by toggling visibility
+
             content.style.display = expanded ? "none" : "";
           }
         });
@@ -256,7 +267,8 @@ export class EnhancedDiceStyling {
     advantageChips.forEach((chip) => {
       chip.addEventListener("click", (event) => {
         chip.classList.toggle("selected");
-        const siblings = chip.parentElement?.querySelectorAll(".advantage-chip") || [];
+        const siblings =
+          chip.parentElement?.querySelectorAll(".advantage-chip") || [];
         siblings.forEach?.((sib) => {
           if (sib !== chip) sib.classList.remove("selected");
         });
@@ -266,7 +278,8 @@ export class EnhancedDiceStyling {
     disadvantageChips.forEach((chip) => {
       chip.addEventListener("click", (event) => {
         chip.classList.toggle("selected");
-        const siblings = chip.parentElement?.querySelectorAll(".disadvantage-chip") || [];
+        const siblings =
+          chip.parentElement?.querySelectorAll(".disadvantage-chip") || [];
         siblings.forEach?.((sib) => {
           if (sib !== chip) sib.classList.remove("selected");
         });

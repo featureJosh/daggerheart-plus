@@ -13,7 +13,6 @@ export class TokenCounterUI {
   }
 
   async initialize() {
-    // Store hook references so we can unbind on dispose
     this._hooks = this._hooks || {};
 
     this._hooks.controlToken = (token, controlled) => {
@@ -35,7 +34,6 @@ export class TokenCounterUI {
     };
     Hooks.on("updateActor", this._hooks.updateActor);
 
-    // Refresh when the equipped armor item changes
     this._hooks.updateItem = (item, changes) => {
       try {
         const parentId = item?.parent?.id || item?.actor?.id;
@@ -101,8 +99,6 @@ export class TokenCounterUI {
         max: Number(system.resources.stress.max) || 0,
       };
 
-      // Armor is stored on the equipped armor item (marks.value),
-      // and max comes from actor.system.armorScore.
       const armorItem = actor.items?.find?.(
         (i) => i.type === "armor" && i.system?.equipped
       );
@@ -183,7 +179,6 @@ export class TokenCounterUI {
     const rightContainer = document.querySelector("#token-counters-right");
     const containers = [this.element, rightContainer].filter(Boolean);
 
-    // Attach listeners for both left and right containers
     containers.forEach((container) => {
       const buttons = container.querySelectorAll(
         ".counter-minus, .counter-plus"
@@ -256,7 +251,6 @@ export class TokenCounterUI {
         maxValue = this.characterStress.max;
         break;
       case "armor-slots":
-        // Update the equipped armor item's marks value, not the actor resource.
         const armorItem = actor.items?.find?.(
           (i) => i.type === "armor" && i.system?.equipped
         );
@@ -270,7 +264,7 @@ export class TokenCounterUI {
             actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0
           ) ||
           0;
-        if (!armorItem) return; // No equipped armor; nothing to update
+        if (!armorItem) return;
         break;
       default:
         return;
@@ -280,7 +274,6 @@ export class TokenCounterUI {
 
     if (newValue !== currentValue) {
       if (type === "armor-slots") {
-        // Persist to the armor item
         const armorItem = actor.items?.find?.(
           (i) => i.type === "armor" && i.system?.equipped
         );
@@ -293,14 +286,13 @@ export class TokenCounterUI {
   }
 
   show() {
-    // Lifecycle toggling is handled by main.js; this class just shows/hides its node
     if (!this.element) this.createElement();
     if (this.element) this.element.style.display = "";
   }
 
   hide() {
     if (this.element) this.element.style.display = "none";
-    // Clear right-side counters to avoid stale display
+
     try {
       const right = document.querySelector("#token-counters-right");
       if (right) right.innerHTML = "";
@@ -387,7 +379,6 @@ export class TokenCounterUI {
   }
 
   dispose() {
-    // Unbind hooks if present
     try {
       if (this._hooks?.controlToken)
         Hooks.off("controlToken", this._hooks.controlToken);
@@ -404,7 +395,7 @@ export class TokenCounterUI {
       this.element.remove();
       this.element = null;
     }
-    // Also clear right container contents
+
     try {
       const right = document.querySelector("#token-counters-right");
       if (right) right.innerHTML = "";

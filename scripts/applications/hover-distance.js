@@ -1,17 +1,15 @@
 const MODULE_ID = "daggerheart-plus";
 
-/**
- * Hover Distance for Foundry VTT v13+
- * - Uses the scene/system measurement (grid/ruler) for accuracy
- * - Shows a label on hovered tokens from the first controlled token
- * - Supports an Alt key highlight mode to show labels for all tokens
- */
 export class HoverDistance {
   static registerSettings() {
     try {
       game.settings.register(MODULE_ID, "enableHoverDistance", {
-        name: game.i18n.localize("DHP.Settings.HoverDistance.Enable.Name") || "Enable Hover Distance",
-        hint: game.i18n.localize("DHP.Settings.HoverDistance.Enable.Hint") || "Show distance between your selected token and any token you hover.",
+        name:
+          game.i18n.localize("DHP.Settings.HoverDistance.Enable.Name") ||
+          "Enable Hover Distance",
+        hint:
+          game.i18n.localize("DHP.Settings.HoverDistance.Enable.Hint") ||
+          "Show distance between your selected token and any token you hover.",
         scope: "client",
         config: true,
         type: Boolean,
@@ -19,8 +17,12 @@ export class HoverDistance {
       });
 
       game.settings.register(MODULE_ID, "hoverDistancePosition", {
-        name: game.i18n.localize("DHP.Settings.HoverDistance.Position.Name") || "Tooltip Position",
-        hint: game.i18n.localize("DHP.Settings.HoverDistance.Position.Hint") || "Where to show the distance label relative to the hovered token.",
+        name:
+          game.i18n.localize("DHP.Settings.HoverDistance.Position.Name") ||
+          "Tooltip Position",
+        hint:
+          game.i18n.localize("DHP.Settings.HoverDistance.Position.Hint") ||
+          "Where to show the distance label relative to the hovered token.",
         scope: "client",
         config: true,
         type: String,
@@ -33,16 +35,38 @@ export class HoverDistance {
       });
 
       game.settings.register(MODULE_ID, "hoverDistanceRounding", {
-        name: game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Name") || "Rounding (units)",
-        hint: game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Hint") || "Round the displayed distance to this step. 0 = floor to integer.",
+        name:
+          game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Name") ||
+          "Rounding (units)",
+        hint:
+          game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Hint") ||
+          "Round the displayed distance to this step. 0 = floor to integer.",
         scope: "client",
         config: true,
         type: Number,
         default: 0,
         range: { min: 0, max: 25, step: 1 },
       });
+
+      game.settings.register(MODULE_ID, "hoverDistanceEdgeToEdge", {
+        name: HoverDistance._i18n(
+          "DHP.Settings.HoverDistance.EdgeToEdge.Name",
+          "Edge to Edge Measurement"
+        ),
+        hint: HoverDistance._i18n(
+          "DHP.Settings.HoverDistance.EdgeToEdge.Hint",
+          "Measure from token edges instead of centers by subtracting half the size of each token from the horizontal separation."
+        ),
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: false,
+      });
     } catch (e) {
-      console.warn("Daggerheart Plus | Failed to register HoverDistance settings", e);
+      console.warn(
+        "Daggerheart Plus | Failed to register HoverDistance settings",
+        e
+      );
     }
   }
 
@@ -56,11 +80,13 @@ export class HoverDistance {
         if (hovered) HoverDistance._showDistance(token);
         else HoverDistance._clearDistance(token);
       } catch (e) {
-        console.warn("Daggerheart Plus | HoverDistance hoverToken handler failed", e);
+        console.warn(
+          "Daggerheart Plus | HoverDistance hoverToken handler failed",
+          e
+        );
       }
     });
 
-    // Clean up if tokens are deleted or control changes dramatically
     Hooks.on("deleteToken", (doc) => {
       try {
         const t = canvas?.tokens?.get(doc.id);
@@ -69,18 +95,18 @@ export class HoverDistance {
     });
 
     Hooks.on("controlToken", () => {
-      // When control changes, refresh distance if something is hovered
       try {
         const hoveredToken = canvas?.tokens?.placeables?.find((t) => t.hover);
         if (hoveredToken) {
-          if (game.settings.get(MODULE_ID, "enableHoverDistance")) HoverDistance._showDistance(hoveredToken);
+          if (game.settings.get(MODULE_ID, "enableHoverDistance"))
+            HoverDistance._showDistance(hoveredToken);
           else HoverDistance._clearDistance(hoveredToken);
         }
-        if (HoverDistance._highlightModeActive) HoverDistance._showAllDistances();
+        if (HoverDistance._highlightModeActive)
+          HoverDistance._showAllDistances();
       } catch (_) {}
     });
 
-    // Highlight-mode (Alt key) support: show distance labels for all tokens
     HoverDistance._highlightModeActive = false;
     HoverDistance._onKeyDown = (ev) => {
       try {
@@ -119,8 +145,10 @@ export class HoverDistance {
     try {
       const source = HoverDistance._getPrimaryControlledToken();
       if (!source) return HoverDistance._clearDistance(hoveredToken);
-      if (source === hoveredToken) return HoverDistance._clearDistance(hoveredToken);
-      if (!hoveredToken?.visible || !source?.visible) return HoverDistance._clearDistance(hoveredToken);
+      if (source === hoveredToken)
+        return HoverDistance._clearDistance(hoveredToken);
+      if (!hoveredToken?.visible || !source?.visible)
+        return HoverDistance._clearDistance(hoveredToken);
 
       const dist = HoverDistance._measureCenterDistance(source, hoveredToken);
       if (dist == null) return HoverDistance._clearDistance(hoveredToken);
@@ -149,14 +177,22 @@ export class HoverDistance {
       if (!source) return HoverDistance._clearAllDistances();
       for (const t of canvas.tokens.placeables) {
         if (t === source) continue;
-        if (!t?.visible) { HoverDistance._clearDistance(t); continue; }
+        if (!t?.visible) {
+          HoverDistance._clearDistance(t);
+          continue;
+        }
         const dist = HoverDistance._measureCenterDistance(source, t);
-        if (dist == null) { HoverDistance._clearDistance(t); continue; }
+        if (dist == null) {
+          HoverDistance._clearDistance(t);
+          continue;
+        }
         const text = HoverDistance._formatDistance(dist);
         HoverDistance._drawLabel(t, text);
       }
     } catch (e) {
-      try { HoverDistance._clearAllDistances(); } catch (_) {}
+      try {
+        HoverDistance._clearAllDistances();
+      } catch (_) {}
     }
   }
 
@@ -170,14 +206,11 @@ export class HoverDistance {
     try {
       const dims = canvas?.dimensions;
       if (!dims) return null;
-      const p1 = a.center; // {x, y}
+      const p1 = a.center;
       const p2 = b.center;
 
-      // Defer to Foundry's grid measurement for horizontal distance so it
-      // mirrors scene measurement rules (diagonals, hex, etc.).
       let horizontalUnits = HoverDistance._measureCoreRulerUnits(p1, p2);
       if (!isFinite(horizontalUnits)) {
-        // Fallback to Euclidean using scene distance-per-pixel
         const dpp = (Number(dims.distance) || 5) / (Number(dims.size) || 100);
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
@@ -185,32 +218,52 @@ export class HoverDistance {
       }
       if (!isFinite(horizontalUnits)) return null;
 
-      // Include vertical component (elevation) in scene distance units.
-      // Token elevation is already expressed in the scene's units.
+      if (game.settings.get(MODULE_ID, "hoverDistanceEdgeToEdge")) {
+        const r1 = HoverDistance._tokenRadiusUnits(a);
+        const r2 = HoverDistance._tokenRadiusUnits(b);
+        horizontalUnits = Math.max(0, horizontalUnits - (r1 + r2));
+      }
+
       const z1 = Number(a?.document?.elevation ?? a?.elevation ?? 0);
       const z2 = Number(b?.document?.elevation ?? b?.elevation ?? 0);
       const dz = Math.abs(z2 - z1);
 
-      // 3D distance combining horizontal scene distance and elevation delta.
       return Math.hypot(horizontalUnits, dz);
     } catch (e) {
       return null;
     }
   }
 
+  static _tokenRadiusUnits(token) {
+    try {
+      const dims = canvas?.dimensions;
+      if (!dims) return 0;
+      const distPerGrid = Number(dims.distance) || 5;
+      const w = Number(token?.document?.width ?? 1);
+      const h = Number(token?.document?.height ?? 1);
+      const gridUnits = Math.max(1, isFinite(w) ? w : 1, isFinite(h) ? h : 1);
+      return (gridUnits / 2) * distPerGrid;
+    } catch (_) {
+      return 0;
+    }
+  }
+
   static _measureCoreRulerUnits(p1, p2) {
-    // Try Foundry's grid/ruler so results align with scene measurement rules
     try {
       const d = canvas?.grid?.measureDistance?.(p1, p2);
       if (typeof d === "number" && isFinite(d)) return d;
     } catch (_) {}
     try {
-      const res = canvas?.grid?.measurePath?.([p1, p2], { gridSpaces: false, snapping: false });
-      // v13: single result object with `.distance`
-      if (res && typeof res.distance === "number" && isFinite(res.distance)) return res.distance;
-      // Some versions return a number
+      const res = canvas?.grid?.measurePath?.([p1, p2], {
+        gridSpaces: false,
+        snapping: false,
+      });
+
+      if (res && typeof res.distance === "number" && isFinite(res.distance))
+        return res.distance;
+
       if (typeof res === "number" && isFinite(res)) return res;
-      // Others return an array of segment results
+
       if (Array.isArray(res)) {
         let total = 0;
         for (const s of res) total += Number(s?.distance || 0);
@@ -221,32 +274,42 @@ export class HoverDistance {
   }
 
   static _applyRounding(value) {
-    const step = Number(game.settings.get(MODULE_ID, "hoverDistanceRounding") || 0);
+    const step = Number(
+      game.settings.get(MODULE_ID, "hoverDistanceRounding") || 0
+    );
     if (step <= 0) return Math.floor(value);
     const remainder = value % step;
-    const rounded = remainder > step / 2 ? value + step - remainder : value - remainder;
+    const rounded =
+      remainder > step / 2 ? value + step - remainder : value - remainder;
     return Math.round(rounded * 1000000) / 1000000;
   }
 
   static _formatDistance(rawValue) {
-    // Try to use Daggerheart narrative measurement if enabled
     const dh = HoverDistance._getDhRangeSettings();
     if (dh.enabled) {
       const label = HoverDistance._getRangeLabel(rawValue, dh);
       if (label) return label;
     }
 
-    // Numeric fallback (apply rounding at display time only)
     const value = HoverDistance._applyRounding(rawValue);
-    const units = canvas?.scene?.grid?.units || game.i18n.localize("DHP.Settings.HoverDistance.Units.Default") || "ft";
+    const units =
+      canvas?.scene?.grid?.units ||
+      game.i18n.localize("DHP.Settings.HoverDistance.Units.Default") ||
+      "ft";
     return `${value} ${units}`;
   }
 
   static _drawLabel(token, text) {
     try {
-      const base = Math.max(1, Math.min(token?.w || 0, token?.h || 0) || (canvas?.dimensions?.size ?? 100));
+      const base = Math.max(
+        1,
+        Math.min(token?.w || 0, token?.h || 0) ||
+          (canvas?.dimensions?.size ?? 100)
+      );
       const fontSize = Math.round(Math.max(12, Math.min(base * 0.22, 48)));
-      const strokeThickness = Math.round(Math.max(2, Math.min(fontSize / 6, 8)));
+      const strokeThickness = Math.round(
+        Math.max(2, Math.min(fontSize / 6, 8))
+      );
       const shadowBlur = Math.max(2, Math.round(strokeThickness / 2));
       const shadowDist = Math.max(1, Math.round(strokeThickness / 2));
 
@@ -263,14 +326,16 @@ export class HoverDistance {
         align: "center",
       });
 
-      // Remove old label if any
       HoverDistance._clearDistance(token);
 
       const label = new PIXI.Text(text, style);
-      label.resolution = Math.max(2, Math.ceil((globalThis?.devicePixelRatio) || 2));
+      label.resolution = Math.max(
+        2,
+        Math.ceil(globalThis?.devicePixelRatio || 2)
+      );
 
-      // Position relative to token
-      const posPref = game.settings.get(MODULE_ID, "hoverDistancePosition") || "center";
+      const posPref =
+        game.settings.get(MODULE_ID, "hoverDistancePosition") || "center";
       const w = token.w;
       const h = token.h;
       const offset = Math.round(Math.max(10, fontSize * 0.75));
@@ -288,7 +353,6 @@ export class HoverDistance {
           break;
       }
 
-      // Draw on token's mesh container so it moves with hover
       token.addChild(label);
       token.dhpHoverDistanceLabel = label;
     } catch (e) {
@@ -296,12 +360,10 @@ export class HoverDistance {
     }
   }
 
-  // --- Daggerheart narrative range integration ---
   static _getDhRangeSettings() {
     const dims = canvas?.dimensions;
-    const distPerGrid = dims?.distance ?? 5; // default 5 ft per grid
+    const distPerGrid = dims?.distance ?? 5;
 
-    // Defaults based on docs: melee=1, veryClose=3, close=10, far=20 grid units
     const defaults = {
       enabled: false,
       melee: 1 * distPerGrid,
@@ -313,12 +375,13 @@ export class HoverDistance {
     try {
       if (game.system?.id !== "daggerheart") return defaults;
 
-      // Attempt to read Variant Rules settings from the Daggerheart system (DataModel settings in v12+)
       let vr = null;
       try {
         vr = game.settings.get("daggerheart", "variantRules");
       } catch (_) {
-        try { vr = game.settings.get("daggerheart", "VariantRules"); } catch (_) {}
+        try {
+          vr = game.settings.get("daggerheart", "VariantRules");
+        } catch (_) {}
       }
 
       const range = vr?.rangeMeasurement || vr?.ranges || null;
@@ -331,20 +394,34 @@ export class HoverDistance {
           far: Number(range.far ?? defaults.far),
         };
       }
-    } catch (_) { /* ignore and use defaults */ }
+    } catch (_) {}
 
     return defaults;
   }
 
   static _getRangeLabel(distance, settings) {
     try {
-      if (distance <= settings.melee) return game.i18n.localize("DAGGERHEART.CONFIG.Range.melee.name");
-      if (distance <= settings.veryClose) return game.i18n.localize("DAGGERHEART.CONFIG.Range.veryClose.name");
-      if (distance <= settings.close) return game.i18n.localize("DAGGERHEART.CONFIG.Range.close.name");
-      if (distance <= settings.far) return game.i18n.localize("DAGGERHEART.CONFIG.Range.far.name");
+      if (distance <= settings.melee)
+        return game.i18n.localize("DAGGERHEART.CONFIG.Range.melee.name");
+      if (distance <= settings.veryClose)
+        return game.i18n.localize("DAGGERHEART.CONFIG.Range.veryClose.name");
+      if (distance <= settings.close)
+        return game.i18n.localize("DAGGERHEART.CONFIG.Range.close.name");
+      if (distance <= settings.far)
+        return game.i18n.localize("DAGGERHEART.CONFIG.Range.far.name");
       return game.i18n.localize("DAGGERHEART.CONFIG.Range.veryFar.name");
     } catch (_) {
       return null;
+    }
+  }
+
+  static _i18n(key, fallback) {
+    try {
+      const i18n = game?.i18n;
+      if (i18n?.has?.(key)) return i18n.localize(key);
+      return fallback;
+    } catch (_) {
+      return fallback;
     }
   }
 }

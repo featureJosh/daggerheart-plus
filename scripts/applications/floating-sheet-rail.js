@@ -18,15 +18,23 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
     super();
     this.sheet = sheet;
     this.actor = sheet?.actor ?? sheet?.document;
-    this.side = side; // "left" | "right"
-    // Provide some placeholder content by default
+    this.side = side;
+
     this.items = items?.length
       ? items
       : side === "right"
       ? [
           { key: "placeholder-1", icon: "fa-solid fa-sparkles", label: "A" },
-          { key: "placeholder-2", icon: "fa-solid fa-shield-halved", label: "B" },
-          { key: "placeholder-3", icon: "fa-solid fa-bag-shopping", label: "C" },
+          {
+            key: "placeholder-2",
+            icon: "fa-solid fa-shield-halved",
+            label: "B",
+          },
+          {
+            key: "placeholder-3",
+            icon: "fa-solid fa-bag-shopping",
+            label: "C",
+          },
           { key: "placeholder-4", icon: "fa-solid fa-user", label: "D" },
           { key: "placeholder-5", icon: "fa-solid fa-hourglass", label: "E" },
         ]
@@ -38,7 +46,10 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
           { key: "ancestry", label: "Ancestry" },
         ];
     try {
-      console.debug(`[DH+] FloatingSheetRail ctor (${this.side}) for`, this.actor?.name);
+      console.debug(
+        `[DH+] FloatingSheetRail ctor (${this.side}) for`,
+        this.actor?.name
+      );
     } catch {}
   }
 
@@ -56,7 +67,10 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
   _onRender(context, options) {
     super._onRender(context, options);
     try {
-      console.debug(`[DH+] FloatingSheetRail rendered (${this.side})`, this.element);
+      console.debug(
+        `[DH+] FloatingSheetRail rendered (${this.side})`,
+        this.element
+      );
     } catch {}
     this._position();
     this._bind();
@@ -94,7 +108,6 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
     el.style.position = "fixed";
     el.style.zIndex = "1000";
 
-    // Reset width so we can measure natural size for left placement
     el.style.width = "auto";
 
     if (this.side === "right") {
@@ -103,25 +116,19 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
       el.style.top = `${rect.top + rect.height / 2}px`;
       el.style.transform = "translateY(-50%)";
     } else {
-      // Left rail sits outside the sheet on the left
       el.style.right = "";
-      // Place it so its right edge is 20px from sheet's left edge
+
       const width = el.getBoundingClientRect().width || 0;
-      const targetRight = rect.left - 20; // px from viewport left
+      const targetRight = rect.left - 20;
       const left = Math.max(0, targetRight - width);
       el.style.left = `${left}px`;
       el.style.top = `${rect.top + rect.height / 2}px`;
       el.style.transform = "translateY(-50%)";
     }
 
-    // Also ensure visibility matches the sheet's minimized state
     this._syncVisibility?.();
   }
 
-  /**
-   * Toggle a hidden class while the host sheet is minimizing/minimized,
-   * so rails fade/scale out and disable pointer events.
-   */
   _syncVisibility() {
     const root = this.sheet?.element;
     const el = this.element;
