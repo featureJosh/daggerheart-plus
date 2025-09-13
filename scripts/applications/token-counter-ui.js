@@ -1,4 +1,4 @@
-const MODULE_ID = "daggerheart-plus";
+﻿const MODULE_ID = "daggerheart-plus";
 
 export class TokenCounterUI {
   constructor() {
@@ -13,28 +13,33 @@ export class TokenCounterUI {
   }
 
   async initialize() {
-    Hooks.on("controlToken", (token, controlled) => {
-      if (controlled && token.actor) {
+    // Store hook references so we can unbind on dispose
+    this._hooks = this._hooks || {};
+
+    this._hooks.controlToken = (token, controlled) => {
+      if (controlled && token?.actor) {
         this.setSelectedToken(token);
-      } else if (!controlled && canvas.tokens.controlled.length === 0) {
+      } else if (!controlled && (canvas.tokens.controlled?.length || 0) === 0) {
         this.hide();
       }
-    });
+    };
+    Hooks.on("controlToken", this._hooks.controlToken);
 
-    Hooks.on("updateActor", (actor, changes) => {
-      if (this.selectedToken && this.selectedToken.actor.id === actor.id) {
+    this._hooks.updateActor = (actor, changes) => {
+      if (this.selectedToken && this.selectedToken.actor?.id === actor.id) {
         setTimeout(() => {
           this.updateFromToken(this.selectedToken);
           this.render();
         }, 50);
       }
-    });
+    };
+    Hooks.on("updateActor", this._hooks.updateActor);
 
     // Refresh when the equipped armor item changes
-    Hooks.on("updateItem", (item, changes) => {
+    this._hooks.updateItem = (item, changes) => {
       try {
         const parentId = item?.parent?.id || item?.actor?.id;
-        if (!this.selectedToken || parentId !== this.selectedToken.actor.id)
+        if (!this.selectedToken || parentId !== this.selectedToken.actor?.id)
           return;
         if (item.type !== "armor") return;
         setTimeout(() => {
@@ -42,18 +47,20 @@ export class TokenCounterUI {
           this.render();
         }, 25);
       } catch {}
-    });
+    };
+    Hooks.on("updateItem", this._hooks.updateItem);
 
-    Hooks.on("updateToken", (token, changes) => {
+    this._hooks.updateToken = (token, changes) => {
       if (this.selectedToken && this.selectedToken.id === token.id) {
         setTimeout(() => {
           this.updateFromToken(this.selectedToken);
           this.render();
         }, 50);
       }
-    });
+    };
+    Hooks.on("updateToken", this._hooks.updateToken);
 
-    if (canvas.tokens.controlled.length > 0) {
+    if ((canvas.tokens.controlled?.length || 0) > 0) {
       this.setSelectedToken(canvas.tokens.controlled[0]);
     }
   }
@@ -286,39 +293,18 @@ export class TokenCounterUI {
   }
 
   show() {
-    if (!this.element) {
-      this.createElement();
-    }
-    if (this.element) {
-      this.element.style.display = "flex";
-    }
-
-    const leftContainer = document.querySelector("#token-counters-left");
-    const rightContainer = document.querySelector("#token-counters-right");
-
-    if (leftContainer) {
-      leftContainer.style.display = "flex";
-    }
-    if (rightContainer) {
-      rightContainer.style.display = "flex";
-    }
+    // Lifecycle toggling is handled by main.js; this class just shows/hides its node
+    if (!this.element) this.createElement();
+    if (this.element) this.element.style.display = "";
   }
 
   hide() {
-    if (this.element) {
-      this.element.style.display = "none";
-    }
-
-    const leftContainer = document.querySelector("#token-counters-left");
-    const rightContainer = document.querySelector("#token-counters-right");
-
-    if (leftContainer) {
-      leftContainer.style.display = "none";
-    }
-    if (rightContainer) {
-      rightContainer.style.display = "none";
-    }
-
+    if (this.element) this.element.style.display = "none";
+    // Clear right-side counters to avoid stale display
+    try {
+      const right = document.querySelector("#token-counters-right");
+      if (right) right.innerHTML = "";
+    } catch (_) {}
     this.selectedToken = null;
   }
 
@@ -339,7 +325,6 @@ export class TokenCounterUI {
       leftContainer = document.createElement("div");
       leftContainer.id = "token-counters-left";
       leftContainer.className = "token-counters-left";
-      leftContainer.style.display = "none";
       wrapper.insertBefore(leftContainer, wrapper.firstChild);
     }
 
@@ -348,7 +333,6 @@ export class TokenCounterUI {
       rightContainer = document.createElement("div");
       rightContainer.id = "token-counters-right";
       rightContainer.className = "token-counters-right";
-      rightContainer.style.display = "none";
       wrapper.appendChild(rightContainer);
     }
 
@@ -403,9 +387,27 @@ export class TokenCounterUI {
   }
 
   dispose() {
+    // Unbind hooks if present
+    try {
+      if (this._hooks?.controlToken)
+        Hooks.off("controlToken", this._hooks.controlToken);
+      if (this._hooks?.updateActor)
+        Hooks.off("updateActor", this._hooks.updateActor);
+      if (this._hooks?.updateItem)
+        Hooks.off("updateItem", this._hooks.updateItem);
+      if (this._hooks?.updateToken)
+        Hooks.off("updateToken", this._hooks.updateToken);
+    } catch (_) {}
+    this._hooks = {};
+
     if (this.element) {
       this.element.remove();
       this.element = null;
     }
+    // Also clear right container contents
+    try {
+      const right = document.querySelector("#token-counters-right");
+      if (right) right.innerHTML = "";
+    } catch (_) {}
   }
 }

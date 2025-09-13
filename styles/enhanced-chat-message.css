@@ -7,6 +7,15 @@
   continue to work without change.
 */
 
+.chat-message .message-content button {
+  background: light-dark(transparent, #f3c267);
+  border: 1px solid light-dark(#18162e, #18162e);
+  color: light-dark(#18162e, #18162e);
+  outline: none;
+  box-shadow: none;
+  border-radius: 10px;
+}
+
 .chat-message.duality {
   /* Core palette */
   --dhc-bg: #0f1120;
@@ -19,7 +28,7 @@
   --dhc-fear: #87a0ff; /* cool indigo */
   --dhc-crit: #ff9b3d; /* flame orange */
 
-  margin: 8px 6px;
+  margin: 1em 0.5em;
   padding: 0;
   color: var(--dhc-text);
   background: linear-gradient(180deg, #0c0e1a 0%, var(--dhc-bg) 100%);
@@ -50,6 +59,13 @@
 .daggerheart .chat-message.duality.critical .message-content,
 #chat-notifications .chat-message.duality.critical .message-content {
   background-color: #2e151599;
+}
+
+.daggerheart .chat-message.duality.fear .message-header,
+#chat-notifications .chat-message.duality.fear .message-header,
+.daggerheart .chat-message.duality.fear .message-content,
+#chat-notifications .chat-message.duality.fear .message-content {
+  background-color: transparent;
 }
 
 .chat-message.duality.critical {
@@ -157,16 +173,16 @@
   mix-blend-mode: screen;
 }
 
-.duality.critical .roll-title {
+.chat-message.duality.critical .roll-title {
   color: color-mix(in oklab, var(--dhc-crit) 90%, white);
 }
-.duality.critical .roll-result-value {
+.chat-message.duality.critical .roll-result-value {
   color: color-mix(in oklab, var(--dhc-crit) 95%, white);
   text-shadow: 0 0 6px rgba(255, 150, 64, 0.7),
     0 0 24px rgba(255, 120, 32, 0.35), 0 4px 12px rgba(0, 0, 0, 0.6);
   animation: critPulse 1.8s ease-in-out infinite;
 }
-.duality.critical .roll-part.roll-section {
+.chat-message.duality.critical .roll-part.roll-section {
   /* Warm background and border, no blue tint */
   background: linear-gradient(
     180deg,
@@ -177,56 +193,32 @@
   box-shadow: inset 0 0 0 1px rgba(255, 140, 64, 0.18),
     0 0 40px rgba(255, 120, 32, 0.1);
 }
-.duality.critical .roll-formula {
+.chat-message.duality.critical .roll-formula {
   background: rgba(255, 180, 96, 0.12);
   border-color: color-mix(in oklab, var(--dhc-crit) 55%, var(--dhc-border));
   color: #fff1dc;
 }
-.duality.critical .roll-difficulty {
+.chat-message.duality.critical .roll-difficulty {
   color: #ffe0b3;
   background: color-mix(in oklab, var(--dhc-crit) 22%, transparent);
   border-color: color-mix(in oklab, var(--dhc-crit) 60%, var(--dhc-border));
 }
 /* Neon white chip borders inside critical */
-.duality.critical .roll-formula,
-.duality.critical .roll-difficulty {
+.chat-message.duality.critical .roll-formula,
+.chat-message.duality.critical .roll-difficulty {
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.35),
     0 0 18px rgba(255, 150, 64, 0.25);
 }
 
 /* Buttons warm-up for critical */
-.duality.critical .roll-action-button {
+.chat-message.duality.critical .roll-action-button {
   background: #1a1209;
   border-color: color-mix(in oklab, var(--dhc-crit) 45%, var(--dhc-border));
   color: #ffdcb3;
 }
-.duality.critical .roll-action-button:hover {
+.chat-message.duality.critical .roll-action-button:hover {
   background: color-mix(in oklab, var(--dhc-crit) 12%, #1a1209);
   border-color: color-mix(in oklab, var(--dhc-crit) 70%, var(--dhc-border));
-}
-
-/* Header */
-.chat-message.duality .message-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  border-bottom: 1px solid var(--dhc-border);
-}
-
-.chat-message.duality.hope .message-header {
-  box-shadow: inset 0 -2px 0 0 color-mix(in oklab, var(--dhc-hope) 55%, transparent);
-}
-.chat-message.duality.fear .message-header {
-  box-shadow: inset 0 -2px 0 0 color-mix(in oklab, var(--dhc-fear) 55%, transparent);
-}
-.chat-message.duality.critical .message-header {
-  box-shadow: inset 0 -2px 0 0 color-mix(in oklab, var(--dhc-crit) 55%, transparent);
 }
 
 .daggerheart .chat-message .chat-roll,
@@ -235,34 +227,18 @@
   padding: 0;
 }
 
-.daggerheart .chat-message.duality.hope .message-header,
-#chat-notifications .chat-message.duality.hope .message-header,
-.daggerheart .chat-message.duality.hope .message-content,
-#chat-notifications .chat-message.duality.hope .message-content {
-  background-color: #f3c2671a;
-  border-radius: 0;
-}
-
-.daggerheart .chat-message.duality.fear .message-header,
-#chat-notifications .chat-message.duality.fear .message-header,
-.daggerheart .chat-message.duality.fear .message-content,
-#chat-notifications .chat-message.duality.fear .message-content {
-  background-color: #14142599;
-  border-radius: 0;
-}
-
-.dice.color-fear:before {
+.chat-message .dice.color-fear:before {
   background: linear-gradient(151.21deg, #5f56c1 7.21%, #1a117f 92.79%);
 }
 
-.message-header-main {
+.chat-message .message-header-main {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
 }
 
-.actor-img {
+.chat-message .actor-img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -271,12 +247,12 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
-.message-sub-header-container {
+.chat-message .message-sub-header-container {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-.actor-name {
+.chat-message .actor-name {
   margin: 0;
   font-weight: 700;
   font-size: 13px;
@@ -284,11 +260,11 @@
   color: #cbe0ff;
   text-transform: uppercase;
 }
-.duality.hope .actor-name {
+.chat-message.duality.hope .actor-name {
   color: #fff3c9;
 }
 
-.roll-type-indicator {
+.chat-message .roll-type-indicator {
   align-self: start;
   font-size: 10px;
   font-weight: 800;
@@ -299,27 +275,27 @@
   color: #0f1120;
   background: var(--dhc-muted);
 }
-.duality.hope .roll-type-indicator {
+.chat-message.duality.hope .roll-type-indicator {
   background: var(--dhc-hope);
 }
-.duality.fear .roll-type-indicator {
+.chat-message.duality.fear .roll-type-indicator {
   background: var(--dhc-fear);
 }
-.duality.critical .roll-type-indicator {
+.chat-message.duality.critical .roll-type-indicator {
   background: var(--dhc-crit);
 }
 
-.message-header-metadata {
+.chat-message .message-header-metadata {
   color: var(--dhc-muted);
   font-size: 11px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.message-header-metadata a {
+.chat-message .message-header-metadata a {
   color: var(--dhc-muted);
 }
-.message-header-metadata a:hover {
+.chat-message .message-header-metadata a:hover {
   color: var(--dhc-text);
 }
 
@@ -327,7 +303,7 @@
 .chat-message.duality .title-row {
   padding: 10px 14px 2px;
 }
-.roll-title {
+.chat-message .roll-title {
   display: block;
   width: 100%;
   text-align: left;
@@ -339,13 +315,13 @@
   opacity: 0.9;
 }
 
-.duality.hope .roll-title {
+.chat-message.duality.hope .roll-title {
   color: color-mix(in oklab, var(--dhc-hope) 85%, white);
 }
-.duality.fear .roll-title {
+.chat-message.duality.fear .roll-title {
   color: color-mix(in oklab, var(--dhc-fear) 85%, white);
 }
-.duality.critical .roll-title {
+.chat-message.duality.critical .roll-title {
   color: color-mix(in oklab, var(--dhc-crit) 85%, white);
 }
 
@@ -353,19 +329,21 @@
 .chat-message.duality .message-content {
   padding: 6px 12px 12px;
 }
-.roll-part.roll-section {
-  background: linear-gradient(
-    180deg,
-    var(--dhc-surface) 0%,
-    color-mix(in oklab, var(--dhc-bg) 20%, transparent) 100%
-  );
+.chat-message .roll-part.roll-section {
+  background: #0000007d;
   border: 1px solid var(--dhc-border);
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px 2em;
 }
 
 .daggerheart .chat-message .chat-roll .roll-part-header {
-  padding-top: 10px;
+  padding-top: 0px;
+  display: flex;
+  align-items: center;
+  color: var(--dhp-card-muted);
+  margin: 5px 0;
+  text-align: center;
+  justify-content: center;
 }
 
 /* Accent lines in headers (title and formula) matching roll theme  */
@@ -379,8 +357,20 @@
 }
 
 .chat-message.duality {
-  background: linear-gradient(180deg, #2d3773 0%, var(--dhc-bg) 100%);
+  background: var(--dhp-card-bg);
 }
+
+.chat-message.duality.fear {
+  background: linear-gradient(180deg, #283255 0%, var(--dhc-bg) 100%);
+}
+
+/*.chat-message.duality::before {
+  content: "";
+  background: transparent url("../assets/backgrounds/texture-gray1.webp")
+    no-repeat top left;
+  position: absolute;
+  inset: 0;
+}*/
 
 .chat-message.duality.hope {
   background: linear-gradient(180deg, #87631a 0%, var(--dhc-bg) 100%);
@@ -394,34 +384,59 @@
 }
 
 /* Hope (simple gold) */
-.duality.hope .roll-part-header:before {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-hope) 100%);
+.chat-message.duality.hope .roll-part-header:before {
+  background: transparent;
+  display: none;
 }
-.duality.hope .roll-part-header:after {
-  background: linear-gradient(90deg, var(--dhc-hope) 0%, rgba(0, 0, 0, 0) 100%);
+.chat-message.duality.hope .roll-part-header:after {
+  background: transparent;
+  display: none;
 }
 
 /* Fear (simple indigo) */
-.duality.fear .roll-part-header:before {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-fear) 100%);
+.chat-message.duality.fear .roll-part-header:before {
+  background: transparent;
+  display: none;
 }
-.duality.fear .roll-part-header:after {
-  background: linear-gradient(90deg, var(--dhc-fear) 0%, rgba(0, 0, 0, 0) 100%);
+.chat-message.duality.fear .roll-part-header:after {
+  background: transparent;
+  display: none;
 }
 
 /* Critical (simple orange) */
-.duality.critical .roll-part-header:before {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, var(--dhc-crit) 100%);
+.chat-message.duality.critical .roll-part-header:before {
+  background: transparent;
+  display: none;
 }
-.duality.critical .roll-part-header:after {
-  background: linear-gradient(90deg, var(--dhc-crit) 0%, rgba(0, 0, 0, 0) 100%);
+.chat-message.duality.critical .roll-part-header:after {
+  background: transparent;
+  display: none;
 }
 
-.roll-result-container {
+.chat-message .roll-result-container {
   text-align: center;
-  padding: 8px 0 2px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  align-items: center;
+  margin: 0;
 }
-.roll-result-value {
+
+.chat-message .roll-dice .roll-die.has-plus:before,
+#chat-notifications .chat-message .roll-dice .roll-die.has-plus:before {
+  display: none;
+}
+
+.chat-message .chat-roll .roll-part-content,
+#chat-notifications .chat-message .chat-roll .roll-part-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.chat-message .roll-result-value {
   display: block;
   font-weight: 800;
   font-size: 40px;
@@ -431,67 +446,67 @@
   color: #e9ecff;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
-.duality.hope .roll-result-value {
+.chat-message.duality.hope .roll-result-value {
   color: color-mix(in oklab, var(--dhc-hope) 90%, white);
 }
-.duality.fear .roll-result-value {
+.chat-message.duality.fear .roll-result-value {
   color: color-mix(in oklab, var(--dhc-fear) 90%, white);
 }
-.duality.critical .roll-result-value {
+.chat-message.duality.critical .roll-result-value {
   color: color-mix(in oklab, var(--dhc-crit) 90%, white);
 }
 
-.roll-result-desc {
+.chat-message .roll-result-desc {
   display: block;
   font-size: 12px;
   color: var(--dhc-muted);
   text-transform: uppercase;
   letter-spacing: 0.9px;
 }
-.duality.hope .roll-result-desc {
+.chat-message.duality.hope .roll-result-desc {
   color: color-mix(in oklab, var(--dhc-hope) 45%, var(--dhc-muted));
 }
 /* Critical override — warm orange/red, not system blue */
-.duality.critical .roll-result-desc {
+.chat-message.duality.critical .roll-result-desc {
   color: color-mix(in oklab, var(--dhc-crit) 65%, #fff1dc);
 }
 
-.roll-effects {
+.chat-message .roll-effects {
   margin-top: 8px;
   color: var(--dhc-text);
 }
-.roll-effect {
+.chat-message .roll-effect {
   margin: 2px 0;
   font-size: 12px;
   color: var(--dhc-muted);
 }
-.roll-effect.hope-effect {
+.chat-message .roll-effect.hope-effect {
   color: color-mix(in oklab, var(--dhc-hope) 80%, #e9ecff);
 }
-.roll-effect.fear-effect {
+.chat-message .roll-effect.fear-effect {
   color: color-mix(in oklab, var(--dhc-fear) 80%, #e9ecff);
 }
-.roll-effect.critical-effect {
+.chat-message .roll-effect.critical-effect {
   color: color-mix(in oklab, var(--dhc-crit) 80%, #e9ecff);
 }
 
 /* Formula toggle row */
-.dice-roll[data-action="expandRoll"] {
+.chat-message .dice-roll[data-action="expandRoll"] {
   margin-top: 8px;
   border-top: 1px dashed rgba(255, 255, 255, 0.08);
 }
-.dice-roll .formula-row {
+.chat-message .dice-roll .formula-row {
   padding: 8px 0 4px;
   cursor: pointer;
 }
-.dice-roll .formula-toggle {
+.chat-message .dice-roll .formula-toggle {
   color: var(--dhc-text);
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
-.dice-roll .formula-toggle::before {
+.chat-message .dice-roll .formula-toggle::before {
   content: "\f078";
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
@@ -501,7 +516,7 @@
   transition: transform 0.25s ease;
   opacity: 0.8;
 }
-.dice-roll.expanded .formula-toggle::before {
+.chat-message .dice-roll.expanded .formula-toggle::before {
   transform: rotate(180deg);
 }
 
@@ -588,15 +603,15 @@
 }
 
 /* Dice result area */
-.dice-result {
+.chat-message .dice-result {
   background: none;
   border-radius: 0;
   padding: 0;
 }
-.dice-tooltip {
+.chat-message .dice-tooltip {
   max-width: 100%;
 }
-.reroll-instruction {
+.chat-message .reroll-instruction {
   color: var(--dhc-muted);
   font-size: 11px;
   margin: 2px 6px 6px;
@@ -604,42 +619,42 @@
   align-items: center;
   gap: 6px;
 }
-.reroll-instruction i {
+.chat-message .reroll-instruction i {
   color: var(--dhc-text);
   opacity: 0.7;
 }
 
-.wrapper {
+.chat-message .wrapper {
   width: 100%;
 }
-.roll-dice {
+.chat-message .roll-dice {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
   gap: 8px;
   align-items: end;
 }
-.roll-die {
+.chat-message .roll-die {
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: center;
   justify-content: center;
 }
-.die-label {
+.chat-message .die-label {
   font-size: 10px;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--dhc-muted);
   font-weight: 800;
 }
-.die-label.hope-flavor {
+.chat-message .die-label.hope-flavor {
   color: color-mix(in oklab, var(--dhc-hope) 85%, white);
 }
-.die-label.fear-flavor {
+.chat-message .die-label.fear-flavor {
   color: color-mix(in oklab, var(--dhc-fear) 85%, white);
 }
 
-.dice {
+.chat-message .dice {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -655,7 +670,7 @@
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04),
     0 4px 10px rgba(0, 0, 0, 0.35);
 }
-.dice.color-hope {
+.chat-message .dice.color-hope {
   background: radial-gradient(
       120px 120px at 30% 30%,
       color-mix(in oklab, var(--dhc-hope) 18%, transparent),
@@ -664,7 +679,7 @@
     #161208;
   border-color: color-mix(in oklab, var(--dhc-hope) 60%, #2c2f57);
 }
-.dice.color-fear {
+.chat-message .dice.color-fear {
   background: radial-gradient(
       120px 120px at 30% 30%,
       color-mix(in oklab, var(--dhc-fear) 20%, transparent),
@@ -674,21 +689,21 @@
   border-color: color-mix(in oklab, var(--dhc-fear) 60%, #2c2f57);
 }
 
-.clickable-die {
+.chat-message .clickable-die {
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.2s ease;
 }
-.clickable-die:hover {
+.chat-message .clickable-die:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35),
     0 0 0 2px color-mix(in oklab, var(--dhc-accent) 30%, transparent);
 }
-.clickable-die.rerolling {
+.chat-message .clickable-die.rerolling {
   animation: diceReroll 0.6s ease both;
 }
 
 /* Formula chip and difficulty chip */
-.roll-formula {
+.chat-message .roll-formula {
   display: inline-block;
   background: rgba(255, 255, 255, 0.06);
   color: var(--dhc-text);
@@ -700,7 +715,7 @@
   letter-spacing: 0.5px;
 }
 
-.roll-difficulty {
+.chat-message .roll-difficulty {
   display: inline-block;
   margin: 8px auto;
   padding: 6px 12px;
@@ -713,21 +728,21 @@
   background: color-mix(in oklab, #2c7230 25%, transparent);
   border-color: #2c7230;
 }
-.roll-difficulty.failure {
+.chat-message .roll-difficulty.failure {
   color: #ff9e9e;
   background: color-mix(in oklab, #8b2f2f 25%, transparent);
   border-color: #8b2f2f;
 }
 
 /* Roll action buttons */
-.roll-buttons {
+.chat-message .roll-buttons {
   display: flex;
   gap: 8px;
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px dashed rgba(255, 255, 255, 0.08);
 }
-.roll-action-button {
+.chat-message .roll-action-button {
   flex: 1;
   display: inline-flex;
   align-items: center;
@@ -744,12 +759,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.roll-action-button:hover {
+.chat-message .roll-action-button:hover {
   background: color-mix(in oklab, var(--dhc-accent) 10%, #12142a);
   border-color: color-mix(in oklab, var(--dhc-accent) 55%, var(--dhc-border));
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
-.roll-action-button:disabled {
+.chat-message .roll-action-button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
   filter: grayscale(0.2);
@@ -761,7 +776,7 @@
   .chat-message.duality.critical,
   .chat-message.duality.critical::before,
   .chat-message.duality.critical::after,
-  .duality.critical .roll-result-value {
+  .chat-message.duality.critical .roll-result-value {
     animation: none !important;
   }
 }

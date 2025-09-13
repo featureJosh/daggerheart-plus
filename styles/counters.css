@@ -449,11 +449,11 @@
   line-height: 1;
 }
 
-.faded-ui {
-  opacity: 0.9;
+/*.faded-ui {
+ opacity: 0.9;
   transition: opacity 0.3s ease;
 }
 
 .faded-ui:hover {
   opacity: 1;
-}
+}*/

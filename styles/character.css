@@ -1745,7 +1745,6 @@
   justify-content: center;
   pointer-events: none; /* allow input interaction */
   font: inherit;
-  
 }
 
 /* Right side (unfilled track) uses light text */
@@ -1805,8 +1804,6 @@
   caret-color: var(--dhp-text);
   outline: none;
 }
-
-  
 
 /* When user is editing, reveal the input text and hide overlay */
 .daggerheart-plus.sheet.character
@@ -2076,7 +2073,7 @@
   height: 1.75em;
   border-radius: 8px;
   border: 1px solid var(--dhp-border);
-  background: var(--dhp-background);
+  background: var(--dhp-card-bg);
   color: var(--dhp-primary);
   outline: 2px solid transparent;
   transition: outline-color 0.2s ease, border-color 0.2s ease,

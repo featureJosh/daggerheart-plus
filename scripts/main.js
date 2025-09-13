@@ -55,24 +55,20 @@ Hooks.once("init", () => {
     },
   });
 
-  // Toggle for Token Counters UI (world)
+  // Per-user toggle for Token Counters visibility (simple display control)
   game.settings.register(MODULE_ID, "enableTokenCounters", {
     name: "Enable Token Counters",
-    hint: "Enables the token counters UI (HP, Hope, Stress, Armor) displayed near the hotbar for the currently selected token.",
-    scope: "world",
+    hint:
+      "Show the token counters UI (HP, Hope, Stress, Armor) near the hotbar for the currently selected token. Per-user preference.",
+    scope: "client",
     config: true,
     type: Boolean,
-    // Maintain previous behavior (counters were always on before)
-    default: true,
+    // Default visible for users; toggling applies immediately via display styles
+    default: false,
     onChange: (value) => {
       try {
-        console.log(
-          "Daggerheart Plus | Token counters setting changed:",
-          value
-        );
-        if (window.daggerheartPlus?.manageTokenCounters) {
-          window.daggerheartPlus.manageTokenCounters();
-        }
+        // Apply simple display toggle immediately
+        applyTokenCountersVisibilityBySetting();
       } catch (e) {
         console.warn(
           "Daggerheart Plus | Failed applying token counters toggle",
@@ -155,6 +151,20 @@ Hooks.once("init", () => {
   });
 
   console.log("Daggerheart Plus | Module settings registered");
+  // Helper: Apply simple display toggling to token counters containers
+  function applyTokenCountersVisibilityBySetting() {
+    try {
+      const enabled = Boolean(
+        game.settings.get(MODULE_ID, "enableTokenCounters")
+      );
+      const left = document.querySelector("#token-counters-left");
+      const right = document.querySelector("#token-counters-right");
+      if (left) left.style.display = enabled ? "" : "none";
+      if (right) right.style.display = enabled ? "" : "none";
+      // Keep wrapper visibility in sync
+      try { updateCountersWrapperDisplay(); } catch (_) {}
+    } catch (_) {}
+  }
 
   // Per-user toggle for Enhanced Chat styling
   game.settings.register(MODULE_ID, "enableEnhancedChat", {
@@ -261,6 +271,31 @@ Hooks.once("init", () => {
                   return String(Date.now());
                 }
               };
+  // Ensure the counters wrapper shows only when needed
+  function updateCountersWrapperDisplay() {
+    try {
+      const wrapper = document.getElementById('counters-wrapper');
+      if (!wrapper) return;
+
+      // Is fear tracker active (element present)?
+      const fearActive = Boolean(window.daggerheartPlus?.fearTracker?.element);
+
+      // Are token counters intended to be visible?
+      const tokenCountersEnabled = Boolean(
+        game.settings.get(MODULE_ID, 'enableTokenCounters')
+      );
+      const hasSelectedToken = Boolean(canvas?.tokens?.controlled?.length);
+      const tokenCountersActive = Boolean(
+        tokenCountersEnabled &&
+          (window.daggerheartPlus?.tokenCounter?.element || hasSelectedToken)
+      );
+
+      const shouldShow = fearActive || tokenCountersActive;
+      wrapper.style.display = shouldShow ? '' : 'none';
+    } catch (e) {
+      // Silent failure; not critical
+    }
+  }
               const currentKey = buildKey();
 
               // Controller to manage pending timers/cleanup across rapid hovers
@@ -1420,7 +1455,9 @@ Hooks.once("ready", async () => {
       } else {
         if (window.daggerheartPlus.fearTracker) {
           window.daggerheartPlus.fearTracker.dispose();
-          window.daggerheartPlus.fearTracker = null;
+          
+        // Update wrapper visibility after any change
+        updateCountersWrapperDisplay();
         }
       }
     } catch (error) {
@@ -1442,7 +1479,8 @@ Hooks.once("ready", async () => {
         }
         // Ensure visible if a token is selected
         try {
-          window.daggerheartPlus.tokenCounter.show?.();
+          
+         updateCountersWrapperDisplay();
         } catch (_) {}
       } else {
         // Hide and dispose
@@ -1452,7 +1490,9 @@ Hooks.once("ready", async () => {
         try {
           window.daggerheartPlus.tokenCounter?.dispose?.();
         } catch (_) {}
-        window.daggerheartPlus.tokenCounter = null;
+        
+      // Update wrapper visibility after any change
+      updateCountersWrapperDisplay();
       }
     } catch (e) {
       console.error("Daggerheart Plus | Error managing token counters:", e);
@@ -1463,6 +1503,7 @@ Hooks.once("ready", async () => {
 
   await manageFearTracker();
   await manageTokenCounters();
+  try { applyTokenCountersVisibilityBySetting(); } catch (_) {}
 
   Hooks.on("updateSetting", async (setting) => {
     if (setting.namespace !== MODULE_ID) return;

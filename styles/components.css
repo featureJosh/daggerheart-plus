@@ -5,22 +5,6 @@ body.theme-dark.application .window-content {
   -webkit-backdrop-filter: blur(0);
 }
 
-.daggerheart .chat-message.duality.fear .message-header,
-#chat-notifications .chat-message.duality.fear .message-header,
-.daggerheart .chat-message.duality.fear .message-content,
-#chat-notifications .chat-message.duality.fear .message-content {
-  background-color: #14142599;
-  border-radius: 10px;
-}
-
-.daggerheart .chat-message.duality.hope .message-header,
-#chat-notifications .chat-message.duality.hope .message-header,
-.daggerheart .chat-message.duality.hope .message-content,
-#chat-notifications .chat-message.duality.hope .message-content {
-  background-color: #f3c2671a;
-  border-radius: 10px;
-}
-
 /*============== Tab Content ==============*/
 .daggerheart-plus.sheet .tab-content {
   display: none;
