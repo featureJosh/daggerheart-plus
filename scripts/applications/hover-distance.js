@@ -55,13 +55,16 @@ export class HoverDistance {
         ),
         hint: HoverDistance._i18n(
           "DHP.Settings.HoverDistance.EdgeToEdge.Hint",
-          "Measure from token edges instead of centers by subtracting half the size of each token from the horizontal separation."
+          "Also subtract the target's half-size to measure edge-to-edge. Default measures Your Edge -> Target Center."
         ),
         scope: "client",
-        config: true,
+        config: false,
         type: Boolean,
         default: false,
       });
+
+      // No additional measurement mode setting; default behavior is
+      // Your Edge → Target Center, with optional Edge-to-Edge toggle above.
     } catch (e) {
       console.warn(
         "Daggerheart Plus | Failed to register HoverDistance settings",
@@ -218,10 +221,13 @@ export class HoverDistance {
       }
       if (!isFinite(horizontalUnits)) return null;
 
+      // Default behavior: Your Edge → Target Center (subtract source radius).
+      const r1 = HoverDistance._tokenRadiusUnits(a);
+      horizontalUnits = Math.max(0, horizontalUnits - r1);
+      // Optional toggle: Edge to Edge (also subtract target radius).
       if (game.settings.get(MODULE_ID, "hoverDistanceEdgeToEdge")) {
-        const r1 = HoverDistance._tokenRadiusUnits(a);
         const r2 = HoverDistance._tokenRadiusUnits(b);
-        horizontalUnits = Math.max(0, horizontalUnits - (r1 + r2));
+        horizontalUnits = Math.max(0, horizontalUnits - r2);
       }
 
       const z1 = Number(a?.document?.elevation ?? a?.elevation ?? 0);
@@ -247,6 +253,9 @@ export class HoverDistance {
       return 0;
     }
   }
+
+  // Measurement mode helper removed; behavior is fixed to
+  // Your Edge → Target Center with optional Edge-to-Edge toggle.
 
   static _measureCoreRulerUnits(p1, p2) {
     try {

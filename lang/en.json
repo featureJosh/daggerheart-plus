@@ -78,7 +78,7 @@
   "DHP.Settings.HoverDistance.Rounding.Name": "Rounding (units)",
   "DHP.Settings.HoverDistance.Rounding.Hint": "Round the displayed distance to this step. 0 = floor to integer.",
   "DHP.Settings.HoverDistance.EdgeToEdge.Name": "Edge to Edge Measurement",
-  "DHP.Settings.HoverDistance.EdgeToEdge.Hint": "Measure from token edges instead of centers by subtracting half the size of each token from the horizontal separation.",
+  "DHP.Settings.HoverDistance.EdgeToEdge.Hint": "Measure from token edges",
   "DHP.Settings.HoverDistance.Units.Default": "ft",
   "DHP.Settings.Common.Top": "Top",
   "DHP.Settings.Common.Center": "Center",
