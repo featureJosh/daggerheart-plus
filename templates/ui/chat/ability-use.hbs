@@ -1,0 +1,30 @@
+<div class="daggerheart chat domain-card">
+    <img class="card-img" src="{{item.img}}" />
+    <details class="domain-card-move">
+        <summary class="domain-card-header">
+            <div class="domain-label">
+                <h2 class="title">{{item.name}}</h2>
+                <ul class="tags">
+                    {{#each item.tags as |tag|}}
+                        <li class="tag">{{tag}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            <i class="fa-solid fa-chevron-down"></i>
+        </summary>
+        <div class="description">{{{description}}}</div>
+    </details>
+    <footer class="ability-card-footer">
+        {{#each actions as |action|}}
+            <button class="ability-use-button" id="{{action.id}}">
+                {{action.name}}
+            </button>
+            {{#if (eq action.systemPath "attack")}}
+                <button class="ability-use-button" id="{{action.id}}" data-direct-damage="true">
+                    {{localize "DAGGERHEART.GENERAL.damage"}}
+                </button>
+            {{/if}}
+            {{!-- {{#if action.cost.value}}<div class="ability-card-action-cost">{{action.cost.value}} {{action.cost.type}}</div>{{/if}}             --}}
+        {{/each}}
+    </footer>
+</div>
