@@ -587,6 +587,128 @@ Hooks.once("ready", async () => {
     async _onRender(context, options) {
       await super._onRender(context, options);
 
+      // Spellcasting trait: mark tile and bind quick-cast
+      try {
+        const root = this.element;
+        if (root) {
+          const traitKey =
+            this.document?.system?.class?.subclass?.system?.spellcastingTrait ||
+            this.document?.system?.class?.value?.system?.spellcastingTrait ||
+            this.document?.system?.class?.system?.spellcastingTrait ||
+            this.document?.system?.spellcastingTrait ||
+            this.document?.flags?.daggerheart?.spellcastingTrait ||
+            this.document?.flags?.[MODULE_ID]?.spellcastingTrait;
+
+          const ensureMarked = () => {
+            try {
+              if (!traitKey) return false;
+              const scContainer = root.querySelector(
+                `.attributes-row .attribute-container[data-attribute="${traitKey}"]`
+              );
+              if (scContainer) {
+                scContainer.classList.add("spellcasting-trait");
+                const header = root.querySelector("header.character-header-modern");
+                if (header && !header.getAttribute("data-spellcasting-trait"))
+                  header.setAttribute("data-spellcasting-trait", traitKey);
+                return true;
+              }
+            } catch (_) {}
+            return false;
+          };
+
+          if (!ensureMarked()) {
+            setTimeout(ensureMarked, 50);
+            setTimeout(ensureMarked, 150);
+            try {
+              const header = root.querySelector("header.character-header-modern");
+              if (header) {
+                const mo = new MutationObserver(() => {
+                  if (ensureMarked()) {
+                    try { mo.disconnect(); } catch (_) {}
+                  }
+                });
+                mo.observe(header, { childList: true, subtree: true });
+              }
+            } catch (_) {}
+          }
+
+          // Indicator click/keyboard to trigger the trait roll
+          try {
+            let indicator = root.querySelector(".spellcast-indicator");
+            if (!indicator && traitKey) {
+              // Create indicator if template didn't render it
+              const portrait = root.querySelector(
+                ".header-top-portrait"
+              );
+              if (portrait) {
+                const el = document.createElement("div");
+                el.className = "spellcast-indicator";
+                el.setAttribute("role", "button");
+                el.setAttribute("tabindex", "0");
+                el.dataset.attribute = traitKey;
+                el.innerHTML = '<i class="fa-solid fa-wand-sparkles"></i>';
+                portrait.appendChild(el);
+                indicator = el;
+              }
+            }
+            if (indicator && traitKey) {
+              try {
+                const traitLabel = game.i18n?.localize?.(
+                  `DAGGERHEART.CONFIG.Traits.${traitKey}.name`
+                );
+                if (!indicator.hasAttribute("data-tooltip") && traitLabel) {
+                  const scLabel =
+                    game.i18n?.localize?.("DAGGERHEART.GENERAL.spellcast") ??
+                    "Spellcast";
+                  indicator.setAttribute(
+                    "data-tooltip",
+                    `${scLabel}: ${traitLabel}`
+                  );
+                }
+              } catch (_) {}
+
+              const triggerCast = () => {
+                try {
+                  const attrEl = root.querySelector(
+                    `.attributes-row .attribute-container[data-attribute="${traitKey}"]`
+                  );
+                  if (!attrEl) return;
+                  const inner = attrEl.querySelector?.(".attribute-content") || attrEl;
+                  if (typeof inner.click === "function") inner.click();
+                  else {
+                    const evt = new MouseEvent("click", {
+                      bubbles: true,
+                      cancelable: true,
+                      view: window,
+                    });
+                    inner.dispatchEvent(evt);
+                  }
+                } catch (_) {}
+              };
+
+              indicator.addEventListener(
+                "click",
+                (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  triggerCast();
+                },
+                { passive: false }
+              );
+
+              indicator.addEventListener("keydown", (ev) => {
+                const k = ev.key?.toLowerCase?.();
+                if (k === "enter" || k === " " || k === "spacebar") {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  triggerCast();
+                }
+              });
+            }
+          } catch (_) {}
+        }
+      } catch (_) {}
+
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(
           this.element,

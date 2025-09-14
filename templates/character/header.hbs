@@ -1,4 +1,4 @@
-<header class="character-header-modern">
+<header class="character-header-modern" {{#if document.system.class.subclass.system.spellcastingTrait}}data-spellcasting-trait="{{document.system.class.subclass.system.spellcastingTrait}}"{{/if}}>
     <div class="header-main-section">
         <div class="header-top-portrait">
             <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img" class="{{#if isDeath}}death-tint{{/if}}">
@@ -153,7 +153,7 @@
 
     <div class="attributes-row">
         {{#each this.attributes as |attribute key|}} 
-            <div class="attribute-container" data-tooltip="<b>{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.name') }}:</b><br>{{#each attribute.verbs}}{{this}}<br>{{/each}}" data-action="rollAttribute" data-attribute="{{key}}" data-value="{{attribute.value}}">
+            <div class="attribute-container {{#if (eq key document.system.class.subclass.system.spellcastingTrait)}}spellcasting-trait{{/if}}" data-tooltip="<b>{{localize (concat 'DAGGERHEART.CONFIG.Traits.' key '.name') }}:</b><br>{{#each attribute.verbs}}{{this}}<br>{{/each}}" data-action="rollAttribute" data-attribute="{{key}}" data-value="{{attribute.value}}">
                 <div class="attribute-bg">
                     <div class="attribute-content">
                         <!-- <div class="attribute-icon">

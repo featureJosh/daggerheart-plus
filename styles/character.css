@@ -521,6 +521,158 @@
   border-radius: 12px;
 }
 
+/* Spellcasting trait highlight: blue particle FX (inspired by duality crit) */
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #57b2ff;
+  --sc-accent: #8fd6ff;
+  --sc-core: #c8ecff;
+  overflow: hidden; /* Clip particles to rounded corners */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--sc-glow) 18%, transparent) 0%,
+    color-mix(in oklab, var(--sc-glow) 10%, transparent) 100%
+  );
+  border-color: color-mix(in oklab, var(--sc-glow) 55%, var(--dhp-border));
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--sc-glow) 35%, transparent),
+    0 0 16px color-mix(in oklab, var(--sc-glow) 25%, transparent);
+  animation: scSpellGlowPulse 3.2s ease-in-out infinite;
+}
+
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content::before {
+  /* Subtle diagonal sweep */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+      120% 80% at 50% 110%,
+      color-mix(in oklab, var(--sc-glow) 18%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 40%,
+      color-mix(in oklab, var(--sc-glow) 10%, transparent) 60%,
+      transparent 80%
+    );
+  mix-blend-mode: screen;
+}
+
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content::after {
+  /* Blue particles rising */
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+      2px 2px at 30% 130%,
+      rgba(255, 255, 255, 0.8) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      3px 3px at 48% 122%,
+      rgba(160, 215, 255, 0.8) 42%,
+      transparent 43%
+    ),
+    radial-gradient(
+      2px 2px at 66% 138%,
+      rgba(120, 200, 255, 0.75) 42%,
+      transparent 43%
+    );
+  background-repeat: no-repeat;
+  animation: scEmberScroll 7s linear infinite, scParticleTwinkle 2.2s ease-in-out infinite;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-value {
+  color: color-mix(in oklab, var(--sc-core) 90%, white);
+  text-shadow: 0 0 6px rgba(120, 200, 255, 0.55),
+    0 0 18px rgba(80, 160, 255, 0.35);
+}
+
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-name {
+  color: color-mix(in oklab, var(--sc-accent) 80%, var(--dhp-text-light));
+}
+
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-tier {
+  color: color-mix(in oklab, var(--sc-accent) 65%, var(--dhp-accent));
+}
+
+/* Hover intensifies the glow */
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait:hover .attribute-content {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--sc-glow) 55%, #ffffff40),
+    0 0 24px color-mix(in oklab, var(--sc-glow) 45%, transparent);
+}
+
+/* Keyframes for blue particle + glow animations */
+@keyframes scSpellGlowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--sc-glow) 35%, #ffffff20),
+      0 0 12px color-mix(in oklab, var(--sc-glow) 20%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--sc-glow) 55%, #ffffff40),
+      0 0 26px color-mix(in oklab, var(--sc-glow) 45%, transparent);
+  }
+}
+
+@keyframes scParticleTwinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+    filter: brightness(0.95) saturate(1.05);
+  }
+  50% {
+    opacity: 0.9;
+    filter: brightness(1.15) saturate(1.15);
+  }
+}
+
+@keyframes scEmberScroll {
+  0% {
+    background-position: 20% 110%, 60% 120%, 85% 130%;
+  }
+  100% {
+    background-position: 20% -10%, 60% -20%, 85% -30%;
+  }
+}
+
+/* Spellcasting color presets per-trait */
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="knowledge"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #57b2ff; /* blue */
+  --sc-accent: #8fd6ff;
+  --sc-core: #c8ecff;
+}
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="presence"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #ff79b0; /* pink */
+  --sc-accent: #ff9cc6;
+  --sc-core: #ffd1e7;
+}
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="instinct"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #6bff8a; /* green */
+  --sc-accent: #92ffab;
+  --sc-core: #d3ffde;
+}
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="agility"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #4ae3d3; /* teal */
+  --sc-accent: #79efe4;
+  --sc-core: #c4faf5;
+}
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="finesse"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #b57bff; /* purple */
+  --sc-accent: #cfabff;
+  --sc-core: #eadbff;
+}
+.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="strength"] .attribute-container.spellcasting-trait .attribute-content {
+  --sc-glow: #ff944d; /* warm orange */
+  --sc-accent: #ffb27f;
+  --sc-core: #ffe0c8;
+}
+
 .daggerheart-plus.sheet.character .character-header-modern .attribute-icon {
   font-size: 1.2rem;
   color: var(--dhp-primary);

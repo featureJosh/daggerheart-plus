@@ -105,6 +105,42 @@ export function createDaggerheartPlusCharacterSheet() {
               );
           } catch {}
 
+          // Ensure the spellcasting trait tile is visually marked
+          const ensureMarked = () => {
+            try {
+              const scContainer = root.querySelector(
+                `.attributes-row .attribute-container[data-attribute="${traitKey}"]`
+              );
+              if (scContainer) {
+                scContainer.classList.add("spellcasting-trait");
+                const header = root.querySelector("header.character-header-modern");
+                if (header && !header.getAttribute("data-spellcasting-trait"))
+                  header.setAttribute("data-spellcasting-trait", traitKey);
+                return true;
+              }
+            } catch {}
+            return false;
+          };
+
+          if (!ensureMarked()) {
+            // Retry shortly in case attributes render after onRender tick
+            setTimeout(ensureMarked, 50);
+            setTimeout(ensureMarked, 150);
+            try {
+              const header = root.querySelector("header.character-header-modern");
+              if (header) {
+                const mo = new MutationObserver(() => {
+                  if (ensureMarked()) {
+                    try {
+                      mo.disconnect();
+                    } catch {}
+                  }
+                });
+                mo.observe(header, { childList: true, subtree: true });
+              }
+            } catch {}
+          }
+
           indicator.addEventListener(
             "click",
             (ev) => {
