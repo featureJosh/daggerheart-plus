@@ -589,8 +589,9 @@
 
 .daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-value {
   color: color-mix(in oklab, var(--sc-core) 90%, white);
-  text-shadow: 0 0 6px rgba(120, 200, 255, 0.55),
-    0 0 18px rgba(80, 160, 255, 0.35);
+  text-shadow:
+    0 0 6px color-mix(in oklab, var(--sc-accent) 75%, transparent),
+    0 0 18px color-mix(in oklab, var(--sc-glow) 35%, transparent);
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-name {
@@ -639,6 +640,23 @@
   100% {
     background-position: 20% -10%, 60% -20%, 85% -30%;
   }
+}
+
+/* Canvas overlay for moving particles inside spellcasting tile */
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content {
+  position: relative; /* ensure absolutely positioned canvas anchors here */
+}
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .dhp-spell-particles {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1; /* keep below text */
+  mix-blend-mode: screen;
+}
+.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content > *:not(.dhp-spell-particles) {
+  position: relative;
+  z-index: 2;
 }
 
 /* Spellcasting color presets per-trait */

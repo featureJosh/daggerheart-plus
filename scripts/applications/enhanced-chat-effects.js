@@ -49,6 +49,17 @@ export const EnhancedChatEffects = {
     }
   },
 
+  /**
+   * Generic particle engine used for critical cards and other hosts (e.g., spellcasting tiles).
+   * @param {HTMLElement} host
+   * @param {HTMLCanvasElement} canvas
+   * @param {Object} [opts]
+   * @param {string[]} [opts.colors] - Array of colors for particles.
+   * @param {number} [opts.areaDivisor] - Lower makes more particles per area.
+   * @param {number} [opts.minParticles]
+   * @param {number} [opts.maxParticles]
+   * @param {number} [opts.repelRadius]
+   */
   _createParticleEngine(host, canvas) {
     const ctx = canvas.getContext("2d", { alpha: true });
     const state = {
@@ -58,7 +69,6 @@ export const EnhancedChatEffects = {
       lastTime: performance.now(),
       dpr: Math.max(1, window.devicePixelRatio || 1),
     };
-
     const colors = ["#ff7a66", "#ff6a54", "#ff8a6e", "#ffd3c8"];
 
     function resize() {
@@ -70,7 +80,6 @@ export const EnhancedChatEffects = {
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
-
       const target = Math.min(90, Math.floor((w * h) / 2200));
       if (state.particles.length === 0) {
         for (let i = 0; i < target; i++)

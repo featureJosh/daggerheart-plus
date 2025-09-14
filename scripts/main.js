@@ -3,6 +3,7 @@ import { TokenCounterUI } from "./applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "./applications/enhanced-dice-styling.js";
 import { HoverDistance } from "./applications/hover-distance.js";
 import { EnhancedChatEffects } from "./applications/enhanced-chat-effects.js";
+import { UIOverlayParticles } from "./applications/ui-overlay-particles.js";
 
 const MODULE_ID = "daggerheart-plus";
 const SYSTEM_ID = "daggerheart";
@@ -632,6 +633,32 @@ Hooks.once("ready", async () => {
             } catch (_) {}
           }
 
+          // Mount moving particle canvas overlay onto the spellcasting tile
+          const mountSpellParticles = () => {
+            try {
+              if (!traitKey) return false;
+              const host = root.querySelector(
+                ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
+              );
+              if (!host) return false;
+              if (!host.querySelector(".dhp-spell-particles")) {
+                UIOverlayParticles.mount(host, {
+                  minParticles: 22,
+                  maxParticles: 55,
+                  areaDivisor: 900,
+                  repelRadius: 120,
+                });
+              }
+              return true;
+            } catch (_) {
+              return false;
+            }
+          };
+          if (!mountSpellParticles()) {
+            setTimeout(mountSpellParticles, 50);
+            setTimeout(mountSpellParticles, 150);
+          }
+
           // Indicator click/keyboard to trigger the trait roll
           try {
             let indicator = root.querySelector(".spellcast-indicator");
@@ -1069,6 +1096,24 @@ Hooks.once("ready", async () => {
       try {
         this._removeInlineRails();
       } catch {}
+      // Cleanup spellcasting particle FX if present
+      try {
+        const root = this.element;
+        if (root) {
+          root
+            .querySelectorAll(
+              ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
+            )
+            .forEach((host) => {
+              try {
+                host._dhpParticlesFX?.stop?.();
+              } catch (_) {}
+              try {
+                host._dhpParticlesMounted = false;
+              } catch (_) {}
+            });
+        }
+      } catch (_) {}
       try {
         this._loadoutCardsObserver?.disconnect?.();
       } catch {}
