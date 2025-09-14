@@ -107,6 +107,7 @@
   justify-content: center;
   font-size: 0.8rem;
   box-shadow: 0 2px 4px var(--dhp-shadow);
+  cursor: pointer;
 }
 
 .daggerheart-plus.sheet.character

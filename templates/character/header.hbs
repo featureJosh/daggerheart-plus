@@ -3,7 +3,13 @@
         <div class="header-top-portrait">
             <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img" class="{{#if isDeath}}death-tint{{/if}}">
             {{#if document.system.class.subclass.system.spellcastingTrait}}
-                <div class="spellcast-indicator">
+                <div
+                    class="spellcast-indicator"
+                    data-action="rollAttribute"
+                    data-attribute="{{document.system.class.subclass.system.spellcastingTrait}}"
+                    role="button"
+                    tabindex="0"
+                >
                     <i class="fa-solid fa-wand-sparkles"></i>
                 </div>
             {{/if}}

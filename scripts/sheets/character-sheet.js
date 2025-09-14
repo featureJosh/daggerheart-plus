@@ -87,6 +87,77 @@ export function createDaggerheartPlusCharacterSheet() {
 
       const root = this.element;
       if (!root) return;
+      
+      // Bind quick spellcast indicator to roll the spellcasting trait
+      try {
+        const indicator = root.querySelector(".spellcast-indicator");
+        const traitKey = this.document?.system?.class?.subclass?.system?.spellcastingTrait;
+        if (indicator && traitKey) {
+          // Helpful tooltip if not already present
+          try {
+            const traitLabel = game.i18n?.localize?.(
+              `DAGGERHEART.CONFIG.Traits.${traitKey}.name`
+            );
+            if (!indicator.hasAttribute("data-tooltip") && traitLabel)
+              indicator.setAttribute(
+                "data-tooltip",
+                `${game.i18n?.localize?.("DAGGERHEART.GENERAL.spellcast") ?? "Spellcast"}: ${traitLabel}`
+              );
+          } catch {}
+
+          indicator.addEventListener(
+            "click",
+            (ev) => {
+              try {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const attrEl = root.querySelector(
+                  `.attributes-row .attribute-container[data-attribute="${traitKey}"]`
+                );
+                if (attrEl) {
+                  const inner =
+                    attrEl.querySelector?.(".attribute-content") || attrEl;
+                  if (typeof inner.click === "function") inner.click();
+                  else {
+                    const evt = new MouseEvent("click", {
+                      bubbles: true,
+                      cancelable: true,
+                      view: window,
+                    });
+                    inner.dispatchEvent(evt);
+                  }
+                }
+              } catch {}
+            },
+            { passive: false }
+          );
+
+          // Keyboard support: Enter/Space to quick-cast
+          indicator.addEventListener("keydown", (ev) => {
+            const k = ev.key?.toLowerCase?.();
+            if (k === "enter" || k === " " || k === "spacebar") {
+              ev.preventDefault();
+              ev.stopPropagation();
+              const attrEl = root.querySelector(
+                `.attributes-row .attribute-container[data-attribute="${traitKey}"]`
+              );
+              if (attrEl) {
+                const inner =
+                  attrEl.querySelector?.(".attribute-content") || attrEl;
+                if (typeof inner.click === "function") inner.click();
+                else {
+                  const evt = new MouseEvent("click", {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window,
+                  });
+                  inner.dispatchEvent(evt);
+                }
+              }
+            }
+          });
+        }
+      } catch {}
       const tabButtons = root.querySelectorAll(
         'nav.tabs[data-group="primary"] .item.control'
       );
