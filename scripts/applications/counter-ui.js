@@ -391,15 +391,13 @@ export class CounterUI {
         <div class="fear-progress">
           <div class="fear-progress-track">
             <div class="fear-progress-bar" style="width:${percentage}%"></div>
-            <div class="counter-display fear-progress-display" role="button" tabindex="${displayTabIndex}">
-              <div class="fear-progress-values">
-                <span class="fear-progress-value">${state.value}</span>
-                <span class="fear-progress-separator">/</span>
-                <span class="fear-progress-max">${state.max}</span>
-              </div>
-              <div class="fear-progress-label">${fearLabel}</div>
+            <div class="counter-display fear-progress-overlay" role="button" tabindex="${displayTabIndex}">
+              <span class="fear-progress-value">${state.value}</span>
+              <span class="fear-progress-separator">/</span>
+              <span class="fear-progress-max">${state.max}</span>
             </div>
           </div>
+          <div class="fear-progress-label">${fearLabel}</div>
         </div>
         <button type="button" class="counter-plus" title="Increase">
           <i class="fas fa-plus"></i>
