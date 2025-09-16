@@ -510,6 +510,7 @@
   position: absolute;
   inset: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.35em;
@@ -566,4 +567,9 @@
   display: inline-block;
   color: #f5f7ff;
   text-shadow: 0 0 8px rgba(0,0,0,0.35), 0 0 10px rgba(122,77,255,0.5);
+}
+
+.fear-tracker--progress .counter-display::before,
+.fear-tracker--progress .counter-display::after {
+  display: none;
 }
