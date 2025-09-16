@@ -31,6 +31,88 @@ function applyEnhancedChatStyles(enabled) {
   }
 }
 
+function applyParticleEffects(enabled) {
+  try {
+    const particlesEnabled = game.settings.get(MODULE_ID, "enableParticles");
+    if (!particlesEnabled) {
+      document.querySelectorAll(".dhp-spell-particles").forEach(canvas => {
+        const host = canvas.parentElement;
+        if (host && host._dhpParticlesFX) {
+          host._dhpParticlesFX.stop();
+        }
+      });
+    }
+    
+    for (const app of Object.values(ui.windows)) {
+      if (app?.constructor?.name === "DaggerheartPlusCharacterSheet") {
+        if (particlesEnabled) {
+          app._mountSpellParticles?.();
+        } else {
+          app._unmountSpellParticles?.();
+        }
+      }
+    }
+  } catch (e) {
+    console.warn(
+      "Daggerheart Plus | Failed to apply particle effects toggle",
+      e
+    );
+  }
+}
+
+function applyCriticalHitParticles(enabled) {
+  try {
+    const critParticlesEnabled = game.settings.get(MODULE_ID, "enableCriticalHitParticles");
+    if (!critParticlesEnabled) {
+      document.querySelectorAll(".dhp-crit-particles").forEach(canvas => {
+        const host = canvas.parentElement;
+        if (host && host._dhpCritFX) {
+          host._dhpCritFX.stop();
+        }
+      });
+    }
+    
+    if (window.daggerheartPlus?.enhancedChatEffects) {
+      if (critParticlesEnabled) {
+        window.daggerheartPlus.enhancedChatEffects.init();
+      } else {
+        window.daggerheartPlus.enhancedChatEffects.disable();
+      }
+    }
+  } catch (e) {
+    console.warn(
+      "Daggerheart Plus | Failed to apply critical hit particles toggle",
+      e
+    );
+  }
+}
+
+function applyDomainCardOpenSetting(enabled) {
+  try {
+    const domainCards = document.querySelectorAll('.domain-card-move');
+    domainCards.forEach(card => {
+      if (enabled) {
+        card.setAttribute('open', '');
+        const chevron = card.querySelector('.fa-chevron-down');
+        if (chevron) {
+          chevron.style.display = 'none';
+        }
+      } else {
+        card.removeAttribute('open');
+        const chevron = card.querySelector('.fa-chevron-down');
+        if (chevron) {
+          chevron.style.display = '';
+        }
+      }
+    });
+  } catch (e) {
+    console.warn(
+      "Daggerheart Plus | Failed to apply domain card open setting",
+      e
+    );
+  }
+}
+
 Hooks.once("init", () => {
   console.log("Daggerheart Plus | Initializing module");
 
@@ -185,6 +267,67 @@ Hooks.once("init", () => {
     },
   });
 
+  game.settings.register(MODULE_ID, "enableParticles", {
+    name: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Name") || "Use Particles",
+    hint: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Hint") || "Enable particle effects for spellcasting traits and other UI elements.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      try {
+        applyParticleEffects(Boolean(value));
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying particle effects toggle",
+          e
+        );
+      }
+    },
+  });
+
+  game.settings.register(MODULE_ID, "enableCriticalHitParticles", {
+    name: game.i18n?.localize?.("DHP.Settings.Particles.CriticalHit.Name") || "Use Critical Hit Particles",
+    hint: game.i18n?.localize?.("DHP.Settings.Particles.CriticalHit.Hint") || "Enable particle effects for critical success rolls in chat messages.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: (value) => {
+      try {
+        applyCriticalHitParticles(Boolean(value));
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying critical hit particles toggle",
+          e
+        );
+      }
+    },
+  });
+
+  game.settings.register(MODULE_ID, "alwaysOpenDomainCards", {
+    name:
+      game.i18n?.localize?.("DHP.Settings.DomainCards.AlwaysOpen.Name") ||
+      "Always Open Domain Card Moves",
+    hint:
+      game.i18n?.localize?.("DHP.Settings.DomainCards.AlwaysOpen.Hint") ||
+      "Always show domain card move descriptions expanded in chat messages. Hides the chevron icon when enabled.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: (value) => {
+      try {
+        applyDomainCardOpenSetting(Boolean(value));
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying domain card open setting",
+          e
+        );
+      }
+    },
+  });
+
   try {
     HoverDistance.registerSettings();
   } catch (e) {
@@ -193,6 +336,39 @@ Hooks.once("init", () => {
       e
     );
   }
+
+  Hooks.on("renderChatMessage", (message, html, data) => {
+    try {
+      const enabled = Boolean(game.settings.get(MODULE_ID, "alwaysOpenDomainCards"));
+      if (enabled) {
+        const domainCards = html.find('.domain-card-move');
+        domainCards.each((index, card) => {
+          card.setAttribute('open', '');
+          const chevron = card.querySelector('.fa-chevron-down');
+          if (chevron) {
+            chevron.style.display = 'none';
+          }
+        });
+      }
+    } catch (e) {
+      console.warn(
+        "Daggerheart Plus | Failed to apply domain card open setting to new message",
+        e
+      );
+    }
+  });
+
+  Hooks.once("ready", () => {
+    try {
+      const enabled = Boolean(game.settings.get(MODULE_ID, "alwaysOpenDomainCards"));
+      applyDomainCardOpenSetting(enabled);
+    } catch (e) {
+      console.warn(
+        "Daggerheart Plus | Failed to apply domain card open setting on ready",
+        e
+      );
+    }
+  });
 
   try {
     loadTemplates([
@@ -442,6 +618,14 @@ Hooks.once("ready", async () => {
     try {
       EnhancedChatEffects.init();
     } catch (_) {}
+
+    try {
+      applyParticleEffects(true);
+    } catch (_) {}
+
+    try {
+      applyCriticalHitParticles(true);
+    } catch (_) {}
   } catch (e) {
     console.warn(
       "Daggerheart Plus | Failed to apply initial enhanced chat state",
@@ -637,6 +821,9 @@ Hooks.once("ready", async () => {
           const mountSpellParticles = () => {
             try {
               if (!traitKey) return false;
+              const particlesEnabled = game.settings.get(MODULE_ID, "enableParticles");
+              if (!particlesEnabled) return false;
+              
               const host = root.querySelector(
                 ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
               );
@@ -804,6 +991,10 @@ Hooks.once("ready", async () => {
           this.element,
           this.document
         );
+      } catch {}
+
+      try {
+        this._mountSpellParticles();
       } catch {}
     }
 
@@ -1092,27 +1283,81 @@ Hooks.once("ready", async () => {
       } catch {}
     }
 
+    _mountSpellParticles() {
+      try {
+        const root = this.element;
+        if (!root) return;
+        
+        const traitKey =
+          this.document?.system?.class?.subclass?.system?.spellcastingTrait ||
+          this.document?.system?.class?.value?.system?.spellcastingTrait ||
+          this.document?.system?.class?.system?.spellcastingTrait ||
+          this.document?.system?.spellcastingTrait ||
+          this.document?.flags?.daggerheart?.spellcastingTrait ||
+          this.document?.flags?.[MODULE_ID]?.spellcastingTrait;
+          
+        if (!traitKey) {
+          console.log("Daggerheart Plus | No spellcasting trait found for character:", this.document?.name);
+          return;
+        }
+        
+        const particlesEnabled = game.settings.get(MODULE_ID, "enableParticles");
+        if (!particlesEnabled) {
+          console.log("Daggerheart Plus | Particles disabled for spellcasting trait");
+          return;
+        }
+        
+        const host = root.querySelector(
+          ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
+        );
+        if (!host) {
+          console.log("Daggerheart Plus | No spellcasting trait host element found");
+          return;
+        }
+        if (host.querySelector(".dhp-spell-particles")) {
+          console.log("Daggerheart Plus | Spellcasting particles already mounted");
+          return;
+        }
+        
+        console.log("Daggerheart Plus | Mounting spellcasting particles for trait:", traitKey);
+        UIOverlayParticles.mount(host, {
+          minParticles: 22,
+          maxParticles: 55,
+          areaDivisor: 900,
+          repelRadius: 120,
+        });
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed to mount spellcasting particles:", e);
+      }
+    }
+
+    _unmountSpellParticles() {
+      try {
+        const root = this.element;
+        if (!root) return;
+        
+        root
+          .querySelectorAll(
+            ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
+          )
+          .forEach((host) => {
+            try {
+              host._dhpParticlesFX?.stop?.();
+            } catch (_) {}
+            try {
+              host._dhpParticlesMounted = false;
+            } catch (_) {}
+          });
+      } catch (_) {}
+    }
+
     async close(options = {}) {
       try {
         this._removeInlineRails();
       } catch {}
       // Cleanup spellcasting particle FX if present
       try {
-        const root = this.element;
-        if (root) {
-          root
-            .querySelectorAll(
-              ".attributes-row .attribute-container.spellcasting-trait .attribute-content"
-            )
-            .forEach((host) => {
-              try {
-                host._dhpParticlesFX?.stop?.();
-              } catch (_) {}
-              try {
-                host._dhpParticlesMounted = false;
-              } catch (_) {}
-            });
-        }
+        this._unmountSpellParticles();
       } catch (_) {}
       try {
         this._loadoutCardsObserver?.disconnect?.();
@@ -1529,6 +1774,7 @@ Hooks.once("ready", async () => {
     manageFearTracker: null,
     manageTokenCounters: null,
     enhancedDiceStyling: EnhancedDiceStyling,
+    enhancedChatEffects: EnhancedChatEffects,
     modifyHP,
     bindThresholdClicks,
     sendDifficultyRollRequest,
@@ -1621,6 +1867,30 @@ Hooks.once("ready", async () => {
       } catch (e) {
         console.warn(
           "Daggerheart Plus | Failed applying enhanced chat toggle (updateSetting)",
+          e
+        );
+      }
+      return;
+    }
+
+    if (setting.key === "enableParticles") {
+      try {
+        applyParticleEffects(Boolean(setting.value));
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying particle effects toggle (updateSetting)",
+          e
+        );
+      }
+      return;
+    }
+
+    if (setting.key === "enableCriticalHitParticles") {
+      try {
+        applyCriticalHitParticles(Boolean(setting.value));
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying critical hit particles toggle (updateSetting)",
           e
         );
       }
@@ -1827,6 +2097,8 @@ Hooks.on("renderSettingsConfig", (app, html) => {
     };
 
     insertHeader("enableFearTracker", "UI Enhancements");
+    insertHeader("enableParticles", "Particle Effects");
+    insertHeader("alwaysOpenDomainCards", "Domain Cards");
     insertHeader("enableHoverDistance", "Hover Distance");
     insertHeader("hpGradient", "Styling: Progress Bar Gradients");
   } catch (e) {

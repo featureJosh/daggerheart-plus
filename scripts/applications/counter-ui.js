@@ -1,3 +1,6 @@
+const MODULE_ID = "daggerheart-plus";
+const LOCATION_SETTING_KEY = "fearTrackerPosition";
+const DEFAULT_LOCATION = "bottom";
 const DAGGERHEART_NAMESPACE = "daggerheart";
 const FEAR_SETTING_KEY = "ResourcesFear";
 const HOMEBREW_SETTING_KEY = "Homebrew";
@@ -38,6 +41,91 @@ function hasFearSource() {
   }
 }
 
+function getTrackerLocation() {
+  try {
+    const value = game.settings.get(MODULE_ID, LOCATION_SETTING_KEY);
+    return typeof value === "string" && value === "top" ? "top" : DEFAULT_LOCATION;
+  } catch (error) {
+    return DEFAULT_LOCATION;
+  }
+}
+
+function resolveWrapperPlacement(preferred = DEFAULT_LOCATION) {
+  const attempts = preferred === "top" ? ["top", "bottom"] : ["bottom", "top"];
+
+  for (const location of attempts) {
+    if (location === "top") {
+      const top = document.querySelector("#ui-top");
+      if (!top) continue;
+      const navigation = top.querySelector("#navigation");
+      return {
+        location: "top",
+        place: (element) => {
+          if (!element) return;
+          if (navigation?.insertAdjacentElement) {
+            navigation.insertAdjacentElement("afterend", element);
+          } else if (navigation?.parentNode === top) {
+            const next = navigation.nextSibling;
+            if (next) top.insertBefore(element, next);
+            else top.appendChild(element);
+          } else {
+            top.appendChild(element);
+          }
+        },
+      };
+    }
+
+    const hotbar =
+      document.querySelector("#ui-bottom #hotbar") ||
+      document.querySelector("#hotbar");
+    const parent = hotbar?.parentNode;
+    if (!parent) continue;
+
+    return {
+      location: "bottom",
+      place: (element) => {
+        if (!element) return;
+        parent.insertBefore(element, hotbar);
+      },
+    };
+  }
+
+  return null;
+}
+
+function applyWrapperLocationState(element, location) {
+  if (!element) return;
+  const resolved = location === "top" ? "top" : "bottom";
+  element.dataset.location = resolved;
+  element.classList.toggle("counters-wrapper--top", resolved === "top");
+  element.classList.toggle("counters-wrapper--bottom", resolved !== "top");
+}
+Hooks.once("init", () => {
+  try {
+    game.settings.register(MODULE_ID, LOCATION_SETTING_KEY, {
+      name: "Fear Tracker Position",
+      hint: "Choose whether the fear tracker appears above the bottom hotbar or at the top HUD.",
+      scope: "client",
+      config: true,
+      type: String,
+      choices: {
+        bottom: "Bottom Hotbar",
+        top: "Top HUD",
+      },
+      default: DEFAULT_LOCATION,
+      onChange: () => {
+        try {
+          window.daggerheartPlus?.manageFearTracker?.();
+          window.daggerheartPlus?.tokenCounter?.ensureWrapperLocation?.();
+        } catch (error) {
+          console.warn(`${LOG_PREFIX} Failed to apply fear tracker position change`, error);
+        }
+      },
+    });
+  } catch (error) {
+    console.error(`${LOG_PREFIX} Failed to register fear tracker position setting`, error);
+  }
+});
 export class CounterUI {
   constructor() {
     this.element = null;
@@ -221,10 +309,8 @@ export class CounterUI {
       this.element = null;
     }
 
-    const hotbar =
-      document.querySelector("#ui-bottom #hotbar") ||
-      document.querySelector("#hotbar");
-    if (!hotbar) {
+    const placement = resolveWrapperPlacement(getTrackerLocation());
+    if (!placement) {
       window.setTimeout(() => this.render(), 1000);
       return;
     }
@@ -234,8 +320,10 @@ export class CounterUI {
       container = document.createElement("div");
       container.id = "counters-wrapper";
       container.className = "counters-wrapper";
-      hotbar.parentNode?.insertBefore(container, hotbar);
     }
+
+    placement.place(container);
+    applyWrapperLocationState(container, placement.location);
 
     const state = this._getFearState();
 

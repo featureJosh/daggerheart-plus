@@ -83,6 +83,12 @@
   "DHP.Settings.Common.Bottom": "Bas",
   "DHP.Settings.EnhancedChat.Enable.Name": "Style de chat amélioré",
   "DHP.Settings.EnhancedChat.Enable.Hint": "Par utilisateur. Activer le style de message de chat amélioré DH+.",
+  "DHP.Settings.Particles.Enable.Name": "Utiliser les particules",
+  "DHP.Settings.Particles.Enable.Hint": "Activer les effets de particules pour les traits d'incantation et autres éléments d'interface.",
+  "DHP.Settings.Particles.CriticalHit.Name": "Utiliser les particules de coup critique",
+  "DHP.Settings.Particles.CriticalHit.Hint": "Activer les effets de particules pour les jets de succès critique dans les messages de chat.",
+  "DHP.Settings.DomainCards.AlwaysOpen.Name": "Toujours ouvrir les mouvements de carte de domaine",
+  "DHP.Settings.DomainCards.AlwaysOpen.Hint": "Toujours afficher les descriptions des mouvements de carte de domaine développées dans les messages de chat. Masque l'icône de chevron lorsqu'elle est activée.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {

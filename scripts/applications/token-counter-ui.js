@@ -1,5 +1,66 @@
-﻿const MODULE_ID = "daggerheart-plus";
+const MODULE_ID = "daggerheart-plus";
+const LOCATION_SETTING_KEY = "fearTrackerPosition";
+const DEFAULT_LOCATION = "bottom";
 
+function getTrackerLocation() {
+  try {
+    const value = game.settings.get(MODULE_ID, LOCATION_SETTING_KEY);
+    return typeof value === "string" && value === "top" ? "top" : DEFAULT_LOCATION;
+  } catch (error) {
+    return DEFAULT_LOCATION;
+  }
+}
+
+function resolveWrapperPlacement(preferred = DEFAULT_LOCATION) {
+  const attempts = preferred === "top" ? ["top", "bottom"] : ["bottom", "top"];
+
+  for (const location of attempts) {
+    if (location === "top") {
+      const top = document.querySelector("#ui-top");
+      if (!top) continue;
+      const navigation = top.querySelector("#navigation");
+      return {
+        location: "top",
+        place: (element) => {
+          if (!element) return;
+          if (navigation?.insertAdjacentElement) {
+            navigation.insertAdjacentElement("afterend", element);
+          } else if (navigation?.parentNode === top) {
+            const next = navigation.nextSibling;
+            if (next) top.insertBefore(element, next);
+            else top.appendChild(element);
+          } else {
+            top.appendChild(element);
+          }
+        },
+      };
+    }
+
+    const hotbar =
+      document.querySelector("#ui-bottom #hotbar") ||
+      document.querySelector("#hotbar");
+    const parent = hotbar?.parentNode;
+    if (!parent) continue;
+
+    return {
+      location: "bottom",
+      place: (element) => {
+        if (!element) return;
+        parent.insertBefore(element, hotbar);
+      },
+    };
+  }
+
+  return null;
+}
+
+function applyWrapperLocationState(element, location) {
+  if (!element) return;
+  const resolved = location === "top" ? "top" : "bottom";
+  element.dataset.location = resolved;
+  element.classList.toggle("counters-wrapper--top", resolved === "top");
+  element.classList.toggle("counters-wrapper--bottom", resolved !== "top");
+}
 export class TokenCounterUI {
   constructor() {
     this.element = null;
@@ -287,6 +348,7 @@ export class TokenCounterUI {
 
   show() {
     if (!this.element) this.createElement();
+    this.ensureWrapperLocation();
     if (this.element) this.element.style.display = "";
   }
 
@@ -301,16 +363,21 @@ export class TokenCounterUI {
   }
 
   createElement() {
-    const hotbar = document.querySelector("#ui-bottom #hotbar");
-    if (!hotbar) return;
+    const placement = resolveWrapperPlacement(getTrackerLocation());
+    if (!placement) {
+      setTimeout(() => this.createElement(), 500);
+      return;
+    }
 
     let wrapper = document.querySelector("#counters-wrapper");
     if (!wrapper) {
       wrapper = document.createElement("div");
       wrapper.id = "counters-wrapper";
       wrapper.className = "counters-wrapper";
-      hotbar.parentNode.insertBefore(wrapper, hotbar);
     }
+
+    placement.place(wrapper);
+    applyWrapperLocationState(wrapper, placement.location);
 
     let leftContainer = document.querySelector("#token-counters-left");
     if (!leftContainer) {
@@ -334,6 +401,16 @@ export class TokenCounterUI {
     this.element.style.display = "none";
 
     leftContainer.appendChild(this.element);
+  }
+
+
+  ensureWrapperLocation() {
+    const placement = resolveWrapperPlacement(getTrackerLocation());
+    if (!placement) return;
+    const wrapper = document.querySelector("#counters-wrapper");
+    if (!wrapper) return;
+    placement.place(wrapper);
+    applyWrapperLocationState(wrapper, placement.location);
   }
 
   createRightCounters(rightContainer) {
@@ -402,3 +479,4 @@ export class TokenCounterUI {
     } catch (_) {}
   }
 }
+

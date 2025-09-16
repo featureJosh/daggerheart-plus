@@ -5,8 +5,15 @@
   align-items: center;
   justify-items: center;
   gap: 0;
-  margin-bottom: 0.5em;
   position: relative;
+}
+
+.counters-wrapper--bottom {
+  margin-bottom: 0.5em;
+}
+
+.counters-wrapper--top {
+  margin-top: 0.5em;
 }
 
 .token-counters-left {
@@ -457,3 +464,4 @@
 .faded-ui:hover {
   opacity: 1;
 }*/
+

@@ -522,7 +522,10 @@
 }
 
 /* Spellcasting trait highlight: blue particle FX (inspired by duality crit) */
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #57b2ff;
   --sc-accent: #8fd6ff;
   --sc-core: #c8ecff;
@@ -538,7 +541,10 @@
   animation: scSpellGlowPulse 3.2s ease-in-out infinite;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content::before {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-content::before {
   /* Subtle diagonal sweep */
   content: "";
   position: absolute;
@@ -559,7 +565,10 @@
   mix-blend-mode: screen;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content::after {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-content::after {
   /* Blue particles rising */
   content: "";
   position: absolute;
@@ -582,28 +591,40 @@
       transparent 43%
     );
   background-repeat: no-repeat;
-  animation: scEmberScroll 7s linear infinite, scParticleTwinkle 2.2s ease-in-out infinite;
+  animation: scEmberScroll 7s linear infinite,
+    scParticleTwinkle 2.2s ease-in-out infinite;
   opacity: 0.7;
   mix-blend-mode: screen;
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-value {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-value {
   color: color-mix(in oklab, var(--sc-core) 90%, white);
-  text-shadow:
-    0 0 6px color-mix(in oklab, var(--sc-accent) 75%, transparent),
+  text-shadow: 0 0 6px color-mix(in oklab, var(--sc-accent) 75%, transparent),
     0 0 18px color-mix(in oklab, var(--sc-glow) 35%, transparent);
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-name {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-name {
   color: color-mix(in oklab, var(--sc-accent) 80%, var(--dhp-text-light));
 }
 
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-tier {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-tier {
   color: color-mix(in oklab, var(--sc-accent) 65%, var(--dhp-accent));
 }
 
 /* Hover intensifies the glow */
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait:hover .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait:hover
+  .attribute-content {
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--sc-glow) 55%, #ffffff40),
     0 0 24px color-mix(in oklab, var(--sc-glow) 45%, transparent);
 }
@@ -643,10 +664,16 @@
 }
 
 /* Canvas overlay for moving particles inside spellcasting tile */
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   position: relative; /* ensure absolutely positioned canvas anchors here */
 }
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .dhp-spell-particles {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .dhp-spell-particles {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -654,38 +681,60 @@
   z-index: 1; /* keep below text */
   mix-blend-mode: screen;
 }
-.daggerheart-plus.sheet.character .character-header-modern .attribute-container.spellcasting-trait .attribute-content > *:not(.dhp-spell-particles) {
+.daggerheart-plus.sheet.character
+  .character-header-modern
+  .attribute-container.spellcasting-trait
+  .attribute-content
+  > *:not(.dhp-spell-particles) {
   position: relative;
   z-index: 2;
 }
 
 /* Spellcasting color presets per-trait */
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="knowledge"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="knowledge"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #57b2ff; /* blue */
   --sc-accent: #8fd6ff;
   --sc-core: #c8ecff;
 }
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="presence"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="presence"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #ff79b0; /* pink */
   --sc-accent: #ff9cc6;
   --sc-core: #ffd1e7;
 }
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="instinct"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="instinct"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #6bff8a; /* green */
   --sc-accent: #92ffab;
   --sc-core: #d3ffde;
 }
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="agility"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="agility"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #4ae3d3; /* teal */
   --sc-accent: #79efe4;
   --sc-core: #c4faf5;
 }
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="finesse"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="finesse"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #b57bff; /* purple */
   --sc-accent: #cfabff;
   --sc-core: #eadbff;
 }
-.daggerheart-plus.sheet.character .character-header-modern[data-spellcasting-trait="strength"] .attribute-container.spellcasting-trait .attribute-content {
+.daggerheart-plus.sheet.character
+  .character-header-modern[data-spellcasting-trait="strength"]
+  .attribute-container.spellcasting-trait
+  .attribute-content {
   --sc-glow: #ff944d; /* warm orange */
   --sc-accent: #ffb27f;
   --sc-core: #ffe0c8;
@@ -1564,20 +1613,19 @@
   right: 6px;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 1em;
+  padding: 0.5em.75em;
   z-index: 2;
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border-radius: 999px;
-  padding: 2px;
   opacity: 0;
   transform: translateY(-2px);
-  pointer-events: none; /* avoid accidental clicks when hidden */
+  pointer-events: none;
   transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
 }
-
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .loadout-section

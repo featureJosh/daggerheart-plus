@@ -3,10 +3,31 @@ const CRIT_SELECTOR = ".chat-message.message.duality.critical";
 export const EnhancedChatEffects = {
   init() {
     try {
+      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
+      if (!critParticlesEnabled) return;
+      
       this._observe();
       this._scan();
     } catch (e) {
       console.warn("DHP | EnhancedChatEffects failed to initialize", e);
+    }
+  },
+
+  disable() {
+    try {
+      if (this._observer) {
+        this._observer.disconnect();
+        this._observer = null;
+      }
+      
+      document.querySelectorAll(".dhp-crit-particles").forEach(canvas => {
+        const host = canvas.parentElement;
+        if (host && host._dhpCritFX) {
+          host._dhpCritFX.stop();
+        }
+      });
+    } catch (e) {
+      console.warn("DHP | EnhancedChatEffects failed to disable", e);
     }
   },
 
@@ -34,6 +55,10 @@ export const EnhancedChatEffects = {
   _mount(el) {
     try {
       if (!el || el._dhpCritMounted) return;
+      
+      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
+      if (!critParticlesEnabled) return;
+      
       el._dhpCritMounted = true;
       el.classList.add("dhp-crit-fx");
 
