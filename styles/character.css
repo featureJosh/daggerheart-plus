@@ -1708,6 +1708,10 @@
   transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
 }
 
+.daggerheart-plus.sheet.character .tab.loadout .inventory-item .loadout-resource-badge {
+  display: none !important;
+}
+
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .loadout-section

@@ -353,6 +353,15 @@
   justify-content: center;
 }
 
+.daggerheart .chat-message .chat-roll .roll-part-header,
+#chat-notifications .chat-message .chat-roll .roll-part-header {
+  display: flex;
+  align-items: center;
+  color: light-dark(#222, #efe6d8);
+  margin: 10px 0;
+  justify-content: center;
+}
+
 /* Accent lines in headers (title and formula) matching roll theme  */
 /* .chat-message.duality .roll-part-header {
   position: relative;
