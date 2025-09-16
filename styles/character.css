@@ -847,6 +847,12 @@
   padding-top: 1em;
 }
 
+.daggerheart-plus.sheet.companion .tab.active {
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 0em;
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet {
   padding: var(--dh-space-md);
   padding-top: var(--header-height);

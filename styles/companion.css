@@ -1,3 +1,12 @@
+.daggerheart-plus.sheet.companion .window-content {
+  overflow: visible;
+}
+
+.daggerheart-plus.sheet.companion .tab {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .daggerheart-plus.sheet.companion .companion-header-sheet {
   background: var(--dhp-surface);
   padding: 0.5rem;
@@ -527,9 +536,16 @@
   align-items: stretch;
 }
 
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-section {
+  flex: 1;
+  min-height: 0;
+}
+
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet {
   margin: 0;
   padding: 0;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .portrait {
@@ -723,6 +739,7 @@
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-list {
   max-height: 200px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-row {
