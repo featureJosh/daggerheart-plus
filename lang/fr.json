@@ -98,5 +98,9 @@
       },
       "die": "Dé"
     }
-  }
+  },
+  "DHP.Settings.FearTracker.Style.Name": "Affichage du compteur de Peur",
+  "DHP.Settings.FearTracker.Style.Hint": "Choisissez entre le compteur classique ou la barre de progression animée.",
+  "DHP.Settings.FearTracker.Style.Counter": "Compteur",
+  "DHP.Settings.FearTracker.Style.Progress": "Barre de progression"
 }

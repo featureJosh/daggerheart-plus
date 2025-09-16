@@ -1672,6 +1672,150 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  cursor: pointer;
+  user-select: none;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item:hover
+  .loadout-resource-badge,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item:hover
+  .loadout-resource-badge,
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge.is-always-visible,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge.is-always-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge:hover,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge i,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge i {
+  font-size: 0.85rem;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-text,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-value,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-value {
+  min-width: 1.1em;
+  text-align: center;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-separator,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-separator {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-max,
+.dh-inline-rails.rails-left
+  .floating-rail-left
+  .loadout-section
+  .inventory-item
+  .loadout-resource-badge .badge-max {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .threshold-group {
   display: flex;
   flex-direction: column;
@@ -2231,7 +2375,7 @@
 }
 
 .daggerheart-plus.sheet .tab.effects .effects-sections {
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .daggerheart-plus.sheet .tab.inventory .currency-section {

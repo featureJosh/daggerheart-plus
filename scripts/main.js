@@ -89,17 +89,17 @@ function applyCriticalHitParticles(enabled) {
 
 function applyDomainCardOpenSetting(enabled) {
   try {
-    const domainCards = document.querySelectorAll('.domain-card-move');
-    domainCards.forEach(card => {
+    const moveElements = document.querySelectorAll('.domain-card-move, .action-move');
+    moveElements.forEach(element => {
       if (enabled) {
-        card.setAttribute('open', '');
-        const chevron = card.querySelector('.fa-chevron-down');
+        element.setAttribute('open', '');
+        const chevron = element.querySelector('.fa-chevron-down');
         if (chevron) {
           chevron.style.display = 'none';
         }
       } else {
-        card.removeAttribute('open');
-        const chevron = card.querySelector('.fa-chevron-down');
+        element.removeAttribute('open');
+        const chevron = element.querySelector('.fa-chevron-down');
         if (chevron) {
           chevron.style.display = '';
         }
@@ -107,7 +107,7 @@ function applyDomainCardOpenSetting(enabled) {
     });
   } catch (e) {
     console.warn(
-      "Daggerheart Plus | Failed to apply domain card open setting",
+      "Daggerheart Plus | Failed to apply move open setting",
       e
     );
   }
@@ -182,6 +182,28 @@ Hooks.once("init", () => {
     },
   });
 
+  game.settings.register(MODULE_ID, "alwaysShowLoadoutResourceCounters", {
+    name: "Always Show Loadout Resource Counters",
+    hint: "Show loadout card resource counters even when the card is not hovered. Per-user preference.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: (value) => {
+      try {
+        for (const app of Object.values(ui.windows)) {
+          if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
+          app._updateAllLoadoutResourceBadges?.();
+        }
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying loadout resource counter visibility toggle",
+          e
+        );
+      }
+    },
+  });
+
   game.settings.register(MODULE_ID, "defaultSheetWidth", {
     name: "Default DH+ Sheet Width (px)",
     hint: "Default width applied to DH+ actor sheets (Character, Adversary, Companion, Environment). Reopen sheets to apply if not updated automatically.",
@@ -239,7 +261,7 @@ Hooks.once("init", () => {
       if (right) right.style.display = enabled ? "" : "none";
 
       try {
-        updateCountersWrapperDisplay();
+        window.daggerheartPlus.updateCountersWrapperDisplay();
       } catch (_) {}
     } catch (_) {}
   }
@@ -307,11 +329,11 @@ Hooks.once("init", () => {
 
   game.settings.register(MODULE_ID, "alwaysOpenDomainCards", {
     name:
-      game.i18n?.localize?.("DHP.Settings.DomainCards.AlwaysOpen.Name") ||
-      "Always Open Domain Card Moves",
+      game.i18n?.localize?.("DHP.Settings.Moves.AlwaysOpen.Name") ||
+      "Always Open Moves",
     hint:
-      game.i18n?.localize?.("DHP.Settings.DomainCards.AlwaysOpen.Hint") ||
-      "Always show domain card move descriptions expanded in chat messages. Hides the chevron icon when enabled.",
+      game.i18n?.localize?.("DHP.Settings.Moves.AlwaysOpen.Hint") ||
+      "Always show domain card and action move descriptions expanded in chat messages. Hides the chevron icon when enabled.",
     scope: "client",
     config: true,
     type: Boolean,
@@ -321,7 +343,7 @@ Hooks.once("init", () => {
         applyDomainCardOpenSetting(Boolean(value));
       } catch (e) {
         console.warn(
-          "Daggerheart Plus | Failed applying domain card open setting",
+          "Daggerheart Plus | Failed applying move open setting",
           e
         );
       }
@@ -341,10 +363,10 @@ Hooks.once("init", () => {
     try {
       const enabled = Boolean(game.settings.get(MODULE_ID, "alwaysOpenDomainCards"));
       if (enabled) {
-        const domainCards = html.find('.domain-card-move');
-        domainCards.each((index, card) => {
-          card.setAttribute('open', '');
-          const chevron = card.querySelector('.fa-chevron-down');
+        const moveElements = html.find('.domain-card-move, .action-move');
+        moveElements.each((index, element) => {
+          element.setAttribute('open', '');
+          const chevron = element.querySelector('.fa-chevron-down');
           if (chevron) {
             chevron.style.display = 'none';
           }
@@ -352,7 +374,7 @@ Hooks.once("init", () => {
       }
     } catch (e) {
       console.warn(
-        "Daggerheart Plus | Failed to apply domain card open setting to new message",
+        "Daggerheart Plus | Failed to apply move open setting to new message",
         e
       );
     }
@@ -438,31 +460,6 @@ Hooks.once("init", () => {
                 }
               };
 
-              function updateCountersWrapperDisplay() {
-                try {
-                  const wrapper = document.getElementById("counters-wrapper");
-                  if (!wrapper) return;
-
-                  const fearActive = Boolean(
-                    window.daggerheartPlus?.fearTracker?.element
-                  );
-
-                  const tokenCountersEnabled = Boolean(
-                    game.settings.get(MODULE_ID, "enableTokenCounters")
-                  );
-                  const hasSelectedToken = Boolean(
-                    canvas?.tokens?.controlled?.length
-                  );
-                  const tokenCountersActive = Boolean(
-                    tokenCountersEnabled &&
-                      (window.daggerheartPlus?.tokenCounter?.element ||
-                        hasSelectedToken)
-                  );
-
-                  const shouldShow = fearActive || tokenCountersActive;
-                  wrapper.style.display = shouldShow ? "" : "none";
-                } catch (e) {}
-              }
               const currentKey = buildKey();
 
               const prevCtrl = tooltipEl._dhpShineCtrl;
@@ -1019,6 +1016,7 @@ Hooks.once("ready", async () => {
           let src;
           const itemId = item.dataset.itemId;
           const doc = itemId ? this.document?.items?.get?.(itemId) : null;
+          this._updateLoadoutResourceBadge(item, doc);
           if (doc?.img) src = doc.img;
           if (!src) {
             const imgEl = item.querySelector?.(".item-img, .item-image, img");
@@ -1107,7 +1105,227 @@ Hooks.once("ready", async () => {
       } catch (_) {}
     }
 
-    _attachLoadoutCardTooltips() {
+      _updateAllLoadoutResourceBadges() {
+      try {
+        const root = this.element;
+        if (!root) return;
+
+        const selectors = [
+          ".character-sidebar-sheet .loadout-section .inventory-item",
+          ".dh-inline-rails.rails-left .loadout-section .inventory-item",
+        ];
+
+        for (const sel of selectors) {
+          root.querySelectorAll(sel)?.forEach?.((item) => {
+            this._updateLoadoutResourceBadge(item);
+          });
+        }
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed to refresh loadout resource badges",
+          e
+        );
+      }
+    }
+
+    _updateLoadoutResourceBadge(element, doc) {
+      try {
+        if (!element || !element.classList?.contains?.("inventory-item"))
+          return;
+
+        const actor = this.document;
+        const itemId = element.dataset.itemId;
+        const itemDoc = doc || (itemId ? actor?.items?.get?.(itemId) : null);
+        const resource = itemDoc?.system?.resource;
+        if (!itemDoc || !resource || resource.type !== "simple") {
+          const existing = element.querySelector(".loadout-resource-badge");
+          if (existing) existing.remove();
+          return;
+        }
+
+        const alwaysShow = game.settings.get(
+          MODULE_ID,
+          "alwaysShowLoadoutResourceCounters"
+        );
+
+        let badge = element.querySelector(".loadout-resource-badge");
+        if (!badge) {
+          badge = document.createElement("div");
+          badge.className = "loadout-resource-badge";
+          badge.setAttribute("role", "button");
+          badge.setAttribute("tabindex", "-1");
+
+          const iconEl = document.createElement("i");
+          badge.appendChild(iconEl);
+
+          const textWrap = document.createElement("span");
+          textWrap.className = "badge-text";
+          const valueEl = document.createElement("span");
+          valueEl.className = "badge-value";
+          textWrap.appendChild(valueEl);
+
+          const sepEl = document.createElement("span");
+          sepEl.className = "badge-separator";
+          textWrap.appendChild(sepEl);
+
+          const maxEl = document.createElement("span");
+          maxEl.className = "badge-max";
+          textWrap.appendChild(maxEl);
+
+          badge.appendChild(textWrap);
+          element.appendChild(badge);
+
+          badge._iconEl = iconEl;
+          badge._valueEl = valueEl;
+          badge._maxEl = maxEl;
+          badge._sepEl = sepEl;
+
+          this._bindLoadoutResourceBadgeEvents(badge);
+        }
+
+        const safeNumber = (value) => {
+          const num = Number(value);
+          return Number.isFinite(num) ? num : 0;
+        };
+
+        const value = safeNumber(resource.value);
+        const maxRaw = resource.max;
+        let maxNumber =
+          maxRaw === undefined || maxRaw === null || maxRaw === ""
+            ? null
+            : Number(maxRaw);
+        if (Number.isNaN(maxNumber)) maxNumber = null;
+
+        const icon = resource.icon || "fa-solid fa-hashtag";
+        badge._iconEl.className = icon;
+
+        const currentValue = Math.max(
+          0,
+          maxNumber !== null ? Math.min(maxNumber, value) : value
+        );
+        badge._valueEl.textContent = String(currentValue);
+
+        if (maxNumber !== null) {
+          badge._sepEl.textContent = "/";
+          badge._sepEl.style.display = "";
+          badge._maxEl.textContent = String(maxNumber);
+          badge._maxEl.style.display = "";
+        } else {
+          badge._sepEl.textContent = "";
+          badge._sepEl.style.display = "none";
+          badge._maxEl.textContent = "";
+          badge._maxEl.style.display = "none";
+        }
+
+        badge.dataset.itemId = itemDoc.id ?? "";
+        badge.dataset.itemUuid = itemDoc.uuid ?? "";
+        badge.dataset.max = maxNumber !== null ? String(maxNumber) : "";
+        badge.dataset.value = String(currentValue);
+        badge.classList.toggle("has-max", maxNumber !== null);
+        badge.classList.toggle("is-always-visible", Boolean(alwaysShow));
+
+        const labelParts = [];
+        if (itemDoc.name) labelParts.push(itemDoc.name);
+        if (typeof resource.label === "string" && resource.label.trim().length)
+          labelParts.push(resource.label.trim());
+        const descriptor =
+          labelParts.length > 0 ? labelParts.join(" - ") : itemDoc.name || "";
+        const displayValue =
+          maxNumber !== null ? `${currentValue}/${maxNumber}` : `${currentValue}`;
+
+        const labelText = descriptor
+          ? `${descriptor}: ${displayValue}`
+          : displayValue;
+        badge.setAttribute("aria-label", labelText);
+        badge.title = labelText;
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed to update loadout resource badge",
+          e
+        );
+      }
+    }
+
+    _bindLoadoutResourceBadgeEvents(badge) {
+      try {
+        if (!badge || badge._dhpLoadoutBadgeBound) return;
+        badge._dhpLoadoutBadgeBound = true;
+
+        const stop = (ev) => {
+          ev.stopPropagation();
+        };
+
+        badge.addEventListener(
+          "mousedown",
+          (ev) => {
+            if (ev.button === 0) ev.preventDefault();
+            stop(ev);
+          },
+          true
+        );
+        badge.addEventListener(
+          "mouseup",
+          (ev) => {
+            stop(ev);
+          },
+          true
+        );
+
+        badge.addEventListener("click", (ev) => {
+          if (ev.button !== 0) return;
+          ev.preventDefault();
+          ev.stopPropagation();
+          this._adjustLoadoutResourceBadgeValue(badge, 1);
+        });
+
+        badge.addEventListener("contextmenu", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          this._adjustLoadoutResourceBadgeValue(badge, -1);
+        });
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed to bind loadout resource badge events",
+          e
+        );
+      }
+    }
+
+    async _adjustLoadoutResourceBadgeValue(badge, delta) {
+      try {
+        if (!badge || !delta) return;
+        const itemId = badge.dataset.itemId;
+        if (!itemId) return;
+        const item = this.document?.items?.get?.(itemId);
+        if (!item) return;
+        const resource = item.system?.resource;
+        if (!resource || resource.type !== "simple") return;
+
+        const current = Number(resource.value ?? 0) || 0;
+        const maxRaw = resource.max;
+        let maxNumber =
+          maxRaw === undefined || maxRaw === null || maxRaw === ""
+            ? null
+            : Number(maxRaw);
+        if (Number.isNaN(maxNumber)) maxNumber = null;
+
+        let next = current + delta;
+        if (maxNumber !== null) next = Math.min(maxNumber, next);
+        next = Math.max(0, next);
+        if (next === current) return;
+
+        await item.update({ "system.resource.value": next }, { render: false });
+        const itemElement = badge.closest?.(".inventory-item");
+        if (itemElement) this._updateLoadoutResourceBadge(itemElement, item);
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed to adjust loadout resource value",
+          e
+        );
+      }
+    }
+
+  _attachLoadoutCardTooltips() {
       try {
         const root = this.element;
         if (!root) return;
@@ -1773,6 +1991,7 @@ Hooks.once("ready", async () => {
     tokenCounter: null,
     manageFearTracker: null,
     manageTokenCounters: null,
+    updateCountersWrapperDisplay,
     enhancedDiceStyling: EnhancedDiceStyling,
     enhancedChatEffects: EnhancedChatEffects,
     modifyHP,
@@ -1785,6 +2004,32 @@ Hooks.once("ready", async () => {
   console.log(
     "Daggerheart Plus | Token counter and enhanced dice styling initialized"
   );
+
+  function updateCountersWrapperDisplay() {
+    try {
+      const wrapper = document.getElementById("counters-wrapper");
+      if (!wrapper) return;
+
+      const fearActive = Boolean(
+        window.daggerheartPlus?.fearTracker?.element
+      );
+
+      const tokenCountersEnabled = Boolean(
+        game.settings.get(MODULE_ID, "enableTokenCounters")
+      );
+      const hasSelectedToken = Boolean(
+        canvas?.tokens?.controlled?.length
+      );
+      const tokenCountersActive = Boolean(
+        tokenCountersEnabled &&
+          (window.daggerheartPlus?.tokenCounter?.element ||
+            hasSelectedToken)
+      );
+
+      const shouldShow = fearActive || tokenCountersActive;
+      wrapper.style.display = shouldShow ? "" : "none";
+    } catch (e) {}
+  }
 
   async function manageFearTracker() {
     try {
@@ -1802,7 +2047,7 @@ Hooks.once("ready", async () => {
         if (window.daggerheartPlus.fearTracker) {
           window.daggerheartPlus.fearTracker.dispose();
 
-          updateCountersWrapperDisplay();
+          window.daggerheartPlus.updateCountersWrapperDisplay();
         }
       }
     } catch (error) {
@@ -1823,7 +2068,7 @@ Hooks.once("ready", async () => {
         }
 
         try {
-          updateCountersWrapperDisplay();
+          window.daggerheartPlus.updateCountersWrapperDisplay();
         } catch (_) {}
       } else {
         try {
@@ -1833,7 +2078,7 @@ Hooks.once("ready", async () => {
           window.daggerheartPlus.tokenCounter?.dispose?.();
         } catch (_) {}
 
-        updateCountersWrapperDisplay();
+        window.daggerheartPlus.updateCountersWrapperDisplay();
       }
     } catch (e) {
       console.error("Daggerheart Plus | Error managing token counters:", e);

@@ -1,6 +1,8 @@
 const MODULE_ID = "daggerheart-plus";
 const LOCATION_SETTING_KEY = "fearTrackerPosition";
 const DEFAULT_LOCATION = "bottom";
+const STYLE_SETTING_KEY = "fearTrackerStyle";
+const DEFAULT_STYLE = "counter";
 const DAGGERHEART_NAMESPACE = "daggerheart";
 const FEAR_SETTING_KEY = "ResourcesFear";
 const HOMEBREW_SETTING_KEY = "Homebrew";
@@ -100,6 +102,14 @@ function applyWrapperLocationState(element, location) {
   element.classList.toggle("counters-wrapper--top", resolved === "top");
   element.classList.toggle("counters-wrapper--bottom", resolved !== "top");
 }
+function getTrackerStyle() {
+  try {
+    const value = game.settings.get(MODULE_ID, STYLE_SETTING_KEY);
+    return typeof value === "string" && value === "progress" ? "progress" : DEFAULT_STYLE;
+  } catch (error) {
+    return DEFAULT_STYLE;
+  }
+}
 Hooks.once("init", () => {
   try {
     game.settings.register(MODULE_ID, LOCATION_SETTING_KEY, {
@@ -124,6 +134,39 @@ Hooks.once("init", () => {
     });
   } catch (error) {
     console.error(`${LOG_PREFIX} Failed to register fear tracker position setting`, error);
+  }
+
+  try {
+    game.settings.register(MODULE_ID, STYLE_SETTING_KEY, {
+      name:
+        game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Name") ||
+        "Fear Tracker Display",
+      hint:
+        game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Hint") ||
+        "Choose between the counter or animated progress bar display.",
+      scope: "client",
+      config: true,
+      type: String,
+      choices: {
+        counter:
+          game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Counter") ||
+          "Counter",
+        progress:
+          game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Progress") ||
+          "Progress Bar",
+      },
+      default: DEFAULT_STYLE,
+      onChange: () => {
+        try {
+          window.daggerheartPlus?.manageFearTracker?.();
+          window.daggerheartPlus?.tokenCounter?.ensureWrapperLocation?.();
+        } catch (error) {
+          console.warn(`${LOG_PREFIX} Failed to apply fear tracker style change`, error);
+        }
+      },
+    });
+  } catch (error) {
+    console.error(`${LOG_PREFIX} Failed to register fear tracker style setting`, error);
   }
 });
 export class CounterUI {
@@ -325,25 +368,57 @@ export class CounterUI {
     placement.place(container);
     applyWrapperLocationState(container, placement.location);
 
+    const style = getTrackerStyle();
     const state = this._getFearState();
+    const percentage = state.max > 0 ? Math.min((state.value / state.max) * 100, 100) : 0;
+    const displayTabIndex = this.canModify ? 0 : -1;
 
     const wrapper = document.createElement("div");
     wrapper.id = "counter-ui";
-    wrapper.className = "faded-ui counter-ui fear-tracker fear-center";
-    wrapper.innerHTML = `
-      <button type="button" class="counter-minus" title="Decrease">
-        <i class="fas fa-minus"></i>
-      </button>
-      <div class="counter-display" role="button" tabindex="0">
-        <div class="counter-value">${state.value}</div>
-        <div class="counter-label">${game.i18n.localize(
-          "DAGGERHEART.GENERAL.fear"
-        )}</div>
-      </div>
-      <button type="button" class="counter-plus" title="Increase">
-        <i class="fas fa-plus"></i>
-      </button>
-    `;
+    const classes = ["faded-ui", "counter-ui", "fear-tracker", "fear-center"];
+    if (style === "progress") {
+      classes.push("fear-tracker--progress");
+    }
+    wrapper.className = classes.join(" ");
+
+    const fearLabel = game.i18n.localize("DAGGERHEART.GENERAL.fear");
+
+    if (style === "progress") {
+      wrapper.innerHTML = `
+        <button type="button" class="counter-minus" title="Decrease">
+          <i class="fas fa-minus"></i>
+        </button>
+        <div class="fear-progress">
+          <div class="fear-progress-track">
+            <div class="fear-progress-bar" style="width:${percentage}%"></div>
+            <div class="counter-display fear-progress-display" role="button" tabindex="${displayTabIndex}">
+              <div class="fear-progress-values">
+                <span class="fear-progress-value">${state.value}</span>
+                <span class="fear-progress-separator">/</span>
+                <span class="fear-progress-max">${state.max}</span>
+              </div>
+              <div class="fear-progress-label">${fearLabel}</div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="counter-plus" title="Increase">
+          <i class="fas fa-plus"></i>
+        </button>
+      `;
+    } else {
+      wrapper.innerHTML = `
+        <button type="button" class="counter-minus" title="Decrease">
+          <i class="fas fa-minus"></i>
+        </button>
+        <div class="counter-display" role="button" tabindex="${displayTabIndex}">
+          <div class="counter-value">${state.value}</div>
+          <div class="counter-label">${fearLabel}</div>
+        </div>
+        <button type="button" class="counter-plus" title="Increase">
+          <i class="fas fa-plus"></i>
+        </button>
+      `;
+    }
 
     container.appendChild(wrapper);
     this.element = wrapper;
@@ -395,12 +470,29 @@ export class CounterUI {
   updateDisplay({ state, animate = true } = {}) {
     if (!this.element) return;
 
+    const style = getTrackerStyle();
     const nextState = state ?? this._getFearState();
     const previousValue = this._lastFearState.value;
 
-    const valueElement = this.element.querySelector(".counter-value");
-    if (valueElement) {
-      valueElement.textContent = String(nextState.value);
+    const counterValue = this.element.querySelector(".counter-value");
+    if (counterValue) {
+      counterValue.textContent = String(nextState.value);
+    }
+
+    if (style === "progress") {
+      const progressValue = this.element.querySelector(".fear-progress-value");
+      if (progressValue) {
+        progressValue.textContent = String(nextState.value);
+      }
+      const progressMax = this.element.querySelector(".fear-progress-max");
+      if (progressMax) {
+        progressMax.textContent = String(nextState.max);
+      }
+      const bar = this.element.querySelector(".fear-progress-bar");
+      if (bar) {
+        const pct = nextState.max > 0 ? Math.min((nextState.value / nextState.max) * 100, 100) : 0;
+        bar.style.width = `${pct}%`;
+      }
     }
 
     this._updateControlStates(nextState);
@@ -450,6 +542,8 @@ export class CounterUI {
 
     if (!minusBtn || !plusBtn || !display) return;
 
+    display.tabIndex = enabled ? 0 : -1;
+
     if (enabled) {
       minusBtn.style.display = "";
       plusBtn.style.display = "";
@@ -471,21 +565,30 @@ export class CounterUI {
     if (!this.element) return;
 
     const container = this.element;
-    const valueElement = this.element.querySelector(".counter-value");
-    if (!valueElement) return;
+    const valueElement = this.element.querySelector(
+      ".counter-value, .fear-progress-value"
+    );
+    const track = this.element.querySelector(".fear-progress-track");
+    const bar = this.element.querySelector(".fear-progress-bar");
 
     container.classList.remove("fear-changed");
-    valueElement.classList.remove("fear-value-flash");
+    if (valueElement) valueElement.classList.remove("fear-value-flash");
+    if (track) track.classList.remove("fear-progress-track-glow");
+    if (bar) bar.classList.remove("fear-progress-bar-flash");
 
     window.setTimeout(() => {
       container.classList.add("fear-changed");
-      valueElement.classList.add("fear-value-flash");
+      if (valueElement) valueElement.classList.add("fear-value-flash");
+      if (track) track.classList.add("fear-progress-track-glow");
+      if (bar) bar.classList.add("fear-progress-bar-flash");
 
       this.createParticleEffect(isIncrease);
 
       window.setTimeout(() => {
         container.classList.remove("fear-changed");
-        valueElement.classList.remove("fear-value-flash");
+        if (valueElement) valueElement.classList.remove("fear-value-flash");
+        if (track) track.classList.remove("fear-progress-track-glow");
+        if (bar) bar.classList.remove("fear-progress-bar-flash");
       }, 800);
     }, 10);
   }
@@ -562,5 +665,4 @@ export class CounterUI {
     this._lastCanModify = null;
   }
 }
-
 

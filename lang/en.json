@@ -100,5 +100,9 @@
       },
       "die": "Die"
     }
-  }
+  },
+  "DHP.Settings.FearTracker.Style.Name": "Fear Tracker Display",
+  "DHP.Settings.FearTracker.Style.Hint": "Choose between the counter or animated progress bar display.",
+  "DHP.Settings.FearTracker.Style.Counter": "Counter",
+  "DHP.Settings.FearTracker.Style.Progress": "Progress Bar"
 }
