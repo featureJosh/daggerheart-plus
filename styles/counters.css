@@ -558,3 +558,12 @@
   }
 }
 
+/* Ensure overlay text sits above the bar and is clearly visible */
+.fear-progress-bar { z-index: 1; }
+.fear-progress-overlay { z-index: 2; }
+.fear-progress-overlay .fear-progress-value,
+.fear-progress-overlay .fear-progress-max {
+  display: inline-block;
+  color: #f5f7ff;
+  text-shadow: 0 0 8px rgba(0,0,0,0.35), 0 0 10px rgba(122,77,255,0.5);
+}

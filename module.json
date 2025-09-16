@@ -2,7 +2,7 @@
   "id": "daggerheart-plus",
   "title": "Daggerheart Plus",
   "description": "A module that improves upon the default Daggerheart system UI/UX",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "compatibility": {
     "minimum": "13",
     "verified": "13",
@@ -38,6 +38,6 @@
       "path": "lang/fr.json"
     }
   ],
-  "download": "https://github.com/featureJosh/daggerheart-plus/archive/refs/tags/1.0.17.zip",
+  "download": "https://github.com/featureJosh/daggerheart-plus/archive/refs/tags/1.0.18.zip",
   "manifest": "https://raw.githubusercontent.com/featureJosh/daggerheart-plus/refs/heads/main/module.json"
 }
