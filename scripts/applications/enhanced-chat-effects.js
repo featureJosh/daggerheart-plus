@@ -4,8 +4,12 @@ export const EnhancedChatEffects = {
   init() {
     try {
       const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
-      if (!critParticlesEnabled) return;
-      
+      const enhancedChatEnabled = game.settings.get("daggerheart-plus", "enableEnhancedChat");
+      if (!critParticlesEnabled || !enhancedChatEnabled) {
+        this.disable();
+        return;
+      }
+
       this._observe();
       this._scan();
     } catch (e) {
@@ -20,11 +24,20 @@ export const EnhancedChatEffects = {
         this._observer = null;
       }
       
-      document.querySelectorAll(".dhp-crit-particles").forEach(canvas => {
+      document.querySelectorAll(".dhp-crit-particles").forEach((canvas) => {
         const host = canvas.parentElement;
         if (host && host._dhpCritFX) {
           host._dhpCritFX.stop();
+        } else {
+          host?.classList?.remove?.("dhp-crit-fx");
+          canvas.remove();
         }
+      });
+
+      document.querySelectorAll(".dhp-crit-fx").forEach((el) => {
+        el.classList.remove("dhp-crit-fx");
+        delete el._dhpCritMounted;
+        delete el._dhpCritFX;
       });
     } catch (e) {
       console.warn("DHP | EnhancedChatEffects failed to disable", e);
@@ -57,8 +70,9 @@ export const EnhancedChatEffects = {
       if (!el || el._dhpCritMounted) return;
       
       const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
-      if (!critParticlesEnabled) return;
-      
+      const enhancedChatEnabled = game.settings.get("daggerheart-plus", "enableEnhancedChat");
+      if (!critParticlesEnabled || !enhancedChatEnabled) return;
+
       el._dhpCritMounted = true;
       el.classList.add("dhp-crit-fx");
 
@@ -247,6 +261,7 @@ export const EnhancedChatEffects = {
         try {
           canvas.remove();
         } catch {}
+        host?.classList?.remove?.("dhp-crit-fx");
         delete host._dhpCritMounted;
         delete host._dhpCritFX;
       },

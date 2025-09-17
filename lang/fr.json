@@ -89,8 +89,8 @@
   "DHP.Settings.Particles.CriticalHit.Hint": "Activer les effets de particules pour les jets de succès critique dans les messages de chat.",
   "DHP.Settings.DomainCards.AlwaysOpen.Name": "Toujours ouvrir les mouvements de carte de domaine",
   "DHP.Settings.DomainCards.AlwaysOpen.Hint": "Toujours afficher les descriptions des mouvements de carte de domaine développées dans les messages de chat. Masque l'icône de chevron lorsqu'elle est activée.",
-  "DHP.Settings.Moves.AlwaysOpen.Name": "Toujours ouvrir les mouvements",
-  "DHP.Settings.Moves.AlwaysOpen.Hint": "Toujours afficher les descriptions des mouvements de carte de domaine et d'action développées dans les messages de chat. Masque l'icône de chevron lorsqu'elle est activée.",
+  "DHP.Settings.Moves.AlwaysOpen.Name": "Always Open Domains & Moves",
+  "DHP.Settings.Moves.AlwaysOpen.Hint": "Always show domain card and action move descriptions expanded in chat messages. Hides the chevron icon when enabled.",
   "DAGGERHEART": {
     "GENERAL": {
       "DamageThresholds": {

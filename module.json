@@ -36,6 +36,11 @@
       "lang": "fr",
       "name": "Français",
       "path": "lang/fr.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italian",
+      "path": "lang/it.json"
     }
   ],
   "download": "https://github.com/featureJosh/daggerheart-plus/archive/refs/tags/1.2.2.zip",

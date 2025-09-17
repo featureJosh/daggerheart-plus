@@ -104,6 +104,15 @@ Hooks.once("ready", async () => {
           e
         );
       }
+
+      try {
+        applyCriticalHitParticles();
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying critical hit particles toggle (updateSetting)",
+          e
+        );
+      }
       return;
     }
 

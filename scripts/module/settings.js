@@ -165,6 +165,15 @@ export function registerModuleSettings() {
           e
         );
       }
+
+      try {
+        applyCriticalHitParticles();
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying critical hit particles toggle (enhanced chat)",
+          e
+        );
+      }
     },
   });
 
