@@ -5,6 +5,11 @@ body.theme-dark.application .window-content {
   -webkit-backdrop-filter: blur(0);
 }
 
+.application .window-content {
+  overflow: auto;
+}
+
+
 /*============== Tab Content ==============*/
 .daggerheart-plus.sheet .tab-content {
   display: none;
