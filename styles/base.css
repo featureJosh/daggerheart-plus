@@ -11,6 +11,24 @@ body.theme-dark .application.daggerheart.sheet {
   backdrop-filter: blur(5px);
 }
 
+.dh-style select {
+  background: light-dark(transparent, transparent);
+  color: light-dark(#222, #efe6d8);
+  font-family: 'Montserrat', sans-serif;
+  outline: 2px solid transparent;
+  border: 1px solid light-dark(#222, #efe6d8);
+  height: 2em;
+  padding: 0;
+}
+
+.dh-style fieldset .nest-inputs {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: .5em;
+  justify-content: space-evenly;
+}
+
 .daggerheart-plus.sheet {
   --dhp-primary: #f3c267;
   --dhp-secondary: #cc9900;
