@@ -29,6 +29,15 @@ body.theme-dark .application.daggerheart.sheet {
   justify-content: space-evenly;
 }
 
+form#roll-selection {
+  background: #181827e0;
+  backdrop-filter: blur(5px);
+}
+
+form#roll-selection .window-content {
+  backdrop-filter: none !important;
+}
+
 .daggerheart-plus.sheet {
   --dhp-primary: #f3c267;
   --dhp-secondary: #cc9900;
