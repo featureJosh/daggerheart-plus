@@ -1,5 +1,5 @@
 ![All Downloads](https://img.shields.io/github/downloads/featureJosh/daggerheart-plus/total?color=5e0000&label=All%20Downloads)
-![Latest Version Downloads](https://img.shields.io/github/downloads/featureJosh/daggerheart-pluslatest/total?color=171f69&label=Latest%20Version%20Downloads&sort=semver)
+![Latest Version Downloads](https://img.shields.io/github/downloads/featureJosh/daggerheart-plus/latest/total?color=171f69&label=Latest%20Version%20Downloads&sort=semver)
 
 # Daggerheart Plus
 
