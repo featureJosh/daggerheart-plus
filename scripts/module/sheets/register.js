@@ -102,7 +102,7 @@ export function registerDaggerheartPlusSheets() {
     static TABS = [
       { tab: "features", label: "Features", icon: "fas fa-list" },
       { tab: "loadout", label: "Loadout", icon: "fas fa-chess-rook" },
-      { tab: "inventory", label: "Inventory", icon: "fas fa-bag-shopping" },
+      { tab: "inventory", label: "Inventory", icon: "fas fa-backpack" },
       { tab: "effects", label: "Effects", icon: "fas fa-bolt" },
       { tab: "biography", label: "Biography", icon: "fas fa-feather" },
     ];
@@ -838,7 +838,7 @@ export function registerDaggerheartPlusSheets() {
             buttons.innerHTML = `
               <button type="button" class="rail-btn" title="A"><i class="fa-solid fa-sparkles"></i></button>
               <button type="button" class="rail-btn" title="B"><i class="fa-solid fa-shield-halved"></i></button>
-              <button type="button" class="rail-btn" title="C"><i class="fa-solid fa-bag-shopping"></i></button>
+              <button type="button" class="rail-btn" title="C"><i class="fa-solid fa-backpack"></i></button>
               <button type="button" class="rail-btn" title="D"><i class="fa-solid fa-user"></i></button>
               <button type="button" class="rail-btn" title="E"><i class="fa-solid fa-hourglass"></i></button>`;
             wrapper.appendChild(buttons);

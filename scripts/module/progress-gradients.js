@@ -58,7 +58,7 @@ export function registerGradientSettings() {
       }
       const lines = [];
       lines.push(".daggerheart-plus.sheet{");
-      if (hpG) lines.push("--dhp-damage-gradient:" + hpG + ";");
+      if (hpG) lines.push("--dhp-hp-gradient:" + hpG + ";");
       if (stressG) lines.push("--dhp-stress-gradient:" + stressG + ";");
       if (armorG) lines.push("--dhp-armor-gradient:" + armorG + ";");
       lines.push("}");

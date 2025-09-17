@@ -2239,7 +2239,7 @@
   /* Static gradient revealed by covering the unfilled portion on the right */
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
       calc(100% - var(--percent)) 100% no-repeat,
-    var(--dhp-damage-gradient);
+    var(--dhp-hp-gradient, var(--dhp-damage-gradient));
   -webkit-appearance: none;
   appearance: none;
   z-index: 1;
@@ -2424,7 +2424,7 @@
   height: 28px;
   border-radius: 50%;
   background: var(--dhp-primary);
-  color: var(--dhp-background);
+  color: var(--dhp-border);
   box-shadow: 0 1px 3px var(--dhp-shadow);
 }
 
@@ -2529,7 +2529,15 @@
   border: none;
 }
 
-/* DH+ configurable gradients for stress/armor progress bars */
+/* DH+ configurable gradients for HP/stress/armor progress bars */
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .progress-bar.hp-color {
+  background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
+      calc(100% - var(--percent)) 100% no-repeat,
+    var(--dhp-hp-gradient, var(--dhp-damage-gradient));
+}
+
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .progress-bar.stress-color {
