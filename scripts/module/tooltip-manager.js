@@ -27,6 +27,8 @@
               );
 
               this.tooltip.classList.add("dhp-tooltip-card");
+              
+              this.positionTooltipWithinViewport(element, this.tooltip);
 
               const images = this.tooltip.querySelectorAll(".tooltip-image");
               console.log(
@@ -171,6 +173,53 @@
             );
           }
           return result;
+        }
+
+        positionTooltipWithinViewport(triggerElement, tooltipElement) {
+          if (!triggerElement || !tooltipElement) return;
+
+          setTimeout(() => {
+            const triggerRect = triggerElement.getBoundingClientRect();
+            const tooltipRect = tooltipElement.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const margin = 10;
+
+            const tooltipWidth = tooltipRect.width || 380;
+            const tooltipHeight = tooltipRect.height || 200;
+
+            const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+            const triggerCenterY = triggerRect.top + triggerRect.height / 2;
+
+            let newLeft = triggerCenterX - tooltipWidth / 2;
+            let newTop = triggerRect.top - tooltipHeight - margin;
+
+            if (newTop < margin) {
+              newTop = triggerRect.bottom + margin;
+            }
+
+            if (newLeft < margin) {
+              newLeft = margin;
+            } else if (newLeft + tooltipWidth > viewportWidth - margin) {
+              newLeft = viewportWidth - tooltipWidth - margin;
+            }
+
+            if (newTop + tooltipHeight > viewportHeight - margin) {
+              newTop = viewportHeight - tooltipHeight - margin;
+            }
+
+            if (newTop < margin) {
+              newTop = margin;
+            }
+
+            tooltipElement.style.position = 'fixed';
+            tooltipElement.style.top = `${newTop}px`;
+            tooltipElement.style.left = `${newLeft}px`;
+            tooltipElement.style.right = 'auto';
+            tooltipElement.style.bottom = 'auto';
+            tooltipElement.style.transform = 'none';
+            tooltipElement.classList.add('positioned');
+          }, 0);
         }
       }
       CONFIG.ux.TooltipManager = DHPTooltipCardManager;

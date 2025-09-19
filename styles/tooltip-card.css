@@ -7,6 +7,8 @@
   pointer-events: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+  position: fixed !important;
+  z-index: 9999 !important;
 }
 
 .locked-tooltip.dhp-tooltip-card {
@@ -259,4 +261,14 @@
     rgba(0, 0, 0, 0.45) 35%,
     rgba(0, 0, 0, 0.72) 100%
   );
+}
+
+.dhp-tooltip-card {
+  max-width: min(380px, 40vw) !important;
+  max-height: min(80vh, 600px) !important;
+  overflow: hidden !important;
+}
+
+.dhp-tooltip-card.positioned {
+  transition: none !important;
 }
