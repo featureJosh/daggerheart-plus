@@ -1,49 +1,63 @@
-<header class='environment-header-sheet'>
-    <img class='profile' src='{{source.img}}' data-action='editImage' data-edit='img' />
-    <div class='item-container'>
-        <div class="item-info">
-            <h1 class='item-name'><input type='text' name='name' value='{{source.name}}' /></h1>
-            <div class="tags">
-                <div class="tag">
-                    <span>
-                        {{localize (concat 'DAGGERHEART.GENERAL.Tiers.' source.system.tier)}}
-                    </span>
-                </div>
-                {{#if source.system.type}}
-                    <div class="tag">
-                        <span>
-                            {{localize (concat 'DAGGERHEART.CONFIG.EnvironmentType.' source.system.type '.label')}}
-                        </span>
-                    </div>
-                {{/if}}
+<header class="environment-header-sheet">
+  <div class="environment-hero">
+    <div class="environment-hero__header">
+      <div class="environment-hero__identity">
+        <div class="environment-hero__media">
+          <img class="profile" src="{{source.img}}" data-action="editImage" data-edit="img" />
+        </div>
+        <div class="environment-hero__text">
+          <div class="environment-hero__eyebrow tags">
+            <div class="tag">
+              <span>
+                {{localize (concat 'DAGGERHEART.GENERAL.Tiers.' source.system.tier)}}
+              </span>
             </div>
+            {{#if source.system.type}}
+              <div class="tag">
+                <span>
+                  {{localize (concat 'DAGGERHEART.CONFIG.EnvironmentType.' source.system.type '.label')}}
+                </span>
+              </div>
+            {{/if}}
+          </div>
+          <h1 class="environment-hero__name">
+            <input type="text" name="name" value="{{source.name}}" />
+          </h1>
         </div>
-        <div class="status-number">
-            <div class='status-value armor-slots'>
-                {{#if source.system.difficulty}}
-                    <p>{{source.system.difficulty}}</p>
-                {{else}}
-                    <p>-</p>
-                {{/if}}
-            </div>
-            <div class="status-label">
-                <h4>{{localize "DAGGERHEART.GENERAL.difficulty"}}</h4>
-            </div>
-        </div>
+      </div>
+      <div class="environment-hero__metric">
+        <span class="environment-hero__metric-label">
+          {{localize "DAGGERHEART.GENERAL.difficulty"}}
+        </span>
+        <span class="environment-hero__metric-value">
+          {{#if source.system.difficulty}}
+            {{source.system.difficulty}}
+          {{else}}
+            -
+          {{/if}}
+        </span>
+      </div>
     </div>
-    <line-div></line-div>
-    <div class="environment-info">
-        <div class="description">
-            <i>{{{description}}}</i>
-        </div>
-        <div class="impulses">
-            <b>{{localize 'DAGGERHEART.ACTORS.Environment.FIELDS.impulses.label'}}: </b>{{{source.system.impulses}}}
-        </div>
+
+    <div class="environment-hero__body">
+      <div class="environment-hero__description">
+        {{{description}}}
+      </div>
+      <div class="environment-hero__impulses">
+        <span class="environment-hero__impulses-label">
+          {{localize 'DAGGERHEART.ACTORS.Environment.FIELDS.impulses.label'}}
+        </span>
+        <span class="environment-hero__impulses-value">
+          {{{source.system.impulses}}}
+        </span>
+      </div>
     </div>
-    <div class="environment-navigation">
-        {{> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
-        <button type="button" data-action="openSettings">
-            <i class="fa-solid fa-wrench"></i>
-        </button>
+
+    <div class="environment-hero__nav">
+      {{> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
+      <button type="button" data-action="openSettings" aria-label="{{localize 'DAGGERHEART.GENERAL.settings'}}">
+        <i class="fa-solid fa-wrench"></i>
+      </button>
     </div>
+  </div>
 </header>

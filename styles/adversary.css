@@ -515,6 +515,8 @@
   scrollbar-width: thin;
   scrollbar-color: var(--dhp-primary) transparent;
   border-radius: 10px 0px 0px 10px;
+  align-items: center;
+  align-content: space-between;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet::-webkit-scrollbar {
@@ -551,6 +553,8 @@
   display: flex;
   justify-content: center;
   align-content: center;
+  width: 115%;
+  margin-top: -1em;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .inventory-item {
@@ -864,7 +868,6 @@
   box-shadow: none !important;
 }
 
-
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .status-bar
@@ -940,19 +943,25 @@
   border-radius: 8px;
 }
 
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"] {
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-number[data-action="requestDifficultyRoll"] {
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
 }
 
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"]:hover {
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-number[data-action="requestDifficultyRoll"]:hover {
   background: rgba(0, 0, 0, 0.5);
   border-color: var(--dhp-primary);
   transform: scale(1.02);
 }
 
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .status-number[data-action="requestDifficultyRoll"]:active {
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .status-number[data-action="requestDifficultyRoll"]:active {
   transform: scale(0.98);
 }
 
@@ -1213,15 +1222,23 @@
 }
 
 /* DH+ configurable gradients for stress/armor progress bars (adversary) */
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar.stress-color,
-.daggerheart-plus.sheet.adversary .adversary-header-sheet .progress-bar.stress-color {
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .progress-bar.stress-color,
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  .progress-bar.stress-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
       calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-stress-gradient, var(--dhp-damage-gradient));
 }
 
-.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .progress-bar.armor-color,
-.daggerheart-plus.sheet.adversary .adversary-header-sheet .progress-bar.armor-color {
+.daggerheart-plus.sheet.adversary
+  .adversary-sidebar-sheet
+  .progress-bar.armor-color,
+.daggerheart-plus.sheet.adversary
+  .adversary-header-sheet
+  .progress-bar.armor-color {
   background: linear-gradient(var(--dhp-border), var(--dhp-border)) right /
       calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-armor-gradient, var(--dhp-damage-gradient));

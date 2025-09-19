@@ -1234,7 +1234,8 @@ export function registerDaggerheartPlusSheets() {
       classes: [...(super.DEFAULT_OPTIONS.classes || []), "daggerheart-plus"],
       position: {
         ...(super.DEFAULT_OPTIONS?.position || {}),
-        ...getDefaultSheetSize(),
+        width: 520,
+        height: 800,
       },
     };
 
