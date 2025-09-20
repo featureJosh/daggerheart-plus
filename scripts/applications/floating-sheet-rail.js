@@ -122,8 +122,8 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
       const targetRight = rect.left - 20;
       const left = Math.max(0, targetRight - width);
       el.style.left = `${left}px`;
-      el.style.top = `${rect.top + rect.height / 2}px`;
-      el.style.transform = "translateY(-50%)";
+      el.style.top = `${rect.top + 35}px`;
+      el.style.transform = "translateY(0)";
     }
 
     this._syncVisibility?.();
