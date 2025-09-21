@@ -577,6 +577,7 @@
   width: 100%;
   height: 190px;
   object-fit: cover;
+  object-position: top center;
   border-radius: 8px;
   border: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
