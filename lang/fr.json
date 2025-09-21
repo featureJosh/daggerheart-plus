@@ -109,5 +109,7 @@
   "DHP.Settings.TokenEffects.Halo.Name": "Token Effects Halo",
   "DHP.Settings.TokenEffects.Halo.Hint": "Arrange token effect icons in a circular halo around tokens instead of the default stacked column.",
   "DHP.Settings.TokenEffects.Halo.Size.Name": "Taille des icônes du halo",
-  "DHP.Settings.TokenEffects.Halo.Size.Hint": "Définissez la taille de base, en pixels, des icônes d'effets disposées en halo."
+  "DHP.Settings.TokenEffects.Halo.Size.Hint": "Définissez la taille de base, en pixels, des icônes d'effets disposées en halo.",
+  "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Espacement des icones du halo",
+  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Facteur multiplicatif pour ajuster l'espacement entre les icones d'effets en halo."
 }

@@ -1,5 +1,5 @@
 import { MODULE_ID } from "./constants.js";
-import { applyEffectsHaloSetting, applyEffectsHaloIconSize } from "./effects-halo.js";
+import { applyEffectsHaloSetting, applyEffectsHaloIconSize, applyEffectsHaloSpacing } from "./effects-halo.js";
 import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting } from "./style-toggles.js";
 
 export function registerModuleSettings() {
@@ -52,6 +52,24 @@ export function registerModuleSettings() {
       }
     },
   });
+
+  game.settings.register(MODULE_ID, "effectsHaloSpacing", {
+    name: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Spacing.Name") || "Halo Icon Spacing",
+    hint: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Spacing.Hint") || "Multiplier to expand or tighten spacing between halo effect icons.",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 0.85,
+    range: { min: 0.5, max: 1.5, step: 0.05 },
+    onChange: (value) => {
+      try {
+        applyEffectsHaloSpacing(Number(value));
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying effects halo spacing", e);
+      }
+    },
+  });
+
 
 
   game.settings.register(MODULE_ID, "enableTokenCounters", {

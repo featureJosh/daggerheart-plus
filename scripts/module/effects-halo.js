@@ -2,6 +2,7 @@ import { MODULE_ID } from "./constants.js";
 
 const HALO_SETTING_KEY = "enableEffectsHalo";
 const HALO_ICON_SIZE_SETTING_KEY = "effectsHaloIconSize";
+const HALO_SPACING_SETTING_KEY = "effectsHaloSpacing";
 const FALLBACK_EFFECT_ICON = "icons/svg/hazard.svg";
 const thetaToXY = new Map();
 const sizeAndIndexToOffsets = new Map();
@@ -11,6 +12,8 @@ let originalDrawEffect = null;
 let haloEnabled = false;
 let patchApplied = false;
 let haloIconBaseSize = 18;
+const DEFAULT_ICON_SIZE = 14;
+let haloSpacingScale = 0.85;
 
 function getHaloIconSizeSetting() {
   try {
@@ -21,10 +24,26 @@ function getHaloIconSizeSetting() {
   }
 }
 
+function getHaloSpacingSetting() {
+  try {
+    const value = Number(game.settings.get(MODULE_ID, HALO_SPACING_SETTING_KEY));
+    return Number.isFinite(value) ? value : haloSpacingScale;
+  } catch (error) {
+    return haloSpacingScale;
+  }
+}
+
 function setHaloIconBaseSize(size) {
   const numeric = Number(size);
   if (Number.isFinite(numeric) && numeric > 0) {
     haloIconBaseSize = numeric;
+  }
+}
+
+function setHaloSpacingScale(factor) {
+  const numeric = Number(factor);
+  if (Number.isFinite(numeric) && numeric > 0) {
+    haloSpacingScale = numeric;
   }
 }
 
@@ -169,19 +188,22 @@ function updateIconSize(effectIcon, size) {
   effectIcon.height = size;
 }
 
-function updateIconPosition(effectIcon, index, token, sizeCategory) {
+function updateIconPosition(effectIcon, index, token, sizeCategory, offsetScale = 1) {
   if (!effectIcon || !token) return;
   const { offset, theta } = calculateOffsets(index, sizeCategory);
+  const scaledOffset = offset * offsetScale;
   const baseGrid = token?.scene?.grid?.size ?? 100;
   const gridSize = baseGrid > 0 ? baseGrid : 100;
   const gridSizeX = token?.scene?.grid?.sizeX ?? gridSize;
   const gridSizeY = token?.scene?.grid?.sizeY ?? gridSize;
   const tokenTileFactor = Math.max(token?.document?.width ?? 1, token?.document?.height ?? 1);
+  const sizeFactor = Math.max(tokenTileFactor, 1);
+  const normalizedOffset = Math.max(1 + (scaledOffset - 1) / sizeFactor, 0.1);
   const { x, y } = polarToCartesian(theta);
   const hexNudgeX = gridSizeX > gridSizeY ? Math.abs(gridSizeX - gridSizeY) / 2 : 0;
   const hexNudgeY = gridSizeY > gridSizeX ? Math.abs(gridSizeY - gridSizeX) / 2 : 0;
-  effectIcon.position.x = hexNudgeX + ((x * offset + 1) / 2) * tokenTileFactor * gridSize;
-  effectIcon.position.y = hexNudgeY + (((-y) * offset + 1) / 2) * tokenTileFactor * gridSize;
+  effectIcon.position.x = hexNudgeX + ((x * normalizedOffset + 1) / 2) * tokenTileFactor * gridSize;
+  effectIcon.position.y = hexNudgeY + (((-y) * normalizedOffset + 1) / 2) * tokenTileFactor * gridSize;
 }
 
 function updateEffectScales(token) {
@@ -193,15 +215,18 @@ function updateEffectScales(token) {
     const gridSize = token?.scene?.grid?.size ?? 100;
     const gridScale = (gridSize > 0 ? gridSize : 100) / 100;
     const iconScale = sizeToIconScale(sizeCategory);
-    const scaledSize = haloIconBaseSize * iconScale * gridScale;
+    const iconSize = haloIconBaseSize * iconScale * gridScale;
+    const sizeNormalized = Math.max((haloIconBaseSize / DEFAULT_ICON_SIZE) * iconScale, 0.5);
+    const offsetScale = Math.max(sizeNormalized * haloSpacingScale, 0.25);
+
     let index = 0;
     for (const effectIcon of token.effects.children ?? []) {
       if (!effectIcon) continue;
       if (effectIcon === token.effects.bg) continue;
       if (effectIcon === token.effects.overlay) continue;
       effectIcon.anchor?.set?.(0.5);
-      updateIconSize(effectIcon, scaledSize);
-      updateIconPosition(effectIcon, index, token, sizeCategory);
+      updateIconSize(effectIcon, iconSize);
+      updateIconPosition(effectIcon, index, token, sizeCategory, offsetScale);
       index += 1;
     }
   } catch (error) {
@@ -557,9 +582,13 @@ export function initializeEffectsHalo() {
   Hooks.once("init", () => {
     setHaloEnabled(getHaloSetting());
     setHaloIconBaseSize(getHaloIconSizeSetting());
+    setHaloSpacingScale(getHaloSpacingSetting());
   });
 
   Hooks.once("ready", () => {
+    setHaloEnabled(getHaloSetting());
+    setHaloIconBaseSize(getHaloIconSizeSetting());
+    setHaloSpacingScale(getHaloSpacingSetting());
     try {
       patchTokenPrototype();
       if (haloEnabled) {
@@ -614,6 +643,12 @@ export function refreshEffectsHalo() {
   void refreshAllTokenEffects(true);
 }
 
+export function applyEffectsHaloSpacing(factor) {
+  setHaloSpacingScale(factor);
+  if (!patchApplied) return;
+  void refreshAllTokenEffects(true);
+}
+
 export function applyEffectsHaloIconSize(size) {
   setHaloIconBaseSize(size);
   if (!patchApplied) return;
@@ -623,3 +658,4 @@ export function applyEffectsHaloIconSize(size) {
 export const __testing__ = {
   getTokenSizeCategory,
 };
+
