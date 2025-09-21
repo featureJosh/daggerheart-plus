@@ -1,4 +1,5 @@
 import { MODULE_ID } from "./constants.js";
+import { applyEffectsHaloSetting, applyEffectsHaloIconSize } from "./effects-halo.js";
 import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting } from "./style-toggles.js";
 
 export function registerModuleSettings() {
@@ -16,6 +17,42 @@ export function registerModuleSettings() {
       }
     },
   });
+  game.settings.register(MODULE_ID, "enableEffectsHalo", {
+    name: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Name") || "Token Effects Halo",
+    hint: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Hint") || "Arrange token effect icons in a circular halo around tokens instead of stacked columns.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+    onChange: (value) => {
+      try {
+        applyEffectsHaloSetting(Boolean(value));
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying effects halo toggle", e);
+      }
+    },
+  });
+
+
+  game.settings.register(MODULE_ID, "effectsHaloIconSize", {
+    name: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Size.Name") || "Halo Icon Size",
+    hint: game.i18n?.localize?.("DHP.Settings.TokenEffects.Halo.Size.Hint") || "Set the base pixel size for halo-arranged token effect icons.",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 18,
+    range: { min: 12, max: 32, step: 1 },
+    requiresReload: true,
+    onChange: (value) => {
+      try {
+        applyEffectsHaloIconSize(Number(value));
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying effects halo size", e);
+      }
+    },
+  });
+
 
   game.settings.register(MODULE_ID, "enableTokenCounters", {
     name: "Enable Token Counters",

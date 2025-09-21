@@ -107,5 +107,9 @@
   "DHP.Settings.FearTracker.Style.Name": "Visualizzazione Tracciatore Paura",
   "DHP.Settings.FearTracker.Style.Hint": "Scegli tra contatore o barra di progresso animata.",
   "DHP.Settings.FearTracker.Style.Counter": "Contatore",
-  "DHP.Settings.FearTracker.Style.Progress": "Barra di Progresso"
+  "DHP.Settings.FearTracker.Style.Progress": "Barra di Progresso",
+  "DHP.Settings.TokenEffects.Halo.Name": "Token Effects Halo",
+  "DHP.Settings.TokenEffects.Halo.Hint": "Arrange token effect icons in a circular halo around tokens instead of the default stacked column.",
+  "DHP.Settings.TokenEffects.Halo.Size.Name": "Dimensione icone alone",
+  "DHP.Settings.TokenEffects.Halo.Size.Hint": "Imposta la dimensione base, in pixel, delle icone degli effetti disposte ad alone."
 }

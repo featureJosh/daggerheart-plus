@@ -17,6 +17,7 @@ export function registerUiHooks() {
       };
 
       insertHeader("enableFearTracker", "UI Enhancements");
+      insertHeader("enableEffectsHalo", "UI Enhancements");
       insertHeader("enableParticles", "Particle Effects");
       insertHeader("alwaysOpenDomainCards", "Domain Cards");
       insertHeader("enableHoverDistance", "Hover Distance");
