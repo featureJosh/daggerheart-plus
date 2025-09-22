@@ -1,7 +1,44 @@
-﻿export function enhanceTooltipManager() {
+import { MODULE_ID } from "./constants.js";
+
+const TOOLTIP_WIDTH_SETTING_KEY = "tooltipCardMaxWidth";
+const DEFAULT_TOOLTIP_WIDTH = 304;
+
+function sanitizeTooltipWidth(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric <= 0) return DEFAULT_TOOLTIP_WIDTH;
+  return Math.min(Math.max(Math.round(numeric), 160), 800);
+}
+
+export function getTooltipCardMaxWidth() {
+  try {
+    if (!game?.settings?.get) return DEFAULT_TOOLTIP_WIDTH;
+    const stored = game.settings.get(MODULE_ID, TOOLTIP_WIDTH_SETTING_KEY);
+    return sanitizeTooltipWidth(stored);
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed reading tooltip card max width", e);
+    return DEFAULT_TOOLTIP_WIDTH;
+  }
+}
+
+export function applyTooltipCardMaxWidth(widthOverride) {
+  try {
+    const root = document?.documentElement;
+    if (!root) return;
+    const value =
+      widthOverride !== undefined
+        ? sanitizeTooltipWidth(widthOverride)
+        : getTooltipCardMaxWidth();
+    root.style.setProperty("--dhp-tooltip-max-width", `${value}px`);
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed applying tooltip card max width", e);
+  }
+}
+export function enhanceTooltipManager() {
   try {
     const BaseTooltipManager = CONFIG?.ux?.TooltipManager;
     if (BaseTooltipManager) {
+      applyTooltipCardMaxWidth();
+
       class DHPTooltipCardManager extends BaseTooltipManager {
         async activate(element, options = {}) {
           console.log(
@@ -27,7 +64,11 @@
               );
 
               this.tooltip.classList.add("dhp-tooltip-card");
-              
+              this.tooltip.style.setProperty(
+                "--dhp-tooltip-max-width",
+                `${getTooltipCardMaxWidth()}px`
+              );
+
               this.positionTooltipWithinViewport(element, this.tooltip);
 
               const images = this.tooltip.querySelectorAll(".tooltip-image");
@@ -185,11 +226,15 @@
             const viewportHeight = window.innerHeight;
             const margin = 10;
 
-            const tooltipWidth = tooltipRect.width || 380;
-            const tooltipHeight = tooltipRect.height || 200;
+            const fallbackWidth = getTooltipCardMaxWidth();
+            const tooltipWidth = tooltipRect.width || fallbackWidth;
+            const tooltipHeight =
+              tooltipRect.height ||
+              tooltipElement.offsetHeight ||
+              tooltipElement.scrollHeight ||
+              200;
 
             const triggerCenterX = triggerRect.left + triggerRect.width / 2;
-            const triggerCenterY = triggerRect.top + triggerRect.height / 2;
 
             let newLeft = triggerCenterX - tooltipWidth / 2;
             let newTop = triggerRect.top - tooltipHeight - margin;

@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.js";
 import { applyEffectsHaloSetting, applyEffectsHaloIconSize, applyEffectsHaloSpacing } from "./effects-halo.js";
+import { applyTooltipCardMaxWidth } from "./tooltip-manager.js";
 import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting } from "./style-toggles.js";
 
 export function registerModuleSettings() {
@@ -116,6 +117,26 @@ export function registerModuleSettings() {
     },
   });
 
+  game.settings.register(MODULE_ID, "tooltipCardMaxWidth", {
+    name: "Tooltip Card Max Width (px)",
+    hint: "Set the maximum width applied to DH+ tooltip cards. Honors viewport constraints and keeps the hero image aspect ratio intact.",
+    scope: "client",
+    config: true,
+    type: Number,
+    default: 304,
+    range: { min: 220, max: 640, step: 10 },
+    onChange: () => {
+      try {
+        applyTooltipCardMaxWidth();
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying tooltip card max width",
+          e
+        );
+      }
+    },
+  });
+
   game.settings.register(MODULE_ID, "alwaysShowLoadoutResourceCounters", {
     name: "Always Show Loadout Resource Counters",
     hint: "Show loadout card resource counters even when the card is not hovered. Per-user preference.",
@@ -181,6 +202,15 @@ export function registerModuleSettings() {
     default: 820,
     range: { min: 300, max: 1600, step: 10 },
   });
+
+  try {
+    applyTooltipCardMaxWidth();
+  } catch (e) {
+    console.warn(
+      "Daggerheart Plus | Failed applying tooltip card max width during init",
+      e
+    );
+  }
 
   console.log("Daggerheart Plus | Module settings registered");
 

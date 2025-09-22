@@ -1,4 +1,4 @@
-﻿import { MODULE_ID, SYSTEM_ID } from "./module/constants.js";
+import { MODULE_ID, SYSTEM_ID } from "./module/constants.js";
 import { registerModuleSettings } from "./module/settings.js";
 import {
   applyEnhancedChatStyles,
@@ -6,7 +6,7 @@ import {
   applyCriticalHitParticles,
 } from "./module/style-toggles.js";
 import { registerDomainCardHooks } from "./module/domain-cards.js";
-import { enhanceTooltipManager } from "./module/tooltip-manager.js";
+import { enhanceTooltipManager, applyTooltipCardMaxWidth } from "./module/tooltip-manager.js";
 import {
   registerDaggerheartPlusSheets,
   getDefaultSheetSize,
@@ -193,6 +193,17 @@ Hooks.once("ready", async () => {
       return;
     }
 
+    if (setting.key === "tooltipCardMaxWidth") {
+      try {
+        applyTooltipCardMaxWidth(setting.value);
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed applying tooltip card max width (updateSetting)",
+          e
+        );
+      }
+      return;
+    }
     if (setting.key === "enableCharacterSheetSidebars") {
       const useRails = game.settings.get(
         MODULE_ID,

@@ -52,7 +52,7 @@
 .dhp-tooltip-card > .daggerheart.dh-style.tooltip,
 .dhp-tooltip-card > .tooltip {
   display: grid;
-  width: min(380px, 40vw);
+  width: min(var(--dhp-tooltip-max-width, 304px), 32vw);
   color: var(--dhp-card-text);
   background: linear-gradient(
     180deg,
@@ -264,8 +264,8 @@
 }
 
 .dhp-tooltip-card {
-  max-width: min(380px, 40vw) !important;
-  max-height: min(80vh, 600px) !important;
+  max-width: min(var(--dhp-tooltip-max-width, 304px), 32vw) !important;
+  max-height: unset !important;
   overflow: hidden !important;
 }
 
