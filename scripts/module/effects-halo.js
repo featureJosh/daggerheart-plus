@@ -191,7 +191,9 @@ function updateIconSize(effectIcon, size) {
 function updateIconPosition(effectIcon, index, token, sizeCategory, offsetScale = 1) {
   if (!effectIcon || !token) return;
   const { offset, theta } = calculateOffsets(index, sizeCategory);
-  const scaledOffset = offset * offsetScale;
+  const baseOffset = sizeToOffset(sizeCategory);
+  const additionalOffset = Math.max(offset - baseOffset, 0);
+  const scaledOffset = baseOffset + additionalOffset * offsetScale;
   const baseGrid = token?.scene?.grid?.size ?? 100;
   const gridSize = baseGrid > 0 ? baseGrid : 100;
   const gridSizeX = token?.scene?.grid?.sizeX ?? gridSize;
