@@ -110,8 +110,8 @@
   "DHP.Settings.FearTracker.Style.Progress": "Barra di Progresso",
   "DHP.Settings.TokenEffects.Halo.Name": "Token Effects Halo",
   "DHP.Settings.TokenEffects.Halo.Hint": "Arrange token effect icons in a circular halo around tokens instead of the default stacked column.",
-  "DHP.Settings.TokenEffects.Halo.Size.Name": "Dimensione icone alone",
-  "DHP.Settings.TokenEffects.Halo.Size.Hint": "Imposta la dimensione base, in pixel, delle icone degli effetti disposte ad alone.",
-  "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Spaziatura icone alone",
-  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Fattore moltiplicativo per allargare o stringere la distanza tra le icone degli effetti nell'alone."
+  "DHP.Settings.TokenEffects.Halo.Size.Name": "Halo Icon Size",
+  "DHP.Settings.TokenEffects.Halo.Size.Hint": "Set the base pixel size for halo-arranged token effect icons.",
+  "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Halo Icon Spacing",
+  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons."
 }
