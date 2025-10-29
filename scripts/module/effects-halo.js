@@ -530,8 +530,8 @@ function patchTokenPrototype() {
   };
 
   if (libWrapper?.register) {
-    libWrapper.register(MODULE_ID, "Token.prototype._refreshEffects", refreshWrapper, "MIXED");
-    libWrapper.register(MODULE_ID, "Token.prototype._drawEffect", drawWrapper, "MIXED");
+    libWrapper.register(MODULE_ID, "foundry.canvas.placeables.Token.prototype._refreshEffects", refreshWrapper, "MIXED");
+    libWrapper.register(MODULE_ID, "foundry.canvas.placeables.Token.prototype._drawEffect", drawWrapper, "MIXED");
   } else {
     originalRefreshEffects = proto._refreshEffects;
     originalDrawEffect = proto._drawEffect;

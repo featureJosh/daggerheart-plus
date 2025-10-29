@@ -259,13 +259,8 @@ export class HoverDistance {
 
   static _measureCoreRulerUnits(p1, p2) {
     try {
-      const d = canvas?.grid?.measureDistance?.(p1, p2);
-      if (typeof d === "number" && isFinite(d)) return d;
-    } catch (_) {}
-    try {
-      const res = canvas?.grid?.measurePath?.([p1, p2], {
+      const res = canvas?.grid?.measurePath([p1, p2], {
         gridSpaces: false,
-        snapping: false,
       });
 
       if (res && typeof res.distance === "number" && isFinite(res.distance))

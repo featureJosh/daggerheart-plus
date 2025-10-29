@@ -243,7 +243,7 @@ export const EnhancedChatEffects = {
       state.mouse.y = -1e6;
     }
 
-    const ro = new ResizeObserver(() => resize());
+    const ro = new ResizeObserver(() => requestAnimationFrame(resize));
     ro.observe(host);
     resize();
     host.addEventListener("mousemove", onMove);

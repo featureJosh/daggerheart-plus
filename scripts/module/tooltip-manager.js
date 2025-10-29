@@ -41,42 +41,21 @@ export function enhanceTooltipManager() {
 
       class DHPTooltipCardManager extends BaseTooltipManager {
         async activate(element, options = {}) {
-          console.log(
-            "DH+ Tooltip Manager: activate() called",
-            element,
-            options
-          );
           const result = await super.activate(element, options);
-          console.log(
-            "DH+ Tooltip Manager: super.activate() completed",
-            result
-          );
 
           try {
             if (this.tooltip) {
-              console.log(
-                "DH+ Tooltip Manager: Found tooltip element",
-                this.tooltip
-              );
-              console.log(
-                "DH+ Tooltip Manager: Tooltip innerHTML preview:",
-                this.tooltip.innerHTML.substring(0, 200)
-              );
-
               this.tooltip.classList.add("dhp-tooltip-card");
               this.tooltip.style.setProperty(
                 "--dhp-tooltip-max-width",
                 `${getTooltipCardMaxWidth()}px`
               );
 
-              this.positionTooltipWithinViewport(element, this.tooltip);
+              requestAnimationFrame(() => {
+                this.rescaleTooltipIfNeeded(this.tooltip);
+              });
 
               const images = this.tooltip.querySelectorAll(".tooltip-image");
-              console.log(
-                "DH+ Tooltip Manager: Found images in tooltip:",
-                images.length,
-                images
-              );
 
               const tooltipEl = this.tooltip;
 
@@ -162,7 +141,7 @@ export function enhanceTooltipManager() {
                 });
               } catch (e) {
                 console.warn(
-                  "DH+ Tooltip Manager: Failed to prepare shine overlays",
+                  "Daggerheart Plus | Failed to prepare shine overlays",
                   e
                 );
               }
@@ -204,86 +183,54 @@ export function enhanceTooltipManager() {
                   );
                 });
               }, 150);
-            } else {
-              console.log("DH+ Tooltip Manager: No tooltip element found");
             }
           } catch (e) {
-            console.error(
-              "DH+ Tooltip Manager: Error applying classes",
+            console.warn(
+              "Daggerheart Plus | Error applying tooltip enhancements",
               e
             );
           }
           return result;
         }
 
-        positionTooltipWithinViewport(triggerElement, tooltipElement) {
-          if (!triggerElement || !tooltipElement) return;
+        rescaleTooltipIfNeeded(tooltipElement) {
+          if (!tooltipElement) return;
 
-          setTimeout(() => {
-            const triggerRect = triggerElement.getBoundingClientRect();
-            const tooltipRect = tooltipElement.getBoundingClientRect();
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const margin = 10;
+          const rect = tooltipElement.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const margin = 10;
 
-            const fallbackWidth = getTooltipCardMaxWidth();
-            const tooltipWidth = tooltipRect.width || fallbackWidth;
-            const tooltipHeight =
-              tooltipRect.height ||
-              tooltipElement.offsetHeight ||
-              tooltipElement.scrollHeight ||
-              200;
+          const overflowRight = Math.max(0, rect.right - (viewportWidth - margin));
+          const overflowLeft = Math.max(0, margin - rect.left);
+          const overflowBottom = Math.max(0, rect.bottom - (viewportHeight - margin));
+          const overflowTop = Math.max(0, margin - rect.top);
 
-            const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+          const horizontalOverflow = Math.max(overflowRight, overflowLeft);
+          const verticalOverflow = Math.max(overflowBottom, overflowTop);
 
-            let newLeft = triggerCenterX - tooltipWidth / 2;
-            let newTop = triggerRect.top - tooltipHeight - margin;
+          if (horizontalOverflow > 0 || verticalOverflow > 0) {
+            const scaleX = horizontalOverflow > 0 
+              ? (rect.width - horizontalOverflow) / rect.width 
+              : 1;
+            const scaleY = verticalOverflow > 0 
+              ? (rect.height - verticalOverflow) / rect.height 
+              : 1;
 
-            if (newTop < margin) {
-              newTop = triggerRect.bottom + margin;
+            const scale = Math.min(scaleX, scaleY, 1);
+            
+            if (scale < 1) {
+              tooltipElement.style.transformOrigin = 'top left';
+              tooltipElement.style.transform = `scale(${scale})`;
+            } else {
+              tooltipElement.style.transform = '';
             }
-
-            if (newLeft < margin) {
-              newLeft = margin;
-            } else if (newLeft + tooltipWidth > viewportWidth - margin) {
-              newLeft = viewportWidth - tooltipWidth - margin;
-            }
-
-            if (newTop + tooltipHeight > viewportHeight - margin) {
-              newTop = viewportHeight - tooltipHeight - margin;
-            }
-
-            if (newTop < margin) {
-              newTop = margin;
-            }
-
-            tooltipElement.style.position = 'fixed';
-            tooltipElement.style.top = `${newTop}px`;
-            tooltipElement.style.left = `${newLeft}px`;
-            tooltipElement.style.right = 'auto';
-            tooltipElement.style.bottom = 'auto';
-            tooltipElement.style.transform = 'none';
-            tooltipElement.classList.add('positioned');
-          }, 0);
+          } else {
+            tooltipElement.style.transform = '';
+          }
         }
       }
       CONFIG.ux.TooltipManager = DHPTooltipCardManager;
-      console.log("Daggerheart Plus | Tooltip enhancement applied (init)");
-      console.log(
-        "DH+ Tooltip Manager: Registered manager",
-        CONFIG.ux.TooltipManager
-      );
-
-      setTimeout(() => {
-        console.log(
-          "DH+ Tooltip Manager: Current manager after timeout",
-          CONFIG.ux.TooltipManager
-        );
-        console.log(
-          "DH+ Tooltip Manager: Manager is our class?",
-          CONFIG.ux.TooltipManager === DHPTooltipCardManager
-        );
-      }, 5000);
     } else {
       console.warn(
         "Daggerheart Plus | No base tooltip manager found at init; skipping enhancement"

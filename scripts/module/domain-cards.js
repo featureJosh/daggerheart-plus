@@ -2,12 +2,12 @@ import { MODULE_ID } from "./constants.js";
 import { applyDomainCardOpenSetting } from "./style-toggles.js";
 
 export function registerDomainCardHooks() {
-  Hooks.on("renderChatMessage", (message, html, data) => {
+  Hooks.on("renderChatMessageHTML", (message, html, context) => {
     try {
       const enabled = Boolean(game.settings.get(MODULE_ID, "alwaysOpenDomainCards"));
       if (enabled) {
-        const moveElements = html.find('.domain-card-move, .action-move');
-        moveElements.each((index, element) => {
+        const moveElements = html.querySelectorAll('.domain-card-move, .action-move');
+        moveElements.forEach((element) => {
           element.setAttribute('open', '');
           const chevron = element.querySelector('.fa-chevron-down');
           if (chevron) {

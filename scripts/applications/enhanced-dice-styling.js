@@ -7,7 +7,8 @@ export class EnhancedDiceStyling {
     Hooks.on("renderApplication", EnhancedDiceStyling._onRenderApplication);
   }
 
-  static _onRenderChatMessageHTML(_, element, message) {
+  static _onRenderChatMessageHTML(...args) {
+    const [message, element] = args.length === 2 ? args : [args[2], args[1]];
     const root = element;
     return EnhancedDiceStyling._onRenderChatMessage(message, root, {});
   }
