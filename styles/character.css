@@ -2099,6 +2099,30 @@
   --percent: calc((var(--bar-value) / var(--bar-max)) * 100%);
 }
 
+.daggerheart-plus.sheet .status-bar .status-label {
+	position: unset;
+	top: unset;
+	height: unset;
+	width: unset;
+	clip-path: unset;
+	background: unset;
+}
+
+.daggerheart-plus.sheet .status-bar {
+	display: flex;
+	justify-content: unset;
+	position: unset;
+	width: unset;
+	height: unset;
+}
+
+.daggerheart-plus.sheet .status-bar .status-value {
+	padding: unset;
+	height: unset;
+	text-align: unset;
+	color: unset;
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
   padding-bottom: 1em;
   border-bottom: 1px solid var(--dhp-primary);
