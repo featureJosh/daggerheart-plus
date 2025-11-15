@@ -1244,6 +1244,58 @@ export function registerDaggerheartPlusSheets() {
     }
   };
 
+  const DaggerheartPlusPartySheet = class extends systemAPI.Party {
+    static DEFAULT_OPTIONS = {
+      ...super.DEFAULT_OPTIONS,
+      classes: [...(super.DEFAULT_OPTIONS.classes || []), "daggerheart-plus"],
+      position: {
+        ...(super.DEFAULT_OPTIONS?.position || {}),
+        width: 700,
+        height: 800,
+      },
+    };
+
+    static PARTS = {
+      ...super.PARTS,
+      header: {
+        id: "header",
+        template: "modules/daggerheart-plus/templates/party/header.hbs",
+      },
+      partyMembers: {
+        id: "partyMembers",
+        template: "modules/daggerheart-plus/templates/party/party-members.hbs",
+      },
+      resources: {
+        id: "resources",
+        template: "modules/daggerheart-plus/templates/party/resources.hbs",
+        scrollable: [""],
+      },
+      inventory: {
+        id: "inventory",
+        template: "modules/daggerheart-plus/templates/party/inventory.hbs",
+        scrollable: [".tab.inventory .items-section"],
+      },
+      notes: {
+        id: "notes",
+        template: "modules/daggerheart-plus/templates/party/notes.hbs",
+      },
+    };
+
+    get title() {
+      return `${this.document.name} [DH+]`;
+    }
+
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      return context;
+    }
+
+    async _preparePartContext(partId, context, options) {
+      context = await super._preparePartContext(partId, context, options);
+      return context;
+    }
+  };
+
   documentSheetConfig.registerSheet(
     Actor,
     SYSTEM_ID,
@@ -1284,6 +1336,17 @@ export function registerDaggerheartPlusSheets() {
     {
       types: ["environment"],
       label: "DH+ Environment Sheet",
+      makeDefault: true,
+    }
+  );
+
+  documentSheetConfig.registerSheet(
+    Actor,
+    SYSTEM_ID,
+    DaggerheartPlusPartySheet,
+    {
+      types: ["party"],
+      label: "DH+ Party Sheet",
       makeDefault: true,
     }
   );
