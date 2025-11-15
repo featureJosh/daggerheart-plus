@@ -32,31 +32,6 @@ export function registerUiHooks() {
       console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
     }
 
-    if (app.constructor.name === "DaggerheartPlusCharacterSheet") {
-      try {
-        const useRails = game.settings.get(
-          MODULE_ID,
-          "enableCharacterSheetSidebars"
-        );
-        console.debug("[DH+] renderActorSheet hook: sidebar rails", {
-          app: app.id,
-          useRails,
-        });
-        if (useRails) {
-          if (typeof app._mountInlineRails === "function")
-            app._mountInlineRails();
-        } else {
-          if (typeof app._removeInlineRails === "function")
-            app._removeInlineRails();
-        }
-      } catch (_) {
-        console.error(
-          "[DH+] renderActorSheet hook: failed to ensure inline rails",
-          _
-        );
-      }
-    }
-
     try {
       const actor = app.document || app.object;
       if (actor && app.element) {
