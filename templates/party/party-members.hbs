@@ -20,7 +20,7 @@
         {{#if document.system.partyMembers.length}}
             <div class="members-grid-balanced">
                 {{#each document.system.partyMembers as |actor id|}}
-                    <div class="member-card-balanced" data-actor-id="{{actor.uuid}}">
+                    <div class="member-card-balanced" data-item-uuid="{{actor.uuid}}">
                         <div class="member-header-row">
                             <div class="member-portrait-balanced">
                                 <img src="{{actor.img}}" alt="{{actor.name}}">
@@ -38,12 +38,12 @@
                                 </div>
                             </div>
                             <div class="member-actions-balanced">
-                                <button class="icon-btn-small" data-action="openSheet" data-actor-uuid="{{actor.uuid}}" data-tooltip="Open Sheet">
-                                    <i class="fa-solid fa-user"></i>
-                                </button>
-                                <button class="icon-btn-small danger" data-action="removeMember" data-actor-uuid="{{actor.uuid}}" data-tooltip="Remove">
-                                    <i class="fa-solid fa-user-minus"></i>
-                                </button>
+                                <a data-action="editDoc" data-tooltip="DAGGERHEART.UI.Tooltip.openActorWorld">
+                                    <i class="fa-solid fa-globe"></i>
+                                </a>
+                                <a data-action="deletePartyMember" data-tooltip="CONTROLS.CommonDelete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="member-stats-balanced">

@@ -87,8 +87,8 @@
                                 <span class="footer-label">{{localize "DAGGERHEART.GENERAL.hope"}}</span>
                                 <div class="hope-diamonds">
                                     {{#times actor.system.resources.hope.max}}
-                                        <span class='hope-diamond' data-action='toggleHope' data-actor-id="{{../actor.uuid}}" data-value="{{add this 1}}" data-tooltip="Toggle Hope">
-                                            {{#if (gte ../actor.system.resources.hope.value (add this 1))}}
+                                        <span class='hope-diamond' data-action='toggleHope' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}" data-tooltip="Toggle Hope">
+                                            {{#if (gte actor.system.resources.hope.value (add this 1))}}
                                                 <i class='fa-solid fa-diamond'></i>
                                             {{else}}
                                                 <i class='fa-regular fa-circle'></i>
@@ -97,11 +97,27 @@
                                     {{/times}}
                                 </div>
                             </div>
-                            <div class="footer-item thresholds-compact">
-                                <span class="footer-label">{{localize "DAGGERHEART.GENERAL.thresholds"}}</span>
-                                <div class="threshold-inline">
-                                    <span class="threshold-compact">Maj: {{actor.system.damageThresholds.major}}</span>
-                                    <span class="threshold-compact">Sev: {{actor.system.damageThresholds.severe}}</span>
+                            <div class="footer-item thresholds-display">
+                                <div class="threshold-values">
+                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="1" data-actor-id="{{actor.uuid}}">
+                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark1HP"}}
+                                    </span>
+                                    <div class="resource-group">
+                                        <div class="threshold-value-display">
+                                            {{actor.system.damageThresholds.major}}
+                                        </div>
+                                    </div>
+                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2" data-actor-id="{{actor.uuid}}">
+                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
+                                    </span>
+                                    <div class="resource-group">
+                                        <div class="threshold-value-display">
+                                            {{actor.system.damageThresholds.severe}}
+                                        </div>
+                                    </div>
+                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3" data-actor-id="{{actor.uuid}}">
+                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
+                                    </span>
                                 </div>
                             </div>
                         </div>

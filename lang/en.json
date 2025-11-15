@@ -98,10 +98,17 @@
       "DamageThresholds": {
         "mark1HP": "1 HP",
         "mark2HP": "2 HP",
-        "mark3HP": "3 HP"
+        "mark3HP": "3 HP",
+        "major": "Major",
+        "severe": "Severe"
       },
       "die": "Die",
-      "spellcast": "Spellcasting Ability"
+      "spellcast": "Spellcasting Ability",
+      "members": "Members",
+      "gold": "Gold",
+      "items": "Items",
+      "treasury": "Treasury",
+      "thresholds": "Thresholds"
     }
   },
   "DHP.Settings.FearTracker.Style.Name": "Fear Tracker Display",

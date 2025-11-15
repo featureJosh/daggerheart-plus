@@ -865,6 +865,7 @@
   border-radius: 6px;
   border-color: light-dark(#18162e, #f3c267);
   border: none;
+  height: 100%
 }
 
 .daggerheart-plus.sheet fieldset legend {

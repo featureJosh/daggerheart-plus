@@ -96,10 +96,17 @@
       "DamageThresholds": {
         "mark1HP": "1 PV",
         "mark2HP": "2 PV",
-        "mark3HP": "3 PV"
+        "mark3HP": "3 PV",
+        "major": "Majeur",
+        "severe": "Sévère"
       },
       "die": "Dé",
-      "spellcast": "??"
+      "spellcast": "??",
+      "members": "Membres",
+      "gold": "Or",
+      "items": "Objets",
+      "treasury": "Trésor",
+      "thresholds": "Seuils"
     }
   },
   "DHP.Settings.FearTracker.Style.Name": "Affichage du compteur de Peur",

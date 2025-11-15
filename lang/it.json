@@ -98,10 +98,17 @@
       "DamageThresholds": {
         "mark1HP": "1 PF",
         "mark2HP": "2 PF",
-        "mark3HP": "3 PF"
+        "mark3HP": "3 PF",
+        "major": "Maggiore",
+        "severe": "Grave"
       },
       "die": "Dado",
-      "spellcast": "Abilità Incantatore"
+      "spellcast": "Abilità Incantatore",
+      "members": "Membri",
+      "gold": "Oro",
+      "items": "Oggetti",
+      "treasury": "Tesoro",
+      "thresholds": "Soglie"
     }
   },
   "DHP.Settings.FearTracker.Style.Name": "Visualizzazione Tracciatore Paura",
