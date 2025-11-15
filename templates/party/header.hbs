@@ -1,9 +1,51 @@
 <header class='party-header-sheet'>
-    <img class='profile' src='{{source.img}}' data-action='editImage' data-edit='img' />
-    <div class='item-container'>
-        <div class="item-info">
-            <h1 class='item-name'><input type='text' name='name' value='{{source.name}}' /></h1>
-            <h2 class="label">Party</h2>
+    <div class="header-main-section">
+        <div class="header-portrait">
+            <img src='{{source.img}}' alt='{{source.name}}' data-action='editImage' data-edit='img' />
+        </div>
+        
+        <div class="header-info-column">
+            <div class="party-name-section">
+                <h1 class='party-name'>
+                    <input type='text' name='name' value='{{source.name}}' placeholder='Party Name' />
+                </h1>
+                <div class="party-subtitle">
+                    <span class="party-label">{{localize "TYPES.Actor.party"}}</span>
+                </div>
+            </div>
+            
+            <div class="party-stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{document.system.partyMembers.length}}</span>
+                        <span class="stat-label">{{localize "DAGGERHEART.GENERAL.members"}}</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{source.system.gold.coins}}</span>
+                        <span class="stat-label">{{localize "DAGGERHEART.GENERAL.gold"}}</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-backpack"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">{{document.items.length}}</span>
+                        <span class="stat-label">{{localize "DAGGERHEART.GENERAL.items"}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </header>

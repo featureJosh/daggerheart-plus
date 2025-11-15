@@ -3,8 +3,10 @@
     data-tab='{{tabs.notes.id}}'
     data-group='{{tabs.notes.group}}'
 >
-    <fieldset class="fit-height">
+    <fieldset class="notes-section glassy">
         <legend>{{localize tabs.notes.label}}</legend>
-        {{formInput notes.field value=notes.value enriched=notes.value toggled=true}}
+        <div class="notes-editor">
+            {{formInput notes.field value=notes.value enriched=notes.value toggled=true}}
+        </div>
     </fieldset>
 </section>
