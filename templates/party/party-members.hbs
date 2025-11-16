@@ -17,65 +17,66 @@
 
     <fieldset class="party-members-section glassy">
         <legend>{{localize tabs.partyMembers.label}}</legend>
-        {{#if document.system.partyMembers.length}}
-            <div class="members-grid-balanced">
-                {{#each document.system.partyMembers as |actor id|}}
-                    <div class="member-card-balanced" data-item-uuid="{{actor.uuid}}">
-                        <div class="member-header-row">
-                            <div class="member-portrait-balanced">
-                                <img src="{{actor.img}}" alt="{{actor.name}}">
+        <ul class="members-grid-balanced">
+            {{#each document.system.partyMembers as |actor id|}}
+                <li class="inventory-item member-card-balanced" data-item-id="{{actor.id}}" data-item-uuid="{{actor.uuid}}" data-type="character" draggable="true">
+                    <div class="inventory-item-header member-header-row">
+                        <div class="img-portait member-portrait-balanced" data-action="editDoc" data-tooltip="#item#{{actor.uuid}}">
+                            <img src="{{actor.img}}" alt="{{actor.name}}" class="item-img actor-img">
+                            {{#if actor.system.levelData.level.changed}}
                                 <span class="member-level-badge">{{actor.system.levelData.level.changed}}</span>
-                            </div>
-                            <div class="member-info-balanced">
-                                <h3 class="member-name">{{actor.name}}</h3>
-                                <div class="member-class">
-                                    {{#if actor.system.class.value}}
-                                        <span>{{actor.system.class.value.name}}</span>
-                                    {{/if}}
-                                    {{#if actor.system.class.subclass}}
-                                        <span class="subclass">/ {{actor.system.class.subclass.name}}</span>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="member-actions-balanced">
-                                <a data-action="editDoc" data-tooltip="DAGGERHEART.UI.Tooltip.openActorWorld">
-                                    <i class="fa-solid fa-globe"></i>
-                                </a>
-                                <a data-action="deletePartyMember" data-tooltip="CONTROLS.CommonDelete">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                            {{/if}}
+                        </div>
+                        <div class="item-label member-info-balanced">
+                            <span class="item-name member-name">{{actor.name}}</span>
+                            <div class="item-tags member-class">
+                                {{#if actor.system.class.value}}
+                                    <div class="tag">{{actor.system.class.value.name}}</div>
+                                {{/if}}
+                                {{#if actor.system.class.subclass}}
+                                    <div class="tag subclass">{{actor.system.class.subclass.name}}</div>
+                                {{/if}}
                             </div>
                         </div>
-                        <div class="member-stats-balanced">
-                            <div class="stat-balanced hp">
-                                <i class="fa-solid fa-heart"></i>
-                                <span class="stat-label">HP</span>
-                                <span class="stat-value">{{actor.system.resources.hitPoints.value}}/{{actor.system.resources.hitPoints.max}}</span>
-                            </div>
-                            <div class="stat-balanced stress">
-                                <i class="fa-solid fa-brain"></i>
-                                <span class="stat-label">Stress</span>
-                                <span class="stat-value">{{actor.system.resources.stress.value}}/{{actor.system.resources.stress.max}}</span>
-                            </div>
-                            <div class="stat-balanced evasion">
-                                <i class="fa-solid fa-shield"></i>
-                                <span class="stat-label">Evasion</span>
-                                <span class="stat-value">{{actor.system.evasion}}</span>
-                            </div>
-                            <div class="stat-balanced hope">
-                                <i class="fa-solid fa-diamond"></i>
-                                <span class="stat-label">Hope</span>
-                                <span class="stat-value">{{actor.system.resources.hope.value}}/{{actor.system.resources.hope.max}}</span>
-                            </div>
+                        <div class="controls member-actions-balanced">
+                            <a data-action="editDoc" data-tooltip="DAGGERHEART.UI.Tooltip.openActorWorld">
+                                <i class="fa-solid fa-globe"></i>
+                            </a>
+                            <a data-action="deletePartyMember" data-tooltip="CONTROLS.CommonDelete">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </div>
                     </div>
-                {{/each}}
-            </div>
-        {{else}}
+                    <div class="inventory-item-content member-stats-balanced">
+                        <div class="stat-balanced hp">
+                            <i class="fa-solid fa-heart"></i>
+                            <span class="stat-label">HP</span>
+                            <span class="stat-value">{{actor.system.resources.hitPoints.value}}/{{actor.system.resources.hitPoints.max}}</span>
+                        </div>
+                        <div class="stat-balanced stress">
+                            <i class="fa-solid fa-brain"></i>
+                            <span class="stat-label">Stress</span>
+                            <span class="stat-value">{{actor.system.resources.stress.value}}/{{actor.system.resources.stress.max}}</span>
+                        </div>
+                        <div class="stat-balanced evasion">
+                            <i class="fa-solid fa-shield"></i>
+                            <span class="stat-label">Evasion</span>
+                            <span class="stat-value">{{actor.system.evasion}}</span>
+                        </div>
+                        <div class="stat-balanced hope">
+                            <i class="fa-solid fa-diamond"></i>
+                            <span class="stat-label">Hope</span>
+                            <span class="stat-value">{{actor.system.resources.hope.value}}/{{actor.system.resources.hope.max}}</span>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+        {{#unless document.system.partyMembers.length}}
             <div class="empty-state-balanced">
                 <i class="fa-solid fa-users-slash"></i>
                 <span>{{localize "DAGGERHEART.GENERAL.dropActorsHere"}}</span>
             </div>
-        {{/if}}
+        {{/unless}}
     </fieldset>
 </section>
