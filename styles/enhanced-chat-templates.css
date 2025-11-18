@@ -1,0 +1,442 @@
+@import url("./base.css");
+
+.chat-message:has(.daggerheart.chat) .message-content {
+    padding: 0;
+}
+
+/* Default neutral gray styling (NOT fear blue!) */
+.chat-message:has(.daggerheart.chat) {
+    border: 1px solid #3a3f4b;
+    background: #1a1d23;
+    border-radius: 8px;
+    margin: 0.6em 0.4em;
+}
+
+.daggerheart.chat {
+    --dhc-bg: #1a1d23;
+    --dhc-surface: #20232a;
+    --dhc-border: #3a3f4b;
+    --dhc-text: #e8eaed;
+    --dhc-muted: #9ca3af;
+    --dhc-accent: #ffd24f;
+    --dhc-hope: #ffdb5c;
+    --dhc-fear: #4f59c4;
+    --dhc-success: #94de94;
+    --dhc-failure: #ff9090;
+
+    margin: 0;
+    padding: 6px 10px;
+    color: var(--dhc-text);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        system-ui, sans-serif;
+}
+
+.daggerheart.chat h2,
+.daggerheart.chat h3,
+.daggerheart.chat h4,
+.daggerheart.chat h5 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--dhc-text);
+}
+
+.daggerheart.chat h4 {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.daggerheart.chat button {
+    background: transparent;
+    border: 1px solid var(--dhc-border);
+    color: var(--dhc-text);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.daggerheart.chat button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: color-mix(in oklab, var(--dhc-accent) 35%, var(--dhc-border));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.daggerheart.chat img {
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.daggerheart.chat .description {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--dhc-muted);
+    padding: 6px 0;
+}
+
+/* Details/Summary accordions */
+.daggerheart.chat details {
+    margin: 0;
+}
+
+.daggerheart.chat summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.daggerheart.chat summary:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.daggerheart.chat summary::-webkit-details-marker {
+    display: none;
+}
+
+.daggerheart.chat summary .fa-chevron-down {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--dhc-muted);
+    transition: transform 0.2s ease;
+}
+
+.daggerheart.chat details[open] summary .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* =============================================
+   ABILITY USE CARDS
+   ============================================= */
+
+.daggerheart.chat.domain-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.daggerheart.chat.domain-card .card-img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    margin: 0;
+}
+
+.daggerheart.chat.domain-card .domain-card-move {
+    padding: 0 10px 6px;
+}
+
+.daggerheart.chat.domain-card .domain-card-header {
+    padding: 8px 6px;
+}
+
+.daggerheart.chat.domain-card .domain-card-move .domain-card-header {
+    margin: unset;
+    border-bottom: unset;
+}
+
+.daggerheart.chat.domain-card .domain-label {
+    flex: 1;
+}
+
+.daggerheart.chat.domain-card .title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--dhc-text);
+    margin-bottom: 4px;
+}
+
+.daggerheart.chat.domain-card .tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.daggerheart.chat.domain-card .tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--dhc-accent);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.domain-card .ability-card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--dhc-border);
+    margin-top: 6px;
+}
+
+.daggerheart.chat.domain-card .ability-use-button {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* =============================================
+   ACTION CARDS
+   ============================================= */
+
+.daggerheart.chat.action {
+    padding: 0;
+}
+
+.daggerheart.chat.action .action-move {
+    padding: 0 10px 6px;
+}
+
+.daggerheart.chat.action .action-section {
+    padding: 8px 6px;
+}
+
+.daggerheart.chat.action .action-move .action-section {
+    margin: unset;
+    border-bottom: unset;
+}
+
+.daggerheart.chat.action .action-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.action .action-header {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.daggerheart.chat.action .title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.daggerheart.chat.action .label {
+    font-size: 12px;
+    color: var(--dhc-muted);
+    letter-spacing: 0.3px;
+}
+
+/* =============================================
+   DAMAGE SUMMARY
+   ============================================= */
+
+.daggerheart.chat.damage-summary {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.daggerheart.chat.damage-summary .token-target-container {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--dhc-border);
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.daggerheart.chat.damage-summary header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.daggerheart.chat.damage-summary header img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.damage-summary .actor-name {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.daggerheart.chat.damage-summary .damage-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.daggerheart.chat.damage-summary .damage-row {
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.daggerheart.chat.damage-summary .damage-row span {
+    color: var(--dhc-text);
+}
+
+/* =============================================
+   EFFECT SUMMARY
+   ============================================= */
+
+.daggerheart.chat.effect-summary {
+    padding: 8px 10px;
+}
+
+.daggerheart.chat.effect-summary .effect-header,
+.daggerheart.chat.effect-summary .actor-header {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 4px 0;
+    margin: 6px 0 4px;
+    color: var(--dhc-accent);
+    border-bottom: 1px solid var(--dhc-border);
+}
+
+.daggerheart.chat.effect-summary .effect-header {
+    margin-top: 0;
+}
+
+.daggerheart.chat.effect-summary .effects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.daggerheart.chat.effect-summary .effect-target-container {
+    border: 1px solid var(--dhc-border);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px;
+}
+
+.daggerheart.chat.effect-summary .effect-label {
+    padding: 6px;
+}
+
+.daggerheart.chat.effect-summary .effect-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.effect-summary .title {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.daggerheart.chat.effect-summary .targets-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 6px;
+}
+
+.daggerheart.chat.effect-summary .token-target-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--dhc-border);
+    border-radius: 6px;
+}
+
+.daggerheart.chat.effect-summary .token-target-container img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.effect-summary .token-target-container .title {
+    font-size: 12px;
+    text-transform: none;
+}
+
+/* =============================================
+   DOWNTIME & DEATH MOVES
+   ============================================= */
+
+.daggerheart.chat.downtime {
+    padding: 0;
+}
+
+.daggerheart.chat.downtime .downtime-moves-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.daggerheart.chat.downtime .downtime-move {
+    padding: 0 10px 6px;
+}
+
+.daggerheart.chat.downtime .downtime-label {
+    padding: 8px 6px;
+}
+
+.daggerheart.chat.downtime .downtime-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.daggerheart.chat.downtime .header-label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.daggerheart.chat.downtime .title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.daggerheart.chat.downtime .label {
+    font-size: 12px;
+    color: var(--dhc-muted);
+    letter-spacing: 0.3px;
+}

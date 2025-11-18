@@ -3,8 +3,13 @@
 export function applyEnhancedChatStyles(enabled) {
   try {
     const LINK_ID = "dhp-enhanced-chat-style";
+    const TEMPLATES_LINK_ID = "dhp-enhanced-chat-templates-style";
+
     let link = document.getElementById(LINK_ID);
+    let templatesLink = document.getElementById(TEMPLATES_LINK_ID);
+
     if (enabled) {
+      // Load main chat message CSS
       if (!link) {
         link = document.createElement("link");
         link.id = LINK_ID;
@@ -12,8 +17,18 @@ export function applyEnhancedChatStyles(enabled) {
         link.href = `modules/${MODULE_ID}/styles/enhanced-chat-message.css`;
         document.head.appendChild(link);
       }
-    } else if (link) {
-      link.remove();
+
+      // Load chat templates CSS
+      if (!templatesLink) {
+        templatesLink = document.createElement("link");
+        templatesLink.id = TEMPLATES_LINK_ID;
+        templatesLink.rel = "stylesheet";
+        templatesLink.href = `modules/${MODULE_ID}/styles/enhanced-chat-templates.css`;
+        document.head.appendChild(templatesLink);
+      }
+    } else {
+      if (link) link.remove();
+      if (templatesLink) templatesLink.remove();
     }
   } catch (e) {
     console.warn(
@@ -129,6 +144,6 @@ export function applyTokenCountersVisibilityBySetting() {
 
     try {
       window.daggerheartPlus.updateCountersWrapperDisplay();
-    } catch (_) {}
-  } catch (_) {}
+    } catch (_) { }
+  } catch (_) { }
 }

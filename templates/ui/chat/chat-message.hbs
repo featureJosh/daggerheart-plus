@@ -1,19 +1,19 @@
-<li class="chat-message message flexcol {{cssClass}}" data-message-id="{{message._id}}"
-    {{#if borderColor}}style="border-color:{{borderColor}}"{{/if}}>
+<li class="chat-message message flexcol {{cssClass}}" data-message-id="{{message._id}}" {{#if
+    borderColor}}style="border-color:{{borderColor}}" {{/if}}>
     <header class="message-header flexrow">
         <div class="message-header-main">
             <img class="actor-img" src="{{actor.img}}" />
             <div class="message-sub-header-container">
                 {{#unless actor.name}}
-                    <h4>{{author.name}}</h4>
+                <h5 class="actor-name">{{author.name}}</h5>
                 {{else}}
-                    {{#if (eq message.type 'base')}}
-                        <h4>{{actor.name}}</h4>
-                        <div>{{author.name}}</div>
-                    {{else}}
-                        <h4>{{ifThen message.title message.title alias}}</h4>
-                        <div>{{actor.name}} {{#if author.isGM}}(GM){{/if}}</div>
-                    {{/if}}
+                {{#if (eq message.type 'base')}}
+                <h5 class="actor-name">{{actor.name}}</h5>
+                <div class="message-author">{{author.name}}</div>
+                {{else}}
+                <h5 class="actor-name">{{ifThen message.title message.title alias}}</h5>
+                <div class="message-author">{{actor.name}} {{#if author.isGM}}(GM){{/if}}</div>
+                {{/if}}
                 {{/unless}}
             </div>
         </div>
@@ -26,7 +26,7 @@
                 </a>
                 {{/if}}
                 {{#if canClose}}
-                <a aria-label="{{ localize "CHAT.Dismiss" }}" class="message-dismiss" data-action="dismissMessage">
+                <a aria-label="{{ localize " CHAT.Dismiss" }}" class="message-dismiss" data-action="dismissMessage">
                     <i class="fa-solid fa-xmark" inert></i>
                 </a>
                 {{/if}}
@@ -40,7 +40,7 @@
     <div class="message-content">
         {{{message.content}}}
         {{#if message.flavor}}
-            <span class="flavor-text">{{{message.flavor}}}</span>
+        <span class="flavor-text">{{{message.flavor}}}</span>
         {{/if}}
     </div>
 </li>

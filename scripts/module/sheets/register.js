@@ -168,7 +168,7 @@ export function registerDaggerheartPlusSheets() {
                   header.setAttribute("data-spellcasting-trait", traitKey);
                 return true;
               }
-            } catch (_) {}
+            } catch (_) { }
             return false;
           };
 
@@ -180,12 +180,12 @@ export function registerDaggerheartPlusSheets() {
               if (header) {
                 const mo = new MutationObserver(() => {
                   if (ensureMarked()) {
-                    try { mo.disconnect(); } catch (_) {}
+                    try { mo.disconnect(); } catch (_) { }
                   }
                 });
                 mo.observe(header, { childList: true, subtree: true });
               }
-            } catch (_) {}
+            } catch (_) { }
           }
 
           // Mount moving particle canvas overlay onto the spellcasting tile
@@ -250,7 +250,7 @@ export function registerDaggerheartPlusSheets() {
                     `${scLabel}: ${traitLabel}`
                   );
                 }
-              } catch (_) {}
+              } catch (_) { }
 
               const triggerCast = () => {
                 try {
@@ -268,7 +268,7 @@ export function registerDaggerheartPlusSheets() {
                     });
                     inner.dispatchEvent(evt);
                   }
-                } catch (_) {}
+                } catch (_) { }
               };
 
               indicator.addEventListener(
@@ -290,9 +290,9 @@ export function registerDaggerheartPlusSheets() {
                 }
               });
             }
-          } catch (_) {}
+          } catch (_) { }
         }
-      } catch (_) {}
+      } catch (_) { }
 
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(
@@ -330,7 +330,7 @@ export function registerDaggerheartPlusSheets() {
             root.addEventListener("contextmenu", contextHandler, true);
             root._dhpThresholdDelegationBound = true;
           }
-        } catch {}
+        } catch { }
       }
 
       try {
@@ -343,7 +343,7 @@ export function registerDaggerheartPlusSheets() {
       } catch (_) {
         try {
           this._removeInlineRails();
-        } catch {}
+        } catch { }
       }
 
       this._applySidebarLoadoutBackgrounds();
@@ -355,18 +355,18 @@ export function registerDaggerheartPlusSheets() {
           this.element,
           this.document
         );
-      } catch {}
+      } catch { }
 
       try {
         window.daggerheartPlus?.bindProgressBarClicks?.(
           this.element,
           this.document
         );
-      } catch {}
+      } catch { }
 
       try {
         this._mountSpellParticles();
-      } catch {}
+      } catch { }
     }
 
     _applySidebarLoadoutBackgrounds() {
@@ -427,7 +427,7 @@ export function registerDaggerheartPlusSheets() {
 
           try {
             item.setAttribute("data-action", "useItem");
-          } catch {}
+          } catch { }
 
           try {
             if (!item.hasAttribute("data-tooltip")) {
@@ -438,7 +438,7 @@ export function registerDaggerheartPlusSheets() {
                   : null);
               if (uuid) item.setAttribute("data-tooltip", `#item#${uuid}`);
             }
-          } catch {}
+          } catch { }
           item.dataset.bgApplied = "1";
         };
 
@@ -475,11 +475,11 @@ export function registerDaggerheartPlusSheets() {
               subtree: true,
             })
           );
-        } catch (e) {}
-      } catch (_) {}
+        } catch (e) { }
+      } catch (_) { }
     }
 
-      _updateAllLoadoutResourceBadges() {
+    _updateAllLoadoutResourceBadges() {
       try {
         const root = this.element;
         if (!root) return;
@@ -724,7 +724,7 @@ export function registerDaggerheartPlusSheets() {
 
           }
 
-        } catch (_) {}
+        } catch (_) { }
       } catch (e) {
         console.warn(
           "Daggerheart Plus | Failed to adjust loadout resource value",
@@ -733,7 +733,7 @@ export function registerDaggerheartPlusSheets() {
       }
     }
 
-  _attachLoadoutCardTooltips() {
+    _attachLoadoutCardTooltips() {
       try {
         const root = this.element;
         if (!root) return;
@@ -762,7 +762,7 @@ export function registerDaggerheartPlusSheets() {
             const nameEl = li.querySelector(".card-name");
             if (nameEl && !nameEl.hasAttribute("data-tooltip"))
               nameEl.setAttribute("data-tooltip", `#item#${uuid}`);
-          } catch (_) {}
+          } catch (_) { }
         };
 
         const wireLists = () => {
@@ -791,7 +791,7 @@ export function registerDaggerheartPlusSheets() {
                 subtree: true,
               })
             );
-          } catch (_) {}
+          } catch (_) { }
           return true;
         };
 
@@ -803,7 +803,7 @@ export function registerDaggerheartPlusSheets() {
               if (wireLists()) {
                 try {
                   this._loadoutCardsBootstrapObserver.disconnect();
-                } catch {}
+                } catch { }
                 this._loadoutCardsBootstrapObserver = null;
               }
             });
@@ -811,9 +811,9 @@ export function registerDaggerheartPlusSheets() {
               childList: true,
               subtree: true,
             });
-          } catch (_) {}
+          } catch (_) { }
         }
-      } catch (_) {}
+      } catch (_) { }
     }
 
     _ensureFallbackRailsDOM() {
@@ -891,7 +891,7 @@ export function registerDaggerheartPlusSheets() {
 
         if (!hasRight && !this.__fallbackRight) make("right");
         if (!hasLeft && !this.__fallbackLeft) make("left");
-      } catch {}
+      } catch { }
     }
 
     _cleanupFallbackRailsDOM() {
@@ -906,7 +906,7 @@ export function registerDaggerheartPlusSheets() {
           this.__fallbackLeft.root.remove();
           this.__fallbackLeft = null;
         }
-      } catch {}
+      } catch { }
     }
 
     _mountSpellParticles() {
@@ -969,29 +969,29 @@ export function registerDaggerheartPlusSheets() {
           .forEach((host) => {
             try {
               host._dhpParticlesFX?.stop?.();
-            } catch (_) {}
+            } catch (_) { }
             try {
               host._dhpParticlesMounted = false;
-            } catch (_) {}
+            } catch (_) { }
           });
-      } catch (_) {}
+      } catch (_) { }
     }
 
     async close(options = {}) {
       try {
         this._removeInlineRails();
-      } catch {}
+      } catch { }
       // Cleanup spellcasting particle FX if present
       try {
         this._unmountSpellParticles();
-      } catch (_) {}
+      } catch (_) { }
       try {
         this._loadoutCardsObserver?.disconnect?.();
-      } catch {}
+      } catch { }
       this._loadoutCardsObserver = null;
       try {
         this._loadoutCardsBootstrapObserver?.disconnect?.();
-      } catch {}
+      } catch { }
       this._loadoutCardsBootstrapObserver = null;
       return super.close(options);
     }
@@ -1063,11 +1063,11 @@ export function registerDaggerheartPlusSheets() {
                 for (const el of nav.querySelectorAll("a[data-tab]")) {
                   el.classList.toggle("active", el === a);
                 }
-              } catch (e) {}
+              } catch (e) { }
             });
           }
-        } catch (_) {}
-      } catch (e) {}
+        } catch (_) { }
+      } catch (e) { }
     }
 
     _removeInlineRails() {
@@ -1075,7 +1075,7 @@ export function registerDaggerheartPlusSheets() {
         this.__inlineRails?.right?.remove?.();
         this.__inlineRails?.left?.remove?.();
         this.__inlineRails = null;
-      } catch {}
+      } catch { }
     }
   };
 
@@ -1148,7 +1148,7 @@ export function registerDaggerheartPlusSheets() {
                 });
               });
           }
-        } catch {}
+        } catch { }
       }
 
       try {
@@ -1173,7 +1173,7 @@ export function registerDaggerheartPlusSheets() {
             root.addEventListener("click", handler, true);
             root._dhpDifficultyDelegationBound = true;
           }
-        } catch {}
+        } catch { }
       }
 
       try {
@@ -1181,7 +1181,7 @@ export function registerDaggerheartPlusSheets() {
           this.element,
           this.document
         );
-      } catch {}
+      } catch { }
     }
   };
 
@@ -1224,7 +1224,7 @@ export function registerDaggerheartPlusSheets() {
           this.element,
           this.document
         );
-      } catch {}
+      } catch { }
     }
   };
 

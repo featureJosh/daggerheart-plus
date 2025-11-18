@@ -3,10 +3,10 @@
     <details class="domain-card-move">
         <summary class="domain-card-header">
             <div class="domain-label">
-                <h2 class="title">{{item.name}}</h2>
+                <h4 class="title">{{item.name}}</h4>
                 <ul class="tags">
                     {{#each item.tags as |tag|}}
-                        <li class="tag"><span>{{tag}}</span></li>
+                    <li class="tag"><span>{{tag}}</span></li>
                     {{/each}}
                 </ul>
             </div>
@@ -16,15 +16,14 @@
     </details>
     <footer class="ability-card-footer">
         {{#each actions as |action|}}
-            <button class="ability-use-button" id="{{action.id}}">
-                <span>{{action.name}}</span>
-            </button>
-            {{#if (eq action.systemPath "attack")}}
-                <button class="ability-use-button" id="{{action.id}}" data-direct-damage="true">
-                    <span>{{localize "DAGGERHEART.GENERAL.damage"}}</span>
-                </button>
-            {{/if}}
-            {{!-- {{#if action.cost.value}}<div class="ability-card-action-cost">{{action.cost.value}} {{action.cost.type}}</div>{{/if}}             --}}
+        <button class="ability-use-button" id="{{action.id}}">
+            <span>{{action.name}}</span>
+        </button>
+        {{#if (eq action.systemPath "attack")}}
+        <button class="ability-use-button" id="{{action.id}}" data-direct-damage="true">
+            <span>{{localize "DAGGERHEART.GENERAL.damage"}}</span>
+        </button>
+        {{/if}}
         {{/each}}
     </footer>
 </div>

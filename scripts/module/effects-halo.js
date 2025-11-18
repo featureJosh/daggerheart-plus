@@ -462,7 +462,7 @@ async function drawHaloEffect(src, tint) {
   let effectTexture = effectCache.loadTexture(cacheKey);
   if (!effectTexture) {
     try {
-      const texture = await loadTexture(src ?? FALLBACK_EFFECT_ICON, {
+      const texture = await foundry.canvas.loadTexture(src ?? FALLBACK_EFFECT_ICON, {
         fallback: FALLBACK_EFFECT_ICON,
       });
       const rawIcon = new PIXI.Sprite(texture);

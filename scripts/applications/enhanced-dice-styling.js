@@ -144,7 +144,7 @@ export class EnhancedDiceStyling {
       const instructionText = document.createElement("div");
       instructionText.className = "reroll-instruction";
       instructionText.innerHTML = `
-          <i class="fas fa-info-circle"></i> Click on the ${hope}/${fear} dice to reroll.
+          <i class="fas fa-info-circle"></i> Click ${hope}/${fear} to reroll
         `;
       const wrapper = diceTooltip.querySelector(".wrapper");
       if (wrapper && wrapper.parentElement) {
@@ -195,9 +195,7 @@ export class EnhancedDiceStyling {
         : game.i18n.localize("DAGGERHEART.GENERAL.fear");
 
     const confirmResult = await Dialog.confirm({
-      title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel} ${
-        game.i18n.localize("DAGGERHEART.GENERAL.die") || "Die"
-      }`,
+      title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}`,
       content:
         `<p>${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}?` +
         `</p>`,

@@ -1,8 +1,5 @@
-<section
-    class='tab {{tabs.resources.cssClass}} {{tabs.resources.id}}'
-    data-tab='{{tabs.resources.id}}'
-    data-group='{{tabs.resources.group}}'
->
+<section class='tab {{tabs.resources.cssClass}} {{tabs.resources.id}}' data-tab='{{tabs.resources.id}}'
+    data-group='{{tabs.resources.group}}'>
     <div class="party-actions-bar">
         <button class="action-btn rest-btn" data-action="triggerRest" data-type="longRest">
             <i class="fa-solid fa-bed"></i>
@@ -18,111 +15,122 @@
         <legend>{{localize tabs.resources.label}}</legend>
         <div class="resources-grid">
             {{#each document.system.partyMembers as |actor id|}}
-                <div class="resource-card">
-                    <div class="resource-header">
-                        <div class="actor-portrait-mini">
-                            <img src="{{actor.img}}" alt="{{actor.name}}">
+            <div class="resource-card">
+                <div class="resource-header">
+                    <div class="actor-portrait-mini">
+                        <img src="{{actor.img}}" alt="{{actor.name}}">
+                    </div>
+                    <div class="actor-title">
+                        <h3 class="actor-name">{{actor.name}}</h3>
+                        <span class="actor-level">Level {{actor.system.levelData.level.changed}}</span>
+                    </div>
+                </div>
+
+                <div class="resource-body">
+                    <div class="resource-bar-section hp">
+                        <div class="resource-info">
+                            <span class="resource-label">{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</span>
+                            <span class="resource-value">{{actor.system.resources.hitPoints.value}} /
+                                {{actor.system.resources.hitPoints.max}}</span>
                         </div>
-                        <div class="actor-title">
-                            <h3 class="actor-name">{{actor.name}}</h3>
-                            <span class="actor-level">Level {{actor.system.levelData.level.changed}}</span>
+                        <div class="resource-slots">
+                            {{#times actor.system.resources.hitPoints.max}}
+                            <span
+                                class='resource-slot hp-slot {{#if (gte actor.system.resources.hitPoints.value (add this 1))}}filled{{/if}}'
+                                data-action='toggleHitPoints' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
+                                data-tooltip="Toggle HP">
+                            </span>
+                            {{/times}}
                         </div>
                     </div>
 
-                    <div class="resource-body">
-                        <div class="resource-bar-section hp">
-                            <div class="resource-info">
-                                <span class="resource-label">{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</span>
-                                <span class="resource-value">{{actor.system.resources.hitPoints.value}} / {{actor.system.resources.hitPoints.max}}</span>
-                            </div>
-                            <div class="resource-slots">
-                                {{#times actor.system.resources.hitPoints.max}}
-                                    <span class='resource-slot hp-slot {{#if (gte actor.system.resources.hitPoints.value (add this 1))}}filled{{/if}}'
-                                    data-action='toggleHitPoints' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
-                                    data-tooltip="Toggle HP">
-                                    </span>
+                    <div class="resource-bar-section stress">
+                        <div class="resource-info">
+                            <span class="resource-label">{{localize "DAGGERHEART.GENERAL.stress"}}</span>
+                            <span class="resource-value">{{actor.system.resources.stress.value}} /
+                                {{actor.system.resources.stress.max}}</span>
+                        </div>
+                        <div class="resource-slots">
+                            {{#times actor.system.resources.stress.max}}
+                            <span
+                                class='resource-slot stress-slot {{#if (gte actor.system.resources.stress.value (add this 1))}}filled{{/if}}'
+                                data-action='toggleStress' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
+                                data-tooltip="Toggle Stress">
+                            </span>
+                            {{/times}}
+                        </div>
+                    </div>
+
+                    {{#if actor.system.armor.system.marks}}
+                    <div class="resource-bar-section armor">
+                        <div class="resource-info">
+                            <span class="resource-label">{{localize "DAGGERHEART.GENERAL.armorSlots"}}</span>
+                            <span class="resource-value">{{actor.system.armor.system.marks.value}} /
+                                {{actor.system.armorScore}}</span>
+                        </div>
+                        <div class="resource-slots armor-slots">
+                            {{#times actor.system.armorScore}}
+                            <span
+                                class='resource-slot armor-slot {{#if (gte actor.system.armor.system.marks.value (add this 1))}}filled{{/if}}'
+                                data-action='toggleArmorSlot' data-actor-id="{{actor.uuid}}"
+                                data-item-uuid="{{actor.system.armor.uuid}}" data-value="{{add this 1}}"
+                                data-tooltip="Toggle Armor">
+                                {{#if (gte actor.system.armor.system.marks.value (add this 1))}}
+                                <i class="fa-solid fa-shield"></i>
+                                {{else}}
+                                <i class="fa-solid fa-shield-halved"></i>
+                                {{/if}}
+                            </span>
+                            {{/times}}
+                        </div>
+                    </div>
+                    {{/if}}
+
+                    <div class="resource-footer">
+                        <div class="footer-item hope-compact">
+                            <span class="footer-label">{{localize "DAGGERHEART.GENERAL.hope"}}</span>
+                            <div class="hope-diamonds">
+                                {{#times actor.system.resources.hope.max}}
+                                <span class='hope-diamond' data-action='toggleHope' data-actor-id="{{actor.uuid}}"
+                                    data-value="{{add this 1}}" data-tooltip="Toggle Hope">
+                                    {{#if (gte actor.system.resources.hope.value (add this 1))}}
+                                    <i class='fa-solid fa-diamond'></i>
+                                    {{else}}
+                                    <i class='fa-regular fa-circle'></i>
+                                    {{/if}}
+                                </span>
                                 {{/times}}
                             </div>
                         </div>
-
-                        <div class="resource-bar-section stress">
-                            <div class="resource-info">
-                                <span class="resource-label">{{localize "DAGGERHEART.GENERAL.stress"}}</span>
-                                <span class="resource-value">{{actor.system.resources.stress.value}} / {{actor.system.resources.stress.max}}</span>
-                            </div>
-                            <div class="resource-slots">
-                                {{#times actor.system.resources.stress.max}}
-                                    <span class='resource-slot stress-slot {{#if (gte actor.system.resources.stress.value (add this 1))}}filled{{/if}}'
-                                    data-action='toggleStress' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
-                                    data-tooltip="Toggle Stress">
-                                    </span>
-                                {{/times}}
-                            </div>
-                        </div>
-
-                        {{#if actor.system.armor.system.marks}}
-                            <div class="resource-bar-section armor">
-                                <div class="resource-info">
-                                    <span class="resource-label">{{localize "DAGGERHEART.GENERAL.armorSlots"}}</span>
-                                    <span class="resource-value">{{actor.system.armor.system.marks.value}} / {{actor.system.armorScore}}</span>
-                                </div>
-                                <div class="resource-slots armor-slots">
-                                    {{#times actor.system.armorScore}}
-                                        <span class='resource-slot armor-slot {{#if (gte actor.system.armor.system.marks.value (add this 1))}}filled{{/if}}'
-                                        data-action='toggleArmorSlot' data-actor-id="{{actor.uuid}}" data-item-uuid="{{actor.system.armor.uuid}}" data-value="{{add this 1}}"
-                                        data-tooltip="Toggle Armor">
-                                            {{#if (gte actor.system.armor.system.marks.value (add this 1))}}
-                                                <i class="fa-solid fa-shield"></i>
-                                            {{else}}
-                                                <i class="fa-solid fa-shield-halved"></i>
-                                            {{/if}}
-                                        </span>
-                                    {{/times}}
-                                </div>
-                            </div>
-                        {{/if}}
-
-                        <div class="resource-footer">
-                            <div class="footer-item hope-compact">
-                                <span class="footer-label">{{localize "DAGGERHEART.GENERAL.hope"}}</span>
-                                <div class="hope-diamonds">
-                                    {{#times actor.system.resources.hope.max}}
-                                        <span class='hope-diamond' data-action='toggleHope' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}" data-tooltip="Toggle Hope">
-                                            {{#if (gte actor.system.resources.hope.value (add this 1))}}
-                                                <i class='fa-solid fa-diamond'></i>
-                                            {{else}}
-                                                <i class='fa-regular fa-circle'></i>
-                                            {{/if}}
-                                        </span>
-                                    {{/times}}
-                                </div>
-                            </div>
-                            <div class="footer-item thresholds-display">
-                                <div class="threshold-values">
-                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="1" data-actor-id="{{actor.uuid}}">
-                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark1HP"}}
-                                    </span>
-                                    <div class="resource-group">
-                                        <div class="threshold-value-display">
-                                            {{actor.system.damageThresholds.major}}
-                                        </div>
+                        <div class="footer-item thresholds-display">
+                            <div class="threshold-values">
+                                <span class="threshold-text threshold-clickable" data-action="mark-hp"
+                                    data-hp-amount="1" data-actor-id="{{actor.uuid}}">
+                                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark1HP"}}
+                                </span>
+                                <div class="resource-group">
+                                    <div class="threshold-value-display">
+                                        {{actor.system.damageThresholds.major}}
                                     </div>
-                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="2" data-actor-id="{{actor.uuid}}">
-                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
-                                    </span>
-                                    <div class="resource-group">
-                                        <div class="threshold-value-display">
-                                            {{actor.system.damageThresholds.severe}}
-                                        </div>
-                                    </div>
-                                    <span class="threshold-text threshold-clickable" data-action="mark-hp" data-hp-amount="3" data-actor-id="{{actor.uuid}}">
-                                        {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
-                                    </span>
                                 </div>
+                                <span class="threshold-text threshold-clickable" data-action="mark-hp"
+                                    data-hp-amount="2" data-actor-id="{{actor.uuid}}">
+                                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark2HP"}}
+                                </span>
+                                <div class="resource-group">
+                                    <div class="threshold-value-display">
+                                        {{actor.system.damageThresholds.severe}}
+                                    </div>
+                                </div>
+                                <span class="threshold-text threshold-clickable" data-action="mark-hp"
+                                    data-hp-amount="3" data-actor-id="{{actor.uuid}}">
+                                    {{localize "DAGGERHEART.GENERAL.DamageThresholds.mark3HP"}}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             {{/each}}
         </div>
     </fieldset>

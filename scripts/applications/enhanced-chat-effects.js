@@ -23,7 +23,7 @@ export const EnhancedChatEffects = {
         this._observer.disconnect();
         this._observer = null;
       }
-      
+
       document.querySelectorAll(".dhp-crit-particles").forEach((canvas) => {
         const host = canvas.parentElement;
         if (host && host._dhpCritFX) {
@@ -62,13 +62,13 @@ export const EnhancedChatEffects = {
   _scan() {
     try {
       document.querySelectorAll(CRIT_SELECTOR).forEach((el) => this._mount(el));
-    } catch (_) {}
+    } catch (_) { }
   },
 
   _mount(el) {
     try {
       if (!el || el._dhpCritMounted) return;
-      
+
       const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
       const enhancedChatEnabled = game.settings.get("daggerheart-plus", "enableEnhancedChat");
       if (!critParticlesEnabled || !enhancedChatEnabled) return;
@@ -89,15 +89,8 @@ export const EnhancedChatEffects = {
   },
 
   /**
-   * Generic particle engine used for critical cards and other hosts (e.g., spellcasting tiles).
-   * @param {HTMLElement} host
-   * @param {HTMLCanvasElement} canvas
-   * @param {Object} [opts]
-   * @param {string[]} [opts.colors] - Array of colors for particles.
-   * @param {number} [opts.areaDivisor] - Lower makes more particles per area.
-   * @param {number} [opts.minParticles]
-   * @param {number} [opts.maxParticles]
-   * @param {number} [opts.repelRadius]
+   * Modernized particle engine with improved performance and visual quality.
+   * Fewer particles but larger and more visible.
    */
   _createParticleEngine(host, canvas) {
     const ctx = canvas.getContext("2d", { alpha: true });
@@ -106,20 +99,22 @@ export const EnhancedChatEffects = {
       particles: [],
       mouse: { x: -1e6, y: -1e6 },
       lastTime: performance.now(),
-      dpr: Math.max(1, window.devicePixelRatio || 1),
+      dpr: Math.max(1, Math.min(2, window.devicePixelRatio || 1)),
     };
-    const colors = ["#ff7a66", "#ff6a54", "#ff8a6e", "#ffd3c8"];
+    // Refined color palette - warmer, more vibrant
+    const colors = ["#ff8866", "#ff7755", "#ffa080"];
 
     function resize() {
       const r = host.getBoundingClientRect();
       const w = Math.max(1, r.width);
       const h = Math.max(1, r.height);
-      const dpr = (state.dpr = Math.max(1, window.devicePixelRatio || 1));
+      const dpr = (state.dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1)));
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
-      const target = Math.min(90, Math.floor((w * h) / 2200));
+      // Reduced particle count: max 60 instead of 90
+      const target = Math.min(60, Math.floor((w * h) / 2500));
       if (state.particles.length === 0) {
         for (let i = 0; i < target; i++)
           state.particles.push(seedParticle(w, h));
@@ -135,14 +130,14 @@ export const EnhancedChatEffects = {
       return {
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: -(0.05 + Math.random() * 0.06),
-        r: 1 + Math.random() * 1.8,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: -(0.04 + Math.random() * 0.05),
+        r: 1.5 + Math.random() * 2, // Larger particles (was 1-2.8)
         c: colors[(Math.random() * colors.length) | 0],
         ang: Math.random() * Math.PI * 2,
-        omega: (Math.random() - 0.5) * 0.04,
+        omega: (Math.random() - 0.5) * 0.03,
         seed: Math.random() * Math.PI * 2,
-        spd: 0.04 + Math.random() * 0.06,
+        spd: 0.03 + Math.random() * 0.05,
       };
     }
 
@@ -156,29 +151,30 @@ export const EnhancedChatEffects = {
       const dpr = state.dpr;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Subtle gradient overlay
       const grad = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
-      grad.addColorStop(0, "rgba(255,90,61,0.06)");
-      grad.addColorStop(1, "rgba(255,160,61,0.02)");
+      grad.addColorStop(0, "rgba(255,90,61,0.04)");
+      grad.addColorStop(1, "rgba(255,160,61,0.01)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const t = ts * 0.001;
+      const t = ts * 0.0008; // Slower animation (was 0.001)
       const mx = (state.mouse.x - r.left) * dpr;
       const my = (state.mouse.y - r.top) * dpr;
-      const repelR = 140;
+      const repelR = 100; // Reduced from 140
       const repelR2 = repelR * repelR;
 
       for (const p of state.particles) {
         const flow =
-          Math.sin((p.x + t * 30) * 0.02) + Math.cos((p.y - t * 20) * 0.015);
-        p.vx += Math.cos(flow) * 0.02;
-        p.vy += Math.sin(flow) * 0.015;
+          Math.sin((p.x + t * 25) * 0.018) + Math.cos((p.y - t * 18) * 0.013);
+        p.vx += Math.cos(flow) * 0.015;
+        p.vy += Math.sin(flow) * 0.012;
 
-        p.ang += p.omega * 0.98;
-        p.vx += Math.cos(p.ang) * 0.02;
-        p.vy += Math.sin(p.ang) * 0.015;
+        p.ang += p.omega * 0.96;
+        p.vx += Math.cos(p.ang) * 0.015;
+        p.vy += Math.sin(p.ang) * 0.012;
 
-        p.vy -= p.spd * 0.6;
+        p.vy -= p.spd * 0.55;
 
         if (state.mouse.x !== -1e6) {
           const dx = p.x * dpr - mx;
@@ -187,18 +183,18 @@ export const EnhancedChatEffects = {
           if (dist2 < repelR2) {
             const dist = Math.max(12, Math.sqrt(dist2));
             const force = (repelR - dist) / repelR;
-            p.vx += (dx / dist) * 0.25 * force;
-            p.vy += (dy / dist) * 0.25 * force;
+            p.vx += (dx / dist) * 0.22 * force;
+            p.vy += (dy / dist) * 0.22 * force;
           }
         }
 
         p.x += p.vx;
         p.y += p.vy;
 
-        p.vx *= 0.985;
-        p.vy *= 0.985;
+        p.vx *= 0.982;
+        p.vy *= 0.982;
         const sp = Math.hypot(p.vx, p.vy);
-        const maxSp = 0.9;
+        const maxSp = 0.85;
         if (sp > maxSp) {
           p.vx = (p.vx / sp) * maxSp;
           p.vy = (p.vy / sp) * maxSp;
@@ -207,15 +203,15 @@ export const EnhancedChatEffects = {
         if (p.y < -8) {
           p.y = h + 6;
           p.x = Math.random() * w;
-          p.vx = (Math.random() - 0.5) * 0.2;
-          p.vy = -(0.05 + Math.random() * 0.06);
+          p.vx = (Math.random() - 0.5) * 0.15;
+          p.vy = -(0.04 + Math.random() * 0.05);
           p.ang = Math.random() * Math.PI * 2;
-          p.omega = (Math.random() - 0.5) * 0.04;
+          p.omega = (Math.random() - 0.5) * 0.03;
         }
         if (p.x < -6) p.x = w + 6;
         if (p.x > w + 6) p.x = -6;
 
-        const tw = 0.35 + 0.25 * Math.sin(t * 2 + p.seed);
+        const tw = 0.4 + 0.3 * Math.sin(t * 1.8 + p.seed);
 
         ctx.beginPath();
         ctx.fillStyle = p.c;
@@ -224,9 +220,9 @@ export const EnhancedChatEffects = {
         ctx.fill();
 
         ctx.beginPath();
-        ctx.globalAlpha = tw * 0.35;
+        ctx.globalAlpha = tw * 0.3;
         ctx.fillStyle = p.c;
-        ctx.arc(p.x * dpr, p.y * dpr, p.r * 3 * dpr, 0, Math.PI * 2);
+        ctx.arc(p.x * dpr, p.y * dpr, p.r * 2.5 * dpr, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
       }
@@ -254,13 +250,13 @@ export const EnhancedChatEffects = {
       stop() {
         try {
           ro.disconnect();
-        } catch {}
+        } catch { }
         host.removeEventListener("mousemove", onMove);
         host.removeEventListener("mouseleave", onLeave);
         state.running = false;
         try {
           canvas.remove();
-        } catch {}
+        } catch { }
         host?.classList?.remove?.("dhp-crit-fx");
         delete host._dhpCritMounted;
         delete host._dhpCritFX;
