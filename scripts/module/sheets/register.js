@@ -1264,10 +1264,6 @@ export function registerDaggerheartPlusSheets() {
       partyMembers: {
         id: "partyMembers",
         template: "modules/daggerheart-plus/templates/party/party-members.hbs",
-      },
-      resources: {
-        id: "resources",
-        template: "modules/daggerheart-plus/templates/party/resources.hbs",
         scrollable: [""],
       },
       inventory: {

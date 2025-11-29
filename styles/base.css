@@ -116,6 +116,10 @@ form#roll-selection .window-content {
   border-radius: 10px;
 }
 
+.daggerheart-plus.sheet.party .window-content {
+  padding-bottom: 1em;
+}
+
 .daggerheart-plus.sheet form {
   display: flex;
   flex-direction: column;

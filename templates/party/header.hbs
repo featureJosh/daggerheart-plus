@@ -2,6 +2,14 @@
     <div class="header-main-section">
         <div class="header-portrait">
             <img src='{{source.img}}' alt='{{source.name}}' data-action='editImage' data-edit='img' />
+            <div class="quick-actions">
+                <button type="button" data-action="triggerRest" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
+                    <i class="fa-solid fa-utensils"></i>
+                </button>
+                <button type="button" data-action="triggerRest" data-type="longRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.longRest.title"}}">
+                    <i class="fa-solid fa-bed"></i>
+                </button>
+            </div>
         </div>
         
         <div class="header-info-column">
@@ -10,19 +18,7 @@
                     <input type='text' name='name' value='{{source.name}}' placeholder='Party Name' />
                 </h1>
                 <div class="party-subtitle">
-                    <span class="party-label">{{localize "TYPES.Actor.party"}}</span>
-                </div>
-            </div>
-            
-            <div class="party-stats-row">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div class="stat-content">
-                        <span class="stat-value">{{document.system.partyMembers.length}}</span>
-                        <span class="stat-label">{{localize "DAGGERHEART.GENERAL.members"}}</span>
-                    </div>
+                    <span class="party-label">Party of {{document.system.partyMembers.length}}</span>
                 </div>
             </div>
         </div>
