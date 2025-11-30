@@ -31,7 +31,7 @@
                 </div>
         </div>
     </div>
-    <div class="statuses-section">
+    <div class="statuses-section {{#if enableResourcePips}}pip-mode{{/if}}">
         <div class="status-number">
             <div class='status-value'>
                 <p>{{document.system.evasion}}</p>
@@ -40,6 +40,22 @@
                 <h4>{{localize "DAGGERHEART.GENERAL.evasion"}}</h4>
             </div>
         </div>
+        {{#if enableResourcePips}}
+        <div class="resource-bar-section stress">
+            <div class="resource-info">
+                <span class="resource-label">{{localize "DAGGERHEART.GENERAL.stress"}}</span>
+                <span class="resource-value">{{document.system.resources.stress.value}} / {{document.system.resources.stress.max}}</span>
+            </div>
+            <div class="resource-slots">
+                {{#times document.system.resources.stress.max}}
+                <span class='resource-slot stress-slot {{#if (gte @root.document.system.resources.stress.value (add this 1))}}filled{{/if}}'
+                    data-action='toggleStress' data-value="{{add this 1}}"
+                    data-tooltip="Toggle Stress">
+                </span>
+                {{/times}}
+            </div>
+        </div>
+        {{else}}
         <div class="status-bar" style="--value: {{document.system.resources.stress.value}}; --max: {{document.system.resources.stress.max}};">
             <div class='status-value' data-value="{{document.system.resources.stress.value}}" data-max="{{document.system.resources.stress.max}}">
             </div>
@@ -56,6 +72,7 @@
                 <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
             </div>
         </div>
+        {{/if}}
     </div>
     <div class="companion-navigation">
         {{> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}

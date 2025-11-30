@@ -213,8 +213,8 @@ export function registerModuleSettings() {
   });
 
   game.settings.register(MODULE_ID, "enableParticles", {
-    name: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Name") || "Use Particles",
-    hint: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Hint") || "Enable particle effects for spellcasting traits and other UI elements.",
+    name: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Name") || "Use Particle Effects",
+    hint: game.i18n?.localize?.("DHP.Settings.Particles.Enable.Hint") || "Enable particle effects for spellcasting traits, critical hits, and other UI elements.",
     scope: "client",
     config: true,
     type: Boolean,
@@ -228,22 +228,35 @@ export function registerModuleSettings() {
           e
         );
       }
-    },
-  });
-
-  game.settings.register(MODULE_ID, "enableCriticalHitParticles", {
-    name: game.i18n?.localize?.("DHP.Settings.Particles.CriticalHit.Name") || "Use Critical Hit Particles",
-    hint: game.i18n?.localize?.("DHP.Settings.Particles.CriticalHit.Hint") || "Enable particle effects for critical success rolls in chat messages.",
-    scope: "client",
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: (value) => {
       try {
         applyCriticalHitParticles(Boolean(value));
       } catch (e) {
         console.warn(
           "Daggerheart Plus | Failed applying critical hit particles toggle",
+          e
+        );
+      }
+    },
+  });
+
+  game.settings.register(MODULE_ID, "enableResourcePips", {
+    name: game.i18n?.localize?.("DHP.Settings.ResourcePips.Name") || "Pip Display for Resources",
+    hint: game.i18n?.localize?.("DHP.Settings.ResourcePips.Hint") || "Display HP, Stress, and Armor as clickable pips instead of progress bars on all actor sheets. Similar to the party member display.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      try {
+        for (const app of Object.values(ui.windows)) {
+          if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && 
+              typeof app.render === "function") {
+            app.render(false);
+          }
+        }
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed re-rendering sheets for pip display toggle",
           e
         );
       }

@@ -118,5 +118,7 @@
   "DHP.Settings.TokenEffects.Halo.Size.Name": "Halo Icon Size",
   "DHP.Settings.TokenEffects.Halo.Size.Hint": "Set the base pixel size for halo-arranged token effect icons.",
   "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Halo Icon Spacing",
-  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons."
+  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons.",
+  "DHP.Settings.ResourcePips.Name": "Affichage en pips pour les ressources",
+  "DHP.Settings.ResourcePips.Hint": "Affiche les PV, Stress et Armure sous forme de pips cliquables au lieu de barres de progression sur toutes les fiches d'acteur. Similaire à l'affichage des membres du groupe."
 }

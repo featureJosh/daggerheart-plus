@@ -38,6 +38,53 @@ export function applyDefaultSizeToApp(app, sizeOverride) {
   }
 }
 
+function bindResourcePipClicks(root, actor) {
+  if (!root || !actor) return;
+
+  const toggleResource = async (action, clickedValue, itemUuid) => {
+    let currentValue, maxValue;
+
+    if (action === "toggleHitPoints") {
+      currentValue = Number(actor.system?.resources?.hitPoints?.value ?? 0);
+      maxValue = Number(actor.system?.resources?.hitPoints?.max ?? 0);
+      const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
+      const clampedValue = Math.max(0, Math.min(newValue, maxValue));
+      if (clampedValue !== currentValue) {
+        await actor.update({ "system.resources.hitPoints.value": clampedValue });
+      }
+    } else if (action === "toggleStress") {
+      currentValue = Number(actor.system?.resources?.stress?.value ?? 0);
+      maxValue = Number(actor.system?.resources?.stress?.max ?? 0);
+      const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
+      const clampedValue = Math.max(0, Math.min(newValue, maxValue));
+      if (clampedValue !== currentValue) {
+        await actor.update({ "system.resources.stress.value": clampedValue });
+      }
+    } else if (action === "toggleArmorSlot") {
+      const armorItem = itemUuid ? await fromUuid(itemUuid) : actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
+      if (!armorItem) return;
+      currentValue = Number(armorItem.system?.marks?.value ?? 0);
+      maxValue = Number(actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0);
+      const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
+      const clampedValue = Math.max(0, Math.min(newValue, maxValue));
+      if (clampedValue !== currentValue) {
+        await armorItem.update({ "system.marks.value": clampedValue });
+      }
+    }
+  };
+
+  root.querySelectorAll('[data-action="toggleHitPoints"], [data-action="toggleStress"], [data-action="toggleArmorSlot"]').forEach((slot) => {
+    slot.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      const action = slot.dataset.action;
+      const value = Number(slot.dataset.value) || 0;
+      const itemUuid = slot.dataset.itemUuid;
+      if (value) toggleResource(action, value, itemUuid);
+    });
+  });
+}
+
 export function registerDaggerheartPlusSheets() {
   const documentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
   const systemAPI = game.system.api?.applications?.sheets?.actors;
@@ -136,6 +183,14 @@ export function registerDaggerheartPlusSheets() {
         );
       } catch (_) {
         context.enableCharacterSheetSidebars = false;
+      }
+      try {
+        context.enableResourcePips = game.settings.get(
+          MODULE_ID,
+          "enableResourcePips"
+        );
+      } catch (_) {
+        context.enableResourcePips = false;
       }
       return context;
     }
@@ -362,6 +417,10 @@ export function registerDaggerheartPlusSheets() {
           this.element,
           this.document
         );
+      } catch { }
+
+      try {
+        bindResourcePipClicks(this.element, this.document);
       } catch { }
 
       try {
@@ -1117,6 +1176,19 @@ export function registerDaggerheartPlusSheets() {
       return `${this.document.name} [DH+]`;
     }
 
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      try {
+        context.enableResourcePips = game.settings.get(
+          MODULE_ID,
+          "enableResourcePips"
+        );
+      } catch (_) {
+        context.enableResourcePips = false;
+      }
+      return context;
+    }
+
     async _onRender(context, options) {
       await super._onRender(context, options);
       try {
@@ -1182,6 +1254,10 @@ export function registerDaggerheartPlusSheets() {
           this.document
         );
       } catch { }
+
+      try {
+        bindResourcePipClicks(this.element, this.document);
+      } catch { }
     }
   };
 
@@ -1217,6 +1293,19 @@ export function registerDaggerheartPlusSheets() {
       return `${this.document.name} [DH+]`;
     }
 
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      try {
+        context.enableResourcePips = game.settings.get(
+          MODULE_ID,
+          "enableResourcePips"
+        );
+      } catch (_) {
+        context.enableResourcePips = false;
+      }
+      return context;
+    }
+
     async _onRender(context, options) {
       await super._onRender(context, options);
       try {
@@ -1224,6 +1313,10 @@ export function registerDaggerheartPlusSheets() {
           this.element,
           this.document
         );
+      } catch { }
+
+      try {
+        bindResourcePipClicks(this.element, this.document);
       } catch { }
     }
   };
@@ -1266,7 +1359,7 @@ export function registerDaggerheartPlusSheets() {
       partyMembers: {
         id: "partyMembers",
         template: "modules/daggerheart-plus/templates/party/party-members.hbs",
-        scrollable: [""],
+        scrollable: [".tab.partyMembers"],
       },
       inventory: {
         id: "inventory",
@@ -1306,6 +1399,7 @@ export function registerDaggerheartPlusSheets() {
       cards.forEach(card => {
         card.style.transition = 'none';
         card.querySelector('.resource-body')?.style.setProperty('transition', 'none');
+        card.querySelector('.resource-header')?.style.setProperty('transition', 'none');
         card.querySelector('.collapse-toggle i')?.style.setProperty('transition', 'none');
         const memberUuid = card.dataset.itemUuid;
         if (memberUuid && states[memberUuid] !== undefined) {
@@ -1317,6 +1411,7 @@ export function registerDaggerheartPlusSheets() {
           cards.forEach(card => {
             card.style.transition = '';
             card.querySelector('.resource-body')?.style.setProperty('transition', '');
+            card.querySelector('.resource-header')?.style.setProperty('transition', '');
             card.querySelector('.collapse-toggle i')?.style.setProperty('transition', '');
           });
         });

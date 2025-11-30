@@ -85,10 +85,8 @@
   "DHP.Settings.Common.Bottom": "Bottom",
   "DHP.Settings.EnhancedChat.Enable.Name": "Enhanced Chat Styling",
   "DHP.Settings.EnhancedChat.Enable.Hint": "Per-user. Enable the DH+ enhanced chat message styling.",
-  "DHP.Settings.Particles.Enable.Name": "Use Particles",
-  "DHP.Settings.Particles.Enable.Hint": "Enable particle effects for spellcasting traits and other UI elements.",
-  "DHP.Settings.Particles.CriticalHit.Name": "Use Critical Hit Particles",
-  "DHP.Settings.Particles.CriticalHit.Hint": "Enable particle effects for critical success rolls in chat messages.",
+  "DHP.Settings.Particles.Enable.Name": "Use Particle Effects",
+  "DHP.Settings.Particles.Enable.Hint": "Enable particle effects for spellcasting traits, critical hits, and other UI elements.",
   "DHP.Settings.DomainCards.AlwaysOpen.Name": "Always Open Domain Card Moves",
   "DHP.Settings.DomainCards.AlwaysOpen.Hint": "Always show domain card move descriptions expanded in chat messages.",
   "DHP.Settings.Moves.AlwaysOpen.Name": "Always Open Domains & Moves",
@@ -120,5 +118,7 @@
   "DHP.Settings.TokenEffects.Halo.Size.Name": "Halo Icon Size",
   "DHP.Settings.TokenEffects.Halo.Size.Hint": "Set the base pixel size for halo-arranged token effect icons.",
   "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Halo Icon Spacing",
-  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons."
+  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons.",
+  "DHP.Settings.ResourcePips.Name": "Pip Display for Resources",
+  "DHP.Settings.ResourcePips.Hint": "Display HP, Stress, and Armor as clickable pips instead of progress bars on all actor sheets. Similar to the party member display."
 }

@@ -120,5 +120,7 @@
   "DHP.Settings.TokenEffects.Halo.Size.Name": "Halo Icon Size",
   "DHP.Settings.TokenEffects.Halo.Size.Hint": "Set the base pixel size for halo-arranged token effect icons.",
   "DHP.Settings.TokenEffects.Halo.Spacing.Name": "Halo Icon Spacing",
-  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons."
+  "DHP.Settings.TokenEffects.Halo.Spacing.Hint": "Expand or tighten spacing between halo effect icons.",
+  "DHP.Settings.ResourcePips.Name": "Visualizzazione a puntini per le risorse",
+  "DHP.Settings.ResourcePips.Hint": "Mostra PF, Stress e Armatura come puntini cliccabili invece di barre di progresso su tutte le schede attore. Simile alla visualizzazione dei membri del gruppo."
 }

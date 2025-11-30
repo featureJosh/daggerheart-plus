@@ -2663,3 +2663,88 @@
   -webkit-box-orient: vertical;
   text-align: left;
 }
+
+.daggerheart-plus.sheet .resources-section.pip-mode,
+.daggerheart-plus.sheet .statuses-section.pip-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.daggerheart-plus.sheet .resource-bar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.daggerheart-plus.sheet .resource-info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.daggerheart-plus.sheet .resource-label {
+  font-size: 0.7rem;
+  color: var(--dhp-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.daggerheart-plus.sheet .resource-value {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--dhp-accent);
+}
+
+.daggerheart-plus.sheet .resource-slots {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.daggerheart-plus.sheet .resource-slot {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet .resource-slot:hover {
+  transform: scale(1.15);
+  border-color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet .hp-slot.filled {
+  background: var(--dhp-danger);
+  border-color: var(--dhp-danger);
+  box-shadow: 0 0 6px rgba(244, 67, 54, 0.4);
+}
+
+.daggerheart-plus.sheet .stress-slot.filled {
+  background: var(--dhp-warning);
+  border-color: var(--dhp-warning);
+  box-shadow: 0 0 6px rgba(255, 152, 0, 0.4);
+}
+
+.daggerheart-plus.sheet .armor-slot {
+  font-size: 0.75rem;
+}
+
+.daggerheart-plus.sheet .armor-slot.filled {
+  background: var(--dhp-info);
+  border-color: var(--dhp-info);
+  color: white;
+  box-shadow: 0 0 6px rgba(33, 150, 243, 0.4);
+}
+
+.daggerheart-plus.sheet .armor-slot:not(.filled) {
+  color: var(--dhp-text-light);
+}

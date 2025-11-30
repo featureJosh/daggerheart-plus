@@ -141,17 +141,6 @@ Hooks.once("ready", async () => {
       return;
     }
 
-    if (setting.key === "enableCriticalHitParticles") {
-      try {
-        applyCriticalHitParticles(Boolean(setting.value));
-      } catch (e) {
-        console.warn(
-          "Daggerheart Plus | Failed applying critical hit particles toggle (updateSetting)",
-          e
-        );
-      }
-      return;
-    }
 
     if (
       setting.key === "defaultSheetWidth" ||

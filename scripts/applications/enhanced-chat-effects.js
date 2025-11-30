@@ -3,7 +3,7 @@ const CRIT_SELECTOR = ".chat-message.message.duality.critical";
 export const EnhancedChatEffects = {
   init() {
     try {
-      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
+      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableParticles");
       const enhancedChatEnabled = game.settings.get("daggerheart-plus", "enableEnhancedChat");
       if (!critParticlesEnabled || !enhancedChatEnabled) {
         this.disable();
@@ -69,7 +69,7 @@ export const EnhancedChatEffects = {
     try {
       if (!el || el._dhpCritMounted) return;
 
-      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableCriticalHitParticles");
+      const critParticlesEnabled = game.settings.get("daggerheart-plus", "enableParticles");
       const enhancedChatEnabled = game.settings.get("daggerheart-plus", "enableEnhancedChat");
       if (!critParticlesEnabled || !enhancedChatEnabled) return;
 

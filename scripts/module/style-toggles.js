@@ -70,7 +70,7 @@ export function applyParticleEffects(enabled) {
 export function applyCriticalHitParticles(enabled) {
   try {
     const critParticlesEnabled = Boolean(
-      game.settings.get(MODULE_ID, "enableCriticalHitParticles")
+      game.settings.get(MODULE_ID, "enableParticles")
     );
     const enhancedChatEnabled = Boolean(
       game.settings.get(MODULE_ID, "enableEnhancedChat")

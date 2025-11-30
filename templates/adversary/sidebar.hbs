@@ -5,7 +5,37 @@
     </div>
 
     <div class="information-section">
-        <div class="resources-section">
+        <div class="resources-section {{#if enableResourcePips}}pip-mode{{/if}}">
+            {{#if enableResourcePips}}
+            <div class="resource-bar-section hp">
+                <div class="resource-info">
+                    <span class="resource-label">{{localize "DAGGERHEART.GENERAL.HitPoints.short"}}</span>
+                    <span class="resource-value">{{source.system.resources.hitPoints.value}} / {{source.system.resources.hitPoints.max}}</span>
+                </div>
+                <div class="resource-slots">
+                    {{#times source.system.resources.hitPoints.max}}
+                    <span class='resource-slot hp-slot {{#if (gte @root.source.system.resources.hitPoints.value (add this 1))}}filled{{/if}}'
+                        data-action='toggleHitPoints' data-value="{{add this 1}}"
+                        data-tooltip="Toggle HP">
+                    </span>
+                    {{/times}}
+                </div>
+            </div>
+            <div class="resource-bar-section stress">
+                <div class="resource-info">
+                    <span class="resource-label">{{localize "DAGGERHEART.GENERAL.stress"}}</span>
+                    <span class="resource-value">{{source.system.resources.stress.value}} / {{source.system.resources.stress.max}}</span>
+                </div>
+                <div class="resource-slots">
+                    {{#times source.system.resources.stress.max}}
+                    <span class='resource-slot stress-slot {{#if (gte @root.source.system.resources.stress.value (add this 1))}}filled{{/if}}'
+                        data-action='toggleStress' data-value="{{add this 1}}"
+                        data-tooltip="Toggle Stress">
+                    </span>
+                    {{/times}}
+                </div>
+            </div>
+            {{else}}
             <div class="status-bar" style="--value: {{source.system.resources.hitPoints.value}}; --max: {{source.system.resources.hitPoints.max}};">
                 <div class='status-value' data-value="{{source.system.resources.hitPoints.value}}" data-max="{{source.system.resources.hitPoints.max}}">
                 </div>
@@ -38,6 +68,7 @@
                     <h4>{{localize "DAGGERHEART.GENERAL.stress"}}</h4>
                 </div>
             </div>
+            {{/if}}
         </div>
         <div class="status-section">
             <div class="status-number" data-action="requestDifficultyRoll" data-tooltip-text="Click to request a roll at this difficulty">
