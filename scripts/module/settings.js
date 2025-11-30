@@ -138,6 +138,30 @@ export function registerModuleSettings() {
     },
   });
 
+  game.settings.register(MODULE_ID, "enableResourcePips", {
+    name: game.i18n?.localize?.("DHP.Settings.ResourcePips.Name") || "Pip Display for Resources",
+    hint: game.i18n?.localize?.("DHP.Settings.ResourcePips.Hint") || "Display HP, Stress, and Armor as clickable pips instead of progress bars on all actor sheets. Similar to the party member display.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      try {
+        for (const app of Object.values(ui.windows)) {
+          if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && 
+              typeof app.render === "function") {
+            app.render(false);
+          }
+        }
+      } catch (e) {
+        console.warn(
+          "Daggerheart Plus | Failed re-rendering sheets for pip display toggle",
+          e
+        );
+      }
+    },
+  });
+
   game.settings.register(MODULE_ID, "enableTokenCounters", {
     name: "Enable Token Counters",
     hint: "Show the token counters UI (HP, Hope, Stress, Armor) near the hotbar for the currently selected token. Per-user preference.",
@@ -233,30 +257,6 @@ export function registerModuleSettings() {
       } catch (e) {
         console.warn(
           "Daggerheart Plus | Failed applying critical hit particles toggle",
-          e
-        );
-      }
-    },
-  });
-
-  game.settings.register(MODULE_ID, "enableResourcePips", {
-    name: game.i18n?.localize?.("DHP.Settings.ResourcePips.Name") || "Pip Display for Resources",
-    hint: game.i18n?.localize?.("DHP.Settings.ResourcePips.Hint") || "Display HP, Stress, and Armor as clickable pips instead of progress bars on all actor sheets. Similar to the party member display.",
-    scope: "client",
-    config: true,
-    type: Boolean,
-    default: false,
-    onChange: () => {
-      try {
-        for (const app of Object.values(ui.windows)) {
-          if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && 
-              typeof app.render === "function") {
-            app.render(false);
-          }
-        }
-      } catch (e) {
-        console.warn(
-          "Daggerheart Plus | Failed re-rendering sheets for pip display toggle",
           e
         );
       }
