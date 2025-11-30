@@ -1304,10 +1304,22 @@ export function registerDaggerheartPlusSheets() {
       const states = partyCollapseStates.get(partyId);
       const cards = root.querySelectorAll('.resource-card[data-item-uuid]');
       cards.forEach(card => {
+        card.style.transition = 'none';
+        card.querySelector('.resource-body')?.style.setProperty('transition', 'none');
+        card.querySelector('.collapse-toggle i')?.style.setProperty('transition', 'none');
         const memberUuid = card.dataset.itemUuid;
         if (memberUuid && states[memberUuid] !== undefined) {
           card.classList.toggle('collapsed', states[memberUuid]);
         }
+      });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          cards.forEach(card => {
+            card.style.transition = '';
+            card.querySelector('.resource-body')?.style.setProperty('transition', '');
+            card.querySelector('.collapse-toggle i')?.style.setProperty('transition', '');
+          });
+        });
       });
       const updateToggleIcon = () => {
         const toggleAllBtn = root.querySelector('[data-action="toggleAllMembers"]');
