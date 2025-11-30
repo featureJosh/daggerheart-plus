@@ -1359,7 +1359,7 @@ export function registerDaggerheartPlusSheets() {
       partyMembers: {
         id: "partyMembers",
         template: "modules/daggerheart-plus/templates/party/party-members.hbs",
-        scrollable: [".tab.partyMembers"],
+        scrollable: [""],
       },
       inventory: {
         id: "inventory",

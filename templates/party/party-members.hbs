@@ -19,7 +19,7 @@
         <legend>{{localize tabs.partyMembers.label}}</legend>
         <div class="resources-grid">
             {{#each document.system.partyMembers as |actor id|}}
-            <div class="resource-card inventory-item collapsed" data-item-id="{{actor.id}}" data-item-uuid="{{actor.uuid}}" data-type="character" draggable="true">
+            <div class="resource-card inventory-item" data-item-id="{{actor.id}}" data-item-uuid="{{actor.uuid}}" data-type="character" draggable="true">
                 <div class="resource-header">
                     <div class="actor-portrait-mini" data-action="editDoc" data-tooltip="#item#{{actor.uuid}}">
                         <img src="{{actor.img}}" alt="{{actor.name}}">
