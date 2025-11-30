@@ -102,18 +102,14 @@
     <div class="shortcut-items-section">
         <div class="attack-section">
             <div class="title">
-                <!-- <side-line-div class="invert"></side-line-div>-->
+                <side-line-div class="invert"></side-line-div>
                 <h3>{{localize "DAGGERHEART.GENERAL.attack"}}</h3>
-                <!-- <side-line-div></side-line-div>-->
+                <side-line-div></side-line-div>
             </div>
             <ul class="items-sidebar-list">
-                {{> 'daggerheart.inventory-item'
+                {{> 'daggerheart.inventory-item-compact'
                 item=document.system.attack
                 type='action'
-                hideTags=true
-                hideDescription=true
-                hideResources=true
-                noExtensible=true
                 noCompendiumEdit=true
                 }}
             </ul>

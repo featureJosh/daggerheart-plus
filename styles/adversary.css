@@ -543,6 +543,8 @@
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-section,
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .reaction-section {
   margin-top: 1em;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .portrait {
@@ -558,11 +560,11 @@
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .inventory-item {
-  width: auto;
-  box-sizing: unset;
+  width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
   align-items: center;
-  padding: 0.5rem 0rem;
+  padding: 0.5rem 0.5rem;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--dhp-border);
   margin-bottom: 0.25rem;
@@ -996,6 +998,8 @@
   .adversary-sidebar-sheet
   .shortcut-items-section {
   margin-top: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title {

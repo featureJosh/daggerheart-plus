@@ -1329,18 +1329,30 @@ export function registerDaggerheartPlusSheets() {
         if (icon) icon.className = allCollapsed ? 'fa-solid fa-angles-down' : 'fa-solid fa-angles-up';
       };
       updateToggleIcon();
+      const toggleCard = (card) => {
+        card.classList.toggle('collapsed');
+        const memberUuid = card.dataset.itemUuid;
+        if (memberUuid) states[memberUuid] = card.classList.contains('collapsed');
+        updateToggleIcon();
+      };
       root.querySelectorAll('.collapse-toggle[data-action="toggleCollapse"]').forEach(btn => {
         btn.addEventListener('click', (ev) => {
           ev.preventDefault();
           ev.stopPropagation();
           const card = btn.closest('.resource-card');
-          if (card) {
-            card.classList.toggle('collapsed');
-            const memberUuid = card.dataset.itemUuid;
-            if (memberUuid) states[memberUuid] = card.classList.contains('collapsed');
-            updateToggleIcon();
-          }
+          if (card) toggleCard(card);
         });
+      });
+      cards.forEach(card => {
+        const header = card.querySelector('.resource-header');
+        if (header) {
+          header.style.cursor = 'pointer';
+          header.addEventListener('click', (ev) => {
+            if (ev.target.closest('a, button, input, .controls')) return;
+            ev.preventDefault();
+            toggleCard(card);
+          });
+        }
       });
       const toggleAllBtn = root.querySelector('[data-action="toggleAllMembers"]');
       if (toggleAllBtn) {

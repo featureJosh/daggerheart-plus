@@ -551,86 +551,15 @@
 }
 
 .daggerheart-plus.sheet.party .tab.inventory .currency-section {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 5px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 
 .daggerheart-plus.sheet.party .tab.inventory .currency-input {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 5px;
-  padding: 0.5em 0.35em;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid var(--dhp-border);
-  border-radius: 10px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input:hover {
-  border-color: var(--dhp-primary);
-  box-shadow: 0 2px 6px var(--dhp-shadow);
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input .icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--dhp-primary);
-  color: var(--dhp-border);
-  box-shadow: 0 1px 3px var(--dhp-shadow);
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input .icon i {
-  font-size: 0.9rem;
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input .label {
-  font-weight: 700;
-  color: var(--dhp-text);
-  letter-spacing: 0.02em;
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input input,
-.daggerheart-plus.sheet.party .tab.inventory .currency-input .currency-field {
-  text-align: center;
-  min-width: 0;
-  width: 2em;
-  height: 1.75em;
-  border-radius: 8px;
-  border: 1px solid var(--dhp-border);
-  background: var(--dhp-card-bg);
-  color: var(--dhp-primary);
-  outline: 2px solid transparent;
-  transition: outline-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.daggerheart-plus.sheet.party .tab.inventory .currency-input input:focus,
-.daggerheart-plus.sheet.party .tab.inventory .currency-input .currency-field:focus {
-  border-color: var(--dhp-primary);
-  outline-color: color-mix(in oklab, var(--dhp-primary) 30%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dhp-primary) 15%, transparent);
-}
-
-@media (min-width: 1200px) {
-  .daggerheart-plus.sheet.party .tab.inventory .currency-section {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 520px) {
-  .daggerheart-plus.sheet.party .tab.inventory .currency-section {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: auto auto;
+  padding: 0.4em 0.6em;
+  width: auto;
 }
 
 .daggerheart-plus.sheet.party .resources-overview {
@@ -666,6 +595,7 @@
   margin-bottom: 0.75rem;
   padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--dhp-border);
+  transition: margin-bottom 0.25s ease-out, padding-bottom 0.25s ease-out, border-color 0.25s ease-out;
 }
 
 .daggerheart-plus.sheet.party .resource-header .controls {
@@ -714,20 +644,17 @@
 .daggerheart-plus.sheet.party .resource-card .resource-body {
   overflow: hidden;
   max-height: 500px;
-  transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
-  opacity: 1;
+  transition: max-height 0.25s ease-out;
 }
 
 .daggerheart-plus.sheet.party .resource-card.collapsed .resource-body {
   max-height: 0;
-  opacity: 0;
-  margin: 0;
 }
 
 .daggerheart-plus.sheet.party .resource-card.collapsed .resource-header {
   margin-bottom: 0;
   padding-bottom: 0;
-  border-bottom: none;
+  border-bottom-color: transparent;
 }
 
 .daggerheart-plus.sheet.party .actor-portrait-mini {
@@ -797,8 +724,9 @@
 
 .daggerheart-plus.sheet.party .resource-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 1em;
 }
 
 .daggerheart-plus.sheet.party .resource-label {

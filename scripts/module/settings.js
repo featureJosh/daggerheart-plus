@@ -276,7 +276,7 @@ export function registerModuleSettings() {
     scope: "world",
     config: false,
     type: Number,
-    default: 630,
+    default: 750,
     range: { min: 400, max: 2000, step: 10 },
   });
 
