@@ -81,7 +81,7 @@ export function registerModuleSettings() {
     default: true,
     onChange: (value) => {
       try {
-        for (const app of Object.values(ui.windows)) {
+        for (const app of Object.values(ui.applications)) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
             continue;
           if (value) app._mountInlineRails?.();
@@ -125,7 +125,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: (value) => {
       try {
-        for (const app of Object.values(ui.windows)) {
+        for (const app of Object.values(ui.applications)) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
           app._updateAllLoadoutResourceBadges?.();
         }
@@ -147,7 +147,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: () => {
       try {
-        for (const app of Object.values(ui.windows)) {
+        for (const app of Object.values(ui.applications)) {
           if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && 
               typeof app.render === "function") {
             app.render(false);

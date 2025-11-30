@@ -49,11 +49,9 @@ Hooks.once("init", () => {
   enhanceTooltipManager();
 });
 
-Hooks.once("ready", () => {
-  initializeHoverDistance();
-});
-
 Hooks.once("ready", async () => {
+  initializeHoverDistance();
+
   try {
     const effectsHaloEnabled = game.settings.get(
       MODULE_ID,
@@ -147,7 +145,7 @@ Hooks.once("ready", async () => {
       setting.key === "defaultSheetHeight"
     ) {
       const size = getDefaultSheetSize();
-      for (const app of Object.values(ui.windows)) {
+      for (const app of Object.values(ui.applications)) {
         const name = app?.constructor?.name;
         if (!name?.startsWith?.("DaggerheartPlus")) continue;
         if (name?.includes?.("Adversary")) continue;
@@ -170,7 +168,7 @@ Hooks.once("ready", async () => {
       setting.key === "adversarySheetHeight"
     ) {
       const size = getDefaultAdversarySheetSize();
-      for (const app of Object.values(ui.windows)) {
+      for (const app of Object.values(ui.applications)) {
         if (app?.constructor?.name === "DaggerheartPlusAdversarySheet") {
           applyDefaultSizeToApp(app, size);
         }
@@ -198,7 +196,7 @@ Hooks.once("ready", async () => {
         MODULE_ID,
         "enableCharacterSheetSidebars"
       );
-      for (const app of Object.values(ui.windows)) {
+      for (const app of Object.values(ui.applications)) {
         if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
           continue;
         if (useRails) app._mountInlineRails?.();

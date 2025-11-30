@@ -189,6 +189,38 @@
   font-weight: 600;
 }
 
+.daggerheart-plus.sheet.party .party-header-sheet .party-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.daggerheart-plus.sheet.party section.tab-navigation[data-application-part="tabs"] {
+  display: none;
+}
+
+.daggerheart-plus.sheet.party .party-header-sheet nav.tabs .item.control {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--dhp-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.daggerheart-plus.sheet.party .party-header-sheet nav.tabs .item.control:hover {
+  background: rgba(230, 168, 0, 0.1);
+  color: var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.party .party-header-sheet nav.tabs .item.control.active {
+  border-bottom-color: var(--dhp-primary);
+  color: var(--dhp-primary);
+  font-weight: 700;
+}
+
 .daggerheart-plus.sheet.party .party-header-sheet .party-stats-row {
   display: flex;
   gap: 0.625rem;
@@ -674,7 +706,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top-center;
 }
 
 .daggerheart-plus.sheet.party .actor-title {

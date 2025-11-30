@@ -2487,9 +2487,9 @@
 }
 
 .daggerheart-plus.sheet .tab.inventory .currency-section {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
   padding: 0;
   background: transparent;
   border: none;
@@ -2498,10 +2498,11 @@
 
 .daggerheart-plus.sheet .tab.inventory .currency-input {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto;
   align-items: center;
   gap: 5px;
-  padding: 0.5em 0.35em;
+  padding: 0.4em 0.6em;
+  width: auto;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--dhp-border);
   border-radius: 10px;
@@ -2530,12 +2531,6 @@
   font-size: 0.9rem;
 }
 
-.daggerheart-plus.sheet .tab.inventory .currency-input .label {
-  font-weight: 700;
-  color: var(--dhp-text);
-  letter-spacing: 0.02em;
-}
-
 .daggerheart-plus.sheet .tab.inventory .currency-input input,
 .daggerheart-plus.sheet .tab.inventory .currency-input .currency-field {
   text-align: center;
@@ -2556,19 +2551,6 @@
   border-color: var(--dhp-primary);
   outline-color: color-mix(in oklab, var(--dhp-primary) 30%, transparent);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--dhp-primary) 15%, transparent);
-}
-
-/* Responsive: stack into two columns on narrow sheets */
-@media (max-width: 900px) {
-  .daggerheart-plus.sheet .tab.inventory .currency-section {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 520px) {
-  .daggerheart-plus.sheet .tab.inventory .currency-section {
-    grid-template-columns: 1fr;
-  }
 }
 
 .daggerheart-plus.sheet a.filter-button,

@@ -50,7 +50,7 @@ export function applyParticleEffects(enabled) {
       });
     }
 
-    for (const app of Object.values(ui.windows)) {
+    for (const app of Object.values(ui.applications)) {
       if (app?.constructor?.name === "DaggerheartPlusCharacterSheet") {
         if (particlesEnabled) {
           app._mountSpellParticles?.();

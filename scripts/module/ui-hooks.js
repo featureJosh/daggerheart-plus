@@ -27,13 +27,13 @@ export function registerUiHooks() {
     }
   });
 
-  Hooks.on("renderActorSheet", (app, html, data) => {
-    if (app.constructor.name.startsWith("DaggerheartPlus")) {
-      console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
-    }
+  Hooks.on("renderApplicationV2", (app, element, data) => {
+    if (!app.constructor.name.startsWith("DaggerheartPlus")) return;
+    
+    console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
 
     try {
-      const actor = app.document || app.object;
+      const actor = app.document;
       if (actor && app.element) {
         window.daggerheartPlus?.bindProgressBarClicks?.(app.element, actor);
       }
