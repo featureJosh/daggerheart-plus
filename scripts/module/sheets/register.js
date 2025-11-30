@@ -1244,6 +1244,8 @@ export function registerDaggerheartPlusSheets() {
     }
   };
 
+  const partyCollapseStates = new Map();
+
   const DaggerheartPlusPartySheet = class extends systemAPI.Party {
     static DEFAULT_OPTIONS = {
       ...super.DEFAULT_OPTIONS,
@@ -1295,28 +1297,51 @@ export function registerDaggerheartPlusSheets() {
       super._onRender(context, options);
       const root = this.element;
       if (!root) return;
+      const partyId = this.document.uuid;
+      if (!partyCollapseStates.has(partyId)) {
+        partyCollapseStates.set(partyId, {});
+      }
+      const states = partyCollapseStates.get(partyId);
+      const cards = root.querySelectorAll('.resource-card[data-item-uuid]');
+      cards.forEach(card => {
+        const memberUuid = card.dataset.itemUuid;
+        if (memberUuid && states[memberUuid] !== undefined) {
+          card.classList.toggle('collapsed', states[memberUuid]);
+        }
+      });
+      const updateToggleIcon = () => {
+        const toggleAllBtn = root.querySelector('[data-action="toggleAllMembers"]');
+        if (!toggleAllBtn) return;
+        const icon = toggleAllBtn.querySelector('i');
+        const allCollapsed = [...cards].every(card => card.classList.contains('collapsed'));
+        if (icon) icon.className = allCollapsed ? 'fa-solid fa-angles-down' : 'fa-solid fa-angles-up';
+      };
+      updateToggleIcon();
       root.querySelectorAll('.collapse-toggle[data-action="toggleCollapse"]').forEach(btn => {
         btn.addEventListener('click', (ev) => {
           ev.preventDefault();
           ev.stopPropagation();
           const card = btn.closest('.resource-card');
-          if (card) card.classList.toggle('collapsed');
+          if (card) {
+            card.classList.toggle('collapsed');
+            const memberUuid = card.dataset.itemUuid;
+            if (memberUuid) states[memberUuid] = card.classList.contains('collapsed');
+            updateToggleIcon();
+          }
         });
       });
       const toggleAllBtn = root.querySelector('[data-action="toggleAllMembers"]');
       if (toggleAllBtn) {
         toggleAllBtn.addEventListener('click', (ev) => {
           ev.preventDefault();
-          const cards = root.querySelectorAll('.resource-card');
           const allCollapsed = [...cards].every(card => card.classList.contains('collapsed'));
-          const icon = toggleAllBtn.querySelector('i');
-          if (allCollapsed) {
-            cards.forEach(card => card.classList.remove('collapsed'));
-            if (icon) icon.className = 'fa-solid fa-angles-up';
-          } else {
-            cards.forEach(card => card.classList.add('collapsed'));
-            if (icon) icon.className = 'fa-solid fa-angles-down';
-          }
+          cards.forEach(card => {
+            const collapsed = !allCollapsed;
+            card.classList.toggle('collapsed', collapsed);
+            const memberUuid = card.dataset.itemUuid;
+            if (memberUuid) states[memberUuid] = collapsed;
+          });
+          updateToggleIcon();
         });
       }
     }
