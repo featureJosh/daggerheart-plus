@@ -868,7 +868,11 @@
 }
 
 .daggerheart-plus.sheet.party fieldset {
-	height: 100%;
+	height: unset;
+}
+
+.daggerheart-plus.sheet.party prose-mirror {
+  height: 100%
 }
 
 .daggerheart-plus.sheet fieldset legend {

@@ -1290,6 +1290,36 @@ export function registerDaggerheartPlusSheets() {
       context = await super._preparePartContext(partId, context, options);
       return context;
     }
+
+    _onRender(context, options) {
+      super._onRender(context, options);
+      const root = this.element;
+      if (!root) return;
+      root.querySelectorAll('.collapse-toggle[data-action="toggleCollapse"]').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const card = btn.closest('.resource-card');
+          if (card) card.classList.toggle('collapsed');
+        });
+      });
+      const toggleAllBtn = root.querySelector('[data-action="toggleAllMembers"]');
+      if (toggleAllBtn) {
+        toggleAllBtn.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          const cards = root.querySelectorAll('.resource-card');
+          const allCollapsed = [...cards].every(card => card.classList.contains('collapsed'));
+          const icon = toggleAllBtn.querySelector('i');
+          if (allCollapsed) {
+            cards.forEach(card => card.classList.remove('collapsed'));
+            if (icon) icon.className = 'fa-solid fa-angles-up';
+          } else {
+            cards.forEach(card => card.classList.add('collapsed'));
+            if (icon) icon.className = 'fa-solid fa-angles-down';
+          }
+        });
+      }
+    }
   };
 
   documentSheetConfig.registerSheet(
