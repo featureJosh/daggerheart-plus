@@ -1048,6 +1048,27 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: bold;
+  position: relative;
+  padding: 0 1.5rem;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3::before,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3::after {
+  content: "◆";
+  font-size: 0.5rem;
+  color: var(--dhp-primary);
+  opacity: 0.6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3::before {
+  left: 0;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title h3::after {
+  right: 0;
 }
 
 .dh-inline-rails.rails-left .floating-rail-left .loadout-section .title h3 {
