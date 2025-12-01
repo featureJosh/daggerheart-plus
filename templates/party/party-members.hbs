@@ -151,12 +151,12 @@
                 </div>
             </div>
             {{/each}}
-        </div>
-        {{#unless document.system.partyMembers.length}}
+                    {{#unless document.system.partyMembers.length}}
             <div class="empty-state-balanced">
                 <i class="fa-solid fa-users-slash"></i>
                 <span>{{localize "DAGGERHEART.GENERAL.dropActorsHere"}}</span>
             </div>
         {{/unless}}
+        </div>
     </fieldset>
 </section>
