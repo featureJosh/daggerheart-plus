@@ -493,8 +493,18 @@
 .daggerheart-plus.sheet.environment .environment-sidebar-sheet .title {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
+  width: 100%;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title::before,
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dhp-primary), transparent);
 }
 
 .daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3 {
@@ -502,7 +512,29 @@
   font-size: 0.9rem;
   color: var(--dhp-primary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  position: relative;
+  padding: 0 1.5rem;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3::before,
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3::after {
+  content: "◆";
+  font-size: 0.5rem;
+  color: var(--dhp-primary);
+  opacity: 0.6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3::before {
+  left: 0;
+}
+
+.daggerheart-plus.sheet.environment .environment-sidebar-sheet .title h3::after {
+  right: 0;
 }
 
 .daggerheart-plus.sheet.environment

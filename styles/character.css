@@ -841,7 +841,7 @@
 .daggerheart-plus.sheet .tab.inventory .items-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0;
   overflow-y: auto;
   mask-image: linear-gradient(
     0deg,
@@ -875,17 +875,39 @@
   height: 100%
 }
 
+.daggerheart-plus.sheet prose-mirror {
+	height: 100% !important;
+	border: 1px solid var(--dhp-primary);
+	border-radius: 5px;
+	margin-top: calc(var(--legend-height) / -1.25);
+}
+
+.daggerheart-plus.sheet .prosemirror .editor-content, .daggerheart-plus.sheet prose-mirror .editor-content {
+	position: absolute;
+	overflow: hidden auto;
+	padding-right: 0.5rem;
+	inset: 0;
+	outline: 0 solid transparent;
+	cursor: var(--cursor-text);
+	user-select: text;
+	padding: 1.5em 1em;
+}
+
 .daggerheart-plus.sheet fieldset legend {
-  font-family: "Montserrat", sans-serif;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: light-dark(#f3c267, #18162e);
-  width: 100%;
-  background: var(--dhp-primary) !important;
-  border-radius: 5px;
-  padding: 0.25em 0.5em;
-  margin: 0;
-  border: 1px solid var(--dhp-secondary);
+	font-family: "Montserrat", sans-serif;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: light-dark(#f3c267, #18162e);
+	width: max-content;
+	background: var(--dhp-primary) !important;
+	border-radius: 5px;
+	padding: var(--legend-padding-y) 1.5em;
+	margin: 0;
+	border: 1px solid var(--dhp-secondary);
+	clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+	line-height: var(--legend-line-height);
+	z-index: 2;
+	position: relative;
 }
 
 .daggerheart-plus.sheet fieldset.glassy legend {
@@ -898,6 +920,10 @@
 
 .daggerheart-plus.sheet .tab.active {
   padding-top: 1em;
+}
+
+.daggerheart-plus.sheet .tab.features .features-sections {
+	gap: 0;
 }
 
 .daggerheart-plus.sheet.companion .tab.active {
@@ -1038,6 +1064,13 @@
   /*padding-bottom: 0.5rem;*/
   width: 100%;
   min-width: 0;
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .title::before, .daggerheart-plus.sheet.character .character-sidebar-sheet .title::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--dhp-primary), transparent);
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .title h3,
@@ -1259,6 +1292,7 @@
   border-radius: 5px;
   border-bottom: 1px solid var(--dhp-border);
 }
+
 
 .daggerheart-plus.sheet .inventory-item .inventory-item-header .item-label {
   flex: 1;
@@ -2155,6 +2189,16 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container {
   padding-bottom: 1em;
   border-bottom: 1px solid var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.character .character-sidebar-sheet .top-info-container::after {
+	content: "— ✦ —";
+	display: block;
+	text-align: center;
+	color: var(--dhp-primary);
+	font-size: 0.8rem;
+	margin-top: 1em;
+	letter-spacing: 0.5em;
 }
 
 .daggerheart-plus.sheet.character

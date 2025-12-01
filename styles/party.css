@@ -596,15 +596,21 @@
 
 .daggerheart-plus.sheet.party .resources-overview {
   border: none;
-  padding: 0.75rem;
+  padding: 0;
   background: transparent;
   margin: 0;
 }
 
 .daggerheart-plus.sheet.party .resources-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-  gap: 0.75rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+	gap: 0.75rem;
+	padding: 1em .5em;
+	background: var(--dhp-card-bg);
+	border: 1px solid var(--dhp-primary);
+	border-radius: 5px;
+	padding-top: 1.5em;
+	margin-top: calc(var(--legend-height) / -1.6);
 }
 
 .daggerheart-plus.sheet.party .resource-card {

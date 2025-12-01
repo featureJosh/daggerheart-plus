@@ -68,6 +68,10 @@ form#roll-selection .window-content {
     var(--dhp-danger) 100%
   );
   --dhp-damage-gradient-webkit: var(--dhp-damage-gradient);
+
+  --legend-line-height: 1em;
+  --legend-padding-y: 0.25em;
+  --legend-height: calc(var(--legend-line-height) + var(--legend-padding-y) * 2);
   --dhp-damage-gradient-moz: var(--dhp-damage-gradient);
 
   --dh-color-dark-blue: #0a0f21;

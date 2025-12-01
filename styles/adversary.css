@@ -613,6 +613,18 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .info-section {
   margin-bottom: 1rem;
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--dhp-primary);
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .info-section::after {
+  content: "— ✦ —";
+  display: block;
+  text-align: center;
+  color: var(--dhp-primary);
+  font-size: 0.8rem;
+  margin-top: 1em;
+  letter-spacing: 0.5em;
 }
 
 .daggerheart-plus.sheet.adversary
@@ -1011,6 +1023,14 @@
   width: 100%;
 }
 
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title::before,
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--dhp-primary), transparent);
+}
+
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3 {
   margin: 0;
   font-size: 0.9rem;
@@ -1018,6 +1038,27 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: bold;
+  position: relative;
+  padding: 0 1.5rem;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3::before,
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3::after {
+  content: "◆";
+  font-size: 0.5rem;
+  color: var(--dhp-primary);
+  opacity: 0.6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3::before {
+  left: 0;
+}
+
+.daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .title h3::after {
+  right: 0;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .items-sidebar-list {
