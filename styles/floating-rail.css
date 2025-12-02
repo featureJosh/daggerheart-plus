@@ -140,6 +140,14 @@
   filter: blur(1px);
 }
 
+/* Hide rails and sidebar elements for LIMITED permission sheets */
+.application.sheet.daggerheart-plus.limited .dh-inline-rails,
+.application.sheet.daggerheart-plus.limited .floating-rail,
+.application.sheet.daggerheart-plus.limited .character-sidebar-sheet,
+.application.sheet.daggerheart-plus.limited .items-sidebar-list {
+  display: none !important;
+}
+
 /* Floating rail variant: toggle via JS-added class */
 .floating-sheet-rail .floating-rail {
   transition: opacity 150ms ease, transform 150ms ease, filter 150ms ease;

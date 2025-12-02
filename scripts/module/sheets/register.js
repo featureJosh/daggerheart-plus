@@ -41,6 +41,9 @@ export function applyDefaultSizeToApp(app, sizeOverride) {
 function bindResourcePipClicks(root, actor) {
   if (!root || !actor) return;
 
+  const canModify = actor.isOwner || actor.testUserPermission?.(game.user, 'OWNER');
+  if (!canModify) return;
+
   const toggleResource = async (action, clickedValue, itemUuid) => {
     let currentValue, maxValue;
 
@@ -123,22 +126,27 @@ export function registerDaggerheartPlusSheets() {
       features: {
         id: "features",
         template: "modules/daggerheart-plus/templates/character/features.hbs",
+        scrollable: [".tab.features .features-sections"],
       },
       loadout: {
         id: "loadout",
         template: "modules/daggerheart-plus/templates/character/loadout.hbs",
+        scrollable: [".tab.loadout .items-section"],
       },
       inventory: {
         id: "inventory",
         template: "modules/daggerheart-plus/templates/character/inventory.hbs",
+        scrollable: [".tab.inventory .items-section"],
       },
       biography: {
         id: "biography",
         template: "modules/daggerheart-plus/templates/character/biography.hbs",
+        scrollable: [".tab.biography .items-section"],
       },
       effects: {
         id: "effects",
         template: "modules/daggerheart-plus/templates/character/effects.hbs",
+        scrollable: [".tab.effects .effects-sections"],
       },
     };
 
@@ -195,8 +203,21 @@ export function registerDaggerheartPlusSheets() {
       return context;
     }
 
+    _isLimitedView() {
+      try {
+        return this.document.testUserPermission(game.user, 'LIMITED', { exact: true });
+      } catch (_) {
+        return false;
+      }
+    }
+
     async _onRender(context, options) {
       await super._onRender(context, options);
+
+      if (this._isLimitedView()) {
+        this.element?.classList?.add?.('limited');
+        return;
+      }
 
       // Spellcasting trait: mark tile and bind quick-cast
       try {
@@ -428,10 +449,22 @@ export function registerDaggerheartPlusSheets() {
       } catch { }
     }
 
+    _canInteractWithItems() {
+      try {
+        return this.document.isOwner || this.document.testUserPermission(game.user, 'OWNER');
+      } catch (_) {
+        return false;
+      }
+    }
+
     _applySidebarLoadoutBackgrounds() {
       try {
         const root = this.element;
         if (!root) return;
+
+        if (this._isLimitedView()) return;
+
+        const canInteract = this._canInteractWithItems();
 
         const selectors = [
           ".character-sidebar-sheet .loadout-section .items-sidebar-list",
@@ -485,7 +518,9 @@ export function registerDaggerheartPlusSheets() {
           }
 
           try {
-            item.setAttribute("data-action", "useItem");
+            if (canInteract) {
+              item.setAttribute("data-action", "useItem");
+            }
           } catch { }
 
           try {
@@ -727,6 +762,7 @@ export function registerDaggerheartPlusSheets() {
     async _adjustLoadoutResourceBadgeValue(badge, delta) {
       try {
         if (!badge || !delta) return;
+        if (!this._canInteractWithItems()) return;
         const itemId = badge.dataset.itemId;
         if (!itemId) return;
         const item = this.document?.items?.get?.(itemId);
@@ -796,8 +832,13 @@ export function registerDaggerheartPlusSheets() {
       try {
         const root = this.element;
         if (!root) return;
+
+        if (this._isLimitedView()) return;
+
         const container = root.querySelector(".tab.loadout");
         if (!container) return;
+
+        const canInteract = this._canInteractWithItems();
 
         const apply = (li) => {
           if (!li || !li.classList?.contains?.("card-item")) return;
@@ -813,7 +854,7 @@ export function registerDaggerheartPlusSheets() {
               label.setAttribute("data-tooltip", `#item#${uuid}`);
             const img = li.querySelector("img.card-img, .card-img img, img");
             if (img) {
-              if (!img.getAttribute("data-action"))
+              if (canInteract && !img.getAttribute("data-action"))
                 img.setAttribute("data-action", "useItem");
               if (!img.hasAttribute("data-tooltip"))
                 img.setAttribute("data-tooltip", `#item#${uuid}`);
@@ -1040,10 +1081,13 @@ export function registerDaggerheartPlusSheets() {
       try {
         this._removeInlineRails();
       } catch { }
-      // Cleanup spellcasting particle FX if present
       try {
         this._unmountSpellParticles();
       } catch (_) { }
+      try {
+        this._loadoutObserver?.disconnect?.();
+      } catch { }
+      this._loadoutObserver = null;
       try {
         this._loadoutCardsObserver?.disconnect?.();
       } catch { }
@@ -1059,6 +1103,8 @@ export function registerDaggerheartPlusSheets() {
       try {
         const root = this.element;
         if (!root) return;
+
+        if (this._isLimitedView()) return;
 
         this._removeInlineRails();
 
@@ -1161,19 +1207,30 @@ export function registerDaggerheartPlusSheets() {
       features: {
         id: "features",
         template: "modules/daggerheart-plus/templates/adversary/features.hbs",
+        scrollable: [".tab.features .feature-section"],
       },
       effects: {
         id: "effects",
         template: "modules/daggerheart-plus/templates/adversary/effects.hbs",
+        scrollable: [".tab.effects"],
       },
       notes: {
         id: "notes",
         template: "modules/daggerheart-plus/templates/adversary/notes.hbs",
+        scrollable: [".tab.notes"],
       },
     };
 
     get title() {
       return `${this.document.name} [DH+]`;
+    }
+
+    _isLimitedView() {
+      try {
+        return this.document.testUserPermission(game.user, 'LIMITED', { exact: true });
+      } catch (_) {
+        return false;
+      }
     }
 
     async _prepareContext(options) {
@@ -1191,6 +1248,12 @@ export function registerDaggerheartPlusSheets() {
 
     async _onRender(context, options) {
       await super._onRender(context, options);
+
+      if (this._isLimitedView()) {
+        this.element?.classList?.add?.('limited');
+        return;
+      }
+
       try {
         window.daggerheartPlus?.bindThresholdClicks?.(
           this.element,
@@ -1293,6 +1356,14 @@ export function registerDaggerheartPlusSheets() {
       return `${this.document.name} [DH+]`;
     }
 
+    _isLimitedView() {
+      try {
+        return this.document.testUserPermission(game.user, 'LIMITED', { exact: true });
+      } catch (_) {
+        return false;
+      }
+    }
+
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
       try {
@@ -1308,6 +1379,12 @@ export function registerDaggerheartPlusSheets() {
 
     async _onRender(context, options) {
       await super._onRender(context, options);
+
+      if (this._isLimitedView()) {
+        this.element?.classList?.add?.('limited');
+        return;
+      }
+
       try {
         window.daggerheartPlus?.bindProgressBarClicks?.(
           this.element,
@@ -1334,6 +1411,22 @@ export function registerDaggerheartPlusSheets() {
 
     get title() {
       return `${this.document.name} [DH+]`;
+    }
+
+    _isLimitedView() {
+      try {
+        return this.document.testUserPermission(game.user, 'LIMITED', { exact: true });
+      } catch (_) {
+        return false;
+      }
+    }
+
+    async _onRender(context, options) {
+      await super._onRender(context, options);
+
+      if (this._isLimitedView()) {
+        this.element?.classList?.add?.('limited');
+      }
     }
   };
 
@@ -1386,8 +1479,8 @@ export function registerDaggerheartPlusSheets() {
       return context;
     }
 
-    _onRender(context, options) {
-      super._onRender(context, options);
+    async _onRender(context, options) {
+      await super._onRender(context, options);
       const root = this.element;
       if (!root) return;
       const partyId = this.document.uuid;
