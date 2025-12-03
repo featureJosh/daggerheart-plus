@@ -51,6 +51,11 @@
                 <span class='resource-slot stress-slot {{#if (gte @root.document.system.resources.stress.value (add this 1))}}filled{{/if}}'
                     data-action='toggleStress' data-value="{{add this 1}}"
                     data-tooltip="Toggle Stress">
+                    {{#if (gte @root.document.system.resources.stress.value (add this 1))}}
+                    <img src="modules/daggerheart-plus/assets/icons/general/stress-slash.svg" alt="stressed">
+                    {{else}}
+                    <img src="modules/daggerheart-plus/assets/icons/general/stress.svg" alt="calm">
+                    {{/if}}
                 </span>
                 {{/times}}
             </div>

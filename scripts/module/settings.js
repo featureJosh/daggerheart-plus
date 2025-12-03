@@ -313,21 +313,4 @@ export function registerModuleSettings() {
   }
 
   console.log("Daggerheart Plus | Module settings registered");
-
-  function applyTokenCountersVisibilityBySetting() {
-    try {
-      const enabled = Boolean(
-        game.settings.get(MODULE_ID, "enableTokenCounters")
-      );
-      const left = document.querySelector("#token-counters-left");
-      const right = document.querySelector("#token-counters-right");
-      if (left) left.style.display = enabled ? "" : "none";
-      if (right) right.style.display = enabled ? "" : "none";
-
-      try {
-        window.daggerheartPlus.updateCountersWrapperDisplay();
-      } catch (_) {}
-    } catch (_) {}
-  }
-
 }

@@ -2781,17 +2781,27 @@
   box-shadow: 0 0 6px rgba(255, 152, 0, 0.4);
 }
 
-.daggerheart-plus.sheet .armor-slot {
-  font-size: 0.75rem;
+.daggerheart-plus.sheet .resource-slot img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(0.7);
+  transition: filter 0.2s ease;
+}
+
+.daggerheart-plus.sheet .hp-slot.filled img {
+  filter: brightness(0) invert(1);
+}
+
+.daggerheart-plus.sheet .stress-slot.filled img {
+  filter: brightness(0) invert(1);
 }
 
 .daggerheart-plus.sheet .armor-slot.filled {
   background: var(--dhp-info);
   border-color: var(--dhp-info);
-  color: white;
   box-shadow: 0 0 6px rgba(33, 150, 243, 0.4);
 }
 
-.daggerheart-plus.sheet .armor-slot:not(.filled) {
-  color: var(--dhp-text-light);
+.daggerheart-plus.sheet .armor-slot.filled img {
+  filter: brightness(0) invert(1);
 }

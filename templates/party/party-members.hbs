@@ -58,6 +58,11 @@
                                 class='resource-slot hp-slot {{#if (gte actor.system.resources.hitPoints.value (add this 1))}}filled{{/if}}'
                                 data-action='toggleHitPoints' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
                                 data-tooltip="Toggle HP">
+                                {{#if (gte actor.system.resources.hitPoints.value (add this 1))}}
+                                <img src="modules/daggerheart-plus/assets/icons/general/heart-slash.svg" alt="damaged">
+                                {{else}}
+                                <img src="modules/daggerheart-plus/assets/icons/general/heart.svg" alt="healthy">
+                                {{/if}}
                             </span>
                             {{/times}}
                         </div>
@@ -75,6 +80,11 @@
                                 class='resource-slot stress-slot {{#if (gte actor.system.resources.stress.value (add this 1))}}filled{{/if}}'
                                 data-action='toggleStress' data-actor-id="{{actor.uuid}}" data-value="{{add this 1}}"
                                 data-tooltip="Toggle Stress">
+                                {{#if (gte actor.system.resources.stress.value (add this 1))}}
+                                <img src="modules/daggerheart-plus/assets/icons/general/stress-slash.svg" alt="stressed">
+                                {{else}}
+                                <img src="modules/daggerheart-plus/assets/icons/general/stress.svg" alt="calm">
+                                {{/if}}
                             </span>
                             {{/times}}
                         </div>
@@ -95,9 +105,9 @@
                                 data-item-uuid="{{actor.system.armor.uuid}}" data-value="{{add this 1}}"
                                 data-tooltip="Toggle Armor">
                                 {{#if (gte actor.system.armor.system.marks.value (add this 1))}}
-                                <i class="fa-solid fa-shield-halved"></i>
+                                <img src="modules/daggerheart-plus/assets/icons/general/shield-slash.svg" alt="used">
                                 {{else}}
-                                <i class="fa-solid fa-shield"></i>
+                                <img src="modules/daggerheart-plus/assets/icons/general/shield.svg" alt="available">
                                 {{/if}}
                             </span>
                             {{/times}}

@@ -5,6 +5,7 @@ export class EnhancedDiceStyling {
       EnhancedDiceStyling._onRenderChatMessageHTML
     );
     Hooks.on("renderApplication", EnhancedDiceStyling._onRenderApplication);
+    Hooks.on("renderApplicationV2", EnhancedDiceStyling._onRenderApplication);
   }
 
   static _onRenderChatMessageHTML(...args) {
@@ -342,7 +343,3 @@ export class EnhancedDiceStyling {
   }
 }
 
-Hooks.once("ready", () => {
-  EnhancedDiceStyling.initialize();
-  console.log("Enhanced Dice Styling initialized");
-});
