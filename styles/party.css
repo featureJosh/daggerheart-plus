@@ -1005,6 +1005,22 @@
   height: 100%;
 }
 
+.daggerheart-plus.sheet.party .tab.notes .biography-section prose-mirror {
+  --min-height: 50px;
+}
+
+.daggerheart-plus.sheet.party .tab.notes .biography-section prose-mirror.inactive .editor-content {
+  position: relative;
+}
+
+.daggerheart-plus.sheet.party .tab.notes:has(prose-mirror.active) .biography-section {
+  flex: 1;
+}
+
+.daggerheart-plus.sheet.party .tab.notes:has(prose-mirror.active) .biography-section:not(:has(prose-mirror.active)) {
+  display: none;
+}
+
 .daggerheart-plus.sheet.party .coming-soon-container {
   display: flex;
   align-items: center;

@@ -180,30 +180,22 @@
     <div class="shortcut-items-section">
         <div class="equipment-section">
             <div class="title">
-                <!--<side-line-div class="invert"></side-line-div>-->
+                <side-line-div class="invert"></side-line-div>
                 <h3>{{localize "DAGGERHEART.GENERAL.equipment"}}</h3>
-                <!--<side-line-div></side-line-div>-->
+                <side-line-div></side-line-div>
             </div>
             <ul class="items-sidebar-list">
                 {{#if document.system.usedUnarmed}}
-                    {{> 'daggerheart.inventory-item'
+                {{> 'daggerheart.inventory-item-compact'
                     item=document.system.usedUnarmed
-                    type='action'
-                    hideTags=true
-                    hideDescription=true
-                    hideResources=true
-                    noExtensible=true
-                    }}
+                    type='attack'
+                }}
                 {{/if}}
                 {{#each document.items as |item|}}
                 {{#if item.system.equipped}}
-                {{> 'daggerheart.inventory-item'
-                item=item
-                type=item.type
-                hideTags=true
-                hideDescription=true
-                hideResources=true
-                noExtensible=true
+                {{> 'daggerheart.inventory-item-compact'
+                    item=item
+                    type=item.type
                 }}
                 {{/if}}
                 {{/each}}

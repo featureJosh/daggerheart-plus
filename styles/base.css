@@ -121,7 +121,7 @@ form#roll-selection .window-content {
 }
 
 .daggerheart-plus.sheet.party .window-content {
-  padding-bottom: 1em;
+  padding-bottom: 0em;
 }
 
 .daggerheart-plus.sheet form {
@@ -141,9 +141,6 @@ form#roll-selection .window-content {
   margin: 0;
   color: var(--dhp-primary);
   font-size: 1.5rem;
-}
-
-.daggerheart-plus.sheet .sheet-tabs {
 }
 
 .daggerheart-plus.sheet .rail-nav .sheet-tabs {

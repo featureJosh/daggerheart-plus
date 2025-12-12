@@ -855,6 +855,40 @@
   scrollbar-color: light-dark(#18162e, #f3c267) transparent;
 }
 
+.daggerheart-plus.sheet .tab.biography .items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow-y: auto;
+  mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    black 10%,
+    black 98%,
+    transparent 100%
+  );
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: light-dark(#18162e, #f3c267) transparent;
+}
+
+.daggerheart-plus.sheet .tab.biography .biography-section prose-mirror {
+  --min-height: 50px;
+}
+
+.daggerheart-plus.sheet .tab.biography .biography-section prose-mirror.inactive .editor-content {
+  position: relative;
+}
+
+.daggerheart-plus.sheet .tab.biography:has(prose-mirror.active) .biography-section {
+  flex: 1;
+}
+
+.daggerheart-plus.sheet .tab.biography:has(prose-mirror.active) .biography-section:not(:has(prose-mirror.active)) {
+  display: none;
+}
+
 .daggerheart-plus.sheet .items-section .inventory-item .inventory-item-header {
   gap: 1em;
 }
@@ -887,6 +921,7 @@
 	overflow: hidden auto;
 	padding-right: 0.5rem;
 	inset: 0;
+	max-height: 350px;
 	outline: 0 solid transparent;
 	cursor: var(--cursor-text);
 	user-select: text;
@@ -1027,7 +1062,12 @@
   scrollbar-width: none;
 }
 
-.daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section,
+.daggerheart-plus.sheet.character .character-sidebar-sheet .equipment-section {
+  margin-top: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .daggerheart-plus.sheet.character .character-sidebar-sheet .loadout-section,
 .daggerheart-plus.sheet.character .character-sidebar-sheet .experience-section,
 .dh-inline-rails.rails-left .floating-rail-left .loadout-section {
@@ -1040,9 +1080,6 @@
   min-width: 0;
 }
 
-.daggerheart-plus.sheet.character
-  .character-sidebar-sheet
-  .equipment-section:hover,
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .loadout-section:hover,
@@ -2804,4 +2841,105 @@
 
 .daggerheart-plus.sheet .armor-slot.filled img {
   filter: brightness(0) invert(1);
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dhp-border);
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  word-wrap: break-word;
+  word-break: break-word;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header
+  .item-img {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px;
+  flex-shrink: 0;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header
+  .item-label {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+  align-self: center;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header
+  .item-label
+  .item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .equipment-section
+  .inventory-item
+  .inventory-item-header
+  .item-label
+  .item-labels {
+  font-size: 0.75rem;
+  color: var(--dhp-text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.daggerheart-plus.sheet.character
+  .character-sidebar-sheet
+  .inventory-item
+  .controls {
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+    align-items: center;
+    margin-left: auto;
+    flex-wrap: nowrap;
 }

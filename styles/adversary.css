@@ -1289,3 +1289,37 @@
       calc(100% - var(--percent)) 100% no-repeat,
     var(--dhp-armor-gradient, var(--dhp-damage-gradient));
 }
+
+.daggerheart-plus.sheet.adversary .tab.notes .items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  overflow-y: auto;
+  mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    black 10%,
+    black 98%,
+    transparent 100%
+  );
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: light-dark(#18162e, #f3c267) transparent;
+}
+
+.daggerheart-plus.sheet.adversary .tab.notes .biography-section prose-mirror {
+  --min-height: 50px;
+}
+
+.daggerheart-plus.sheet.adversary .tab.notes .biography-section prose-mirror.inactive .editor-content {
+  position: relative;
+}
+
+.daggerheart-plus.sheet.adversary .tab.notes:has(prose-mirror.active) .biography-section {
+  flex: 1;
+}
+
+.daggerheart-plus.sheet.adversary .tab.notes:has(prose-mirror.active) .biography-section:not(:has(prose-mirror.active)) {
+  display: none;
+}
