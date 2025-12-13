@@ -4,48 +4,27 @@ export class HoverDistance {
   static registerSettings() {
     try {
       game.settings.register(MODULE_ID, "enableHoverDistance", {
-        name:
-          game.i18n.localize("DHP.Settings.HoverDistance.Enable.Name") ||
-          "Enable Hover Distance",
-        hint:
-          game.i18n.localize("DHP.Settings.HoverDistance.Enable.Hint") ||
-          "Show distance between your selected token and any token you hover.",
+        name: "Enable Hover Distance",
         scope: "client",
-        config: true,
+        config: false,
         type: Boolean,
         default: true,
       });
 
       game.settings.register(MODULE_ID, "hoverDistancePosition", {
-        name:
-          game.i18n.localize("DHP.Settings.HoverDistance.Position.Name") ||
-          "Tooltip Position",
-        hint:
-          game.i18n.localize("DHP.Settings.HoverDistance.Position.Hint") ||
-          "Where to show the distance label relative to the hovered token.",
+        name: "Tooltip Position",
         scope: "client",
-        config: true,
+        config: false,
         type: String,
-        choices: {
-          top: game.i18n.localize("DHP.Settings.Common.Top") || "Top",
-          center: game.i18n.localize("DHP.Settings.Common.Center") || "Center",
-          bottom: game.i18n.localize("DHP.Settings.Common.Bottom") || "Bottom",
-        },
         default: "center",
       });
 
       game.settings.register(MODULE_ID, "hoverDistanceRounding", {
-        name:
-          game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Name") ||
-          "Rounding (units)",
-        hint:
-          game.i18n.localize("DHP.Settings.HoverDistance.Rounding.Hint") ||
-          "Round the displayed distance to this step. 0 = floor to integer.",
+        name: "Rounding",
         scope: "client",
-        config: true,
+        config: false,
         type: Number,
         default: 0,
-        range: { min: 0, max: 25, step: 1 },
       });
 
       game.settings.register(MODULE_ID, "hoverDistanceEdgeToEdge", {

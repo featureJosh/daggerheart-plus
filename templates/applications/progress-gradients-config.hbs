@@ -1,0 +1,75 @@
+<div class="dhp-progress-gradients-config">
+  <p class="scope-notice"><span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span> {{localize "DHP.Settings.ProgressGradients.Description"}}</p>
+
+  <div class="gradient-section">
+    <h4>{{localize "DHP.Settings.ProgressGradients.HP.Name"}}</h4>
+    <div class="color-grid">
+      {{#each hpColors}}
+      <div class="color-row">
+        <label>Color {{@index}}</label>
+        <div class="color-input-wrapper">
+          <input type="text" class="hex-input" data-for="hp-{{@index}}" value="{{this}}" maxlength="7" />
+          <input type="color" name="hp-{{@index}}" value="{{this}}" />
+          <button type="button" data-action="removeColor" data-gradient="hp" data-index="{{@index}}" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <button type="button" class="add-color-btn" data-action="addColor" data-gradient="hp">
+      <i class="fas fa-plus"></i> Add Color
+    </button>
+  </div>
+
+  <div class="gradient-section">
+    <h4>{{localize "DHP.Settings.ProgressGradients.Stress.Name"}}</h4>
+    <div class="color-grid">
+      {{#each stressColors}}
+      <div class="color-row">
+        <label>Color {{@index}}</label>
+        <div class="color-input-wrapper">
+          <input type="text" class="hex-input" data-for="stress-{{@index}}" value="{{this}}" maxlength="7" />
+          <input type="color" name="stress-{{@index}}" value="{{this}}" />
+          <button type="button" data-action="removeColor" data-gradient="stress" data-index="{{@index}}" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <button type="button" class="add-color-btn" data-action="addColor" data-gradient="stress">
+      <i class="fas fa-plus"></i> Add Color
+    </button>
+  </div>
+
+  <div class="gradient-section">
+    <h4>{{localize "DHP.Settings.ProgressGradients.Armor.Name"}}</h4>
+    <div class="color-grid">
+      {{#each armorColors}}
+      <div class="color-row">
+        <label>Color {{@index}}</label>
+        <div class="color-input-wrapper">
+          <input type="text" class="hex-input" data-for="armor-{{@index}}" value="{{this}}" maxlength="7" />
+          <input type="color" name="armor-{{@index}}" value="{{this}}" />
+          <button type="button" data-action="removeColor" data-gradient="armor" data-index="{{@index}}" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    <button type="button" class="add-color-btn" data-action="addColor" data-gradient="armor">
+      <i class="fas fa-plus"></i> Add Color
+    </button>
+  </div>
+
+  <div class="form-footer">
+    <button type="button" data-action="resetAll">
+      <i class="fas fa-undo-alt"></i> Reset All
+    </button>
+    <button type="submit">
+      <i class="fas fa-save"></i> Save
+    </button>
+  </div>
+</div>

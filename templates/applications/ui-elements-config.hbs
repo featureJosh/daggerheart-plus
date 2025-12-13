@@ -1,0 +1,65 @@
+<div class="dhp-settings-config">
+  <h4>{{localize "DHP.Settings.UIElements.FearTracker.Title"}}</h4>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.FearTracker.Name"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></label>
+    <input type="checkbox" name="enableFearTracker" {{#if enableFearTracker}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.FearTracker.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.FearTrackerPosition.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <select name="fearTrackerPosition">
+      <option value="bottom" {{#if (eq fearTrackerPosition "bottom")}}selected{{/if}}>{{localize "DHP.Settings.UIElements.FearTrackerPosition.Bottom"}}</option>
+      <option value="top" {{#if (eq fearTrackerPosition "top")}}selected{{/if}}>{{localize "DHP.Settings.UIElements.FearTrackerPosition.Top"}}</option>
+    </select>
+    <p class="hint">{{localize "DHP.Settings.UIElements.FearTrackerPosition.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.FearTrackerStyle.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <select name="fearTrackerStyle">
+      <option value="counter" {{#if (eq fearTrackerStyle "counter")}}selected{{/if}}>{{localize "DHP.Settings.UIElements.FearTrackerStyle.Counter"}}</option>
+      <option value="progress" {{#if (eq fearTrackerStyle "progress")}}selected{{/if}}>{{localize "DHP.Settings.UIElements.FearTrackerStyle.Progress"}}</option>
+    </select>
+    <p class="hint">{{localize "DHP.Settings.UIElements.FearTrackerStyle.Hint"}}</p>
+  </div>
+
+  <h4>{{localize "DHP.Settings.UIElements.Counters.Title"}}</h4>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.TokenCounters.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableTokenCounters" {{#if enableTokenCounters}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.TokenCounters.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.LoadoutCounters.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="alwaysShowLoadoutResourceCounters" {{#if alwaysShowLoadoutResourceCounters}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.LoadoutCounters.Hint"}}</p>
+  </div>
+
+  <h4>{{localize "DHP.Settings.UIElements.Sheets.Title"}}</h4>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.CharacterSheetSidebars.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableCharacterSheetSidebars" {{#if enableCharacterSheetSidebars}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.CharacterSheetSidebars.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.ResourcePips.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableResourcePips" {{#if enableResourcePips}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.ResourcePips.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.TooltipWidth.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="number" name="tooltipCardMaxWidth" value="{{tooltipCardMaxWidth}}" min="220" max="640" step="10" />
+    <p class="hint">{{localize "DHP.Settings.UIElements.TooltipWidth.Hint"}}</p>
+  </div>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>

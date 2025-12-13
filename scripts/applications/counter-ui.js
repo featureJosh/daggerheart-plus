@@ -114,14 +114,9 @@ Hooks.once("init", () => {
   try {
     game.settings.register(MODULE_ID, LOCATION_SETTING_KEY, {
       name: "Fear Tracker Position",
-      hint: "Choose whether the fear tracker appears above the bottom hotbar or at the top HUD.",
       scope: "client",
-      config: true,
+      config: false,
       type: String,
-      choices: {
-        bottom: "Bottom Hotbar",
-        top: "Top HUD",
-      },
       default: DEFAULT_LOCATION,
       onChange: () => {
         try {
@@ -138,23 +133,10 @@ Hooks.once("init", () => {
 
   try {
     game.settings.register(MODULE_ID, STYLE_SETTING_KEY, {
-      name:
-        game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Name") ||
-        "Fear Tracker Display",
-      hint:
-        game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Hint") ||
-        "Choose between the counter or animated progress bar display.",
+      name: "Fear Tracker Display",
       scope: "client",
-      config: true,
+      config: false,
       type: String,
-      choices: {
-        counter:
-          game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Counter") ||
-          "Counter",
-        progress:
-          game.i18n?.localize?.("DHP.Settings.FearTracker.Style.Progress") ||
-          "Progress Bar",
-      },
       default: DEFAULT_STYLE,
       onChange: () => {
         try {

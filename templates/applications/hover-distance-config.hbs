@@ -1,0 +1,33 @@
+<div class="dhp-settings-config">
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.HoverDistance.Enable.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableHoverDistance" {{#if enableHoverDistance}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.HoverDistance.Enable.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.HoverDistance.Position.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <select name="hoverDistancePosition">
+      <option value="top" {{#if (eq hoverDistancePosition "top")}}selected{{/if}}>{{localize "DHP.Settings.Common.Top"}}</option>
+      <option value="center" {{#if (eq hoverDistancePosition "center")}}selected{{/if}}>{{localize "DHP.Settings.Common.Center"}}</option>
+      <option value="bottom" {{#if (eq hoverDistancePosition "bottom")}}selected{{/if}}>{{localize "DHP.Settings.Common.Bottom"}}</option>
+    </select>
+    <p class="hint">{{localize "DHP.Settings.HoverDistance.Position.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.HoverDistance.Rounding.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="number" name="hoverDistanceRounding" value="{{hoverDistanceRounding}}" min="0" max="25" step="1" />
+    <p class="hint">{{localize "DHP.Settings.HoverDistance.Rounding.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.HoverDistance.EdgeToEdge.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="hoverDistanceEdgeToEdge" {{#if hoverDistanceEdgeToEdge}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.HoverDistance.EdgeToEdge.Hint"}}</p>
+  </div>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>

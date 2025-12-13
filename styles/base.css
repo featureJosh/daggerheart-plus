@@ -38,6 +38,7 @@ form#roll-selection .window-content {
   backdrop-filter: none !important;
 }
 
+
 .daggerheart-plus.sheet {
   --dhp-primary: #f3c267;
   --dhp-secondary: #cc9900;
@@ -58,6 +59,7 @@ form#roll-selection .window-content {
     #2a2a35 50%,
     #1a1a25 100%
   );
+  
 
   /* Progress bar damage gradient aligned with theme */
   --dhp-damage-gradient: linear-gradient(
@@ -93,6 +95,11 @@ form#roll-selection .window-content {
   --dh-radius-md: 6px;
   --dh-radius-lg: 8px;
   --dh-radius-xl: 10px;
+}
+
+
+.dh-style {
+  border: 1px solid light-dark(var(--dhp-border), var(--dhp-primary));
 }
 
 .daggerheart-plus.sheet .window-header {

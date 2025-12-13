@@ -1,4 +1,4 @@
-﻿import { MODULE_ID } from "./constants.js";
+import { MODULE_ID } from "./constants.js";
 
 export function registerGradientSettings() {
   const MOD = MODULE_ID;
@@ -74,7 +74,7 @@ export function registerGradientSettings() {
         name: "DHP.Settings.ProgressGradients.HP.Name",
         hint: "DHP.Settings.ProgressGradients.HP.Hint",
         scope: "client",
-        config: true,
+        config: false,
         type: String,
         default: "",
         onChange: () => applyProgressBarGradients(),
@@ -83,7 +83,7 @@ export function registerGradientSettings() {
         name: "DHP.Settings.ProgressGradients.Stress.Name",
         hint: "DHP.Settings.ProgressGradients.Stress.Hint",
         scope: "client",
-        config: true,
+        config: false,
         type: String,
         default: "",
         onChange: () => applyProgressBarGradients(),
@@ -92,7 +92,7 @@ export function registerGradientSettings() {
         name: "DHP.Settings.ProgressGradients.Armor.Name",
         hint: "DHP.Settings.ProgressGradients.Armor.Hint",
         scope: "client",
-        config: true,
+        config: false,
         type: String,
         default: "",
         onChange: () => applyProgressBarGradients(),

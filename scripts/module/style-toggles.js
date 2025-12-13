@@ -1,4 +1,31 @@
-﻿import { MODULE_ID } from "./constants.js";
+import { MODULE_ID, COLOR_SETTINGS } from "./constants.js";
+
+export function applyThemeColors() {
+  try {
+    const sheets = document.querySelectorAll(".daggerheart-plus.sheet");
+    for (const c of COLOR_SETTINGS) {
+      const val = game.settings.get(MODULE_ID, c.key);
+      if (val && val !== c.default) {
+        sheets.forEach((sheet) => sheet.style.setProperty(c.cssVar, val));
+      }
+    }
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply theme colors", e);
+  }
+}
+
+export function applyThemeColorsToSheet(sheet) {
+  try {
+    for (const c of COLOR_SETTINGS) {
+      const val = game.settings.get(MODULE_ID, c.key);
+      if (val && val !== c.default) {
+        sheet.style.setProperty(c.cssVar, val);
+      }
+    }
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply theme colors to sheet", e);
+  }
+}
 
 export function applyEnhancedChatStyles(enabled) {
   try {
@@ -146,4 +173,46 @@ export function applyTokenCountersVisibilityBySetting() {
       window.daggerheartPlus.updateCountersWrapperDisplay();
     } catch (_) { }
   } catch (_) { }
+}
+
+export function applyCurrencyVisibility(enabled) {
+  try {
+    document.querySelectorAll(".daggerheart-plus.sheet .currency-section").forEach((el) => {
+      el.style.display = enabled ? "" : "none";
+    });
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply currency visibility", e);
+  }
+}
+
+export function applyCurrencyIcons() {
+  try {
+    const iconSettings = {
+      coins: game.settings.get(MODULE_ID, "currencyIconCoins"),
+      handfuls: game.settings.get(MODULE_ID, "currencyIconHandfuls"),
+      bags: game.settings.get(MODULE_ID, "currencyIconBags"),
+      chests: game.settings.get(MODULE_ID, "currencyIconChests"),
+    };
+
+    document.querySelectorAll(".daggerheart-plus.sheet .currency-input").forEach((input) => {
+      const currencyType = input.dataset.currency;
+      const customIcon = iconSettings[currencyType];
+      const iconContainer = input.querySelector(".icon");
+      if (!iconContainer) return;
+
+      if (customIcon) {
+        iconContainer.innerHTML = `<img src="${customIcon}" alt="${currencyType}" style="width: 18px; height: 18px; object-fit: contain;">`;
+      } else {
+        const defaultIcons = {
+          coins: '<i class="fa-solid fa-coin-front"></i>',
+          handfuls: '<i class="fa-solid fa-coins"></i>',
+          bags: '<i class="fa-solid fa-sack"></i>',
+          chests: '<i class="fa-solid fa-treasure-chest"></i>',
+        };
+        iconContainer.innerHTML = defaultIcons[currencyType] || "";
+      }
+    });
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply currency icons", e);
+  }
 }

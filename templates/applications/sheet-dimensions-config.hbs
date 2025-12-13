@@ -1,0 +1,30 @@
+<div class="dhp-settings-config">
+  <h4>{{localize "DHP.Settings.SheetDimensions.Default.Title"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></h4>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.SheetDimensions.Width.Name"}}</label>
+    <input type="number" name="defaultSheetWidth" value="{{defaultSheetWidth}}" min="400" max="2000" step="10" />
+    <p class="hint">{{localize "DHP.Settings.SheetDimensions.Width.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.SheetDimensions.Height.Name"}}</label>
+    <input type="number" name="defaultSheetHeight" value="{{defaultSheetHeight}}" min="300" max="1600" step="10" />
+  </div>
+
+  <h4>{{localize "DHP.Settings.SheetDimensions.Adversary.Title"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></h4>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.SheetDimensions.Width.Name"}}</label>
+    <input type="number" name="adversarySheetWidth" value="{{adversarySheetWidth}}" min="400" max="2000" step="10" />
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.SheetDimensions.Height.Name"}}</label>
+    <input type="number" name="adversarySheetHeight" value="{{adversarySheetHeight}}" min="300" max="1600" step="10" />
+  </div>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>

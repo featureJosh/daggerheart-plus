@@ -4,6 +4,7 @@ import {
   applyEnhancedChatStyles,
   applyParticleEffects,
   applyCriticalHitParticles,
+  applyThemeColors,
 } from "./module/style-toggles.js";
 import { registerDomainCardHooks } from "./module/domain-cards.js";
 import { enhanceTooltipManager, applyTooltipCardMaxWidth } from "./module/tooltip-manager.js";
@@ -51,6 +52,12 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", async () => {
   initializeHoverDistance();
+
+  try {
+    applyThemeColors();
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply initial theme colors", e);
+  }
 
   try {
     const effectsHaloEnabled = game.settings.get(

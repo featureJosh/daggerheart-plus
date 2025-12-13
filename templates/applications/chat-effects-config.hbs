@@ -1,0 +1,23 @@
+<div class="dhp-settings-config">
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.ChatEffects.EnhancedChat.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableEnhancedChat" {{#if enableEnhancedChat}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.ChatEffects.EnhancedChat.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.ChatEffects.Particles.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="enableParticles" {{#if enableParticles}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.ChatEffects.Particles.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.ChatEffects.AlwaysOpenMoves.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="alwaysOpenDomainCards" {{#if alwaysOpenDomainCards}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.ChatEffects.AlwaysOpenMoves.Hint"}}</p>
+  </div>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>

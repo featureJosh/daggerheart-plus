@@ -16,3 +16,419 @@
   font-size: 11px;
   opacity: 0.8;
 }
+
+.dhp-theme-colors-config {
+  padding: 0.5rem;
+}
+
+.dhp-theme-colors-config .scope-notice {
+  margin-bottom: 0.75rem;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.dhp-theme-colors-config .scope-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.dhp-theme-colors-config .color-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.dhp-theme-colors-config .color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.dhp-theme-colors-config .color-row label {
+  font-size: 12px;
+  flex: 1;
+}
+
+.dhp-theme-colors-config .color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dhp-theme-colors-config .hex-input {
+  width: 70px;
+  height: 28px;
+  padding: 0 0.4rem;
+  font-size: 11px;
+  font-family: monospace;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dhp-theme-colors-config input[type="color"] {
+  width: 36px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dhp-theme-colors-config input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.dhp-theme-colors-config input[type="color"]::-webkit-color-swatch {
+  border-radius: 2px;
+  border: none;
+}
+
+.dhp-theme-colors-config .reset-color {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.dhp-theme-colors-config .reset-color:hover {
+  opacity: 1;
+  border-color: var(--color-border, #555);
+}
+
+.dhp-theme-colors-config .form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border, #555);
+}
+
+.dhp-theme-colors-config .form-footer button {
+  padding: 0.4rem 0.8rem;
+  font-size: 12px;
+}
+
+.dhp-settings-config {
+  padding: 0.5rem;
+}
+
+.dhp-settings-config h4 {
+  margin: 1rem 0 0.5rem 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border, #555);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.dhp-settings-config h4:first-child {
+  margin-top: 0;
+}
+
+.dhp-settings-config .setting-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.dhp-settings-config .setting-row:last-of-type {
+  border-bottom: none;
+}
+
+.dhp-settings-config .setting-row > label {
+  flex: 1;
+  min-width: 150px;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.dhp-settings-config .setting-row > .hint {
+  flex-basis: 100%;
+  margin: 0.25rem 0 0 0;
+  font-size: 11px;
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+.dhp-settings-config .range-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dhp-settings-config input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.dhp-settings-config input[type="number"] {
+  width: 80px;
+  text-align: center;
+}
+
+.dhp-settings-config input[type="range"] {
+  width: 120px;
+}
+
+.dhp-settings-config .range-value {
+  min-width: 40px;
+  text-align: right;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.dhp-settings-config .file-picker-row > label {
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.dhp-settings-config .file-input-wrapper {
+  display: flex;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.dhp-settings-config .file-input-wrapper input[type="text"] {
+  flex: 1;
+  font-size: 11px;
+  width: auto;
+}
+
+.dhp-settings-config .file-input-wrapper button {
+  padding: 0.25rem 0.5rem;
+}
+
+.dhp-settings-config .reload-notice {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: rgba(255, 152, 0, 0.15);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  border-radius: 4px;
+  font-size: 11px;
+  color: #ff9800;
+}
+
+.dhp-settings-config .form-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border, #555);
+}
+
+.dhp-settings-config .form-footer button {
+  padding: 0.4rem 0.8rem;
+  font-size: 12px;
+}
+
+.dhp-settings-config input[type="text"] {
+  width: 100%;
+  font-size: 12px;
+}
+
+.dhp-settings-config .setting-row.full-width {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dhp-settings-config select {
+  min-width: 100px;
+}
+
+.dhp-settings-config .scope-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+.dhp-settings-config .scope-badge.world {
+  background: rgba(244, 67, 54, 0.2);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.4);
+}
+
+.dhp-settings-config .scope-badge.client {
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.dhp-progress-gradients-config {
+  padding: 0.5rem;
+}
+
+.dhp-progress-gradients-config .scope-notice {
+  margin-bottom: 0.75rem;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.dhp-progress-gradients-config .scope-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  margin-right: 0.5em;
+  vertical-align: middle;
+  background: rgba(33, 150, 243, 0.2);
+  color: #2196f3;
+  border: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.dhp-progress-gradients-config .gradient-section {
+  margin-bottom: 1rem;
+}
+
+.dhp-progress-gradients-config h4 {
+  margin: 0 0 0.5rem 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border, #555);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.dhp-progress-gradients-config .color-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.dhp-progress-gradients-config .color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.dhp-progress-gradients-config .color-row label {
+  font-size: 12px;
+  flex: 1;
+}
+
+.dhp-progress-gradients-config .color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.dhp-progress-gradients-config .hex-input {
+  width: 70px;
+  height: 28px;
+  padding: 0 0.4rem;
+  font-size: 11px;
+  font-family: monospace;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dhp-progress-gradients-config input[type="color"] {
+  width: 36px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--color-border, #555);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dhp-progress-gradients-config input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.dhp-progress-gradients-config input[type="color"]::-webkit-color-swatch {
+  border-radius: 2px;
+  border: none;
+}
+
+.dhp-progress-gradients-config .color-input-wrapper button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.dhp-progress-gradients-config .color-input-wrapper button:hover {
+  opacity: 1;
+  border-color: var(--color-border, #555);
+}
+
+.dhp-progress-gradients-config .add-color-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed var(--color-border, #555);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dhp-progress-gradients-config .add-color-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dhp-progress-gradients-config .form-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border, #555);
+}
+
+.dhp-progress-gradients-config .form-footer button {
+  padding: 0.4rem 0.8rem;
+  font-size: 12px;
+}

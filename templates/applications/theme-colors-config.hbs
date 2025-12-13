@@ -1,0 +1,25 @@
+<div class="dhp-theme-colors-config">
+  <p class="scope-notice"><span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span> {{localize "DHP.Settings.ThemeColors.ScopeNotice"}}</p>
+  <div class="color-grid">
+    {{#each colors}}
+    <div class="color-row">
+      <label for="{{key}}">{{label}}</label>
+      <div class="color-input-wrapper">
+        <input type="text" class="hex-input" data-for="{{key}}" value="{{value}}" maxlength="7" />
+        <input type="color" name="{{key}}" value="{{value}}" />
+        <button type="button" data-action="resetColor" data-key="{{key}}" title="Reset to default">
+          <i class="fas fa-undo"></i>
+        </button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  <div class="form-footer">
+    <button type="button" data-action="resetAll">
+      <i class="fas fa-undo-alt"></i> Reset All
+    </button>
+    <button type="submit">
+      <i class="fas fa-save"></i> Save
+    </button>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="dhp-settings-config">
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.TokenEffects.Halo.Name"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></label>
+    <input type="checkbox" name="enableEffectsHalo" {{#if enableEffectsHalo}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.TokenEffects.Halo.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.TokenEffects.IconSize.Name"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></label>
+    <div class="range-input">
+      <input type="range" name="effectsHaloIconSize" value="{{effectsHaloIconSize}}" min="12" max="32" step="1" />
+      <span class="range-value">{{effectsHaloIconSize}}px</span>
+    </div>
+    <p class="hint">{{localize "DHP.Settings.TokenEffects.IconSize.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
+    <label>{{localize "DHP.Settings.TokenEffects.Spacing.Name"}} <span class="scope-badge world">{{localize "DHP.Settings.Scope.World"}}</span></label>
+    <div class="range-input">
+      <input type="range" name="effectsHaloSpacing" value="{{effectsHaloSpacing}}" min="0.5" max="1.5" step="0.05" />
+      <span class="range-value">{{effectsHaloSpacing}}</span>
+    </div>
+    <p class="hint">{{localize "DHP.Settings.TokenEffects.Spacing.Hint"}}</p>
+  </div>
+
+  <p class="reload-notice"><i class="fas fa-exclamation-triangle"></i> {{localize "DHP.Settings.TokenEffects.ReloadNotice"}}</p>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>

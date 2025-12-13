@@ -938,7 +938,7 @@
 	border-radius: 5px;
 	padding: var(--legend-padding-y) 1.5em;
 	margin: 0;
-	border: 1px solid var(--dhp-secondary);
+	border: none;
 	clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 	line-height: var(--legend-line-height);
 	z-index: 2;
