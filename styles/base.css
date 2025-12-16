@@ -104,6 +104,7 @@ form#roll-selection .window-content {
 
 .dh-style h2, .dh-style h3 {
 	font-family: var(--dhp-title-font), serif;
+	line-height: 1.3;
 }
 
 .daggerheart-plus.sheet .window-header {
@@ -208,9 +209,11 @@ form#roll-selection .window-content {
 .daggerheart-plus.sheet select {
   color: var(--dhp-text);
   border-radius: 4px;
-  padding: 0em 0em;
+  padding: unset;
+  line-height: 1.4;
   transition: all 0.2s ease;
   backdrop-filter: unset;
+  height: unset;
 }
 
 .daggerheart-plus.sheet input[type="text"]:focus,

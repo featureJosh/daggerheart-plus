@@ -1,4 +1,4 @@
-﻿.daggerheart-plus.sheet.environment .environment-header-sheet {
+.daggerheart-plus.sheet.environment .environment-header-sheet {
   padding: 0;
   background: transparent;
   border: none;
@@ -139,7 +139,7 @@
 
 .daggerheart-plus.sheet.environment .environment-hero__name {
   margin: 0;
-  line-height: 1;
+  line-height: 1.3;
 }
 
 .daggerheart-plus.sheet.environment .environment-hero__name input {
@@ -147,12 +147,13 @@
   border: 1px solid transparent;
   border-radius: 12px;
   background: transparent;
-  padding: 0.1rem 0.35rem;
+  padding: 0.1rem 0.35rem 0.2rem;
   font-size: clamp(1.9rem, 3vw, 2.75rem);
   font-weight: 700;
   color: inherit;
   letter-spacing: 0.02em;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  line-height: 1.3;
 }
 
 .daggerheart-plus.sheet.environment .environment-hero__name input:focus,
