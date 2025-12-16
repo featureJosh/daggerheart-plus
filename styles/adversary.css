@@ -65,7 +65,7 @@
   width: 100%;
   text-align: center;
   margin-bottom: 0.25rem;
-  font-family: "Cinzel Decorative", serif;
+  font-family: var(--dhp-title-font), serif;
   backdrop-filter: blur(0);
   -webkit-backdrop-filter: blur(0);
 }

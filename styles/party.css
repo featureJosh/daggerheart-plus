@@ -169,7 +169,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Cinzel Decorative", serif;
+  font-family: var(--dhp-title-font), serif;
   backdrop-filter: blur(0);
   -webkit-backdrop-filter: blur(0);
   text-align: center;
@@ -392,7 +392,7 @@
   font-weight: bold;
   color: var(--dhp-primary);
   margin: 0;
-  font-family: "Cinzel Decorative", serif;
+  font-family: var(--dhp-title-font), serif;
   line-height: 1.2;
 }
 
@@ -726,7 +726,7 @@
   font-weight: bold;
   color: var(--dhp-primary);
   margin: 0;
-  font-family: "Cinzel Decorative", serif;
+  font-family: var(--dhp-title-font), serif;
   line-height: 1.2;
 }
 
@@ -1062,7 +1062,7 @@
   font-weight: bold;
   color: var(--dhp-primary);
   margin: 0 0 0.875rem 0;
-  font-family: "Cinzel Decorative", serif;
+  font-family: var(--dhp-title-font), serif;
 }
 
 .daggerheart-plus.sheet.party .coming-soon-text {

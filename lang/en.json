@@ -205,7 +205,13 @@
   "DHP.Settings.Currency.Title": "Currency",
   "DHP.Settings.Currency.Menu.Name": "Currency",
   "DHP.Settings.Currency.Menu.Label": "Configure Currency",
-  "DHP.Settings.Currency.Menu.Hint": "Configure currency display and custom icons.",
+  "DHP.Settings.Currency.Menu.Hint": "Configure currency display, names, and custom icons.",
+  "DHP.Settings.Currency.SystemNames.Title": "Currency Names (From System Settings)",
+  "DHP.Settings.Currency.SystemNames.Hint": "These currency names are configured in the Daggerheart system's Homebrew settings and are displayed here for reference only.",
+  "DHP.Settings.Currency.Names.Coins.Name": "Coins",
+  "DHP.Settings.Currency.Names.Handfuls.Name": "Handfuls",
+  "DHP.Settings.Currency.Names.Bags.Name": "Bags",
+  "DHP.Settings.Currency.Names.Chests.Name": "Chests",
   "DHP.Settings.Currency.Icons.Title": "Custom Icons",
   "DHP.Settings.Currency.Icons.Coins.Name": "Coins",
   "DHP.Settings.Currency.Icons.Handfuls.Name": "Handfuls",
@@ -232,5 +238,13 @@
   "DHP.Settings.ProgressGradients.Menu.Name": "Progress Gradients",
   "DHP.Settings.ProgressGradients.Menu.Label": "Configure Gradients",
   "DHP.Settings.ProgressGradients.Menu.Hint": "Customize progress bar gradient colors.",
-  "DHP.Settings.ProgressGradients.Description": "Enter comma or space separated color values (hex, rgb, hsl). Leave blank for defaults."
+  "DHP.Settings.ProgressGradients.Description": "Enter comma or space separated color values (hex, rgb, hsl). Leave blank for defaults.",
+
+  "DHP.Settings.CustomFont.Title": "Custom Font",
+  "DHP.Settings.CustomFont.Menu.Name": "Custom Font",
+  "DHP.Settings.CustomFont.Menu.Label": "Configure Font",
+  "DHP.Settings.CustomFont.Menu.Hint": "Replace the default Cinzel font with a custom font.",
+  "DHP.Settings.CustomFont.Description": "Upload a custom font file to replace the Cinzel font used for character names and titles. If no font is uploaded, Texturina from Google Fonts will be used.",
+  "DHP.Settings.CustomFont.File.Name": "Custom Font File",
+  "DHP.Settings.CustomFont.File.Hint": "Upload a .woff, .woff2, .ttf, or .otf font file. Leave empty to use Texturina."
 }

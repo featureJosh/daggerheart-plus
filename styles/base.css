@@ -102,6 +102,10 @@ form#roll-selection .window-content {
   border: 1px solid light-dark(var(--dhp-border), var(--dhp-primary));
 }
 
+.dh-style h2, .dh-style h3 {
+	font-family: var(--dhp-title-font), serif;
+}
+
 .daggerheart-plus.sheet .window-header {
   border: none;
 }

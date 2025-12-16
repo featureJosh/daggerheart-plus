@@ -1,7 +1,7 @@
 import { MODULE_ID, COLOR_SETTINGS } from "./constants.js";
 import { applyEffectsHaloSetting, applyEffectsHaloIconSize, applyEffectsHaloSpacing } from "./effects-halo.js";
 import { applyTooltipCardMaxWidth } from "./tooltip-manager.js";
-import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting, applyCurrencyVisibility, applyCurrencyIcons, applyThemeColors } from "./style-toggles.js";
+import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting, applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyThemeColors, applyCustomFont } from "./style-toggles.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -494,6 +494,63 @@ class ProgressGradientsConfig extends HandlebarsApplicationMixin(ApplicationV2) 
   }
 }
 
+class CustomFontConfig extends HandlebarsApplicationMixin(ApplicationV2) {
+  static DEFAULT_OPTIONS = {
+    id: "dhp-custom-font-config",
+    tag: "form",
+    window: {
+      title: "DHP.Settings.CustomFont.Title",
+      icon: "fas fa-font",
+    },
+    position: {
+      width: 450,
+      height: "auto",
+    },
+    form: {
+      handler: CustomFontConfig.#onSubmit,
+      closeOnSubmit: true,
+    },
+    actions: {
+      filePicker: CustomFontConfig.#onFilePicker,
+      clearFont: CustomFontConfig.#onClearFont,
+    },
+  };
+
+  static PARTS = {
+    form: {
+      template: `modules/${MODULE_ID}/templates/applications/custom-font-config.hbs`,
+    },
+  };
+
+  async _prepareContext(options) {
+    return {
+      customFontFile: game.settings.get(MODULE_ID, "customFontFile"),
+    };
+  }
+
+  static async #onSubmit(event, form, formData) {
+    const data = formData.object;
+    await game.settings.set(MODULE_ID, "customFontFile", data.customFontFile ?? "");
+  }
+
+  static async #onFilePicker(event, target) {
+    const input = this.element.querySelector(`input[name="customFontFile"]`);
+    const fp = new FilePicker({
+      type: "font",
+      current: input?.value || "",
+      callback: (path) => {
+        if (input) input.value = path;
+      },
+    });
+    fp.browse();
+  }
+
+  static #onClearFont(event, target) {
+    const input = this.element.querySelector(`input[name="customFontFile"]`);
+    if (input) input.value = "";
+  }
+}
+
 export function registerModuleSettings() {
 
   game.settings.registerMenu(MODULE_ID, "themeColorsMenu", {
@@ -565,6 +622,15 @@ export function registerModuleSettings() {
     hint: "DHP.Settings.ProgressGradients.Menu.Hint",
     icon: "fas fa-fill-drip",
     type: ProgressGradientsConfig,
+    restricted: false,
+  });
+
+  game.settings.registerMenu(MODULE_ID, "customFontMenu", {
+    name: "DHP.Settings.CustomFont.Menu.Name",
+    label: "DHP.Settings.CustomFont.Menu.Label",
+    hint: "DHP.Settings.CustomFont.Menu.Hint",
+    icon: "fas fa-font",
+    type: CustomFontConfig,
     restricted: false,
   });
 
@@ -863,10 +929,25 @@ export function registerModuleSettings() {
     default: 820,
   });
 
+  game.settings.register(MODULE_ID, "customFontFile", {
+    name: "Custom Font File",
+    scope: "client",
+    config: false,
+    type: String,
+    default: "",
+    onChange: () => applyCustomFont(),
+  });
+
   try {
     applyTooltipCardMaxWidth();
   } catch (e) {
     console.warn("Daggerheart Plus | Failed applying tooltip card max width during init", e);
+  }
+
+  try {
+    applyCustomFont();
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed applying custom font during init", e);
   }
 
   console.log("Daggerheart Plus | Module settings registered");

@@ -1,0 +1,18 @@
+<div class="dhp-settings-config">
+  <p class="description">{{localize "DHP.Settings.CustomFont.Description"}}</p>
+
+  <div class="setting-row file-picker-row">
+    <label>{{localize "DHP.Settings.CustomFont.File.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <div class="file-input-wrapper">
+      <input type="text" name="customFontFile" value="{{customFontFile}}" placeholder="Texturina (default)" />
+      <button type="button" data-action="filePicker"><i class="fas fa-file"></i></button>
+      <button type="button" data-action="clearFont" title="Clear"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="hint">{{localize "DHP.Settings.CustomFont.File.Hint"}}</p>
+  </div>
+
+  <div class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "Save"}}</button>
+  </div>
+</div>
+

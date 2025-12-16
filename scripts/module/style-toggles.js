@@ -1,5 +1,7 @@
 import { MODULE_ID, COLOR_SETTINGS } from "./constants.js";
 
+const DEFAULT_FONT_URL = "https://fonts.googleapis.com/css2?family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap";
+
 export function applyThemeColors() {
   try {
     const sheets = document.querySelectorAll(".daggerheart-plus.sheet");
@@ -185,6 +187,40 @@ export function applyCurrencyVisibility(enabled) {
   }
 }
 
+export function applySystemCurrencyVisibility() {
+  try {
+    let currencyEnabled = {
+      coins: true,
+      handfuls: true,
+      bags: true,
+      chests: true,
+    };
+
+    try {
+      const homebrew = game.settings.get('daggerheart', 'Homebrew');
+      if (homebrew?.currency) {
+        currencyEnabled = {
+          coins: homebrew.currency.coins?.enabled !== false,
+          handfuls: homebrew.currency.handfuls?.enabled !== false,
+          bags: homebrew.currency.bags?.enabled !== false,
+          chests: homebrew.currency.chests?.enabled !== false,
+        };
+      }
+    } catch (err) {
+      console.warn("Daggerheart Plus | Could not access system currency settings, using defaults", err);
+    }
+
+    document.querySelectorAll(".daggerheart-plus.sheet .currency-input").forEach((el) => {
+      const currencyType = el.dataset.currency;
+      if (currencyType && currencyEnabled[currencyType] !== undefined) {
+        el.style.display = currencyEnabled[currencyType] ? "" : "none";
+      }
+    });
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply system currency visibility", e);
+  }
+}
+
 export function applyCurrencyIcons() {
   try {
     const iconSettings = {
@@ -214,5 +250,99 @@ export function applyCurrencyIcons() {
     });
   } catch (e) {
     console.warn("Daggerheart Plus | Failed to apply currency icons", e);
+  }
+}
+
+export function applyCurrencyLabels() {
+  try {
+    const defaultLabels = {
+      coins: "Coins",
+      handfuls: "Handfuls",
+      bags: "Bags",
+      chests: "Chests",
+    };
+
+    let systemLabels = { ...defaultLabels };
+    
+    try {
+      const homebrew = game.settings.get('daggerheart', 'Homebrew');
+      if (homebrew?.currency) {
+        systemLabels = {
+          coins: homebrew.currency.coins?.label || defaultLabels.coins,
+          handfuls: homebrew.currency.handfuls?.label || defaultLabels.handfuls,
+          bags: homebrew.currency.bags?.label || defaultLabels.bags,
+          chests: homebrew.currency.chests?.label || defaultLabels.chests,
+        };
+      }
+    } catch (err) {
+      console.warn("Daggerheart Plus | Could not access system currency settings, using defaults", err);
+    }
+
+    document.querySelectorAll(".daggerheart-plus.sheet .currency-input").forEach((input) => {
+      const currencyType = input.dataset.currency;
+      const label = systemLabels[currencyType];
+      if (label) {
+        input.dataset.tooltip = label;
+      }
+    });
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply currency labels", e);
+  }
+}
+
+export function applyCustomFont() {
+  try {
+    const STYLE_ID = "dhp-custom-font-style";
+    const FONT_LINK_ID = "dhp-custom-font-link";
+
+    let styleEl = document.getElementById(STYLE_ID);
+    let fontLink = document.getElementById(FONT_LINK_ID);
+
+    const customFontFile = game.settings.get(MODULE_ID, "customFontFile");
+
+    if (customFontFile) {
+      const fontName = "DHP-CustomFont";
+
+      if (fontLink) fontLink.remove();
+
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = STYLE_ID;
+        document.head.appendChild(styleEl);
+      }
+
+      styleEl.textContent = `
+        @font-face {
+          font-family: "${fontName}";
+          src: url("${customFontFile}");
+          font-display: swap;
+        }
+        :root {
+          --dhp-title-font: "${fontName}";
+        }
+      `;
+    } else {
+      if (!fontLink) {
+        fontLink = document.createElement("link");
+        fontLink.id = FONT_LINK_ID;
+        fontLink.rel = "stylesheet";
+        fontLink.href = DEFAULT_FONT_URL;
+        document.head.appendChild(fontLink);
+      }
+
+      if (!styleEl) {
+        styleEl = document.createElement("style");
+        styleEl.id = STYLE_ID;
+        document.head.appendChild(styleEl);
+      }
+
+      styleEl.textContent = `
+        :root {
+          --dhp-title-font: "Texturina";
+        }
+      `;
+    }
+  } catch (e) {
+    console.warn("Daggerheart Plus | Failed to apply custom font", e);
   }
 }

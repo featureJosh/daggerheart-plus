@@ -44,7 +44,7 @@
   align-items: center;
   gap: 12px;
   color: var(--dh-golden);
-  font-family: "Cinzel", serif;
+  font-family: var(--dhp-title-font), serif;
   font-size: 24px;
   font-weight: 700;
   text-shadow: 0 0 8px rgba(243, 194, 103, 0.6);
@@ -228,7 +228,7 @@
 
 .hope-label,
 .fear-label {
-  font-family: "Cinzel", serif;
+  font-family: var(--dhp-title-font), serif;
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
@@ -425,7 +425,7 @@
   border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
-  font-family: "Cinzel", serif;
+  font-family: var(--dhp-title-font), serif;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
