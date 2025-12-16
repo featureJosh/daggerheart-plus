@@ -295,47 +295,36 @@ export function applyCustomFont() {
     const STYLE_ID = "dhp-custom-font-style";
     const FONT_LINK_ID = "dhp-custom-font-link";
 
-    let styleEl = document.getElementById(STYLE_ID);
     let fontLink = document.getElementById(FONT_LINK_ID);
+    if (!fontLink) {
+      fontLink = document.createElement("link");
+      fontLink.id = FONT_LINK_ID;
+      fontLink.rel = "stylesheet";
+      fontLink.href = DEFAULT_FONT_URL;
+      document.head.appendChild(fontLink);
+    }
+
+    let styleEl = document.getElementById(STYLE_ID);
+    if (!styleEl) {
+      styleEl = document.createElement("style");
+      styleEl.id = STYLE_ID;
+      document.head.appendChild(styleEl);
+    }
 
     const customFontFile = game.settings.get(MODULE_ID, "customFontFile");
 
     if (customFontFile) {
-      const fontName = "DHP-CustomFont";
-
-      if (fontLink) fontLink.remove();
-
-      if (!styleEl) {
-        styleEl = document.createElement("style");
-        styleEl.id = STYLE_ID;
-        document.head.appendChild(styleEl);
-      }
-
       styleEl.textContent = `
         @font-face {
-          font-family: "${fontName}";
+          font-family: "DHP-CustomFont";
           src: url("${customFontFile}");
           font-display: swap;
         }
         :root {
-          --dhp-title-font: "${fontName}";
+          --dhp-title-font: "DHP-CustomFont";
         }
       `;
     } else {
-      if (!fontLink) {
-        fontLink = document.createElement("link");
-        fontLink.id = FONT_LINK_ID;
-        fontLink.rel = "stylesheet";
-        fontLink.href = DEFAULT_FONT_URL;
-        document.head.appendChild(fontLink);
-      }
-
-      if (!styleEl) {
-        styleEl = document.createElement("style");
-        styleEl.id = STYLE_ID;
-        document.head.appendChild(styleEl);
-      }
-
       styleEl.textContent = `
         :root {
           --dhp-title-font: "Texturina";
