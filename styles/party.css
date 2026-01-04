@@ -990,7 +990,7 @@
   transform: scale(0.98);
 }
 
-.daggerheart-plus.sheet.party .tab.notes .items-section, .daggerheart-plus.sheet.party .tab.inventory .items-section {
+.daggerheart-plus.sheet.party .tab.inventory .items-section {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5em;
@@ -1003,16 +1003,40 @@
 	padding-top: 0px;
 }
 
-.daggerheart-plus.sheet.party .tab.notes .items-section fieldset {
-  height: 100%;
+.daggerheart-plus.sheet.party .tab.notes .items-section {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	overflow: hidden;
+	height: 100%;
+	padding-top: 0px;
+}
+
+.daggerheart-plus.sheet.party .tab.notes .items-section fieldset.biography-section {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .daggerheart-plus.sheet.party .tab.notes .biography-section prose-mirror {
   --min-height: 50px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.daggerheart-plus.sheet.party .tab.notes .biography-section prose-mirror.inactive .editor-content {
-  position: relative;
+.daggerheart-plus.sheet.party .tab.notes .biography-section prose-mirror .editor-content {
+  position: static;
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .daggerheart-plus.sheet.party .tab.notes:has(prose-mirror.active) .biography-section {
