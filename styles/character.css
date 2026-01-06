@@ -875,22 +875,6 @@
   scrollbar-color: light-dark(#18162e, #f3c267) transparent;
 }
 
-.daggerheart-plus.sheet .tab.biography .biography-section prose-mirror {
-  --min-height: 50px;
-}
-
-.daggerheart-plus.sheet .tab.biography .biography-section prose-mirror.inactive .editor-content {
-  position: relative;
-}
-
-.daggerheart-plus.sheet .tab.biography:has(prose-mirror.active) .biography-section {
-  flex: 1;
-}
-
-.daggerheart-plus.sheet .tab.biography:has(prose-mirror.active) .biography-section:not(:has(prose-mirror.active)) {
-  display: none;
-}
-
 .daggerheart-plus.sheet .items-section .inventory-item .inventory-item-header {
   gap: 1em;
 }
@@ -905,29 +889,6 @@
 
 .daggerheart-plus.sheet.party fieldset {
 	height: unset;
-}
-
-.daggerheart-plus.sheet.party prose-mirror {
-  height: 100%
-}
-
-.daggerheart-plus.sheet prose-mirror {
-	height: 100% !important;
-	border: 1px solid var(--dhp-primary);
-	border-radius: 5px;
-	margin-top: calc(var(--legend-height) / -1.25);
-}
-
-.daggerheart-plus.sheet .prosemirror .editor-content, .daggerheart-plus.sheet prose-mirror .editor-content {
-	position: absolute;
-	overflow: hidden auto;
-	padding-right: 0.5rem;
-	inset: 0;
-	max-height: 350px;
-	outline: 0 solid transparent;
-	cursor: var(--cursor-text);
-	user-select: text;
-	padding: 1.5em 1em;
 }
 
 .daggerheart-plus.sheet fieldset legend {

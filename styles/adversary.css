@@ -1310,18 +1310,3 @@
   scrollbar-color: light-dark(#18162e, #f3c267) transparent;
 }
 
-.daggerheart-plus.sheet.adversary .tab.notes .biography-section prose-mirror {
-  --min-height: 50px;
-}
-
-.daggerheart-plus.sheet.adversary .tab.notes .biography-section prose-mirror.inactive .editor-content {
-  position: relative;
-}
-
-.daggerheart-plus.sheet.adversary .tab.notes:has(prose-mirror.active) .biography-section {
-  flex: 1;
-}
-
-.daggerheart-plus.sheet.adversary .tab.notes:has(prose-mirror.active) .biography-section:not(:has(prose-mirror.active)) {
-  display: none;
-}
