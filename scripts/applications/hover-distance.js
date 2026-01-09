@@ -19,31 +19,6 @@ export class HoverDistance {
         default: "center",
       });
 
-      game.settings.register(MODULE_ID, "hoverDistanceRounding", {
-        name: "Rounding",
-        scope: "client",
-        config: false,
-        type: Number,
-        default: 0,
-      });
-
-      game.settings.register(MODULE_ID, "hoverDistanceEdgeToEdge", {
-        name: HoverDistance._i18n(
-          "DHP.Settings.HoverDistance.EdgeToEdge.Name",
-          "Edge to Edge Measurement"
-        ),
-        hint: HoverDistance._i18n(
-          "DHP.Settings.HoverDistance.EdgeToEdge.Hint",
-          "Also subtract the target's half-size to measure edge-to-edge. Default measures Your Edge -> Target Center."
-        ),
-        scope: "client",
-        config: false,
-        type: Boolean,
-        default: false,
-      });
-
-      // No additional measurement mode setting; default behavior is
-      // Your Edge → Target Center, with optional Edge-to-Edge toggle above.
     } catch (e) {
       console.warn(
         "Daggerheart Plus | Failed to register HoverDistance settings",
@@ -132,7 +107,7 @@ export class HoverDistance {
       if (!hoveredToken?.visible || !source?.visible)
         return HoverDistance._clearDistance(hoveredToken);
 
-      const dist = HoverDistance._measureCenterDistance(source, hoveredToken);
+      const dist = HoverDistance._measureDistance(source, hoveredToken);
       if (dist == null) return HoverDistance._clearDistance(hoveredToken);
 
       const text = HoverDistance._formatDistance(dist);
@@ -163,7 +138,7 @@ export class HoverDistance {
           HoverDistance._clearDistance(t);
           continue;
         }
-        const dist = HoverDistance._measureCenterDistance(source, t);
+        const dist = HoverDistance._measureDistance(source, t);
         if (dist == null) {
           HoverDistance._clearDistance(t);
           continue;
@@ -184,87 +159,72 @@ export class HoverDistance {
     } catch (_) {}
   }
 
-  static _measureCenterDistance(a, b) {
+  static _measureDistance(source, target) {
+    try {
+      if (!canvas?.ready) return null;
+
+      let horizontalDist;
+
+      if (typeof source.distanceTo === "function") {
+        horizontalDist = source.distanceTo(target);
+        if (!isFinite(horizontalDist) || isNaN(horizontalDist)) return null;
+      } else {
+        horizontalDist = HoverDistance._measureFallback(source, target);
+        if (horizontalDist == null) return null;
+      }
+
+      const z1 = Number(source?.document?.elevation ?? source?.elevation ?? 0);
+      const z2 = Number(target?.document?.elevation ?? target?.elevation ?? 0);
+      const dz = Math.abs(z2 - z1);
+
+      return Math.hypot(horizontalDist, dz);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static _measureFallback(a, b) {
     try {
       const dims = canvas?.dimensions;
       if (!dims) return null;
       const p1 = a.center;
       const p2 = b.center;
 
-      let horizontalUnits = HoverDistance._measureCoreRulerUnits(p1, p2);
+      const res = canvas?.grid?.measurePath([p1, p2], { gridSpaces: false });
+      let horizontalUnits = NaN;
+
+      if (res && typeof res.distance === "number" && isFinite(res.distance)) {
+        horizontalUnits = res.distance;
+      } else if (typeof res === "number" && isFinite(res)) {
+        horizontalUnits = res;
+      } else if (Array.isArray(res)) {
+        let total = 0;
+        for (const s of res) total += Number(s?.distance || 0);
+        if (isFinite(total) && total > 0) horizontalUnits = total;
+      }
+
       if (!isFinite(horizontalUnits)) {
         const dpp = (Number(dims.distance) || 5) / (Number(dims.size) || 100);
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
         horizontalUnits = Math.hypot(dx, dy) * dpp;
       }
+
       if (!isFinite(horizontalUnits)) return null;
 
-      // Default behavior: Your Edge → Target Center (subtract source radius).
-      const r1 = HoverDistance._tokenRadiusUnits(a);
-      horizontalUnits = Math.max(0, horizontalUnits - r1);
-      // Optional toggle: Edge to Edge (also subtract target radius).
-      if (game.settings.get(MODULE_ID, "hoverDistanceEdgeToEdge")) {
-        const r2 = HoverDistance._tokenRadiusUnits(b);
-        horizontalUnits = Math.max(0, horizontalUnits - r2);
-      }
+      const distPerGrid = Number(dims.distance) || 5;
+      const w1 = Number(a?.document?.width ?? 1);
+      const h1 = Number(a?.document?.height ?? 1);
+      const r1 = (Math.max(1, w1, h1) / 2) * distPerGrid;
+      const w2 = Number(b?.document?.width ?? 1);
+      const h2 = Number(b?.document?.height ?? 1);
+      const r2 = (Math.max(1, w2, h2) / 2) * distPerGrid;
+      horizontalUnits = Math.max(0, horizontalUnits - r1 - r2);
 
-      const z1 = Number(a?.document?.elevation ?? a?.elevation ?? 0);
-      const z2 = Number(b?.document?.elevation ?? b?.elevation ?? 0);
-      const dz = Math.abs(z2 - z1);
-
-      return Math.hypot(horizontalUnits, dz);
-    } catch (e) {
+      return horizontalUnits;
+    } catch (_) {
       return null;
     }
-  }
-
-  static _tokenRadiusUnits(token) {
-    try {
-      const dims = canvas?.dimensions;
-      if (!dims) return 0;
-      const distPerGrid = Number(dims.distance) || 5;
-      const w = Number(token?.document?.width ?? 1);
-      const h = Number(token?.document?.height ?? 1);
-      const gridUnits = Math.max(1, isFinite(w) ? w : 1, isFinite(h) ? h : 1);
-      return (gridUnits / 2) * distPerGrid;
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  // Measurement mode helper removed; behavior is fixed to
-  // Your Edge → Target Center with optional Edge-to-Edge toggle.
-
-  static _measureCoreRulerUnits(p1, p2) {
-    try {
-      const res = canvas?.grid?.measurePath([p1, p2], {
-        gridSpaces: false,
-      });
-
-      if (res && typeof res.distance === "number" && isFinite(res.distance))
-        return res.distance;
-
-      if (typeof res === "number" && isFinite(res)) return res;
-
-      if (Array.isArray(res)) {
-        let total = 0;
-        for (const s of res) total += Number(s?.distance || 0);
-        if (isFinite(total) && total > 0) return total;
-      }
-    } catch (_) {}
-    return NaN;
-  }
-
-  static _applyRounding(value) {
-    const step = Number(
-      game.settings.get(MODULE_ID, "hoverDistanceRounding") || 0
-    );
-    if (step <= 0) return Math.floor(value);
-    const remainder = value % step;
-    const rounded =
-      remainder > step / 2 ? value + step - remainder : value - remainder;
-    return Math.round(rounded * 1000000) / 1000000;
   }
 
   static _formatDistance(rawValue) {
@@ -274,7 +234,7 @@ export class HoverDistance {
       if (label) return label;
     }
 
-    const value = HoverDistance._applyRounding(rawValue);
+    const value = Math.floor(rawValue);
     const units =
       canvas?.scene?.grid?.units ||
       game.i18n.localize("DHP.Settings.HoverDistance.Units.Default") ||
