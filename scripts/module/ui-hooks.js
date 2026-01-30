@@ -2,6 +2,17 @@ import { MODULE_ID } from "./constants.js";
 import { applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyThemeColorsToSheet } from "./style-toggles.js";
 
 export function registerUiHooks() {
+  Hooks.on("getHeaderControlsApplicationV2", (app, controls) => {
+    if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") return;
+    let seenViewLevelups = false;
+    for (let i = controls.length - 1; i >= 0; i--) {
+      if (controls[i]?.action === "viewLevelups") {
+        if (seenViewLevelups) controls.splice(i, 1);
+        else seenViewLevelups = true;
+      }
+    }
+  });
+
   Hooks.on("renderApplicationV2", (app, element, data) => {
     if (!app.constructor.name.startsWith("DaggerheartPlus")) return;
     
