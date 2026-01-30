@@ -30,16 +30,13 @@
         <a class="filter-button">
             <i class="fa-solid fa-filter"></i>
         </a>
-        <a data-tooltip="{{localize 'DAGGERHEART.UI.Tooltip.compendiumBrowser'}}" data-action="tempBrowser">
-            <i class="fa-solid fa-book-atlas"></i>
-        </a>
     </div>
 
     <div class="items-section">
         {{> 'daggerheart.inventory-items'
         title='TYPES.Item.weapon'
         type='weapon'
-        collection=document.itemTypes.weapon
+        collection=@root.inventory.weapons
         isGlassy=true
         canCreate=true
         hideResources=true
@@ -47,7 +44,7 @@
         {{> 'daggerheart.inventory-items'
         title='TYPES.Item.armor'
         type='armor'
-        collection=document.itemTypes.armor
+        collection=@root.inventory.armor
         isGlassy=true
         canCreate=true
         hideResources=true
@@ -55,14 +52,14 @@
         {{> 'daggerheart.inventory-items'
         title='TYPES.Item.consumable'
         type='consumable'
-        collection=document.itemTypes.consumable
+        collection=@root.inventory.consumables
         isGlassy=true
         canCreate=true
         }}
         {{> 'daggerheart.inventory-items'
         title='TYPES.Item.loot'
         type='loot'
-        collection=document.itemTypes.loot
+        collection=@root.inventory.loot
         isGlassy=true
         canCreate=true
         }}

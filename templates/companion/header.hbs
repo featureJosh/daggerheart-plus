@@ -1,6 +1,6 @@
 <header class="companion-header-sheet">
     <div class="portrait">
-        <img src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
+        <img class="profile" src="{{document.img}}" alt="{{document.name}}" data-action='editImage' data-edit="img">
     </div>
     <div class="char-info">
         <h1 class='actor-name'>
@@ -16,7 +16,7 @@
                 {{localize 'DAGGERHEART.GENERAL.level'}}
             </h3>
             <div class="input-section">
-                    {{#if document.system.levelData.canLevelUp}}
+                    {{#if document.system.canLevelUp}}
                         <button
                             type="button"
                             class="level-button glow" data-tooltip="{{localize "DAGGERHEART.ACTORS.Character.levelUp"}}"
@@ -81,8 +81,10 @@
     </div>
     <div class="companion-navigation">
         {{> 'systems/daggerheart/templates/sheets/global/tabs/tab-navigation.hbs'}}
-        <button type="button" data-action="openSettings" data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}">
-            <i class="fa-solid fa-wrench"></i>
-        </button>
+        {{#if showSettings}}
+            <button type="button" data-action="openSettings" data-tooltip-text="{{localize "DAGGERHEART.UI.Tooltip.openSheetSettings"}}">
+                <i class="fa-solid fa-wrench"></i>
+            </button>
+        {{/if}}
     </div>
 </header>

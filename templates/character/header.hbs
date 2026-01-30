@@ -19,6 +19,11 @@
                 </div>
             {{/if}}
             <div class="quick-actions">
+                {{#if document.parties.size}}
+                    <button type="button" data-action="viewParty" data-tooltip="DAGGERHEART.ACTORS.Character.viewParty">
+                        <i class="fa-solid fa-fw fa-users"></i>
+                    </button>
+                {{/if}}
                 <button type="button" data-action="useDowntime" data-type="shortRest" data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.Downtime.shortRest.title"}}">
                     <i class="fa-solid fa-utensils"></i>
                 </button>
@@ -141,6 +146,11 @@
                                     {{else}}
                                         <i class='fa-regular fa-circle'></i>
                                     {{/if}}
+                                </span>
+                            {{/times}}
+                            {{#times document.system.scars}}
+                                <span class='hope-diamond scar'>
+                                    <i class='fa-regular fa-ban'></i>
                                 </span>
                             {{/times}}
                         </div>
