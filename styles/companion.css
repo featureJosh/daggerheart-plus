@@ -837,6 +837,32 @@
   color: var(--dhp-primary);
 }
 
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .action-section {
+  display: flex;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .action-section button {
+  min-height: 40px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  background: var(--dhp-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.daggerheart-plus.sheet.companion .companion-sidebar-sheet .action-section button:hover {
+  background: var(--dhp-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--dhp-shadow);
+}
+
 /* DH+ configurable gradient for stress progress bar (companion) */
 .daggerheart-plus.sheet.companion
   .companion-header-sheet
