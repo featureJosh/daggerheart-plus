@@ -509,6 +509,48 @@ class CustomFontConfig extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 }
 
+class HoverDistanceConfig extends HandlebarsApplicationMixin(ApplicationV2) {
+  static DEFAULT_OPTIONS = {
+    id: "dhp-hover-distance-config",
+    tag: "form",
+    window: {
+      title: "DHP.Settings.HoverDistance.Title",
+      icon: "fas fa-ruler",
+    },
+    position: {
+      width: 400,
+      height: "auto",
+    },
+    form: {
+      handler: HoverDistanceConfig.#onSubmit,
+      closeOnSubmit: true,
+    },
+  };
+
+  static PARTS = {
+    form: {
+      template: `modules/${MODULE_ID}/templates/applications/hover-distance-config.hbs`,
+    },
+  };
+
+  async _prepareContext(options) {
+    return {
+      enableHoverDistance: game.settings.get(MODULE_ID, "enableHoverDistance"),
+      hoverDistancePosition: game.settings.get(MODULE_ID, "hoverDistancePosition"),
+      hoverDistanceRounding: game.settings.get(MODULE_ID, "hoverDistanceRounding"),
+      hoverDistanceEdgeToEdge: game.settings.get(MODULE_ID, "hoverDistanceEdgeToEdge"),
+    };
+  }
+
+  static async #onSubmit(event, form, formData) {
+    const data = formData.object;
+    await game.settings.set(MODULE_ID, "enableHoverDistance", data.enableHoverDistance ?? true);
+    await game.settings.set(MODULE_ID, "hoverDistancePosition", data.hoverDistancePosition ?? "center");
+    await game.settings.set(MODULE_ID, "hoverDistanceRounding", data.hoverDistanceRounding ?? 0);
+    await game.settings.set(MODULE_ID, "hoverDistanceEdgeToEdge", data.hoverDistanceEdgeToEdge ?? false);
+  }
+}
+
 export function registerModuleSettings() {
 
   game.settings.registerMenu(MODULE_ID, "themeColorsMenu", {
@@ -580,6 +622,15 @@ export function registerModuleSettings() {
     hint: "DHP.Settings.CustomFont.Menu.Hint",
     icon: "fas fa-font",
     type: CustomFontConfig,
+    restricted: false,
+  });
+
+  game.settings.registerMenu(MODULE_ID, "hoverDistanceMenu", {
+    name: "DHP.Settings.HoverDistance.Menu.Name",
+    label: "DHP.Settings.HoverDistance.Menu.Label",
+    hint: "DHP.Settings.HoverDistance.Menu.Hint",
+    icon: "fas fa-ruler",
+    type: HoverDistanceConfig,
     restricted: false,
   });
 

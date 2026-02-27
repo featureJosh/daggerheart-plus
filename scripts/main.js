@@ -18,6 +18,7 @@ import {
   registerHoverDistanceSettings,
   initializeHoverDistance,
 } from "./module/hover-distance.js";
+import { HoverDistance } from "./applications/hover-distance.js";
 import { preloadModuleTemplates } from "./module/template-preload.js";
 import { registerGradientSettings } from "./module/progress-gradients.js";
 import {
@@ -110,6 +111,15 @@ Hooks.once("ready", async () => {
 
     if (setting.key === "enableEffectsHalo") {
       applyEffectsHaloSetting(Boolean(setting.value));
+      return;
+    }
+
+    if (setting.key === "enableHoverDistance") {
+      if (!setting.value) {
+        try {
+          HoverDistance._clearAllDistances?.();
+        } catch (_) {}
+      }
       return;
     }
 

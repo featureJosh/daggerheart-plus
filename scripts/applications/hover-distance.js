@@ -19,6 +19,22 @@ export class HoverDistance {
         default: "center",
       });
 
+      game.settings.register(MODULE_ID, "hoverDistanceRounding", {
+        name: "Rounding",
+        scope: "client",
+        config: false,
+        type: Number,
+        default: 0,
+      });
+
+      game.settings.register(MODULE_ID, "hoverDistanceEdgeToEdge", {
+        name: "Edge to Edge",
+        scope: "client",
+        config: false,
+        type: Boolean,
+        default: false,
+      });
+
     } catch (e) {
       console.warn(
         "Daggerheart Plus | Failed to register HoverDistance settings",
