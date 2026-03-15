@@ -1,6 +1,6 @@
-﻿export function preloadModuleTemplates() {
+export async function preloadModuleTemplates() {
   try {
-    foundry.applications.handlebars.loadTemplates([
+    await foundry.applications.handlebars.loadTemplates([
       // Applications
       "modules/daggerheart-plus/templates/applications/floating-sheet-rail.hbs",
 

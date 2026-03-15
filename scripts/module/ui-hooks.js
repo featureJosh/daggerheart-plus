@@ -15,8 +15,6 @@ export function registerUiHooks() {
 
   Hooks.on("renderApplicationV2", (app, element, data) => {
     if (!app.constructor.name.startsWith("DaggerheartPlus")) return;
-    
-    console.log(`Daggerheart Plus | Rendering ${app.constructor.name}`);
 
     try {
       if (app.element) applyThemeColorsToSheet(app.element);
@@ -39,7 +37,7 @@ export function registerUiHooks() {
 
     if (app.constructor.name === "DaggerheartPlusCompanionSheet") {
       try {
-        if (app.options) app.options.resizable = false;
+        if (app.options?.window) app.options.window.resizable = false;
         const el = app.element;
         if (el) {
           el.classList?.remove?.("resizable");
@@ -52,7 +50,7 @@ export function registerUiHooks() {
     }
   });
 
-  Hooks.on("closeActorSheet", async (app) => {
+  Hooks.on("closeApplication", async (app) => {
     if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") return;
     try {
       app._removeInlineRails?.();

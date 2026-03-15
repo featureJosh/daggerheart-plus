@@ -56,7 +56,8 @@ export const EnhancedChatEffects = {
         }
       }
     });
-    this._observer.observe(document.body, { childList: true, subtree: true });
+    const chatLog = document.querySelector("#chat-log") || document.body;
+    this._observer.observe(chatLog, { childList: true, subtree: true });
   },
 
   _scan() {
@@ -142,7 +143,13 @@ export const EnhancedChatEffects = {
     }
 
     function step(ts) {
-      if (!host.isConnected) return (state.running = false);
+      if (!host.isConnected) {
+        state.running = false;
+        try { ro.disconnect(); } catch {}
+        host.removeEventListener("mousemove", onMove);
+        host.removeEventListener("mouseleave", onLeave);
+        return;
+      }
       if (!state.running) return;
       const r = host.getBoundingClientRect();
       const w = r.width;

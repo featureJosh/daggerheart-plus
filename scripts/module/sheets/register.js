@@ -200,6 +200,22 @@ export function registerDaggerheartPlusSheets() {
       } catch (_) {
         context.enableResourcePips = false;
       }
+
+      try {
+        const actor = this.document;
+        const armorItem = actor.system?.armor || actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
+        const armorMarks = Number(armorItem?.system?.marks?.value ?? 0);
+        const armorMax = Number(actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0);
+        context.armorData = {
+          hasArmor: !!armorItem && armorMax > 0,
+          marks: armorMarks,
+          max: armorMax,
+          uuid: armorItem?.uuid ?? null,
+        };
+      } catch (_) {
+        context.armorData = { hasArmor: false, marks: 0, max: 0, uuid: null };
+      }
+
       return context;
     }
 
@@ -1471,6 +1487,29 @@ export function registerDaggerheartPlusSheets() {
 
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
+
+      try {
+        const members = context.document?.system?.partyMembers ?? [];
+        context.partyArmorData = {};
+        for (const actor of members) {
+          try {
+            const armorItem = actor.system?.armor || actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
+            const armorMarks = Number(armorItem?.system?.marks?.value ?? 0);
+            const armorMax = Number(actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0);
+            context.partyArmorData[actor.id] = {
+              hasArmor: !!armorItem && armorMax > 0,
+              marks: armorMarks,
+              max: armorMax,
+              uuid: armorItem?.uuid ?? null,
+            };
+          } catch (_) {
+            context.partyArmorData[actor.id] = { hasArmor: false, marks: 0, max: 0, uuid: null };
+          }
+        }
+      } catch (_) {
+        context.partyArmorData = {};
+      }
+
       return context;
     }
 

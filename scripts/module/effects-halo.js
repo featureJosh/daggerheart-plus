@@ -249,9 +249,9 @@ function isHaloSprite(sprite) {
 function getSpriteSource(sprite) {
   return (
     sprite?.__daggerheartSource ??
-    sprite?.texture?.baseTexture?.resource?.url ??
-    sprite?.texture?.baseTexture?.resource?.src ??
-    sprite?.texture?.baseTexture?.resource?.imageUrl ??
+    sprite?.texture?.source?.label ??
+    sprite?.texture?.source?.src ??
+    sprite?.texture?.label ??
     FALLBACK_EFFECT_ICON
   );
 }
@@ -371,8 +371,8 @@ class EffectTextureSpritesheet {
   #baseTextures = [];
   #textureCache = new Map();
 
-  #createBaseRenderTexture() {
-    return new PIXI.BaseRenderTexture({
+  #createRenderTexture() {
+    return PIXI.RenderTexture.create({
       width: this.constructor.baseTextureSize,
       height: this.constructor.baseTextureSize,
     });
@@ -382,12 +382,12 @@ class EffectTextureSpritesheet {
     const maxMembers = this.constructor.maxMemberCount;
     let slot = this.#baseTextures[this.#baseTextures.length - 1];
     if (!slot || slot.count >= maxMembers) {
-      slot = { texture: this.#createBaseRenderTexture(), count: 0 };
+      slot = { texture: this.#createRenderTexture(), count: 0 };
       this.#baseTextures.push(slot);
     }
     const index = slot.count;
     slot.count += 1;
-    return { baseRenderTexture: slot.texture, index };
+    return { atlasTexture: slot.texture, index };
   }
 
   addToCache(path, renderable) {
@@ -395,7 +395,7 @@ class EffectTextureSpritesheet {
     if (existingTexture) {
       return existingTexture;
     }
-    const { baseRenderTexture, index } = this.#acquireSlot();
+    const { atlasTexture, index } = this.#acquireSlot();
     const spriteSize = this.constructor.spriteSize;
     const maxCols = Math.max(Math.floor(this.constructor.baseTextureSize / spriteSize), 1);
     const col = index % maxCols;
@@ -406,10 +406,14 @@ class EffectTextureSpritesheet {
       spriteSize,
       spriteSize
     );
-    const renderTexture = new PIXI.RenderTexture(baseRenderTexture, frame);
-    canvas.app.renderer.render(renderable, { renderTexture });
-    this.#textureCache.set(path, renderTexture);
-    return renderTexture;
+    canvas.app.renderer.render({
+      container: renderable,
+      target: atlasTexture,
+      frame,
+    });
+    const subTexture = new PIXI.Texture({ source: atlasTexture.source, frame });
+    this.#textureCache.set(path, subTexture);
+    return subTexture;
   }
 
   loadTexture(path) {
@@ -422,10 +426,9 @@ const effectCache = new EffectTextureSpritesheet();
 function createHaloBackground(iconSize, borderWidth) {
   const background = new PIXI.Graphics();
   const radius = iconSize / 2;
-  background.lineStyle(borderWidth, 0x444444, 1, 0);
-  background.beginFill(0x222222);
-  background.drawCircle(radius, radius, radius);
-  background.endFill();
+  background.circle(radius, radius, radius);
+  background.fill({ color: 0x222222 });
+  background.stroke({ width: borderWidth, color: 0x444444, alignment: 0 });
   return background;
 }
 
@@ -448,10 +451,9 @@ function createRoundedEffectIcon(effectIcon) {
   effectIcon.y = (textureSize - effectIcon.height) / 2;
 
   const maskRadius = textureSize / 2 - 3 * borderWidth;
-  const mask = new PIXI.Graphics()
-    .beginFill(0xffffff)
-    .drawCircle(textureSize / 2, textureSize / 2, maskRadius)
-    .endFill();
+  const mask = new PIXI.Graphics();
+  mask.circle(textureSize / 2, textureSize / 2, maskRadius);
+  mask.fill({ color: 0xffffff });
   effectIcon.mask = mask;
   container.addChild(mask);
   return container;
@@ -569,12 +571,12 @@ function patchTokenPrototype() {
   patchApplied = true;
 }
 
-function handleTokenUpdate(_scene, tokenDocument, changes) {
+function handleTokenUpdate(tokenDocument, changes) {
   if (!patchApplied || !haloEnabled) return;
   if (!changes) return;
   const sizeChanged = "width" in changes || "height" in changes;
   if (!sizeChanged) return;
-  const token = canvas?.tokens?.get?.(tokenDocument.id);
+  const token = canvas?.tokens?.get?.(tokenDocument?.id);
   if (token) {
     updateEffectScales(token);
   }

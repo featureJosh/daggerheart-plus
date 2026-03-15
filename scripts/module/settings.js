@@ -713,7 +713,7 @@ export function registerModuleSettings() {
     default: true,
     onChange: (value) => {
       try {
-        for (const app of Object.values(ui.applications)) {
+        for (const [, app] of foundry.applications.instances) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
           if (value) app._mountInlineRails?.();
           else app._removeInlineRails?.();
@@ -747,7 +747,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: (value) => {
       try {
-        for (const app of Object.values(ui.applications)) {
+        for (const [, app] of foundry.applications.instances) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
           app._updateAllLoadoutResourceBadges?.();
         }
@@ -765,7 +765,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: () => {
       try {
-        for (const app of Object.values(ui.applications)) {
+        for (const [, app] of foundry.applications.instances) {
           if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && typeof app.render === "function") {
             app.render(false);
           }

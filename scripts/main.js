@@ -97,24 +97,29 @@ Hooks.once("ready", async () => {
   await bootstrapGlobalUi();
 
   Hooks.on("updateSetting", async (setting) => {
-    if (setting.namespace !== MODULE_ID) return;
+    const compositeKey = setting?.key ?? "";
+    const dotIdx = compositeKey.indexOf(".");
+    const ns = dotIdx > -1 ? compositeKey.slice(0, dotIdx) : "";
+    const settingName = dotIdx > -1 ? compositeKey.slice(dotIdx + 1) : compositeKey;
 
-    if (setting.key === "enableFearTracker") {
+    if (ns !== MODULE_ID) return;
+
+    if (settingName === "enableFearTracker") {
       await manageFearTracker();
       return;
     }
 
-    if (setting.key === "enableTokenCounters") {
+    if (settingName === "enableTokenCounters") {
       await manageTokenCounters();
       return;
     }
 
-    if (setting.key === "enableEffectsHalo") {
+    if (settingName === "enableEffectsHalo") {
       applyEffectsHaloSetting(Boolean(setting.value));
       return;
     }
 
-    if (setting.key === "enableHoverDistance") {
+    if (settingName === "enableHoverDistance") {
       if (!setting.value) {
         try {
           HoverDistance._clearAllDistances?.();
@@ -123,7 +128,7 @@ Hooks.once("ready", async () => {
       return;
     }
 
-    if (setting.key === "enableEnhancedChat") {
+    if (settingName === "enableEnhancedChat") {
       try {
         applyEnhancedChatStyles(Boolean(setting.value));
       } catch (e) {
@@ -144,7 +149,7 @@ Hooks.once("ready", async () => {
       return;
     }
 
-    if (setting.key === "enableParticles") {
+    if (settingName === "enableParticles") {
       try {
         applyParticleEffects(Boolean(setting.value));
       } catch (e) {
@@ -156,13 +161,12 @@ Hooks.once("ready", async () => {
       return;
     }
 
-
     if (
-      setting.key === "defaultSheetWidth" ||
-      setting.key === "defaultSheetHeight"
+      settingName === "defaultSheetWidth" ||
+      settingName === "defaultSheetHeight"
     ) {
       const size = getDefaultSheetSize();
-      for (const app of Object.values(ui.applications)) {
+      for (const [, app] of foundry.applications.instances) {
         const name = app?.constructor?.name;
         if (!name?.startsWith?.("DaggerheartPlus")) continue;
         if (name?.includes?.("Adversary")) continue;
@@ -173,7 +177,7 @@ Hooks.once("ready", async () => {
           applyDefaultSizeToApp(app, size);
         }
       }
-      if (game.user.isGM)
+      if (game.user?.isGM)
         ui.notifications.info(
           `DH+ sheet size set to ${size.width}x${size.height}.`
         );
@@ -181,23 +185,23 @@ Hooks.once("ready", async () => {
     }
 
     if (
-      setting.key === "adversarySheetWidth" ||
-      setting.key === "adversarySheetHeight"
+      settingName === "adversarySheetWidth" ||
+      settingName === "adversarySheetHeight"
     ) {
       const size = getDefaultAdversarySheetSize();
-      for (const app of Object.values(ui.applications)) {
+      for (const [, app] of foundry.applications.instances) {
         if (app?.constructor?.name === "DaggerheartPlusAdversarySheet") {
           applyDefaultSizeToApp(app, size);
         }
       }
-      if (game.user.isGM)
+      if (game.user?.isGM)
         ui.notifications.info(
           `DH+ adversary sheet size set to ${size.width}x${size.height}.`
         );
       return;
     }
 
-    if (setting.key === "tooltipCardMaxWidth") {
+    if (settingName === "tooltipCardMaxWidth") {
       try {
         applyTooltipCardMaxWidth(setting.value);
       } catch (e) {
@@ -208,12 +212,12 @@ Hooks.once("ready", async () => {
       }
       return;
     }
-    if (setting.key === "enableCharacterSheetSidebars") {
+    if (settingName === "enableCharacterSheetSidebars") {
       const useRails = game.settings.get(
         MODULE_ID,
         "enableCharacterSheetSidebars"
       );
-      for (const app of Object.values(ui.applications)) {
+      for (const [, app] of foundry.applications.instances) {
         if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
           continue;
         if (useRails) app._mountInlineRails?.();

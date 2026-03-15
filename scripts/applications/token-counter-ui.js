@@ -142,22 +142,23 @@ export class TokenCounterUI {
     const actor = token.actor;
 
     const system = actor.system;
+    if (!system?.resources) return;
     this.actorType = actor.type;
 
     this.hp = {
-      current: system.resources.hitPoints.value,
-      max: system.resources.hitPoints.max,
+      current: Number(system.resources.hitPoints?.value ?? 0) || 0,
+      max: Number(system.resources.hitPoints?.max ?? 0) || 0,
     };
 
     if (this.actorType === "character") {
       this.hope = {
-        current: Number(system.resources.hope.value) || 0,
-        max: Number(system.resources.hope.max) || 0,
+        current: Number(system.resources.hope?.value ?? 0) || 0,
+        max: Number(system.resources.hope?.max ?? 0) || 0,
       };
 
       this.characterStress = {
-        current: Number(system.resources.stress.value) || 0,
-        max: Number(system.resources.stress.max) || 0,
+        current: Number(system.resources.stress?.value ?? 0) || 0,
+        max: Number(system.resources.stress?.max ?? 0) || 0,
       };
 
       const armorItem = actor.items?.find?.(
@@ -172,8 +173,8 @@ export class TokenCounterUI {
       this.actorType === "companion"
     ) {
       this.stress = {
-        current: Number(system.resources.stress.value) || 0,
-        max: Number(system.resources.stress.max) || 0,
+        current: Number(system.resources.stress?.value ?? 0) || 0,
+        max: Number(system.resources.stress?.max ?? 0) || 0,
       };
     }
 
@@ -362,10 +363,10 @@ export class TokenCounterUI {
     this.selectedToken = null;
   }
 
-  createElement() {
+  createElement(retries = 0) {
     const placement = resolveWrapperPlacement(getTrackerLocation());
     if (!placement) {
-      setTimeout(() => this.createElement(), 500);
+      if (retries < 10) setTimeout(() => this.createElement(retries + 1), 500);
       return;
     }
 

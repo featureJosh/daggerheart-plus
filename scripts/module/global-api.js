@@ -1,4 +1,4 @@
-﻿import { CounterUI } from "../applications/counter-ui.js";
+import { CounterUI } from "../applications/counter-ui.js";
 import { TokenCounterUI } from "../applications/token-counter-ui.js";
 import { EnhancedDiceStyling } from "../applications/enhanced-dice-styling.js";
 import { EnhancedChatEffects } from "../applications/enhanced-chat-effects.js";
@@ -137,12 +137,6 @@ export function bindProgressBarClicks(root, actor) {
         const next = Math.max(0, Math.min(max, current + delta));
         if (next === current) return true;
         await armorItem.update({ "system.marks.value": next });
-
-        try {
-          if (foundry.utils.hasProperty(actor.system, "resources.armor.value")) {
-            await actor.update({ "system.resources.armor.value": next });
-          }
-        } catch (_) {}
         return true;
       } catch (e) {
         console.warn("Daggerheart Plus | adjustArmorMarks failed", e);

@@ -108,9 +108,13 @@ export function registerGradientSettings() {
   Hooks.on("ready", () => applyProgressBarGradients());
 
   Hooks.on("updateSetting", (setting) => {
-    if (setting?.namespace !== MOD) return;
+    const compositeKey = setting?.key ?? "";
+    const dotIdx = compositeKey.indexOf(".");
+    const ns = dotIdx > -1 ? compositeKey.slice(0, dotIdx) : "";
+    const settingName = dotIdx > -1 ? compositeKey.slice(dotIdx + 1) : compositeKey;
+    if (ns !== MOD) return;
     if (
-      ["hpGradient", "stressGradient", "armorGradient"].includes(setting?.key)
+      ["hpGradient", "stressGradient", "armorGradient"].includes(settingName)
     ) {
       applyProgressBarGradients();
     }

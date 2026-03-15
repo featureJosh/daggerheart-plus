@@ -85,6 +85,17 @@ export const UIOverlayParticles = {
       ? opts.colors
       : defaultColors;
 
+    let cachedGlow = "rgba(120,180,255,0.18)";
+    let cachedCore = "rgba(180,220,255,0.08)";
+
+    function refreshCachedStyles() {
+      try {
+        const cs = getComputedStyle(host);
+        cachedGlow = cs.getPropertyValue("--sc-glow").trim() || cachedGlow;
+        cachedCore = cs.getPropertyValue("--sc-core").trim() || cachedCore;
+      } catch {}
+    }
+
     function resize() {
       const r = host.getBoundingClientRect();
       const w = Math.max(1, r.width);
@@ -94,6 +105,8 @@ export const UIOverlayParticles = {
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
+
+      refreshCachedStyles();
 
       const areaDivisor = Math.max(200, Number(opts.areaDivisor) || 1400);
       let target = Math.floor((w * h) / areaDivisor);
@@ -128,7 +141,13 @@ export const UIOverlayParticles = {
     }
 
     function step(ts) {
-      if (!host.isConnected) return (state.running = false);
+      if (!host.isConnected) {
+        state.running = false;
+        try { ro.disconnect(); } catch {}
+        host.removeEventListener("mousemove", onMove);
+        host.removeEventListener("mouseleave", onLeave);
+        return;
+      }
       if (!state.running) return;
       const r = host.getBoundingClientRect();
       const w = r.width;
@@ -137,9 +156,8 @@ export const UIOverlayParticles = {
       const dpr = state.dpr;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const cs = getComputedStyle(host);
-      const glow = cs.getPropertyValue("--sc-glow").trim() || "rgba(120,180,255,0.18)";
-      const core = cs.getPropertyValue("--sc-core").trim() || "rgba(180,220,255,0.08)";
+      const glow = cachedGlow;
+      const core = cachedCore;
       const grad = ctx.createLinearGradient(0, canvas.height, canvas.width, 0);
       try {
         grad.addColorStop(0, `${glow}0F`.replace(/\s+/g, ""));

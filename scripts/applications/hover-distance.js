@@ -276,18 +276,18 @@ export class HoverDistance {
         fill: 0xffffff,
         fontSize,
         fontWeight: "bold",
-        stroke: 0x000000,
-        strokeThickness,
-        dropShadow: true,
-        dropShadowColor: 0x000000,
-        dropShadowBlur: shadowBlur,
-        dropShadowDistance: shadowDist,
+        stroke: { color: 0x000000, width: strokeThickness },
+        dropShadow: {
+          color: 0x000000,
+          blur: shadowBlur,
+          distance: shadowDist,
+        },
         align: "center",
       });
 
       HoverDistance._clearDistance(token);
 
-      const label = new PIXI.Text(text, style);
+      const label = new PIXI.Text({ text, style });
       label.resolution = Math.max(
         2,
         Math.ceil(globalThis?.devicePixelRatio || 2)

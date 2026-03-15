@@ -85,18 +85,18 @@
         </div>
 
         {{#if enableResourcePips}}
-            {{#if document.system.armor.system.marks}}
+            {{#if armorData.hasArmor}}
             <div class="resource-bar-section armor">
                 <div class="resource-info">
                     <span class="resource-label">{{localize "DAGGERHEART.GENERAL.armorSlots"}}</span>
-                    <span class="resource-value">{{document.system.armor.system.marks.value}} / {{document.system.armorScore}}</span>
+                    <span class="resource-value">{{armorData.marks}} / {{armorData.max}}</span>
                 </div>
                 <div class="resource-slots armor-slots">
-                    {{#times document.system.armorScore}}
-                    <span class='resource-slot armor-slot {{#if (gte @root.document.system.armor.system.marks.value (add this 1))}}filled{{/if}}'
-                        data-action='toggleArmorSlot' data-item-uuid="{{@root.document.system.armor.uuid}}" data-value="{{add this 1}}"
+                    {{#times armorData.max}}
+                    <span class='resource-slot armor-slot {{#if (gte @root.armorData.marks (add this 1))}}filled{{/if}}'
+                        data-action='toggleArmorSlot' data-item-uuid="{{@root.armorData.uuid}}" data-value="{{add this 1}}"
                         data-tooltip="Toggle Armor">
-                        {{#if (gte @root.document.system.armor.system.marks.value (add this 1))}}
+                        {{#if (gte @root.armorData.marks (add this 1))}}
                         <img src="modules/daggerheart-plus/assets/icons/general/shield-slash.svg" alt="used">
                         {{else}}
                         <img src="modules/daggerheart-plus/assets/icons/general/shield.svg" alt="available">
@@ -107,16 +107,16 @@
             </div>
             {{/if}}
         {{else}}
-            {{#if document.system.resources.armor.max}}
-                <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};">
-                    <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.resources.armor.max}}">
+            {{#if armorData.hasArmor}}
+                <div class="status-bar armor-slots" style="--value: {{armorData.marks}}; --max: {{armorData.max}};">
+                    <div class='status-value' data-value="{{armorData.marks}}" data-max="{{armorData.max}}">
                     </div>
                     <progress
                         class='progress-bar armor-color'
-                        data-field="resources.armor.value"
-                        value='{{document.system.resources.armor.value}}'
-                        max='{{document.system.resources.armor.max}}'
-                        style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.resources.armor.max}};'
+                        data-action='toggleArmorSlot' data-item-uuid="{{armorData.uuid}}"
+                        value='{{armorData.marks}}'
+                        max='{{armorData.max}}'
+                        style='--value: {{armorData.marks}}; --max: {{armorData.max}};'
                         aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
                     ></progress>
                     <div class="status-label">
@@ -124,32 +124,14 @@
                     </div>
                 </div>
             {{else}}
-                {{#if document.system.armorScore}}
-                    <div class="status-bar armor-slots" style="--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};">
-                        <div class='status-value' data-value="{{document.system.resources.armor.value}}" data-max="{{document.system.armorScore}}">
-                        </div>
-                        <progress
-                            class='progress-bar armor-color'
-                            data-field="resources.armor.value"
-                            value='{{document.system.resources.armor.value}}'
-                            max='{{document.system.armorScore}}'
-                            style='--value: {{document.system.resources.armor.value}}; --max: {{document.system.armorScore}};'
-                            aria-label='{{localize "DAGGERHEART.GENERAL.armorSlots"}}'
-                        ></progress>
-                        <div class="status-label">
-                            <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
-                        </div>
+                <div class="status-number armor-slots">
+                    <div class='status-value'>
+                        <p>-</p>
                     </div>
-                {{else}}
-                    <div class="status-number armor-slots">
-                        <div class='status-value'>
-                            <p>-</p>
-                        </div>
-                        <div class="status-label">
-                            <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
-                        </div>
+                    <div class="status-label">
+                        <h4>{{localize "DAGGERHEART.GENERAL.armorSlots"}}</h4>
                     </div>
-                {{/if}}
+                </div>
             {{/if}}
         {{/if}}
 

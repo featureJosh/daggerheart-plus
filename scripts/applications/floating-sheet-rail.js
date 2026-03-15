@@ -77,6 +77,13 @@ export class FloatingSheetRail extends foundry.applications.api.ApplicationV2 {
   }
 
   _bind() {
+    if (this._resizeHandler) {
+      window.removeEventListener("resize", this._resizeHandler);
+    }
+    if (this._observer) {
+      try { this._observer.disconnect(); } catch {}
+    }
+
     this._resizeHandler = () => {
       this._position();
       this._syncVisibility?.();

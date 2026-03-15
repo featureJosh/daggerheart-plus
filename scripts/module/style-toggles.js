@@ -79,7 +79,7 @@ export function applyParticleEffects(enabled) {
       });
     }
 
-    for (const app of Object.values(ui.applications)) {
+    for (const [, app] of foundry.applications.instances) {
       if (app?.constructor?.name === "DaggerheartPlusCharacterSheet") {
         if (particlesEnabled) {
           app._mountSpellParticles?.();
@@ -237,7 +237,12 @@ export function applyCurrencyIcons() {
       if (!iconContainer) return;
 
       if (customIcon) {
-        iconContainer.innerHTML = `<img src="${customIcon}" alt="${currencyType}" style="width: 18px; height: 18px; object-fit: contain;">`;
+        iconContainer.replaceChildren();
+        const img = document.createElement("img");
+        img.src = customIcon;
+        img.alt = currencyType;
+        img.style.cssText = "width: 18px; height: 18px; object-fit: contain;";
+        iconContainer.appendChild(img);
       } else {
         const defaultIcons = {
           coins: '<i class="fa-solid fa-coin-front"></i>',

@@ -199,10 +199,14 @@ export class CounterUI {
 
   _bindDaggerheartHooks() {
     const settingHandler = (setting) => {
-      if (setting?.namespace !== DAGGERHEART_NAMESPACE) return;
-      if (setting.key === FEAR_SETTING_KEY) {
+      const compositeKey = setting?.key ?? "";
+      const dotIdx = compositeKey.indexOf(".");
+      const ns = dotIdx > -1 ? compositeKey.slice(0, dotIdx) : "";
+      const settingName = dotIdx > -1 ? compositeKey.slice(dotIdx + 1) : compositeKey;
+      if (ns !== DAGGERHEART_NAMESPACE) return;
+      if (settingName === FEAR_SETTING_KEY) {
         this._handleExternalUpdate(setting.value);
-      } else if (setting.key === HOMEBREW_SETTING_KEY) {
+      } else if (settingName === HOMEBREW_SETTING_KEY) {
         this._handleExternalUpdate(null, { animate: false });
       }
     };
@@ -325,7 +329,7 @@ export class CounterUI {
     };
   }
 
-  async render() {
+  async render(retries = 0) {
     await this.initialize();
 
     if (this.element) {
@@ -336,7 +340,7 @@ export class CounterUI {
 
     const placement = resolveWrapperPlacement(getTrackerLocation());
     if (!placement) {
-      window.setTimeout(() => this.render(), 1000);
+      if (retries < 10) window.setTimeout(() => this.render(retries + 1), 1000);
       return;
     }
 
