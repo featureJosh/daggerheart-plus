@@ -1,5 +1,5 @@
 import { MODULE_ID } from "./constants.js";
-import { applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyThemeColorsToSheet } from "./style-toggles.js";
+import { applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels } from "./style-toggles.js";
 
 export function registerUiHooks() {
   Hooks.on("getHeaderControlsApplicationV2", (app, controls) => {
@@ -15,10 +15,6 @@ export function registerUiHooks() {
 
   Hooks.on("renderApplicationV2", (app, element, data) => {
     if (!app.constructor.name.startsWith("DaggerheartPlus")) return;
-
-    try {
-      if (app.element) applyThemeColorsToSheet(app.element);
-    } catch (_) {}
 
     try {
       const actor = app.document;

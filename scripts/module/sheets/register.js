@@ -1159,6 +1159,7 @@ export function registerDaggerheartPlusSheets() {
         root.appendChild(right);
         root.appendChild(left);
         this.__inlineRails = { right, left };
+        root.classList.add("dhp-sidebars-active");
 
         try {
           const nav = right.querySelector(".rail-nav");
@@ -1193,6 +1194,7 @@ export function registerDaggerheartPlusSheets() {
 
     _removeInlineRails() {
       try {
+        this.element?.classList?.remove?.("dhp-sidebars-active");
         this.__inlineRails?.right?.remove?.();
         this.__inlineRails?.left?.remove?.();
         this.__inlineRails = null;

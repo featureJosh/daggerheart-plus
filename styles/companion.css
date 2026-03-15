@@ -13,11 +13,15 @@
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
-  background-image: url("../assets/backgrounds/domain-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-size: contain;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+}
+
+body.theme-dark .daggerheart-plus.sheet.companion .companion-header-sheet {
+  background-image: url("../assets/backgrounds/domain-pattern.png");
 }
 
 /* Portrait styling (match adversary sidebar look) */
@@ -109,7 +113,7 @@
   justify-content: center;
   gap: 0.35rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
@@ -144,7 +148,7 @@
   align-items: stretch;
   gap: 0.4rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
   min-width: 200px;
@@ -432,7 +436,7 @@
   .level-div
   .level-button {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -505,7 +509,7 @@
   .companion-navigation
   button:hover {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   transform: translateY(-2px);
 }
 
@@ -801,7 +805,7 @@
 
 .daggerheart-plus.sheet.companion .companion-sidebar-sheet .experience-value {
   background: var(--dhp-success);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -850,7 +854,7 @@
   padding: 0.5rem 1.5rem;
   font-weight: 600;
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 8px;
   cursor: pointer;

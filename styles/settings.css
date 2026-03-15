@@ -1,6 +1,6 @@
 /* Foundry Settings: Visual, non-interactive section headers for DH+ */
 .dhp-settings-header {
-  border-top: 1px solid var(--color-border, #555);
+  border-top: 1px solid var(--color-border, light-dark(#888, #555));
   margin-top: 0.6rem;
   padding-top: 0.35rem;
 }
@@ -27,6 +27,30 @@
   opacity: 0.8;
 }
 
+.dhp-theme-colors-config .color-group {
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--dhp-border, #333344);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.dhp-theme-colors-config .color-grid-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0 0 0.25rem 0;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--dhp-border, #333344);
+  margin-bottom: 0.5rem;
+}
+
+.dhp-theme-colors-config .color-grid-header .color-mode-col {
+  text-align: center;
+}
+
 .dhp-theme-colors-config .scope-badge {
   display: inline-block;
   font-size: 9px;
@@ -37,9 +61,9 @@
   border-radius: 3px;
   margin-right: 0.5em;
   vertical-align: middle;
-  background: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
-  border: 1px solid rgba(33, 150, 243, 0.4);
+  background: light-dark(rgba(21, 101, 192, 0.15), rgba(33, 150, 243, 0.2));
+  color: var(--dhp-info);
+  border: 1px solid light-dark(rgba(21, 101, 192, 0.3), rgba(33, 150, 243, 0.4));
 }
 
 .dhp-theme-colors-config .color-grid {
@@ -49,13 +73,11 @@
 }
 
 .dhp-theme-colors-config .color-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  align-items: center;
+  padding: 0.25rem 0;
 }
 
 .dhp-theme-colors-config .color-row label {
@@ -76,16 +98,16 @@
   font-size: 11px;
   font-family: monospace;
   text-transform: uppercase;
-  border: 1px solid var(--color-border, #555);
+  border: 1px solid var(--color-border, light-dark(#888, #555));
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.2);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.2));
 }
 
 .dhp-theme-colors-config input[type="color"] {
   width: 36px;
   height: 28px;
   padding: 0;
-  border: 1px solid var(--color-border, #555);
+  border: 1px solid var(--color-border, light-dark(#888, #555));
   border-radius: 4px;
   cursor: pointer;
 }
@@ -115,7 +137,7 @@
 
 .dhp-theme-colors-config .reset-color:hover {
   opacity: 1;
-  border-color: var(--color-border, #555);
+  border-color: var(--color-border, light-dark(#888, #555));
 }
 
 .dhp-theme-colors-config .form-footer {
@@ -123,7 +145,7 @@
   justify-content: space-between;
   margin-top: 1rem;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--color-border, #555);
+  border-top: 1px solid var(--color-border, light-dark(#888, #555));
 }
 
 .dhp-theme-colors-config .form-footer button {
@@ -138,7 +160,7 @@
 .dhp-settings-config h4 {
   margin: 1rem 0 0.5rem 0;
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid var(--color-border, #555);
+  border-bottom: 1px solid var(--color-border, light-dark(#888, #555));
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -231,11 +253,11 @@
 .dhp-settings-config .reload-notice {
   margin: 1rem 0;
   padding: 0.5rem;
-  background: rgba(255, 152, 0, 0.15);
-  border: 1px solid rgba(255, 152, 0, 0.3);
+  background: light-dark(rgba(230, 81, 0, 0.1), rgba(255, 152, 0, 0.15));
+  border: 1px solid light-dark(rgba(230, 81, 0, 0.2), rgba(255, 152, 0, 0.3));
   border-radius: 4px;
   font-size: 11px;
-  color: #ff9800;
+  color: var(--dhp-warning);
 }
 
 .dhp-settings-config .form-footer {
@@ -243,7 +265,7 @@
   justify-content: flex-end;
   margin-top: 1rem;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--color-border, #555);
+  border-top: 1px solid var(--color-border, light-dark(#888, #555));
 }
 
 .dhp-settings-config .form-footer button {
@@ -278,15 +300,15 @@
 }
 
 .dhp-settings-config .scope-badge.world {
-  background: rgba(244, 67, 54, 0.2);
-  color: #f44336;
-  border: 1px solid rgba(244, 67, 54, 0.4);
+  background: light-dark(rgba(198, 40, 40, 0.15), rgba(244, 67, 54, 0.2));
+  color: var(--dhp-danger);
+  border: 1px solid light-dark(rgba(198, 40, 40, 0.3), rgba(244, 67, 54, 0.4));
 }
 
 .dhp-settings-config .scope-badge.client {
-  background: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
-  border: 1px solid rgba(33, 150, 243, 0.4);
+  background: light-dark(rgba(21, 101, 192, 0.15), rgba(33, 150, 243, 0.2));
+  color: var(--dhp-info);
+  border: 1px solid light-dark(rgba(21, 101, 192, 0.3), rgba(33, 150, 243, 0.4));
 }
 
 .dhp-progress-gradients-config {
@@ -309,9 +331,9 @@
   border-radius: 3px;
   margin-right: 0.5em;
   vertical-align: middle;
-  background: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
-  border: 1px solid rgba(33, 150, 243, 0.4);
+  background: light-dark(rgba(21, 101, 192, 0.15), rgba(33, 150, 243, 0.2));
+  color: var(--dhp-info);
+  border: 1px solid light-dark(rgba(21, 101, 192, 0.3), rgba(33, 150, 243, 0.4));
 }
 
 .dhp-progress-gradients-config .gradient-section {
@@ -321,7 +343,7 @@
 .dhp-progress-gradients-config h4 {
   margin: 0 0 0.5rem 0;
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid var(--color-border, #555);
+  border-bottom: 1px solid var(--color-border, light-dark(#888, #555));
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -341,7 +363,7 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.25rem 0.5rem;
-  background: rgba(0, 0, 0, 0.1);
+  background: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
   border-radius: 4px;
 }
 
@@ -363,16 +385,16 @@
   font-size: 11px;
   font-family: monospace;
   text-transform: uppercase;
-  border: 1px solid var(--color-border, #555);
+  border: 1px solid var(--color-border, light-dark(#888, #555));
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.2);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.2));
 }
 
 .dhp-progress-gradients-config input[type="color"] {
   width: 36px;
   height: 28px;
   padding: 0;
-  border: 1px solid var(--color-border, #555);
+  border: 1px solid var(--color-border, light-dark(#888, #555));
   border-radius: 4px;
   cursor: pointer;
 }
@@ -402,14 +424,14 @@
 
 .dhp-progress-gradients-config .color-input-wrapper button:hover {
   opacity: 1;
-  border-color: var(--color-border, #555);
+  border-color: var(--color-border, light-dark(#888, #555));
 }
 
 .dhp-progress-gradients-config .add-color-btn {
   padding: 0.3rem 0.6rem;
   font-size: 11px;
   background: rgba(0, 0, 0, 0.2);
-  border: 1px dashed var(--color-border, #555);
+  border: 1px dashed var(--color-border, light-dark(#888, #555));
   border-radius: 4px;
   cursor: pointer;
   opacity: 0.7;
@@ -425,7 +447,7 @@
   justify-content: space-between;
   margin-top: 1rem;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--color-border, #555);
+  border-top: 1px solid var(--color-border, light-dark(#888, #555));
 }
 
 .dhp-progress-gradients-config .form-footer button {

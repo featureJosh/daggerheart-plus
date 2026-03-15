@@ -1,11 +1,19 @@
-import { MODULE_ID, COLOR_SETTINGS } from "./constants.js";
+import { MODULE_ID, COLOR_LIGHT_DARK_DEFAULTS, COLOR_CSS_MAP, colorSettingKey } from "./constants.js";
 import { applyEffectsHaloSetting, applyEffectsHaloIconSize, applyEffectsHaloSpacing } from "./effects-halo.js";
 import { applyTooltipCardMaxWidth } from "./tooltip-manager.js";
-import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting, applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyThemeColors, applyCustomFont } from "./style-toggles.js";
+import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting, applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyColorOverrides, applyCustomFont } from "./style-toggles.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 class ThemeColorsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
+  static COLOR_GROUPS = [
+    { key: "primary", colors: ["primary", "secondary", "accent"] },
+    { key: "background", colors: ["background", "surface", "surfaceRaised"] },
+    { key: "text", colors: ["text", "textLight", "textMuted"] },
+    { key: "border", colors: ["border", "borderLight"] },
+    { key: "status", colors: ["success", "warning", "danger", "info", "gold"] },
+  ];
+
   static DEFAULT_OPTIONS = {
     id: "dhp-theme-colors-config",
     tag: "form",
@@ -14,7 +22,7 @@ class ThemeColorsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
       icon: "fas fa-palette",
     },
     position: {
-      width: 420,
+      width: 560,
       height: "auto",
     },
     form: {
@@ -34,13 +42,25 @@ class ThemeColorsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
   };
 
   async _prepareContext(options) {
-    const colors = COLOR_SETTINGS.map((c) => ({
-      key: c.key,
-      label: game.i18n?.localize?.(`DHP.Settings.ThemeColors.${c.key}`) || c.key,
-      value: game.settings.get(MODULE_ID, c.key),
-      default: c.default,
+    const groups = ThemeColorsConfig.COLOR_GROUPS.map((group) => ({
+      legend: game.i18n?.localize?.(`DHP.Settings.ThemeColors.Group.${group.key}`) || group.key,
+      colors: group.colors.map((colorKey) => {
+        const defaults = COLOR_LIGHT_DARK_DEFAULTS[colorKey];
+        const lightKey = colorSettingKey(colorKey, "light");
+        const darkKey = colorSettingKey(colorKey, "dark");
+        return {
+          key: colorKey,
+          label: game.i18n?.localize?.(`DHP.Settings.ThemeColors.${colorKey}`) || colorKey,
+          lightName: lightKey,
+          darkName: darkKey,
+          lightValue: game.settings.get(MODULE_ID, lightKey),
+          darkValue: game.settings.get(MODULE_ID, darkKey),
+          lightDefault: defaults.light,
+          darkDefault: defaults.dark,
+        };
+      }),
     }));
-    return { colors };
+    return { groups };
   }
 
   _onRender(context, options) {
@@ -63,30 +83,40 @@ class ThemeColorsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #onSubmit(event, form, formData) {
-    for (const c of COLOR_SETTINGS) {
-      const val = formData.object[c.key];
-      if (val) await game.settings.set(MODULE_ID, c.key, val);
+    for (const [key, defaults] of Object.entries(COLOR_LIGHT_DARK_DEFAULTS)) {
+      const lightKey = colorSettingKey(key, "light");
+      const darkKey = colorSettingKey(key, "dark");
+      const lightVal = formData.object[lightKey];
+      const darkVal = formData.object[darkKey];
+      if (lightVal) await game.settings.set(MODULE_ID, lightKey, lightVal);
+      if (darkVal) await game.settings.set(MODULE_ID, darkKey, darkVal);
     }
-    applyThemeColors();
+    applyColorOverrides();
   }
 
   static #onResetColor(event, target) {
     const key = target.dataset.key;
-    const def = COLOR_SETTINGS.find((c) => c.key === key)?.default;
-    if (def) {
-      const colorInput = this.element.querySelector(`input[name="${key}"]`);
-      const hexInput = this.element.querySelector(`.hex-input[data-for="${key}"]`);
-      if (colorInput) colorInput.value = def;
-      if (hexInput) hexInput.value = def;
-    }
+    const variant = target.dataset.variant;
+    const defaults = COLOR_LIGHT_DARK_DEFAULTS[key];
+    if (!defaults) return;
+    const settingName = colorSettingKey(key, variant);
+    const def = defaults[variant];
+    const colorInput = this.element.querySelector(`input[name="${settingName}"]`);
+    const hexInput = this.element.querySelector(`.hex-input[data-for="${settingName}"]`);
+    if (colorInput) colorInput.value = def;
+    if (hexInput) hexInput.value = def;
   }
 
   static #onResetAll(event, target) {
-    for (const c of COLOR_SETTINGS) {
-      const colorInput = this.element.querySelector(`input[name="${c.key}"]`);
-      const hexInput = this.element.querySelector(`.hex-input[data-for="${c.key}"]`);
-      if (colorInput) colorInput.value = c.default;
-      if (hexInput) hexInput.value = c.default;
+    for (const [key, defaults] of Object.entries(COLOR_LIGHT_DARK_DEFAULTS)) {
+      for (const variant of ["light", "dark"]) {
+        const settingName = colorSettingKey(key, variant);
+        const def = defaults[variant];
+        const colorInput = this.element.querySelector(`input[name="${settingName}"]`);
+        const hexInput = this.element.querySelector(`.hex-input[data-for="${settingName}"]`);
+        if (colorInput) colorInput.value = def;
+        if (hexInput) hexInput.value = def;
+      }
     }
   }
 }
@@ -634,14 +664,22 @@ export function registerModuleSettings() {
     restricted: false,
   });
 
-  for (const c of COLOR_SETTINGS) {
-    game.settings.register(MODULE_ID, c.key, {
-      name: c.key,
+  for (const [key, defaults] of Object.entries(COLOR_LIGHT_DARK_DEFAULTS)) {
+    game.settings.register(MODULE_ID, colorSettingKey(key, "light"), {
+      name: `DHP.Settings.ThemeColors.${key}Lt`,
       scope: "client",
       config: false,
       type: String,
-      default: c.default,
-      onChange: () => applyThemeColors(),
+      default: defaults.light,
+      onChange: () => applyColorOverrides(),
+    });
+    game.settings.register(MODULE_ID, colorSettingKey(key, "dark"), {
+      name: `DHP.Settings.ThemeColors.${key}Dk`,
+      scope: "client",
+      config: false,
+      type: String,
+      default: defaults.dark,
+      onChange: () => applyColorOverrides(),
     });
   }
 

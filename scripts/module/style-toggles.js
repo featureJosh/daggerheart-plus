@@ -1,31 +1,52 @@
-import { MODULE_ID, COLOR_SETTINGS } from "./constants.js";
+import { MODULE_ID, COLOR_LIGHT_DARK_DEFAULTS, COLOR_CSS_MAP, colorSettingKey } from "./constants.js";
 
 const DEFAULT_FONT_URL = "https://fonts.googleapis.com/css2?family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap";
 
-export function applyThemeColors() {
+function getColor(key, variant) {
+  const defaults = COLOR_LIGHT_DARK_DEFAULTS[key];
   try {
-    const sheets = document.querySelectorAll(".daggerheart-plus.sheet");
-    for (const c of COLOR_SETTINGS) {
-      const val = game.settings.get(MODULE_ID, c.key);
-      if (val && val !== c.default) {
-        sheets.forEach((sheet) => sheet.style.setProperty(c.cssVar, val));
-      }
-    }
-  } catch (e) {
-    console.warn("Daggerheart Plus | Failed to apply theme colors", e);
+    const raw = game.settings.get(MODULE_ID, colorSettingKey(key, variant));
+    return (raw ? String(raw) : null) || defaults[variant];
+  } catch {
+    return defaults[variant];
   }
 }
 
-export function applyThemeColorsToSheet(sheet) {
+export function applyColorOverrides() {
   try {
-    for (const c of COLOR_SETTINGS) {
-      const val = game.settings.get(MODULE_ID, c.key);
-      if (val && val !== c.default) {
-        sheet.style.setProperty(c.cssVar, val);
-      }
+    const merged = {};
+    for (const key of Object.keys(COLOR_LIGHT_DARK_DEFAULTS)) {
+      merged[key] = {
+        light: getColor(key, "light"),
+        dark: getColor(key, "dark"),
+      };
     }
+
+    let css = "body, .daggerheart-plus.sheet {\n";
+    for (const [key, cssVar] of Object.entries(COLOR_CSS_MAP)) {
+      const { light, dark } = merged[key];
+      css += `  ${cssVar}: light-dark(${light}, ${dark});\n`;
+    }
+
+    const shadowLight = "rgba(0, 0, 0, 0.15)";
+    const shadowDark = "rgba(0, 0, 0, 0.5)";
+    css += `  --dhp-shadow: light-dark(${shadowLight}, ${shadowDark});\n`;
+
+    const shadowHeavyLight = "rgba(0, 0, 0, 0.25)";
+    const shadowHeavyDark = "rgba(0, 0, 0, 0.7)";
+    css += `  --dhp-shadow-heavy: light-dark(${shadowHeavyLight}, ${shadowHeavyDark});\n`;
+
+    css += "}\n";
+
+    let styleEl = document.getElementById("dhp-color-overrides");
+    if (!styleEl) {
+      styleEl = document.createElement("style");
+      styleEl.id = "dhp-color-overrides";
+      document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = css;
   } catch (e) {
-    console.warn("Daggerheart Plus | Failed to apply theme colors to sheet", e);
+    console.warn("Daggerheart Plus | Failed to apply color overrides", e);
   }
 }
 
@@ -38,7 +59,6 @@ export function applyEnhancedChatStyles(enabled) {
     let templatesLink = document.getElementById(TEMPLATES_LINK_ID);
 
     if (enabled) {
-      // Load main chat message CSS
       if (!link) {
         link = document.createElement("link");
         link.id = LINK_ID;
@@ -47,7 +67,6 @@ export function applyEnhancedChatStyles(enabled) {
         document.head.appendChild(link);
       }
 
-      // Load chat templates CSS
       if (!templatesLink) {
         templatesLink = document.createElement("link");
         templatesLink.id = TEMPLATES_LINK_ID;

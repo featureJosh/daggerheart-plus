@@ -47,11 +47,15 @@
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
-  background-image: url("../assets/backgrounds/domain-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-size: contain;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+}
+
+body.theme-dark .daggerheart-plus.sheet.party .party-header-sheet {
+  background-image: url("../assets/backgrounds/domain-pattern.png");
 }
 
 .daggerheart-plus.sheet.party .header-collapse-controls {
@@ -213,7 +217,7 @@
 }
 
 .daggerheart-plus.sheet.party .party-header-sheet nav.tabs .item.control:hover {
-  background: rgba(230, 168, 0, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   color: var(--dhp-primary);
 }
 
@@ -235,14 +239,14 @@
   align-items: center;
   gap: 0.625rem;
   padding: 0.5rem 0.875rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 6px;
   transition: all 0.2s ease;
 }
 
 .daggerheart-plus.sheet.party .party-header-sheet .stat-card:hover {
-  background: rgba(0, 0, 0, 0.5);
+  background: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
   border-color: var(--dhp-primary);
   transform: translateY(-1px);
   box-shadow: 0 2px 6px var(--dhp-shadow);
@@ -456,7 +460,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.625rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border-radius: 6px;
   border: 1px solid var(--dhp-border);
 }
@@ -793,7 +797,7 @@
   width: 26px;
   height: 26px;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -898,7 +902,6 @@
 
 .daggerheart-plus.sheet.party .hope-diamond:hover {
   transform: scale(1.15);
-  filter: drop-shadow(0 0 4px var(--dhp-primary));
 }
 
 .daggerheart-plus.sheet.party .threshold-values {

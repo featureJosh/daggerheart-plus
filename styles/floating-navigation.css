@@ -8,20 +8,20 @@
   display: flex;
   flex-direction: column;
   gap: var(--dh-space-sm, 0.5rem);
-  background: rgba(10, 15, 33, 0.95);
-  border: 2px solid var(--dh-color-gold, #f3c267);
+  background: light-dark(rgba(235, 229, 220, 0.95), rgba(10, 15, 33, 0.95));
+  border: 2px solid var(--dh-color-gold);
   border-radius: var(--dh-radius-xl, 10px);
   padding: var(--dh-space-md, 0.75rem);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.4));
   backdrop-filter: blur(8px);
   pointer-events: auto;
   transition: all 0.3s ease;
 }
 
 .floating-sheet-nav .floating-sidebar-nav:hover {
-  background: rgba(10, 15, 33, 0.98);
-  border-color: var(--dh-color-gold-light, #fef790);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  background: light-dark(rgba(235, 229, 220, 0.98), rgba(10, 15, 33, 0.98));
+  border-color: var(--dh-color-gold-light);
+  box-shadow: 0 12px 48px light-dark(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
 }
 
 .floating-sheet-nav .nav-button {
@@ -29,8 +29,8 @@
   height: 48px;
   border: none;
   border-radius: var(--dh-radius-lg, 8px);
-  background: var(--dh-color-purple, #1e184d);
-  color: var(--dh-color-gold, #f3c267);
+  background: var(--dh-color-purple);
+  color: var(--dh-color-gold);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--dh-color-gold, #f3c267);
+  background: var(--dh-color-gold);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
@@ -56,8 +56,8 @@
 }
 
 .floating-sheet-nav .nav-button:hover {
-  background: var(--dh-color-purple-light, #38227b);
-  color: var(--dh-color-gold-light, #fef790);
+  background: var(--dh-color-purple-light);
+  color: var(--dh-color-gold-light);
   transform: scale(1.1);
   box-shadow: 0 4px 16px rgba(243, 194, 103, 0.3);
 }
@@ -69,8 +69,8 @@
 }
 
 .floating-sheet-nav .nav-button.active {
-  background: var(--dh-color-gold, #f3c267);
-  color: var(--dh-color-dark-blue, #0a0f21);
+  background: var(--dh-color-gold);
+  color: var(--dh-color-dark-blue);
   box-shadow: 0 0 20px rgba(243, 194, 103, 0.5);
 }
 

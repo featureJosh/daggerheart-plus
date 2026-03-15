@@ -1,25 +1,42 @@
 <div class="dhp-theme-colors-config">
   <p class="scope-notice"><span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span> {{localize "DHP.Settings.ThemeColors.ScopeNotice"}}</p>
-  <div class="color-grid">
-    {{#each colors}}
-    <div class="color-row">
-      <label for="{{key}}">{{label}}</label>
-      <div class="color-input-wrapper">
-        <input type="text" class="hex-input" data-for="{{key}}" value="{{value}}" maxlength="7" />
-        <input type="color" name="{{key}}" value="{{value}}" />
-        <button type="button" data-action="resetColor" data-key="{{key}}" title="Reset to default">
-          <i class="fas fa-undo"></i>
-        </button>
+  {{#each groups}}
+  <fieldset class="color-group">
+    <legend>{{this.legend}}</legend>
+    <div class="color-grid">
+      <div class="color-grid-header">
+        <span class="color-label-col"></span>
+        <span class="color-mode-col">{{localize "DHP.Settings.ThemeColors.Light"}}</span>
+        <span class="color-mode-col">{{localize "DHP.Settings.ThemeColors.Dark"}}</span>
       </div>
+      {{#each this.colors}}
+      <div class="color-row">
+        <label>{{this.label}}</label>
+        <div class="color-input-wrapper">
+          <input type="text" class="hex-input" data-for="{{this.lightName}}" value="{{this.lightValue}}" maxlength="7" />
+          <input type="color" name="{{this.lightName}}" value="{{this.lightValue}}" />
+          <button type="button" data-action="resetColor" data-key="{{this.key}}" data-variant="light" title="Reset">
+            <i class="fas fa-undo"></i>
+          </button>
+        </div>
+        <div class="color-input-wrapper">
+          <input type="text" class="hex-input" data-for="{{this.darkName}}" value="{{this.darkValue}}" maxlength="7" />
+          <input type="color" name="{{this.darkName}}" value="{{this.darkValue}}" />
+          <button type="button" data-action="resetColor" data-key="{{this.key}}" data-variant="dark" title="Reset">
+            <i class="fas fa-undo"></i>
+          </button>
+        </div>
+      </div>
+      {{/each}}
     </div>
-    {{/each}}
-  </div>
+  </fieldset>
+  {{/each}}
   <div class="form-footer">
     <button type="button" data-action="resetAll">
-      <i class="fas fa-undo-alt"></i> Reset All
+      <i class="fas fa-undo-alt"></i> {{localize "DHP.Settings.ThemeColors.ResetAll"}}
     </button>
     <button type="submit">
-      <i class="fas fa-save"></i> Save
+      <i class="fas fa-save"></i> {{localize "DHP.Settings.ThemeColors.Save"}}
     </button>
   </div>
 </div>

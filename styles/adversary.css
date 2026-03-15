@@ -37,10 +37,14 @@
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
-  background-image: url("../assets/backgrounds/domain-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-size: contain;
   border-top-right-radius: 10px;
+}
+
+body.theme-dark .daggerheart-plus.sheet.adversary .adversary-header-sheet {
+  background-image: url("../assets/backgrounds/domain-pattern.png");
 }
 
 .daggerheart-plus.sheet.adversary .adversary-header-sheet .profile {
@@ -92,7 +96,7 @@
   gap: 0.25rem;
   padding: 0.25rem 0.5rem;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   color: var(--dhp-text-light);
   font-weight: 700;
@@ -402,7 +406,7 @@
   .level-div
   .level-button {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 50%;
   width: 28px;
@@ -466,7 +470,7 @@
   .adversary-navigation
   button:hover {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
 }
 
 /* Style the tabs injected by the system partial inside the header */
@@ -487,7 +491,7 @@
   .adversary-header-sheet
   nav.tabs
   .item.control:hover {
-  background: rgba(230, 168, 0, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   color: var(--dhp-primary);
 }
 
@@ -502,7 +506,7 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet {
   padding: var(--dh-space-md);
-  background: url("../assets/backgrounds/sidebar-bg.png");
+  background: var(--dhp-surface);
   background-position: left;
   background-size: cover;
   border-right: 2px solid var(--dhp-primary);
@@ -516,10 +520,14 @@
   box-sizing: border-box;
   max-width: 100%;
   scrollbar-width: thin;
-  scrollbar-color: var(--dhp-primary) transparent;
+  scrollbar-color: light-dark(#18162e, #f3c267) transparent;
   border-radius: 10px 0px 0px 10px;
   align-items: center;
   align-content: space-between;
+}
+
+body.theme-dark .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet {
+  background: url("../assets/backgrounds/sidebar-bg.png") left / cover;
 }
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet::-webkit-scrollbar {
@@ -568,7 +576,7 @@
   overflow: hidden;
   align-items: center;
   padding: 0.5rem 0.5rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;
@@ -603,7 +611,7 @@
   top: -4px;
   right: calc(50% - 70px);
   background: var(--dhp-danger);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -652,7 +660,7 @@
   align-items: stretch;
   gap: 0.4rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
   /* expose computed percent for children (e.g., split text overlay) */
@@ -956,7 +964,7 @@
   justify-content: center;
   gap: 0.35rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
@@ -972,7 +980,7 @@
 .daggerheart-plus.sheet.adversary
   .adversary-sidebar-sheet
   .status-number[data-action="requestDifficultyRoll"]:hover {
-  background: rgba(0, 0, 0, 0.5);
+  background: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
   border-color: var(--dhp-primary);
   transform: scale(1.02);
 }
@@ -1092,7 +1100,7 @@
   .adversary-sidebar-sheet
   .items-sidebar-list
   .item:hover {
-  background: rgba(230, 168, 0, 0.15);
+  background: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-color: var(--dhp-primary);
 }
 
@@ -1113,7 +1121,7 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .experience-value {
   background: var(--dhp-success);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -1136,7 +1144,7 @@
 
 .daggerheart-plus.sheet.adversary .adversary-sidebar-sheet .controls a:hover {
   color: var(--dhp-primary);
-  background: rgba(230, 168, 0, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   transform: scale(1.1);
 }
 
@@ -1248,7 +1256,7 @@
   justify-content: center;
   gap: 0.5rem;
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 8px;
   padding: 1rem;

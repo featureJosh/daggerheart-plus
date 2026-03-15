@@ -76,7 +76,7 @@ body.theme-dark.application .window-content {
 
 .daggerheart-plus.sheet .feature-card .feature-tag {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.7rem;
@@ -201,7 +201,7 @@ body.theme-dark.application .window-content {
 .daggerheart-plus.sheet .inventory-item:hover {
   box-shadow: none;
   border-color: var(--dhp-primary);
-  background: rgba(230, 168, 0, 0.15);
+  background: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-bottom: 1px solid var(--dhp-primary);
 }
 
@@ -425,7 +425,7 @@ body.theme-dark.application .window-content {
 
 .daggerheart-plus.sheet .btn-primary {
   background: var(--dhp-primary);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
 }
 
 .daggerheart-plus.sheet .btn-primary:hover {
@@ -508,7 +508,7 @@ body.theme-dark.application .window-content {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: light-dark(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
   display: flex;
   align-items: center;
   justify-content: center;

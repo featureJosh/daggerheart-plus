@@ -41,10 +41,9 @@
 }
 
 .fear-tracker {
-  background: linear-gradient(
-    135deg,
-    rgba(30, 24, 77, 0.9) 0%,
-    rgba(11, 10, 19, 0.9) 100%
+  background: light-dark(
+    linear-gradient(135deg, rgba(235, 229, 220, 0.95) 0%, rgba(245, 240, 232, 0.95) 100%),
+    linear-gradient(135deg, rgba(30, 24, 77, 0.9) 0%, rgba(11, 10, 19, 0.9) 100%)
   );
   border: 2px solid #3b75c2;
   box-shadow: 0 0 15px rgba(59, 117, 194, 0.4),
@@ -105,9 +104,9 @@
   gap: 0.75em;
   padding: 0.5em 1em;
   margin-bottom: 0.5em;
-  background: rgba(11, 10, 19, 0.85);
+  background: light-dark(rgba(235, 229, 220, 0.92), rgba(11, 10, 19, 0.85));
   backdrop-filter: blur(5px);
-  border: 1px solid #6d6795;
+  border: 1px solid var(--dh-border-purple);
   border-radius: 25px;
   width: fit-content;
   margin-left: auto;
@@ -138,10 +137,9 @@
 .counter-value {
   font-size: 1.5em;
   font-weight: bold;
-  color: var(--dh-color-gold, #f3c267);
+  color: var(--dh-color-gold);
   min-width: 50px;
   text-align: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   line-height: 1;
 }
 
@@ -152,13 +150,12 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   opacity: 0.8;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .counter-minus,
 .counter-plus {
-  background: rgba(67, 63, 100, 0.5);
-  border: 1px solid #6d6795;
+  background: light-dark(rgba(154, 148, 194, 0.3), rgba(67, 63, 100, 0.5));
+  border: 1px solid var(--dh-border-purple);
   border-radius: 50%;
   color: var(--dh-color-off-white, #f2f3f4);
   font-size: 1em;
@@ -178,9 +175,9 @@
 
 .counter-minus:hover,
 .counter-plus:hover {
-  background: rgba(67, 63, 100, 0.8);
-  border-color: var(--dh-color-gold, #f3c267);
-  color: var(--dh-color-gold, #f3c267);
+  background: light-dark(rgba(154, 148, 194, 0.5), rgba(67, 63, 100, 0.8));
+  border-color: var(--dh-color-gold);
+  color: var(--dh-color-gold);
   transform: scale(1.1);
 }
 
@@ -470,7 +467,10 @@
   gap: 0.5em;
   padding: .75em 1em;
   border-radius: 32px;
-  background: linear-gradient(135deg, rgba(30, 24, 77, 0.95) 0%, rgba(11, 10, 19, 0.95) 100%);
+  background: light-dark(
+    linear-gradient(135deg, rgba(235, 229, 220, 0.95) 0%, rgba(245, 240, 232, 0.95) 100%),
+    linear-gradient(135deg, rgba(30, 24, 77, 0.95) 0%, rgba(11, 10, 19, 0.95) 100%)
+  );
   box-shadow: 0 0 20px rgba(59, 117, 194, 0.45), inset 0 0 24px rgba(59, 117, 194, 0.2);
 }
 .fear-tracker--progress .counter-minus,
@@ -494,7 +494,7 @@
   background: rgba(12, 17, 28, 0.82);
   box-shadow: inset 0 0 14px rgba(30, 24, 77, 0.7);
   overflow: hidden;
-  border: 1px solid #6d6795;
+  border: 1px solid var(--dh-border-purple);
 }
 .fear-progress-bar {
   position: absolute;
@@ -515,7 +515,7 @@
   gap: 0.35em;
   font-size: 1.5em;
   font-weight: 600;
-  color: #f5f7ff;
+  color: light-dark(#2a2520, #f5f7ff);
   text-shadow: 0 0 8px rgba(122, 77, 255, 0.7);
   pointer-events: auto;
 }
@@ -564,7 +564,7 @@
 .fear-progress-overlay .fear-progress-value,
 .fear-progress-overlay .fear-progress-max {
   display: inline-block;
-  color: #f5f7ff;
+  color: light-dark(#2a2520, #f5f7ff);
   text-shadow: 0 0 8px rgba(0,0,0,0.35), 0 0 10px rgba(122,77,255,0.5);
 }
 

@@ -1,3 +1,13 @@
+body.theme-dark,
+.themed.theme-dark {
+  color-scheme: dark;
+}
+
+body.theme-light,
+.themed.theme-light {
+  color-scheme: light;
+}
+
 body.daggerheart-plus-active .daggerheart.sheet.actor {
   display: none !important;
 }
@@ -30,7 +40,7 @@ body.theme-dark .application.daggerheart.sheet {
 }
 
 form#roll-selection {
-  background: #181827e0;
+  background: light-dark(#e8e4f0e0, #181827e0);
   backdrop-filter: blur(5px);
 }
 
@@ -38,30 +48,28 @@ form#roll-selection .window-content {
   backdrop-filter: none !important;
 }
 
-
-.daggerheart-plus.sheet {
-  --dhp-primary: #f3c267;
-  --dhp-secondary: #cc9900;
-  --dhp-accent: #ffbb33;
-  --dhp-background: #0a0a0f;
-  --dhp-surface: #1a1a25;
-  --dhp-text: #ffffff;
-  --dhp-text-light: #cccccc;
-  --dhp-border: #333344;
-  --dhp-shadow: rgba(0, 0, 0, 0.5);
-  --dhp-success: #4caf50;
-  --dhp-warning: #ff9800;
-  --dhp-danger: #f44336;
-  --dhp-info: #2196f3;
-  --dhp-gradient: linear-gradient(
-    135deg,
-    #1a1a25 0%,
-    #2a2a35 50%,
-    #1a1a25 100%
+body {
+  --dhp-primary: light-dark(#b8860b, #f3c267);
+  --dhp-secondary: light-dark(#a67c00, #cc9900);
+  --dhp-accent: light-dark(#c88c00, #ffbb33);
+  --dhp-background: light-dark(#f5f0e8, #0a0a0f);
+  --dhp-surface: light-dark(#ebe5dc, #1a1a25);
+  --dhp-surface-raised: light-dark(#e0d9ce, #2a2a35);
+  --dhp-text: light-dark(#2a2520, #ffffff);
+  --dhp-text-light: light-dark(#5a5248, #cccccc);
+  --dhp-text-muted: light-dark(#4a4238, #9a8e80);
+  --dhp-border: light-dark(#c4b8a8, #333344);
+  --dhp-border-light: light-dark(#d4c8b8, #3a302a);
+  --dhp-shadow: light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5));
+  --dhp-shadow-heavy: light-dark(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.7));
+  --dhp-success: light-dark(#b8860b, #f3c267);
+  --dhp-warning: light-dark(#e65100, #ff9800);
+  --dhp-danger: light-dark(#c62828, #f44336);
+  --dhp-info: light-dark(#1565c0, #2196f3);
+  --dhp-gradient: light-dark(
+    linear-gradient(135deg, #ebe5dc 0%, #f5f0e8 50%, #ebe5dc 100%),
+    linear-gradient(135deg, #1a1a25 0%, #2a2a35 50%, #1a1a25 100%)
   );
-  
-
-  /* Progress bar damage gradient aligned with theme */
   --dhp-damage-gradient: linear-gradient(
     90deg,
     var(--dh-color-gold-light, var(--dhp-primary)) 0%,
@@ -70,21 +78,54 @@ form#roll-selection .window-content {
     var(--dhp-danger) 100%
   );
   --dhp-damage-gradient-webkit: var(--dhp-damage-gradient);
+  --dhp-damage-gradient-moz: var(--dhp-damage-gradient);
+}
+
+.daggerheart-plus.sheet {
+  --dhp-primary: light-dark(#b8860b, #f3c267);
+  --dhp-secondary: light-dark(#a67c00, #cc9900);
+  --dhp-accent: light-dark(#c88c00, #ffbb33);
+  --dhp-background: light-dark(#f5f0e8, #0a0a0f);
+  --dhp-surface: light-dark(#ebe5dc, #1a1a25);
+  --dhp-surface-raised: light-dark(#e0d9ce, #2a2a35);
+  --dhp-text: light-dark(#2a2520, #ffffff);
+  --dhp-text-light: light-dark(#5a5248, #cccccc);
+  --dhp-text-muted: light-dark(#4a4238, #9a8e80);
+  --dhp-border: light-dark(#c4b8a8, #333344);
+  --dhp-border-light: light-dark(#d4c8b8, #3a302a);
+  --dhp-shadow: light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.5));
+  --dhp-shadow-heavy: light-dark(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.7));
+  --dhp-success: light-dark(#b8860b, #f3c267);
+  --dhp-warning: light-dark(#e65100, #ff9800);
+  --dhp-danger: light-dark(#c62828, #f44336);
+  --dhp-info: light-dark(#1565c0, #2196f3);
+  --dhp-gradient: light-dark(
+    linear-gradient(135deg, #ebe5dc 0%, #f5f0e8 50%, #ebe5dc 100%),
+    linear-gradient(135deg, #1a1a25 0%, #2a2a35 50%, #1a1a25 100%)
+  );
+  --dhp-damage-gradient: linear-gradient(
+    90deg,
+    var(--dh-color-gold-light, var(--dhp-primary)) 0%,
+    var(--dhp-accent) 30%,
+    var(--dhp-warning) 65%,
+    var(--dhp-danger) 100%
+  );
+  --dhp-damage-gradient-webkit: var(--dhp-damage-gradient);
+  --dhp-damage-gradient-moz: var(--dhp-damage-gradient);
 
   --legend-line-height: 1em;
   --legend-padding-y: 0.25em;
   --legend-height: calc(var(--legend-line-height) + var(--legend-padding-y) * 2);
-  --dhp-damage-gradient-moz: var(--dhp-damage-gradient);
 
-  --dh-color-dark-blue: #0a0f21;
-  --dh-color-purple: #1e184d;
-  --dh-color-purple-light: #38227b;
-  --dh-color-blue: #2878be;
-  --dh-color-gold: #f3c267;
-  --dh-color-gold-light: #fef790;
-  --dh-color-off-white: #f2f3f4;
-  --dh-color-off-black: #1c1c1c;
-  --dh-border-purple: #6d6795;
+  --dh-color-dark-blue: light-dark(#e8eef8, #0a0f21);
+  --dh-color-purple: light-dark(#e8e4f4, #1e184d);
+  --dh-color-purple-light: light-dark(#6d4dbb, #38227b);
+  --dh-color-blue: light-dark(#1a5a96, #2878be);
+  --dh-color-gold: light-dark(#b8860b, #f3c267);
+  --dh-color-gold-light: light-dark(#d4a820, #fef790);
+  --dh-color-off-white: light-dark(#2a2a30, #f2f3f4);
+  --dh-color-off-black: light-dark(#f2f3f4, #1c1c1c);
+  --dh-border-purple: light-dark(#9a94c2, #6d6795);
 
   --dh-space-xs: 0.25rem;
   --dh-space-sm: 0.5rem;
@@ -117,12 +158,11 @@ form#roll-selection .window-content {
 }
 
 .daggerheart-plus.sheet .window-header .window-title {
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: light-dark(var(--dhp-text), white);
 }
 
 .daggerheart-plus.sheet .window-header a {
-  color: white;
+  color: light-dark(var(--dhp-text), white);
 }
 
 .daggerheart-plus.sheet .window-content {
@@ -179,13 +219,13 @@ form#roll-selection .window-content {
 }
 
 .daggerheart-plus.sheet .sheet-tabs .tab:hover {
-  background-color: rgba(230, 168, 0, 0.1);
+  background-color: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   color: var(--dhp-primary);
   transform: translateY(-2px);
 }
 
 .daggerheart-plus.sheet .sheet-tabs .tab.active {
-  background-color: rgba(230, 168, 0, 0.15);
+  background-color: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-bottom-color: var(--dhp-primary);
   color: var(--dhp-primary);
   font-weight: bold;
@@ -222,7 +262,7 @@ form#roll-selection .window-content {
 .daggerheart-plus.sheet select:focus {
   outline: none;
   border-color: var(--dhp-primary);
-  box-shadow: 0 0 0 2px rgba(230, 168, 0, 0.2);
+  box-shadow: 0 0 0 2px light-dark(rgba(184, 134, 11, 0.2), rgba(230, 168, 0, 0.2));
 }
 
 .daggerheart-plus.sheet button {
@@ -240,7 +280,6 @@ form#roll-selection .window-content {
   border-color: var(--dhp-secondary);
 }
 
-/* Enhanced progress bar styling with damage gradient */
 .daggerheart-plus.sheet .progress-bar {
   position: relative;
   overflow: hidden;
@@ -248,23 +287,21 @@ form#roll-selection .window-content {
 
 .daggerheart-plus.sheet .progress-bar::-webkit-progress-value {
   background: var(--dhp-damage-gradient);
-  box-shadow: 0 0 4px rgba(255, 235, 59, 0.3);
+  box-shadow: 0 0 4px light-dark(rgba(184, 134, 11, 0.3), rgba(255, 235, 59, 0.3));
   transition: all 0.3s ease;
 }
 
 .daggerheart-plus.sheet .progress-bar::-moz-progress-bar {
   background: var(--dhp-damage-gradient);
-  box-shadow: 0 0 4px rgba(255, 235, 59, 0.3);
+  box-shadow: 0 0 4px light-dark(rgba(184, 134, 11, 0.3), rgba(255, 235, 59, 0.3));
   transition: all 0.3s ease;
 }
 
-/* Add subtle glow effect for low health/damage */
 .daggerheart-plus.sheet .progress-bar[value="0"]::-webkit-progress-value,
 .daggerheart-plus.sheet .progress-bar[value="0"]::-moz-progress-bar {
-  box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);
+  box-shadow: 0 0 8px light-dark(rgba(184, 134, 11, 0.6), rgba(255, 235, 59, 0.6));
 }
 
-/* Add warning glow for high damage */
 .daggerheart-plus.sheet .progress-bar[value="5"]::-webkit-progress-value,
 .daggerheart-plus.sheet .progress-bar[value="6"]::-webkit-progress-value,
 .daggerheart-plus.sheet .progress-bar[value="5"]::-moz-progress-bar,

@@ -44,10 +44,14 @@
   padding-top: var(--header-height);
   border-bottom: 2px solid var(--dhp-primary);
   box-shadow: 0 4px 8px var(--dhp-shadow);
-  background-image: url("../assets/backgrounds/domain-pattern.png");
+  background-image: none;
   background-repeat: repeat;
   background-size: contain;
   border-top-right-radius: 10px;
+}
+
+body.theme-dark .daggerheart-plus.sheet.character .character-header-modern {
+  background-image: url("../assets/backgrounds/domain-pattern.png");
 }
 
 .daggerheart-plus.sheet.character
@@ -137,7 +141,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(139, 0, 0, 0.8);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -282,7 +286,7 @@
 
 .daggerheart-plus.sheet.character .character-header-modern .level-up-btn {
   background: var(--dhp-accent);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 50%;
   width: 28px;
@@ -339,11 +343,14 @@
   width: 35px;
   height: auto;
   border-radius: 6px;
-  /* border: 1px solid var(--dhp-primary); */
   cursor: pointer;
   transition: all 0.3s ease;
-  /* box-shadow: 0 2px 4px var(--dhp-shadow); */
   filter: brightness(0) invert(1);
+}
+
+body.theme-light .daggerheart-plus.sheet.character .character-header-modern .domain-icon img {
+  filter: brightness(0) saturate(100%) invert(52%) sepia(80%) saturate(748%) hue-rotate(-15deg) brightness(95%) contrast(93%);
+}
 }
 
 .daggerheart-plus.sheet.character
@@ -420,7 +427,7 @@
 .daggerheart-plus.sheet.character .character-header-modern .core-stats {
   display: flex;
   gap: 1rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border-radius: 8px;
   padding: 0.75rem 1rem;
   border: 1px solid var(--dhp-border);
@@ -467,7 +474,6 @@
 .daggerheart-plus.sheet.character .character-header-modern .hope-diamond i {
   font-size: 1.2rem;
   color: var(--dhp-accent);
-  filter: drop-shadow(0 0 4px var(--dhp-accent));
 }
 
 .daggerheart-plus.sheet.character .character-header-modern .attributes-row {
@@ -519,7 +525,7 @@
   text-align: center;
   height: 100%;
   min-height: 80px;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 12px;
 }
@@ -792,7 +798,6 @@
   color: var(--dhp-primary);
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .daggerheart-plus.sheet.character
@@ -835,7 +840,6 @@
 .daggerheart-plus.sheet.character .character-header-modern .attribute-tier {
   color: var(--dhp-accent);
   font-size: 0.7rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   z-index: 3;
   margin-top: 0.5em;
 }
@@ -933,7 +937,7 @@
 .daggerheart-plus.sheet.character .character-sidebar-sheet {
   padding: var(--dh-space-md);
   padding-top: var(--header-height);
-  background: url("../assets/backgrounds/sidebar-bg.png");
+  background: var(--dhp-surface);
   background-position: left;
   background-size: cover;
   border-right: 2px solid var(--dhp-primary);
@@ -949,6 +953,10 @@
   scrollbar-width: thin;
   scrollbar-color: var(--dhp-primary) transparent;
   border-radius: 10px 0px 0px 10px;
+}
+
+body.theme-dark .daggerheart-plus.sheet.character .character-sidebar-sheet {
+  background: url("../assets/backgrounds/sidebar-bg.png") left / cover;
 }
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet::-webkit-scrollbar {
@@ -983,7 +991,7 @@
   justify-content: center;
   gap: 0.5rem;
   background: var(--dhp-danger);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border: none;
   border-radius: 8px;
   padding: 1rem;
@@ -1164,7 +1172,7 @@
   .character-sidebar-sheet
   .items-sidebar-list
   .item:hover {
-  background: rgba(230, 168, 0, 0.15);
+  background: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-color: var(--dhp-primary);
 }
 
@@ -1182,7 +1190,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 5px;
   margin-bottom: 0.25rem;
@@ -1195,13 +1203,13 @@
 }
 
 .daggerheart-plus.sheet .experience-row:hover {
-  background: rgba(230, 168, 0, 0.15);
+  background: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-color: var(--dhp-primary);
 }
 
 .daggerheart-plus.sheet .experience-value {
   background: var(--dhp-success);
-  color: white;
+  color: light-dark(var(--dhp-background), white);
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -1260,7 +1268,7 @@
 
 .daggerheart-plus.sheet.character .character-sidebar-sheet .controls a:hover {
   color: var(--dhp-primary);
-  background: rgba(230, 168, 0, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   transform: scale(1.1);
 }
 
@@ -1270,7 +1278,7 @@
   overflow: hidden;
   align-items: center;
   padding: 0.5rem 0.25rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;
@@ -1321,7 +1329,7 @@
 .daggerheart-plus.sheet.character
   .character-sidebar-sheet
   .inventory-item:hover {
-  background: rgba(230, 168, 0, 0.15);
+  background: light-dark(rgba(184, 134, 11, 0.15), rgba(230, 168, 0, 0.15));
   border-color: var(--dhp-primary);
   transform: none;
   box-shadow: none;
@@ -1468,7 +1476,7 @@
   .controls
   a:hover {
   color: var(--dhp-primary);
-  background: rgba(230, 168, 0, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(230, 168, 0, 0.1));
   transform: scale(1.1);
 }
 
@@ -1690,7 +1698,6 @@
   color: var(--dhp-primary);
   font-weight: 600;
   letter-spacing: 0.02em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   text-align: left;
   margin: 0;
   /* Improve readability over busy images */
@@ -1732,7 +1739,6 @@
   .item-labels
   .label {
   color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Controls overlay in the top-right corner */
@@ -2074,7 +2080,7 @@
   height: 45px !important;
   font-size: 18px !important;
   font-weight: 700 !important;
-  color: white !important;
+  color: light-dark(var(--dhp-background), white) !important;
   text-align: center;
   cursor: pointer;
   user-select: none;
@@ -2156,7 +2162,7 @@
   align-items: stretch;
   gap: 0.4rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
   /* expose computed percent for children (e.g., split text overlay) */
@@ -2466,7 +2472,7 @@
   justify-content: center;
   gap: 0.35rem;
   padding: 0.6rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   border-radius: 8px;
 }
@@ -2523,7 +2529,7 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  color: #efe6d8;
+  color: light-dark(#2a2520, #efe6d8);
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -2571,7 +2577,7 @@
   gap: 5px;
   padding: 0.4em 0.6em;
   width: auto;
-  background: rgba(0, 0, 0, 0.25);
+  background: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25));
   border: 1px solid var(--dhp-border);
   border-radius: 10px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -2580,7 +2586,7 @@
 .daggerheart-plus.sheet .tab.inventory .currency-input:hover {
   border-color: var(--dhp-primary);
   box-shadow: 0 2px 6px var(--dhp-shadow);
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
 }
 
 .daggerheart-plus.sheet .tab.inventory .currency-input .icon {
@@ -2758,7 +2764,7 @@
   width: 22px;
   height: 22px;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2818,7 +2824,7 @@
   overflow: hidden;
   align-items: center;
   padding: 0.5rem 0.5rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.3));
   border: 1px solid var(--dhp-border);
   margin-bottom: 0.25rem;
   transition: all 0.3s ease;

@@ -1,22 +1,22 @@
 @import url("./base.css");
 
 .application.daggerheart.dialog.dh-style.views.roll-selection {
-  --dh-golden: #f3c267;
+  --dh-golden: var(--dhp-primary, var(--dh-color-gold));
   --dh-golden-bg: rgba(243, 194, 103, 0.1);
   --dh-golden-border: rgba(243, 194, 103, 0.8);
-  --dh-dark-blue: #18162e;
-  --dh-dark-blue-bg: rgba(24, 22, 46, 0.8);
+  --dh-dark-blue: light-dark(#ebe5dc, #18162e);
+  --dh-dark-blue-bg: light-dark(rgba(235, 229, 220, 0.8), rgba(24, 22, 46, 0.8));
   --dh-chat-blue: #8f87ee;
   --dh-chat-blue-bg: rgba(143, 135, 238, 0.1);
-  --dh-beige: #efe6d8;
-  --dh-green: #40a640;
+  --dh-beige: light-dark(#2a2520, #efe6d8);
+  --dh-green: var(--dhp-primary, #f3c267);
   --dh-red: #e54e4e;
 
-  background: rgba(11, 10, 19, 0.85);
+  background: light-dark(rgba(245, 240, 232, 0.92), rgba(11, 10, 19, 0.85));
   border: 1px solid #6d6795;
   backdrop-filter: blur(8px);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.4));
   color: var(--dh-beige);
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
@@ -89,11 +89,10 @@
   justify-content: center;
   align-items: center;
   padding: 1em 0;
-  background: linear-gradient(
-  135deg,
-  rgba(24, 22, 46, 0.3) 0%,
-  rgba(243, 194, 103, 0.1) 100%
-);
+  background: light-dark(
+    linear-gradient(135deg, rgba(235, 229, 220, 0.5) 0%, rgba(243, 194, 103, 0.15) 100%),
+    linear-gradient(135deg, rgba(24, 22, 46, 0.3) 0%, rgba(243, 194, 103, 0.1) 100%)
+  );
   border-radius: 10px;
   border: 1px solid rgba(243, 194, 103, 0.3);
 }
@@ -175,7 +174,7 @@
 
 .hope-die-select,
 .fear-die-select {
-  background: rgba(11, 10, 19, 0.8) !important;
+  background: light-dark(rgba(245, 240, 232, 0.9), rgba(11, 10, 19, 0.8)) !important;
   border: 2px solid rgba(243, 194, 103, 0.5) !important;
   border-radius: 6px !important;
   color: var(--dh-beige) !important;
@@ -206,12 +205,12 @@
 
 .hope-die-select:hover {
   border-color: rgba(243, 194, 103, 0.8) !important;
-  background: rgba(11, 10, 19, 0.9) !important;
+  background: light-dark(rgba(250, 248, 245, 0.95), rgba(11, 10, 19, 0.9)) !important;
 }
 
 .fear-die-select:hover {
   border-color: rgba(143, 135, 238, 0.8) !important;
-  background: rgba(11, 10, 19, 0.9) !important;
+  background: light-dark(rgba(250, 248, 245, 0.95), rgba(11, 10, 19, 0.9)) !important;
 }
 
 .hope-die-select:focus,
@@ -250,7 +249,7 @@
   flex-direction: column;
   gap: 15px;
   padding: 15px;
-  background: rgba(24, 22, 46, 0.3);
+  background: light-dark(rgba(235, 229, 220, 0.5), rgba(24, 22, 46, 0.3));
   border-radius: 8px;
   border: 1px solid rgba(239, 230, 216, 0.2);
 }
@@ -290,20 +289,20 @@
 }
 
 .advantage-chip {
-  background: rgba(64, 166, 64, 0.1);
+  background: light-dark(rgba(184, 134, 11, 0.1), rgba(243, 194, 103, 0.1));
   color: var(--dh-green);
-  border-color: rgba(64, 166, 64, 0.3);
+  border-color: light-dark(rgba(184, 134, 11, 0.3), rgba(243, 194, 103, 0.3));
 }
 
 .advantage-chip:hover {
-  background: rgba(64, 166, 64, 0.2);
-  border-color: rgba(64, 166, 64, 0.6);
+  background: light-dark(rgba(184, 134, 11, 0.2), rgba(243, 194, 103, 0.2));
+  border-color: light-dark(rgba(184, 134, 11, 0.6), rgba(243, 194, 103, 0.6));
   transform: translateY(-1px);
 }
 
 .advantage-chip.selected {
-  background: linear-gradient(135deg, var(--dh-green) 0%, #2a7d2a 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--dh-green) 0%, var(--dhp-secondary, #cc9900) 100%);
+  color: light-dark(var(--dhp-background, #f5f0e8), #18162e);
   box-shadow: 0 0 12px rgba(64, 166, 64, 0.6);
 }
 
@@ -330,7 +329,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 15px;
-  background: rgba(24, 22, 46, 0.2);
+  background: light-dark(rgba(245, 240, 232, 0.6), rgba(24, 22, 46, 0.2));
   border-radius: 6px;
   border: 1px solid rgba(239, 230, 216, 0.2);
 }
@@ -342,7 +341,7 @@
 }
 
 .modifier-input-section input[type="number"] {
-  background: rgba(11, 10, 19, 0.8);
+  background: light-dark(rgba(245, 240, 232, 0.9), rgba(11, 10, 19, 0.8));
   border: 2px solid rgba(243, 194, 103, 0.5);
   border-radius: 6px;
   color: var(--dh-beige);
@@ -371,7 +370,7 @@
 }
 
 .roll-mode-select {
-	background: rgba(11, 10, 19, 0.8) !important;
+	background: light-dark(rgba(245, 240, 232, 0.9), rgba(11, 10, 19, 0.8)) !important;
 	border: 2px solid rgba(239, 230, 216, 0.3) !important;
 	border-radius: 6px !important;
 	color: var(--dh-beige) !important;
@@ -390,7 +389,7 @@
 
 .roll-mode-select:hover {
   border-color: rgba(243, 194, 103, 0.6) !important;
-  background: rgba(11, 10, 19, 0.9) !important;
+  background: light-dark(rgba(250, 248, 245, 0.95), rgba(11, 10, 19, 0.9)) !important;
 }
 
 .roll-mode-select:focus {
@@ -400,7 +399,7 @@
 }
 
 .roll-mode-select option {
-  background: rgba(11, 10, 19, 0.95) !important;
+  background: light-dark(rgba(250, 248, 245, 0.98), rgba(11, 10, 19, 0.95)) !important;
   color: var(--dh-beige) !important;
   padding: 8px 12px !important;
   font-family: "Montserrat", sans-serif !important;
@@ -410,7 +409,7 @@
 
 .hope-die-select option,
 .fear-die-select option {
-  background: rgba(11, 10, 19, 0.95) !important;
+  background: light-dark(rgba(250, 248, 245, 0.98), rgba(11, 10, 19, 0.95)) !important;
   color: var(--dh-beige) !important;
   padding: 6px 10px !important;
   font-family: "Montserrat", sans-serif !important;

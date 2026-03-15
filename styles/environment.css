@@ -13,12 +13,12 @@
   background: linear-gradient(
     135deg,
     rgba(243, 194, 103, 0.18) 0%,
-    rgba(40, 40, 55, 0.85) 50%,
-    rgba(10, 10, 15, 0.92) 100%
+    light-dark(rgba(235, 229, 220, 0.85), rgba(40, 40, 55, 0.85)) 50%,
+    light-dark(rgba(245, 240, 232, 0.92), rgba(10, 10, 15, 0.92)) 100%
   );
   border-radius: 18px;
   border: 1px solid rgba(243, 194, 103, 0.22);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 20px 40px light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.45));
   overflow: hidden;
   color: var(--dhp-text);
   backdrop-filter: blur(12px);
@@ -72,9 +72,9 @@
   height: 96px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 25px light-dark(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.45));
   border: 1px solid rgba(243, 194, 103, 0.35);
-  background: rgba(0, 0, 0, 0.25);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.25));
 }
 
 .daggerheart-plus.sheet.environment .environment-header-sheet .profile {
@@ -90,7 +90,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
   pointer-events: none;
 }
 
@@ -128,7 +128,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: light-dark(var(--dhp-text), rgba(255, 255, 255, 0.78));
 }
 
 .daggerheart-plus.sheet.environment .environment-hero__eyebrow .tag span {
@@ -162,7 +162,7 @@
   input:focus-visible {
   outline: none;
   border-color: rgba(243, 194, 103, 0.6);
-  background: rgba(0, 0, 0, 0.35);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.35));
   box-shadow: 0 0 0 2px rgba(243, 194, 103, 0.25);
 }
 
@@ -174,7 +174,7 @@
   gap: 0.35rem;
   min-width: 140px;
   padding: 1rem 1.25rem;
-  background: rgba(0, 0, 0, 0.35);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.35));
   border: 1px solid rgba(243, 194, 103, 0.35);
   border-radius: 16px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -184,14 +184,13 @@
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  color: light-dark(var(--dhp-text-light), rgba(255, 255, 255, 0.65));
 }
 
 .daggerheart-plus.sheet.environment .environment-hero__metric-value {
   font-size: 2rem;
   font-weight: 700;
   color: var(--dhp-primary);
-  text-shadow: 0 8px 18px rgba(243, 194, 103, 0.3);
 }
 
 .daggerheart-plus.sheet.environment .environment-hero__body {
@@ -203,9 +202,9 @@
 
 .daggerheart-plus.sheet.environment .environment-hero__description,
 .daggerheart-plus.sheet.environment .environment-hero__impulses {
-  background: rgba(0, 0, 0, 0.35);
+  background: light-dark(rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.35));
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
   padding: 1.25rem;
 }
 
