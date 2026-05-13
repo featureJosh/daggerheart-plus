@@ -87,19 +87,31 @@
                     {{/if}}
 
                     <div class="character-level-section">
-                        {{#if (or document.system.needsCharacterSetup document.system.levelData.canLevelUp)}}
+                        {{#if document.system.needsCharacterSetup}}
                             <button
                                 type="button"
-                                class="level-up-btn" data-tooltip="{{#if document.system.needsCharacterSetup}}{{localize "DAGGERHEART.APPLICATIONS.CharacterCreation.buttonTitle"}}{{else}}{{localize "DAGGERHEART.ACTORS.Character.levelUp"}}{{/if}}"
+                                class="level-up-btn character-create-btn"
+                                data-tooltip="{{localize "DAGGERHEART.APPLICATIONS.CharacterCreation.buttonTitle"}}"
+                                data-action="levelManagement"
+                            >
+                                {{localize "DAGGERHEART.APPLICATIONS.CharacterCreation.buttonTitle"}}
+                            </button>
+                        {{else if document.system.levelData.canLevelUp}}
+                            <button
+                                type="button"
+                                class="level-up-btn"
+                                data-tooltip="{{localize "DAGGERHEART.ACTORS.Character.levelUp"}}"
                                 data-action="levelManagement"
                             >
                                 <i class="fa-solid fa-angles-up"></i>
                             </button>
                         {{/if}}
+                        {{#unless document.system.needsCharacterSetup}}
                         <div class="level-display">
                             <span class="level-label">Level</span>
-                            <input type="text" data-dtype="Number" class="level-value" value={{#if document.system.needsCharacterSetup}}0{{else}}{{document.system.levelData.level.changed}}{{/if}} {{#if document.system.needsCharacterSetup}}disabled{{/if}} />
+                            <input type="text" data-dtype="Number" class="level-value" value={{document.system.levelData.level.changed}} />
                         </div>
+                        {{/unless}}
                     </div>
                 </div>
             </div>

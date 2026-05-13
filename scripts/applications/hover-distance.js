@@ -276,12 +276,12 @@ export class HoverDistance {
         fill: 0xffffff,
         fontSize,
         fontWeight: "bold",
-        stroke: { color: 0x000000, width: strokeThickness },
-        dropShadow: {
-          color: 0x000000,
-          blur: shadowBlur,
-          distance: shadowDist,
-        },
+        stroke: 0x000000,
+        strokeThickness,
+        dropShadow: true,
+        dropShadowColor: 0x000000,
+        dropShadowBlur: shadowBlur,
+        dropShadowDistance: shadowDist,
         align: "center",
       });
 

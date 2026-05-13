@@ -183,6 +183,8 @@
   "DHP.Settings.UIElements.Counters.Title": "Counters",
   "DHP.Settings.UIElements.TokenCounters.Name": "Token Counters",
   "DHP.Settings.UIElements.TokenCounters.Hint": "Show HP, Hope, Stress, Armor counters near the hotbar for selected tokens.",
+  "DHP.Settings.UIElements.LinkedActorCounters.Name": "Always Show Linked Character Counters",
+  "DHP.Settings.UIElements.LinkedActorCounters.Hint": "When no token is selected, show counters for your assigned character.",
   "DHP.Settings.UIElements.LoadoutCounters.Name": "Always Show Loadout Counters",
   "DHP.Settings.UIElements.LoadoutCounters.Hint": "Show loadout card resource counters even when not hovered.",
   "DHP.Settings.UIElements.Sheets.Title": "Sheets",

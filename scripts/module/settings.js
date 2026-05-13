@@ -2,6 +2,7 @@ import { MODULE_ID, COLOR_LIGHT_DARK_DEFAULTS, COLOR_CSS_MAP, colorSettingKey } 
 import { applyEffectsHaloSetting, applyEffectsHaloIconSize, applyEffectsHaloSpacing } from "./effects-halo.js";
 import { applyTooltipCardMaxWidth } from "./tooltip-manager.js";
 import { applyEnhancedChatStyles, applyParticleEffects, applyCriticalHitParticles, applyTokenCountersVisibilityBySetting, applyDomainCardOpenSetting, applyCurrencyVisibility, applySystemCurrencyVisibility, applyCurrencyIcons, applyCurrencyLabels, applyColorOverrides, applyCustomFont } from "./style-toggles.js";
+import { getRenderedApplications } from "./compat.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -151,6 +152,7 @@ class UIElementsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
       fearTrackerPosition: game.settings.get(MODULE_ID, "fearTrackerPosition"),
       fearTrackerStyle: game.settings.get(MODULE_ID, "fearTrackerStyle"),
       enableTokenCounters: game.settings.get(MODULE_ID, "enableTokenCounters"),
+      alwaysShowLinkedActorCounters: game.settings.get(MODULE_ID, "alwaysShowLinkedActorCounters"),
       enableCharacterSheetSidebars: game.settings.get(MODULE_ID, "enableCharacterSheetSidebars"),
       tooltipCardMaxWidth: game.settings.get(MODULE_ID, "tooltipCardMaxWidth"),
       alwaysShowLoadoutResourceCounters: game.settings.get(MODULE_ID, "alwaysShowLoadoutResourceCounters"),
@@ -164,6 +166,7 @@ class UIElementsConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     await game.settings.set(MODULE_ID, "fearTrackerPosition", data.fearTrackerPosition ?? "bottom");
     await game.settings.set(MODULE_ID, "fearTrackerStyle", data.fearTrackerStyle ?? "counter");
     await game.settings.set(MODULE_ID, "enableTokenCounters", data.enableTokenCounters ?? false);
+    await game.settings.set(MODULE_ID, "alwaysShowLinkedActorCounters", data.alwaysShowLinkedActorCounters ?? false);
     await game.settings.set(MODULE_ID, "enableCharacterSheetSidebars", data.enableCharacterSheetSidebars ?? false);
     await game.settings.set(MODULE_ID, "tooltipCardMaxWidth", data.tooltipCardMaxWidth ?? 304);
     await game.settings.set(MODULE_ID, "alwaysShowLoadoutResourceCounters", data.alwaysShowLoadoutResourceCounters ?? false);
@@ -751,7 +754,7 @@ export function registerModuleSettings() {
     default: true,
     onChange: (value) => {
       try {
-        for (const [, app] of foundry.applications.instances) {
+        for (const app of getRenderedApplications()) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
           if (value) app._mountInlineRails?.();
           else app._removeInlineRails?.();
@@ -785,7 +788,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: (value) => {
       try {
-        for (const [, app] of foundry.applications.instances) {
+        for (const app of getRenderedApplications()) {
           if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet") continue;
           app._updateAllLoadoutResourceBadges?.();
         }
@@ -803,7 +806,7 @@ export function registerModuleSettings() {
     default: false,
     onChange: () => {
       try {
-        for (const [, app] of foundry.applications.instances) {
+        for (const app of getRenderedApplications()) {
           if (app?.constructor?.name?.startsWith?.("DaggerheartPlus") && typeof app.render === "function") {
             app.render(false);
           }
@@ -876,6 +879,22 @@ export function registerModuleSettings() {
         applyTokenCountersVisibilityBySetting();
       } catch (e) {
         console.warn("Daggerheart Plus | Failed applying token counters toggle", e);
+      }
+    },
+  });
+
+  game.settings.register(MODULE_ID, "alwaysShowLinkedActorCounters", {
+    name: "Always Show Linked Character Counters",
+    scope: "client",
+    config: false,
+    type: Boolean,
+    default: false,
+    onChange: () => {
+      try {
+        window.daggerheartPlus?.tokenCounter?.refreshSource?.();
+        window.daggerheartPlus?.updateCountersWrapperDisplay?.();
+      } catch (e) {
+        console.warn("Daggerheart Plus | Failed applying linked character counters toggle", e);
       }
     },
   });

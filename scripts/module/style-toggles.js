@@ -1,4 +1,5 @@
 import { MODULE_ID, COLOR_LIGHT_DARK_DEFAULTS, COLOR_CSS_MAP, colorSettingKey } from "./constants.js";
+import { getRenderedApplications } from "./compat.js";
 
 const DEFAULT_FONT_URL = "https://fonts.googleapis.com/css2?family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap";
 
@@ -98,7 +99,7 @@ export function applyParticleEffects(enabled) {
       });
     }
 
-    for (const [, app] of foundry.applications.instances) {
+    for (const app of getRenderedApplications()) {
       if (app?.constructor?.name === "DaggerheartPlusCharacterSheet") {
         if (particlesEnabled) {
           app._mountSpellParticles?.();

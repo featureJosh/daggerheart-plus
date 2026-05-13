@@ -1,6 +1,34 @@
+import { canModifyDocument, getActorArmorData, setActorArmorValue } from "../module/compat.js";
+
 const MODULE_ID = "daggerheart-plus";
 const LOCATION_SETTING_KEY = "fearTrackerPosition";
+const LINKED_ACTOR_COUNTERS_SETTING_KEY = "alwaysShowLinkedActorCounters";
 const DEFAULT_LOCATION = "bottom";
+const REFRESH_SETTLE_DELAY_MS = 100;
+
+function getClientSetting(key, fallback = false) {
+  try {
+    return Boolean(game.settings.get(MODULE_ID, key));
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function toFiniteNumber(value, fallback = 0) {
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) return numeric;
+  const fallbackNumeric = Number(fallback);
+  return Number.isFinite(fallbackNumeric) ? fallbackNumeric : 0;
+}
+
+function getLinkedCharacterActor() {
+  const character = game.user?.character;
+  if (!character) return null;
+  if (character.system) return character;
+
+  const actorId = typeof character === "string" ? character : character.id;
+  return actorId ? game.actors?.get?.(actorId) ?? null : null;
+}
 
 function getTrackerLocation() {
   try {
@@ -65,12 +93,17 @@ export class TokenCounterUI {
   constructor() {
     this.element = null;
     this.selectedToken = null;
+    this.selectedActor = null;
     this.hp = { current: 0, max: 0 };
     this.hope = { current: 0, max: 0 };
     this.stress = { current: 0, max: 0 };
     this.armorSlots = { current: 0, max: 0 };
     this.characterStress = { current: 0, max: 0 };
     this.actorType = null;
+    this._refreshTimeout = null;
+    this._settledRefreshTimeout = null;
+    this._refreshGeneration = 0;
+    this._resourceUpdateQueue = Promise.resolve();
   }
 
   async initialize() {
@@ -79,49 +112,193 @@ export class TokenCounterUI {
     this._hooks.controlToken = (token, controlled) => {
       if (controlled && token?.actor) {
         this.setSelectedToken(token);
-      } else if (!controlled && (canvas.tokens.controlled?.length || 0) === 0) {
-        this.hide();
+      } else {
+        setTimeout(() => this.refreshSource(), 0);
       }
     };
     Hooks.on("controlToken", this._hooks.controlToken);
 
     this._hooks.updateActor = (actor, changes) => {
-      if (this.selectedToken && this.selectedToken.actor?.id === actor.id) {
-        setTimeout(() => {
-          this.updateFromToken(this.selectedToken);
-          this.render();
-        }, 50);
-      }
+      if (this._isSelectedActor(actor))
+        this._scheduleSelectedSourceRefresh({ actor, settle: true });
     };
     Hooks.on("updateActor", this._hooks.updateActor);
 
     this._hooks.updateItem = (item, changes) => {
       try {
-        const parentId = item?.parent?.id || item?.actor?.id;
-        if (!this.selectedToken || parentId !== this.selectedToken.actor?.id)
-          return;
         if (item.type !== "armor") return;
-        setTimeout(() => {
-          this.updateFromToken(this.selectedToken);
-          this.render();
-        }, 25);
+        const parent = item?.parent ?? item?.actor;
+        if (!this._isSelectedActor(parent)) return;
+        this._scheduleSelectedSourceRefresh({ actor: parent, settle: true });
       } catch {}
     };
     Hooks.on("updateItem", this._hooks.updateItem);
 
     this._hooks.updateToken = (token, changes) => {
-      if (this.selectedToken && this.selectedToken.id === token.id) {
-        setTimeout(() => {
-          this.updateFromToken(this.selectedToken);
-          this.render();
-        }, 50);
+      if (this._isSelectedToken(token)) {
+        const tokenObject = token?.object;
+        if (tokenObject?.actor) this.selectedToken = tokenObject;
+        this._scheduleSelectedSourceRefresh({
+          actor: tokenObject?.actor ?? token?.actor,
+          settle: true,
+        });
       }
     };
     Hooks.on("updateToken", this._hooks.updateToken);
 
-    if ((canvas.tokens.controlled?.length || 0) > 0) {
-      this.setSelectedToken(canvas.tokens.controlled[0]);
+    this._hooks.updateUser = (user, changes) => {
+      if (user?.id !== game.user?.id || !("character" in (changes ?? {})))
+        return;
+      setTimeout(() => this.refreshSource(), 50);
+    };
+    Hooks.on("updateUser", this._hooks.updateUser);
+
+    this.refreshSource();
+  }
+
+  _isSelectedActor(actor) {
+    if (!actor) return false;
+    if (actor === this.selectedActor) return true;
+
+    const selectedActorIds = [
+      this.selectedActor?.id,
+      this.selectedToken?.actor?.id,
+      this.selectedToken?.document?.actor?.id,
+    ].filter(Boolean);
+    if (actor.id && selectedActorIds.includes(actor.id)) return true;
+
+    const selectedActorUuids = [
+      this.selectedActor?.uuid,
+      this.selectedToken?.actor?.uuid,
+      this.selectedToken?.document?.actor?.uuid,
+    ].filter(Boolean);
+    return Boolean(actor.uuid && selectedActorUuids.includes(actor.uuid));
+  }
+
+  _isSelectedToken(token) {
+    if (!token || !this.selectedToken) return false;
+
+    const selectedTokenId =
+      this.selectedToken.id ?? this.selectedToken.document?.id;
+    const tokenId = token.id ?? token.document?.id;
+    if (selectedTokenId && tokenId && selectedTokenId === tokenId) return true;
+
+    const selectedTokenUuid =
+      this.selectedToken.document?.uuid ?? this.selectedToken.uuid;
+    const tokenUuid = token.document?.uuid ?? token.uuid;
+    return Boolean(selectedTokenUuid && tokenUuid && selectedTokenUuid === tokenUuid);
+  }
+
+  _resolveSelectedToken() {
+    if (!this.selectedToken) return null;
+
+    const selectedTokenId =
+      this.selectedToken.id ?? this.selectedToken.document?.id;
+    const controlled = canvas?.tokens?.controlled?.find?.((token) => {
+      const tokenId = token?.id ?? token?.document?.id;
+      return selectedTokenId && tokenId === selectedTokenId;
+    });
+    if (controlled?.actor) return controlled;
+
+    const layerToken = selectedTokenId
+      ? canvas?.tokens?.get?.(selectedTokenId)
+      : null;
+    if (layerToken?.actor) return layerToken;
+
+    const tokenObject = this.selectedToken.object;
+    if (tokenObject?.actor) return tokenObject;
+
+    return this.selectedToken;
+  }
+
+  _getSelectedSourceActor() {
+    const token = this._resolveSelectedToken();
+    if (token?.actor) {
+      this.selectedToken = token;
+      return token.actor;
     }
+
+    if (!this.selectedActor) return null;
+    if (this.selectedActor.id) {
+      return game.actors?.get?.(this.selectedActor.id) ?? this.selectedActor;
+    }
+    return this.selectedActor;
+  }
+
+  _scheduleSelectedSourceRefresh({
+    actor = null,
+    delay = 0,
+    settle = false,
+  } = {}) {
+    const generation = ++this._refreshGeneration;
+
+    if (this._refreshTimeout) {
+      clearTimeout(this._refreshTimeout);
+      this._refreshTimeout = null;
+    }
+    if (this._settledRefreshTimeout) {
+      clearTimeout(this._settledRefreshTimeout);
+      this._settledRefreshTimeout = null;
+    }
+
+    const runRefresh = () => {
+      this._refreshTimeout = null;
+      if (generation !== this._refreshGeneration) return;
+
+      this._refreshSelectedSource(actor);
+
+      if (settle) {
+        this._settledRefreshTimeout = setTimeout(() => {
+          this._settledRefreshTimeout = null;
+          if (generation !== this._refreshGeneration) return;
+          this._refreshSelectedSource(actor);
+        }, REFRESH_SETTLE_DELAY_MS);
+      }
+    };
+
+    this._refreshTimeout = setTimeout(runRefresh, delay);
+  }
+
+  _refreshSelectedSource(actorOverride = null) {
+    if (actorOverride && !this._isSelectedActor(actorOverride)) return false;
+
+    const actor = actorOverride ?? this._getSelectedSourceActor();
+    if (!actor) {
+      this.hide();
+      return false;
+    }
+
+    if (!this.updateFromActor(actor)) {
+      this.hide();
+      return false;
+    }
+
+    this.show();
+    this.render();
+    return true;
+  }
+
+  refreshSource() {
+    const controlled =
+      canvas?.tokens?.controlled?.filter?.((token) => token?.actor) ?? [];
+    if (controlled.length > 0) {
+      this.setSelectedToken(controlled[0]);
+      return;
+    }
+
+    if (getClientSetting(LINKED_ACTOR_COUNTERS_SETTING_KEY, false)) {
+      const actor = getLinkedCharacterActor();
+      if (actor) {
+        this.setSelectedActor(actor);
+        return;
+      }
+    }
+
+    this.hide();
+  }
+
+  refreshSelectedSource({ settle = true } = {}) {
+    this._scheduleSelectedSourceRefresh({ settle });
   }
 
   setSelectedToken(token) {
@@ -131,50 +308,75 @@ export class TokenCounterUI {
     }
 
     this.selectedToken = token;
-    this.updateFromToken(token);
+    this.selectedActor = token.actor;
+    if (!this.updateFromActor(token.actor)) {
+      this.hide();
+      return;
+    }
+    this.show();
+    this.render();
+  }
+
+  setSelectedActor(actor) {
+    if (!actor) {
+      this.hide();
+      return;
+    }
+
+    this.selectedToken = null;
+    this.selectedActor = actor;
+    if (!this.updateFromActor(actor)) {
+      this.hide();
+      return;
+    }
     this.show();
     this.render();
   }
 
   updateFromToken(token) {
-    if (!token || !token.actor) return;
+    if (!token || !token.actor) return false;
 
-    const actor = token.actor;
+    this.selectedActor = token.actor;
+    return this.updateFromActor(token.actor);
+  }
+
+  updateFromActor(actor) {
+    if (!actor) return false;
 
     const system = actor.system;
-    if (!system?.resources) return;
+    if (!system?.resources) return false;
+    this.selectedActor = actor;
     this.actorType = actor.type;
 
     this.hp = {
-      current: Number(system.resources.hitPoints?.value ?? 0) || 0,
-      max: Number(system.resources.hitPoints?.max ?? 0) || 0,
+      current: toFiniteNumber(system.resources.hitPoints?.value),
+      max: toFiniteNumber(system.resources.hitPoints?.max),
     };
 
     if (this.actorType === "character") {
       this.hope = {
-        current: Number(system.resources.hope?.value ?? 0) || 0,
-        max: Number(system.resources.hope?.max ?? 0) || 0,
+        current: toFiniteNumber(system.resources.hope?.value),
+        max: toFiniteNumber(system.resources.hope?.max),
       };
 
       this.characterStress = {
-        current: Number(system.resources.stress?.value ?? 0) || 0,
-        max: Number(system.resources.stress?.max ?? 0) || 0,
+        current: toFiniteNumber(system.resources.stress?.value),
+        max: toFiniteNumber(system.resources.stress?.max),
       };
 
-      const armorItem = actor.items?.find?.(
-        (i) => i.type === "armor" && i.system?.equipped
-      );
-      const armorMarks = Number(armorItem?.system?.marks?.value ?? 0) || 0;
-      const armorMax =
-        Number(system.armorScore ?? armorItem?.system?.baseScore ?? 0) || 0;
-      this.armorSlots = { current: armorMarks, max: armorMax };
+      const armor = getActorArmorData(actor);
+      this.armorSlots = {
+        current: armor.marks,
+        max: armor.max,
+        uuid: armor.uuid,
+      };
     } else if (
       this.actorType === "adversary" ||
       this.actorType === "companion"
     ) {
       this.stress = {
-        current: Number(system.resources.stress?.value ?? 0) || 0,
-        max: Number(system.resources.stress?.max ?? 0) || 0,
+        current: toFiniteNumber(system.resources.stress?.value),
+        max: toFiniteNumber(system.resources.stress?.max),
       };
     }
 
@@ -182,10 +384,12 @@ export class TokenCounterUI {
     if (rightContainer) {
       this.createRightCounters(rightContainer);
     }
+
+    return true;
   }
 
   async render() {
-    if (!this.selectedToken || !this.element) return;
+    if (!this.selectedActor || !this.element) return;
 
     const container = this.element;
     container.innerHTML = "";
@@ -283,10 +487,38 @@ export class TokenCounterUI {
     this.modifyResource(type, amount);
   }
 
-  async modifyResource(type, amount) {
-    if (!this.selectedToken || !this.canModify()) return;
+  _setCachedResourceValue(type, value, maxValue) {
+    const current = toFiniteNumber(value);
+    const max = toFiniteNumber(maxValue);
 
-    const actor = this.selectedToken.actor;
+    if (type === "hp") {
+      this.hp = { current, max };
+    } else if (type === "hope") {
+      this.hope = { current, max };
+    } else if (type === "stress") {
+      this.stress = { current, max };
+    } else if (type === "character-stress") {
+      this.characterStress = { current, max };
+    } else if (type === "armor-slots") {
+      this.armorSlots = { ...this.armorSlots, current, max };
+    }
+  }
+
+  _getCachedResourceValue(type) {
+    if (type === "hp") return toFiniteNumber(this.hp.current);
+    if (type === "hope") return toFiniteNumber(this.hope.current);
+    if (type === "stress") return toFiniteNumber(this.stress.current);
+    if (type === "character-stress")
+      return toFiniteNumber(this.characterStress.current);
+    if (type === "armor-slots") return toFiniteNumber(this.armorSlots.current);
+    return 0;
+  }
+
+  async modifyResource(type, amount) {
+    if (!this.selectedActor || !this.canModify()) return;
+
+    const actor = this._getSelectedSourceActor() ?? this.selectedActor;
+    if (!actor) return;
     let updatePath = "";
     let currentValue = 0;
     let maxValue = 0;
@@ -294,39 +526,32 @@ export class TokenCounterUI {
     switch (type) {
       case "hp":
         updatePath = "system.resources.hitPoints.value";
-        currentValue = this.hp.current;
-        maxValue = this.hp.max;
+        currentValue = toFiniteNumber(this.hp.current);
+        maxValue = toFiniteNumber(this.hp.max);
         break;
       case "hope":
         updatePath = "system.resources.hope.value";
-        currentValue = this.hope.current;
-        maxValue = this.hope.max;
+        currentValue = toFiniteNumber(this.hope.current);
+        maxValue = toFiniteNumber(this.hope.max);
         break;
       case "stress":
         updatePath = "system.resources.stress.value";
-        currentValue = this.stress.current;
-        maxValue = this.stress.max;
+        currentValue = toFiniteNumber(this.stress.current);
+        maxValue = toFiniteNumber(this.stress.max);
         break;
       case "character-stress":
         updatePath = "system.resources.stress.value";
-        currentValue = this.characterStress.current;
-        maxValue = this.characterStress.max;
+        currentValue = toFiniteNumber(this.characterStress.current);
+        maxValue = toFiniteNumber(this.characterStress.max);
         break;
       case "armor-slots":
-        const armorItem = actor.items?.find?.(
-          (i) => i.type === "armor" && i.system?.equipped
-        );
-        currentValue =
-          Number(this.armorSlots.current) ||
-          Number(armorItem?.system?.marks?.value ?? 0) ||
-          0;
+        const armor = getActorArmorData(actor);
+        if (!armor.hasArmor) return;
+        currentValue = toFiniteNumber(this.armorSlots.current, armor.marks);
         maxValue =
-          Number(this.armorSlots.max) ||
-          Number(
-            actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0
-          ) ||
-          0;
-        if (!armorItem) return;
+          toFiniteNumber(this.armorSlots.max) > 0
+            ? toFiniteNumber(this.armorSlots.max)
+            : toFiniteNumber(armor.max);
         break;
       default:
         return;
@@ -335,14 +560,28 @@ export class TokenCounterUI {
     const newValue = Math.max(0, Math.min(currentValue + amount, maxValue));
 
     if (newValue !== currentValue) {
-      if (type === "armor-slots") {
-        const armorItem = actor.items?.find?.(
-          (i) => i.type === "armor" && i.system?.equipped
-        );
-        if (!armorItem) return;
-        await armorItem.update({ "system.marks.value": newValue });
-      } else {
-        await actor.update({ [updatePath]: newValue });
+      this._setCachedResourceValue(type, newValue, maxValue);
+      await this.render();
+
+      const applyUpdate = async () => {
+        if (type === "armor-slots") {
+          await setActorArmorValue(actor, newValue, this.armorSlots.uuid);
+        } else {
+          await actor.update({ [updatePath]: newValue });
+        }
+      };
+
+      this._resourceUpdateQueue = this._resourceUpdateQueue
+        .catch(() => {})
+        .then(applyUpdate);
+
+      try {
+        await this._resourceUpdateQueue;
+      } catch (error) {
+        console.error("Daggerheart Plus | Failed to modify token counter", error);
+      } finally {
+        if (this._getCachedResourceValue(type) === newValue)
+          this._scheduleSelectedSourceRefresh({ settle: true });
       }
     }
   }
@@ -351,6 +590,7 @@ export class TokenCounterUI {
     if (!this.element) this.createElement();
     this.ensureWrapperLocation();
     if (this.element) this.element.style.display = "";
+    this.updateWrapperDisplay();
   }
 
   hide() {
@@ -361,6 +601,8 @@ export class TokenCounterUI {
       if (right) right.innerHTML = "";
     } catch (_) {}
     this.selectedToken = null;
+    this.selectedActor = null;
+    this.updateWrapperDisplay();
   }
 
   createElement(retries = 0) {
@@ -415,7 +657,7 @@ export class TokenCounterUI {
   }
 
   createRightCounters(rightContainer) {
-    if (!this.selectedToken || !this.canModify()) {
+    if (!this.selectedActor || !this.canModify()) {
       rightContainer.innerHTML = "";
       return;
     }
@@ -450,13 +692,31 @@ export class TokenCounterUI {
   }
 
   canModify() {
-    if (!this.selectedToken) return false;
+    if (!this.selectedActor) return false;
 
-    const actor = this.selectedToken.actor;
-    return game.user.isGM || game.user.hasRole("ASSISTANT") || actor.isOwner;
+    return canModifyDocument(this.selectedActor);
+  }
+
+  hasActiveCounters() {
+    return Boolean(this.element && this.selectedActor && this.canModify());
+  }
+
+  updateWrapperDisplay() {
+    try {
+      window.daggerheartPlus?.updateCountersWrapperDisplay?.();
+    } catch (_) {}
   }
 
   dispose() {
+    if (this._refreshTimeout) {
+      clearTimeout(this._refreshTimeout);
+      this._refreshTimeout = null;
+    }
+    if (this._settledRefreshTimeout) {
+      clearTimeout(this._settledRefreshTimeout);
+      this._settledRefreshTimeout = null;
+    }
+
     try {
       if (this._hooks?.controlToken)
         Hooks.off("controlToken", this._hooks.controlToken);
@@ -466,6 +726,8 @@ export class TokenCounterUI {
         Hooks.off("updateItem", this._hooks.updateItem);
       if (this._hooks?.updateToken)
         Hooks.off("updateToken", this._hooks.updateToken);
+      if (this._hooks?.updateUser)
+        Hooks.off("updateUser", this._hooks.updateUser);
     } catch (_) {}
     this._hooks = {};
 
@@ -473,6 +735,8 @@ export class TokenCounterUI {
       this.element.remove();
       this.element = null;
     }
+    this.selectedToken = null;
+    this.selectedActor = null;
 
     try {
       const right = document.querySelector("#token-counters-right");

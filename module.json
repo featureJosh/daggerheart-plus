@@ -2,22 +2,23 @@
   "id": "daggerheart-plus",
   "title": "Daggerheart Plus",
   "description": "A module that improves upon the default Daggerheart system UI/UX",
-  "version": "1.5.0",
+  "version": "#{VERSION}#",
+  "library": false,
   "compatibility": {
-    "minimum": "13",
-    "verified": "13",
-    "maximum": ""
+    "minimum": "14.359",
+    "verified": "14.360"
   },
   "authors": [
     {
+      "name": "Oxy949",
+      "email": "oxy949@gmail.com",
+      "url": "https://boosty.to/oxy949",
+      "discord": "oxy949",
+      "flags": {}
+    },
+    {
       "name": "featureJosh"
     }
-  ],
-  "esmodules": [
-    "scripts/main.js"
-  ],
-  "styles": [
-    "styles/main.css"
   ],
   "relationships": {
     "systems": [
@@ -25,11 +26,20 @@
         "id": "daggerheart",
         "type": "system",
         "compatibility": {
-          "minimum": "1.2.0"
+          "minimum": "2.0.0",
+          "verified": "2.1.2"
         }
       }
-    ]
+    ],
+    "requires": []
   },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "scripts": [],
+  "styles": [
+    "styles/main.css"
+  ],
   "languages": [
     {
       "lang": "en",
@@ -45,8 +55,22 @@
       "lang": "it",
       "name": "Italian",
       "path": "lang/it.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json"
     }
   ],
-  "download": "https://github.com/featureJosh/daggerheart-plus/archive/refs/tags/1.5.0.zip",
-  "manifest": "https://raw.githubusercontent.com/featureJosh/daggerheart-plus/refs/heads/main/module.json"
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "MIT",
+  "readme": "README.md",
+  "media": [
+    {
+      "type": "icon",
+      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+    }
+  ]
 }

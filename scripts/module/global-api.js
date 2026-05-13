@@ -4,6 +4,7 @@ import { EnhancedDiceStyling } from "../applications/enhanced-dice-styling.js";
 import { EnhancedChatEffects } from "../applications/enhanced-chat-effects.js";
 import { MODULE_ID } from "./constants.js";
 import { applyTokenCountersVisibilityBySetting } from "./style-toggles.js";
+import { getActorArmorData, setActorArmorValue } from "./compat.js";
 
 export function initializeEnhancedDiceStyling() {
   EnhancedDiceStyling.initialize();
@@ -113,31 +114,91 @@ export function bindProgressBarClicks(root, actor) {
     if (!root || !actor) return;
     if (root._dhpProgressDelegationBound) return;
 
-    const adjustActorPath = async (path, delta, min = 0, max = undefined) => {
-      const current = foundry.utils.getProperty(actor.system, path);
-      const newVal = Math.max(
-        min,
-        Math.min(max ?? Number.MAX_SAFE_INTEGER, Number(current || 0) + delta)
-      );
-      const updatePath = `system.${path}`;
-      await actor.update({ [updatePath]: newVal });
+    const toFiniteNumber = (value, fallback = 0) => {
+      const numeric = Number(value);
+      if (Number.isFinite(numeric)) return numeric;
+      const fallbackNumeric = Number(fallback);
+      return Number.isFinite(fallbackNumeric) ? fallbackNumeric : 0;
     };
 
-    const adjustArmorMarks = async (delta) => {
+    const getProgressBar = (container) =>
+      container?.querySelector?.("progress.progress-bar, .progress-bar");
+
+    const readProgressValue = (container, fallback = 0) => {
+      const bar = getProgressBar(container);
+      const statusValue = container?.querySelector?.(".status-value");
+      return toFiniteNumber(
+        bar?.value ?? bar?.getAttribute?.("value") ?? statusValue?.dataset?.value,
+        fallback
+      );
+    };
+
+    const writeProgressValue = (container, value, max = undefined) => {
+      const next = String(value);
+      const bar = getProgressBar(container);
+      const statusValue = container?.querySelector?.(".status-value");
+
+      container?.style?.setProperty?.("--value", next);
+      if (bar) {
+        if ("value" in bar) bar.value = value;
+        bar.setAttribute("value", next);
+        bar.style?.setProperty?.("--value", next);
+        if (typeof max !== "undefined") {
+          const maxString = String(max);
+          if ("max" in bar) bar.max = max;
+          bar.setAttribute("max", maxString);
+          bar.style?.setProperty?.("--max", maxString);
+        }
+      }
+      if (statusValue?.dataset) {
+        statusValue.dataset.value = next;
+        if (typeof max !== "undefined") statusValue.dataset.max = String(max);
+      }
+    };
+
+    const refreshTokenCounters = () => {
       try {
-        const armorItem = actor.items?.find?.(
-          (i) => i.type === "armor" && i.system?.equipped
-        );
-        if (!armorItem) return false;
-        const current = Number(armorItem.system?.marks?.value ?? 0) || 0;
-        const max =
-          Number(
-            actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0
-          ) || 0;
-        const next = Math.max(0, Math.min(max, current + delta));
-        if (next === current) return true;
-        await armorItem.update({ "system.marks.value": next });
-        return true;
+        window.daggerheartPlus?.tokenCounter?.refreshSelectedSource?.({
+          settle: true,
+        });
+      } catch (_) {}
+    };
+
+    const adjustActorPath = async (
+      path,
+      delta,
+      min = 0,
+      max = undefined,
+      container = null
+    ) => {
+      const current = readProgressValue(
+        container,
+        foundry.utils.getProperty(actor.system, path)
+      );
+      const newVal = Math.max(
+        min,
+        Math.min(max ?? Number.MAX_SAFE_INTEGER, toFiniteNumber(current) + delta)
+      );
+      const updatePath = `system.${path}`;
+      writeProgressValue(container, newVal, max);
+      try {
+        await actor.update({ [updatePath]: newVal });
+      } finally {
+        refreshTokenCounters();
+      }
+    };
+
+    const adjustArmorMarks = async (delta, container = null) => {
+      try {
+        const armor = getActorArmorData(actor);
+        if (!armor.hasArmor) return false;
+        const current = readProgressValue(container, armor.marks);
+        const next = Math.max(0, Math.min(current + delta, armor.max));
+        writeProgressValue(container, next, armor.max);
+        const ok = await setActorArmorValue(actor, next, armor.uuid);
+        if (!ok) writeProgressValue(container, armor.marks, armor.max);
+        refreshTokenCounters();
+        return ok;
       } catch (e) {
         console.warn("Daggerheart Plus | adjustArmorMarks failed", e);
         return false;
@@ -199,10 +260,10 @@ export function bindProgressBarClicks(root, actor) {
       const { field, min, max } = resolveFieldAndBounds(container);
       if (!field) return;
       if (actor.type === "character" && field === "resources.armor.value") {
-        const ok = await adjustArmorMarks(+1);
+        const ok = await adjustArmorMarks(+1, container);
         if (ok) return;
       }
-      await adjustActorPath(field, +1, min, max);
+      await adjustActorPath(field, +1, min, max, container);
     };
 
     const contextHandler = async (ev) => {
@@ -213,10 +274,10 @@ export function bindProgressBarClicks(root, actor) {
       const { field, min, max } = resolveFieldAndBounds(container);
       if (!field) return;
       if (actor.type === "character" && field === "resources.armor.value") {
-        const ok = await adjustArmorMarks(-1);
+        const ok = await adjustArmorMarks(-1, container);
         if (ok) return;
       }
-      await adjustActorPath(field, -1, min, max);
+      await adjustActorPath(field, -1, min, max, container);
     };
 
     root.addEventListener("click", clickHandler, true);
@@ -237,9 +298,12 @@ export function updateCountersWrapperDisplay() {
       game.settings.get(MODULE_ID, "enableTokenCounters")
     );
     const hasSelectedToken = Boolean(canvas?.tokens?.controlled?.length);
+    const tokenCounter = window.daggerheartPlus?.tokenCounter;
     const tokenCountersActive = Boolean(
       tokenCountersEnabled &&
-        (window.daggerheartPlus?.tokenCounter?.element || hasSelectedToken)
+        (tokenCounter?.hasActiveCounters?.() ??
+          tokenCounter?.element ??
+          hasSelectedToken)
     );
 
     const shouldShow = fearActive || tokenCountersActive;

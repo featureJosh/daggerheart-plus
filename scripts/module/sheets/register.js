@@ -1,5 +1,10 @@
 import { MODULE_ID, SYSTEM_ID } from "../constants.js";
 import { UIOverlayParticles } from "../../applications/ui-overlay-particles.js";
+import {
+  canModifyDocument,
+  getActorArmorData,
+  setActorArmorValue,
+} from "../compat.js";
 
 export function getDefaultSheetSize() {
   return {
@@ -41,37 +46,91 @@ export function applyDefaultSizeToApp(app, sizeOverride) {
 function bindResourcePipClicks(root, actor) {
   if (!root || !actor) return;
 
-  const canModify = actor.isOwner || actor.testUserPermission?.(game.user, 'OWNER');
+  const canModify = canModifyDocument(actor);
   if (!canModify) return;
+
+  const pendingValues = (root._dhpPendingResourceValues ??= {});
+  const actorKey = actor.uuid ?? actor.id ?? "actor";
+  const toFiniteNumber = (value, fallback = 0) => {
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return numeric;
+    const fallbackNumeric = Number(fallback);
+    return Number.isFinite(fallbackNumeric) ? fallbackNumeric : 0;
+  };
+  const refreshTokenCounters = () => {
+    try {
+      window.daggerheartPlus?.tokenCounter?.refreshSelectedSource?.({
+        settle: true,
+      });
+    } catch (_) {}
+  };
+  const releasePendingValue = (key, expectedValue) => {
+    setTimeout(() => {
+      if (pendingValues[key] === expectedValue) delete pendingValues[key];
+    }, 250);
+  };
 
   const toggleResource = async (action, clickedValue, itemUuid) => {
     let currentValue, maxValue;
+    let pendingKey;
 
     if (action === "toggleHitPoints") {
-      currentValue = Number(actor.system?.resources?.hitPoints?.value ?? 0);
-      maxValue = Number(actor.system?.resources?.hitPoints?.max ?? 0);
+      pendingKey = `${actorKey}:hp`;
+      currentValue = toFiniteNumber(
+        pendingValues[pendingKey],
+        actor.system?.resources?.hitPoints?.value
+      );
+      maxValue = toFiniteNumber(actor.system?.resources?.hitPoints?.max);
       const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
       const clampedValue = Math.max(0, Math.min(newValue, maxValue));
       if (clampedValue !== currentValue) {
-        await actor.update({ "system.resources.hitPoints.value": clampedValue });
+        pendingValues[pendingKey] = clampedValue;
+        try {
+          await actor.update({ "system.resources.hitPoints.value": clampedValue });
+        } finally {
+          refreshTokenCounters();
+          releasePendingValue(pendingKey, clampedValue);
+        }
       }
     } else if (action === "toggleStress") {
-      currentValue = Number(actor.system?.resources?.stress?.value ?? 0);
-      maxValue = Number(actor.system?.resources?.stress?.max ?? 0);
+      pendingKey = `${actorKey}:stress`;
+      currentValue = toFiniteNumber(
+        pendingValues[pendingKey],
+        actor.system?.resources?.stress?.value
+      );
+      maxValue = toFiniteNumber(actor.system?.resources?.stress?.max);
       const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
       const clampedValue = Math.max(0, Math.min(newValue, maxValue));
       if (clampedValue !== currentValue) {
-        await actor.update({ "system.resources.stress.value": clampedValue });
+        pendingValues[pendingKey] = clampedValue;
+        try {
+          await actor.update({ "system.resources.stress.value": clampedValue });
+        } finally {
+          refreshTokenCounters();
+          releasePendingValue(pendingKey, clampedValue);
+        }
       }
     } else if (action === "toggleArmorSlot") {
-      const armorItem = itemUuid ? await fromUuid(itemUuid) : actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
-      if (!armorItem) return;
-      currentValue = Number(armorItem.system?.marks?.value ?? 0);
-      maxValue = Number(actor.system?.armorScore ?? armorItem.system?.baseScore ?? 0);
+      const armor = getActorArmorData(actor);
+      if (!armor.hasArmor) return;
+      pendingKey = `${actorKey}:armor:${itemUuid ?? armor.uuid ?? ""}`;
+      currentValue = toFiniteNumber(pendingValues[pendingKey], armor.marks);
+      maxValue = toFiniteNumber(armor.max);
       const newValue = clickedValue <= currentValue ? clickedValue - 1 : clickedValue;
       const clampedValue = Math.max(0, Math.min(newValue, maxValue));
       if (clampedValue !== currentValue) {
-        await armorItem.update({ "system.marks.value": clampedValue });
+        pendingValues[pendingKey] = clampedValue;
+        try {
+          const ok = await setActorArmorValue(
+            actor,
+            clampedValue,
+            itemUuid ?? armor.uuid
+          );
+          if (!ok) pendingValues[pendingKey] = armor.marks;
+        } finally {
+          refreshTokenCounters();
+          releasePendingValue(pendingKey, clampedValue);
+        }
       }
     }
   };
@@ -154,26 +213,28 @@ export function registerDaggerheartPlusSheets() {
       return `${this.document.name} [DH+]`;
     }
 
-    static TABS = [
-      { tab: "features", label: "Features", icon: "fas fa-list" },
-      { tab: "loadout", label: "Loadout", icon: "fas fa-chess-rook" },
-      { tab: "inventory", label: "Inventory", icon: "fas fa-backpack" },
-      { tab: "effects", label: "Effects", icon: "fas fa-bolt" },
-      { tab: "biography", label: "Biography", icon: "fas fa-feather" },
+    static TABS = super.TABS;
+
+    static DHP_TABS = [
+      { id: "features", label: "DAGGERHEART.GENERAL.Tabs.features", icon: "fas fa-list" },
+      { id: "loadout", label: "DAGGERHEART.GENERAL.Tabs.loadout", icon: "fas fa-chess-rook" },
+      { id: "inventory", label: "DAGGERHEART.GENERAL.Tabs.inventory", icon: "fas fa-backpack" },
+      { id: "effects", label: "DAGGERHEART.GENERAL.Tabs.effects", icon: "fas fa-bolt" },
+      { id: "biography", label: "DAGGERHEART.GENERAL.Tabs.biography", icon: "fas fa-feather" },
     ];
 
     tabGroups = { primary: "features" };
 
     _getTabs() {
-      return this.constructor.TABS.reduce(
-        (tabs, { tab, condition, ...config }) => {
+      return this.constructor.DHP_TABS.reduce(
+        (tabs, { id, condition, ...config }) => {
           if (!condition || condition(this.document))
-            tabs[tab] = {
+            tabs[id] = {
               ...config,
-              id: tab,
+              id,
               group: "primary",
-              active: this.tabGroups.primary === tab,
-              cssClass: this.tabGroups.primary === tab ? "active" : "",
+              active: this.tabGroups.primary === id,
+              cssClass: this.tabGroups.primary === id ? "active" : "",
             };
           return tabs;
         },
@@ -202,16 +263,7 @@ export function registerDaggerheartPlusSheets() {
       }
 
       try {
-        const actor = this.document;
-        const armorItem = actor.system?.armor || actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
-        const armorMarks = Number(armorItem?.system?.marks?.value ?? 0);
-        const armorMax = Number(actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0);
-        context.armorData = {
-          hasArmor: !!armorItem && armorMax > 0,
-          marks: armorMarks,
-          max: armorMax,
-          uuid: armorItem?.uuid ?? null,
-        };
+        context.armorData = getActorArmorData(this.document);
       } catch (_) {
         context.armorData = { hasArmor: false, marks: 0, max: 0, uuid: null };
       }
@@ -467,7 +519,7 @@ export function registerDaggerheartPlusSheets() {
 
     _canInteractWithItems() {
       try {
-        return this.document.isOwner || this.document.testUserPermission(game.user, 'OWNER');
+        return canModifyDocument(this.document);
       } catch (_) {
         return false;
       }
@@ -1495,15 +1547,7 @@ export function registerDaggerheartPlusSheets() {
         context.partyArmorData = {};
         for (const actor of members) {
           try {
-            const armorItem = actor.system?.armor || actor.items?.find?.(i => i.type === "armor" && i.system?.equipped);
-            const armorMarks = Number(armorItem?.system?.marks?.value ?? 0);
-            const armorMax = Number(actor.system?.armorScore ?? armorItem?.system?.baseScore ?? 0);
-            context.partyArmorData[actor.id] = {
-              hasArmor: !!armorItem && armorMax > 0,
-              marks: armorMarks,
-              max: armorMax,
-              uuid: armorItem?.uuid ?? null,
-            };
+            context.partyArmorData[actor.id] = getActorArmorData(actor);
           } catch (_) {
             context.partyArmorData[actor.id] = { hasArmor: false, marks: 0, max: 0, uuid: null };
           }

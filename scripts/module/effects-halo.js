@@ -423,12 +423,39 @@ class EffectTextureSpritesheet {
 
 const effectCache = new EffectTextureSpritesheet();
 
+function drawCircleGraphic(graphics, x, y, radius, { fillColor, strokeColor = null, strokeWidth = 0 } = {}) {
+  const hasModernApi = typeof graphics.circle === "function";
+  const hasLegacyApi = typeof graphics.drawCircle === "function";
+  const useLegacyFill = !hasModernApi && fillColor !== null && typeof graphics.beginFill === "function";
+  const useLegacyStroke = !hasModernApi && strokeColor !== null && strokeWidth > 0 && typeof graphics.lineStyle === "function";
+
+  if (hasModernApi) {
+    graphics.circle(x, y, radius);
+  } else if (hasLegacyApi) {
+    if (useLegacyFill) graphics.beginFill(fillColor);
+    if (useLegacyStroke) graphics.lineStyle(strokeWidth, strokeColor, 1, 0);
+    graphics.drawCircle(x, y, radius);
+  }
+
+  if (!useLegacyFill && fillColor !== null && typeof graphics.fill === "function") {
+    graphics.fill({ color: fillColor });
+  }
+  if (!useLegacyStroke && strokeColor !== null && strokeWidth > 0 && typeof graphics.stroke === "function") {
+    graphics.stroke({ width: strokeWidth, color: strokeColor, alignment: 0 });
+  }
+  if (useLegacyFill && typeof graphics.endFill === "function") graphics.endFill();
+
+  return graphics;
+}
+
 function createHaloBackground(iconSize, borderWidth) {
   const background = new PIXI.Graphics();
   const radius = iconSize / 2;
-  background.circle(radius, radius, radius);
-  background.fill({ color: 0x222222 });
-  background.stroke({ width: borderWidth, color: 0x444444, alignment: 0 });
+  drawCircleGraphic(background, radius, radius, radius, {
+    fillColor: 0x222222,
+    strokeColor: 0x444444,
+    strokeWidth: borderWidth,
+  });
   return background;
 }
 
@@ -452,8 +479,9 @@ function createRoundedEffectIcon(effectIcon) {
 
   const maskRadius = textureSize / 2 - 3 * borderWidth;
   const mask = new PIXI.Graphics();
-  mask.circle(textureSize / 2, textureSize / 2, maskRadius);
-  mask.fill({ color: 0xffffff });
+  drawCircleGraphic(mask, textureSize / 2, textureSize / 2, maskRadius, {
+    fillColor: 0xffffff,
+  });
   effectIcon.mask = mask;
   container.addChild(mask);
   return container;
@@ -531,10 +559,8 @@ function patchTokenPrototype() {
     }
   };
 
-  if (libWrapper?.register) {
-    libWrapper.register(MODULE_ID, "foundry.canvas.placeables.Token.prototype._refreshEffects", refreshWrapper, "MIXED");
-    libWrapper.register(MODULE_ID, "foundry.canvas.placeables.Token.prototype._drawEffect", drawWrapper, "MIXED");
-  } else {
+  const libWrapperApi = globalThis.libWrapper;
+  const applyManualPatch = () => {
     originalRefreshEffects = proto._refreshEffects;
     originalDrawEffect = proto._drawEffect;
 
@@ -566,6 +592,18 @@ function patchTokenPrototype() {
         }
       };
     }
+  };
+
+  if (libWrapperApi?.register) {
+    try {
+      libWrapperApi.register(MODULE_ID, "CONFIG.Token.objectClass.prototype._refreshEffects", refreshWrapper, "MIXED");
+      libWrapperApi.register(MODULE_ID, "CONFIG.Token.objectClass.prototype._drawEffect", drawWrapper, "MIXED");
+    } catch (error) {
+      console.warn("Daggerheart Plus | libWrapper token patch failed, using direct patch", error);
+      applyManualPatch();
+    }
+  } else {
+    applyManualPatch();
   }
 
   patchApplied = true;

@@ -195,7 +195,8 @@ export class EnhancedDiceStyling {
         ? game.i18n.localize("DAGGERHEART.GENERAL.hope")
         : game.i18n.localize("DAGGERHEART.GENERAL.fear");
 
-    const DialogClass = foundry.applications?.api?.DialogV2 ?? Dialog;
+    const DialogClass = foundry.applications?.api?.DialogV2 ?? globalThis.Dialog;
+    if (!DialogClass?.confirm) return;
     const confirmResult = await DialogClass.confirm({
       window: { title: `${game.i18n.localize("DAGGERHEART.GENERAL.reroll")} ${dieLabel}` },
       content:

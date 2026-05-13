@@ -34,6 +34,12 @@
   </div>
 
   <div class="setting-row">
+    <label>{{localize "DHP.Settings.UIElements.LinkedActorCounters.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
+    <input type="checkbox" name="alwaysShowLinkedActorCounters" {{#if alwaysShowLinkedActorCounters}}checked{{/if}} />
+    <p class="hint">{{localize "DHP.Settings.UIElements.LinkedActorCounters.Hint"}}</p>
+  </div>
+
+  <div class="setting-row">
     <label>{{localize "DHP.Settings.UIElements.LoadoutCounters.Name"}} <span class="scope-badge client">{{localize "DHP.Settings.Scope.Client"}}</span></label>
     <input type="checkbox" name="alwaysShowLoadoutResourceCounters" {{#if alwaysShowLoadoutResourceCounters}}checked{{/if}} />
     <p class="hint">{{localize "DHP.Settings.UIElements.LoadoutCounters.Hint"}}</p>

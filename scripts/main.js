@@ -21,6 +21,7 @@ import {
 import { HoverDistance } from "./applications/hover-distance.js";
 import { preloadModuleTemplates } from "./module/template-preload.js";
 import { registerGradientSettings } from "./module/progress-gradients.js";
+import { getRenderedApplications } from "./module/compat.js";
 import {
   bootstrapGlobalUi,
   manageFearTracker,
@@ -114,6 +115,12 @@ Hooks.once("ready", async () => {
       return;
     }
 
+    if (settingName === "alwaysShowLinkedActorCounters") {
+      window.daggerheartPlus?.tokenCounter?.refreshSource?.();
+      window.daggerheartPlus?.updateCountersWrapperDisplay?.();
+      return;
+    }
+
     if (settingName === "enableEffectsHalo") {
       applyEffectsHaloSetting(Boolean(setting.value));
       return;
@@ -166,7 +173,7 @@ Hooks.once("ready", async () => {
       settingName === "defaultSheetHeight"
     ) {
       const size = getDefaultSheetSize();
-      for (const [, app] of foundry.applications.instances) {
+      for (const app of getRenderedApplications()) {
         const name = app?.constructor?.name;
         if (!name?.startsWith?.("DaggerheartPlus")) continue;
         if (name?.includes?.("Adversary")) continue;
@@ -189,7 +196,7 @@ Hooks.once("ready", async () => {
       settingName === "adversarySheetHeight"
     ) {
       const size = getDefaultAdversarySheetSize();
-      for (const [, app] of foundry.applications.instances) {
+      for (const app of getRenderedApplications()) {
         if (app?.constructor?.name === "DaggerheartPlusAdversarySheet") {
           applyDefaultSizeToApp(app, size);
         }
@@ -217,7 +224,7 @@ Hooks.once("ready", async () => {
         MODULE_ID,
         "enableCharacterSheetSidebars"
       );
-      for (const [, app] of foundry.applications.instances) {
+      for (const app of getRenderedApplications()) {
         if (app?.constructor?.name !== "DaggerheartPlusCharacterSheet")
           continue;
         if (useRails) app._mountInlineRails?.();
